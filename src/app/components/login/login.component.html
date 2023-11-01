@@ -1,0 +1,22 @@
+<section class="outer">
+    <section class="container mt-4 p-4 border rounded-4 bg-dark text-light">
+        <form [formGroup]="loginform" class="form-floating">
+            <h1 class="mb-3">Login Form</h1>
+            <p>Please Enter Your Email and Password</p>
+            <section class="form-floating mb-3 text-dark" [class.error]="loginform.controls['email'].dirty && loginform.hasError('required','email')">
+                <input formControlName="email" type="email" class="form-control" [class.is-invalid]="loginform.controls['email'].dirty && loginform.hasError('required','email')" id="email" placeholder="name@example.com">
+                <label for="email">Email address</label>
+                <small *ngIf="loginform.controls['email'].dirty && loginform.hasError('required','email')" class="text-danger">*Email is Requierd!</small>
+            </section>
+            <section class="form-floating mb-3 text-dark">
+                <input formControlName="password" type="password" class="form-control" [class.is-invalid]="loginform.controls['password'].dirty && loginform.hasError('required','password')" id="password" placeholder="Password">
+                <label for="password">Password</label>
+                <small *ngIf="loginform.controls['password'].dirty && loginform.hasError('required','password')" class="text-danger">*Password is Requierd!</small>
+            </section>
+            <p><a href="">Forget Password?</a></p>
+            <button (click)="onLogin()" type="submit" class="btn btn-primary mb-3">Login</button>
+            <p>Don't have account ? <a href="/register">Register</a></p>
+        </form>
+    </section>
+</section>
+<section style="width: 120px;" class="bg-dark fixed-top p-2"><a href="/" class="text-white">Back To Home</a></section>

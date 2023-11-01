@@ -1,0 +1,33 @@
+<section class="outher">
+    <section class="container mt-4 p-4 border rounded-4 bg-dark text-light">
+        <form [formGroup]="registerform">
+            <h1 class="mb-3">Register Form</h1>
+            <p>Please Complate Form To Register</p>
+            <section class="row mb-3">
+            <section class="col">
+                <label for="first-name">First Name</label>
+                <input formControlName="firstname" type="text" class="form-control" [class.is-invalid]="registerform.controls['firstname'].dirty && registerform.hasError('required','firstname')" id="first-name">
+                <small *ngIf="registerform.controls['firstname'].dirty && registerform.hasError('required','firstname')" class="text-danger">*First Name is Requierd!</small>
+            </section>
+            <section class="col">
+                <label for="last-name">Last Name</label>
+                <input formControlName="lastname" type="text" class="form-control" id="last-name">
+                <small *ngIf="registerform.controls['lastname'].dirty && registerform.hasError('required','lastname')" class="text-danger">*Last Name is Requierd!</small>
+            </section>
+            </section>
+            <section class="form-group mb-3">
+                <label for="email">Email address</label>
+                <input formControlName="email" type="email" class="form-control" [class.is-invalid]="registerform.controls['email'].dirty && registerform.hasError('required','email')" id="email">
+                <small *ngIf="registerform.controls['email'].dirty && registerform.hasError('required','email')" class="text-danger">*Email is Requierd!</small>
+            </section>
+            <section class="form-group mb-3">
+                <label for="password">Password</label>
+                <input formControlName="password" type="password" class="form-control" [class.is-invalid]="registerform.controls['password'].dirty && registerform.hasError('required','password')" id="password">
+                <small *ngIf="registerform.controls['password'].dirty && registerform.hasError('required','password')" class="text-danger">*Password is Requierd!</small>
+            </section>
+            <button (click)="onRegister()" type="submit" class="btn btn-primary mb-3">Register</button>
+            <p>Already have account ? <a href="/login">Login</a></p>
+        </form>
+    </section>
+</section>
+<section style="width: 120px;" class="bg-dark fixed-top p-2"><a href="/" class="text-white">Back To Home</a></section>
