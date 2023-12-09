@@ -1,22 +1,26 @@
-<section class="outer">
-    <section class="container mt-4 p-4 border rounded-4 bg-dark text-light">
-        <form [formGroup]="loginform" class="form-floating">
-            <h1 class="mb-3">Login Form</h1>
-            <p>Please Enter Your Email and Password</p>
-            <section class="form-floating mb-3 text-dark" [class.error]="loginform.controls['email'].dirty && loginform.hasError('required','email')">
-                <input formControlName="email" type="email" class="form-control" [class.is-invalid]="loginform.controls['email'].dirty && loginform.hasError('required','email')" id="email" placeholder="name@example.com">
-                <label for="email">Email address</label>
-                <small *ngIf="loginform.controls['email'].dirty && loginform.hasError('required','email')" class="text-danger">*Email is Requierd!</small>
-            </section>
-            <section class="form-floating mb-3 text-dark">
-                <input formControlName="password" type="password" class="form-control" [class.is-invalid]="loginform.controls['password'].dirty && loginform.hasError('required','password')" id="password" placeholder="Password">
-                <label for="password">Password</label>
-                <small *ngIf="loginform.controls['password'].dirty && loginform.hasError('required','password')" class="text-danger">*Password is Requierd!</small>
-            </section>
-            <p><a href="">Forget Password?</a></p>
-            <button (click)="onLogin()" type="submit" class="btn btn-primary mb-3">Login</button>
-            <p>Don't have account ? <a href="/register">Register</a></p>
-        </form>
+<section class="login-form">
+    <section class="top-form">
+        <img src="assets/images/1-icons.png" alt="icons">
+    </section>
+    <form [formGroup]="loginform" class="main-form">
+        <input class="username" type="text" formControlName="username" id="username" [class.is-invalid]="loginform.controls['username'].dirty && loginform.hasError('required','username')" placeholder="User Name">
+        <small *ngIf="loginform.controls['username'].dirty && loginform.hasError('required','username')" class="text-error">UserName is Requierd!</small>
+        <input class="password" type="password" formControlName="password" id="password" [class.is-invalid]="loginform.controls['password'].dirty && loginform.hasError('required','password')" placeholder="Password">
+        <small *ngIf="loginform.controls['password'].dirty && loginform.hasError('required','password')" class="text-error">Password is Requierd!</small>
+        <input (click)="onLogin()" class="submit" type="submit" value="Log in">
+    </form>
+</section>
+<section class="abs-nav">
+    <a class="footer-img" href="farzamte.com"><img src="assets/images/footer-box.png" alt=""></a>
+    <section class="menu">
+        <ul>
+            <li class="m-signin"><a href="/login"><span></span> Sign In</a></li>
+            <li class="m-home"><a href="/"><span></span> FarzamTe</a></li>
+            <li class="m-supp"><a href="/support"><span></span> Support</a></li>
+        </ul>
     </section>
 </section>
-<section style="width: 120px;" class="bg-dark fixed-top p-2"><a href="/" class="text-white">Back To Home</a></section>
+<section class="footer">
+    <p class="footer-cp">ثبت نام در این سایت برای عموم آزاد نیست</p>
+    <p class="footer-cp">در صورت فراموشی نام کاربری و رمز صرفا با همکاران پشتیبانی تماس بگیرید.</p>
+</section>
