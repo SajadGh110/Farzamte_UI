@@ -26,6 +26,7 @@ export class LoginComponent {
       .subscribe({
         next:(res=>{
           this.loginform.reset();
+          this.auth.storeToken(res.token);
           this.toast.success({detail:"SUCCESS",summary:res.message,duration:5000, position:'topRight'});
           this.router.navigate(['dashboard']);
         }),

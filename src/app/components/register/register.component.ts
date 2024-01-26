@@ -15,6 +15,7 @@ export class RegisterComponent {
 
   ngOnInit(): void {
     this.registerform = this.fb.group({
+      username : ['', Validators.required],
       email : ['', Validators.required],
       firstname : ['', Validators.required],
       lastname : ['', Validators.required],
@@ -41,7 +42,7 @@ export class RegisterComponent {
             this.toast.error({detail:"ERROR",summary:error.error,duration:5000, position:'topRight'});
           }
       });
-      
+
     } else {
       this.ValidateAllFormFields(this.registerform);
       this.toast.error({detail:"ERROR",summary:"Form Is Not Valid!",duration:5000, position:'topRight'});

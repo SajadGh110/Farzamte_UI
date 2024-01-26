@@ -49,12 +49,13 @@ body {
   background-color: #f2f2f2;
   direction: ltr;
   font: 14px Myriad Pro, Primus, sans-serif;
-  background: #EBEBEB;
 }
 .container {
   display: flex;
+  height: 99.5vh;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
   width: 50em;
   margin: 0 auto;
 }
@@ -62,18 +63,19 @@ body {
 .header {
   display: flex;
   width: 100%;
+  margin: auto;
 }
 
 .header a.logo {
   display: inline-flex;
-  margin: 4em auto;
+  margin: 0 auto;
 }
 
 .main {
   display: flex;
   direction: rtl;
   align-items: center;
-  margin: 7em auto;
+  margin: auto;
 }
 
 .main .pull-right {
@@ -186,6 +188,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: auto auto 0;
 }
 
 .footer .footer-img {
@@ -311,4 +314,92 @@ body {
 .text-error {
   color: red;
   margin-bottom: 40px;
+}
+
+.container-dashboard {
+  display: flex;
+  direction: rtl;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-direction: row-reverse;
+  margin: 50px auto 0;
+}
+
+.main-dashboard {
+  display: flex;
+}
+
+.container-dashboard .main-dashboard .background-dashboard {
+  background-image: url('assets/images/background-dashboard.png');
+  width: 438px;
+  height: 468px;
+}
+
+.container-dashboard .sidebar-dashboard {
+  width: 370px;
+  display: flex;
+  flex-direction: column;
+}
+
+.container-dashboard .sidebar-dashboard nav ul {
+  direction: ltr;
+}
+
+.container-dashboard .sidebar-dashboard nav ul li {
+  display: flex;
+  flex-direction: row-reverse;
+  background-color: #ffffff;
+  margin: 0 0 10px;
+  border-radius: 1rem;
+  box-shadow: 10px 10px 15px -3px rgba(0,0,0,0.1);
+}
+
+
+.container-dashboard .sidebar-dashboard nav ul li a {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.container-dashboard .sidebar-dashboard nav ul li a p {
+  width: 100%;
+  text-align: center;
+  font-size: 29px;
+  font-family: Acumin_vc;
+  color: rgb(145, 150, 126);
+  font-weight: bold;
+  -moz-transform: matrix(1, 0, 0, 1.2, 0, 0);
+  -webkit-transform: matrix(1, 0, 0, 1.2, 0, 0);
+  -ms-transform: matrix(1, 0, 0, 1.2, 0, 0);
+}
+
+
+@media (max-width: 768px) {
+  .container{
+
+  }
+  .title h1{
+    font-size: 40px;
+  }
+  .title{
+    margin-bottom: 0.5em;
+  }
+  .spacer-1 , .spacer-2 {
+    width: 250px;
+  }
+  .menu ul li a{
+    font-size: 20px;
+  }
+  .main .pull-right{
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+}
+
+@media (max-width: 480px) {
+  .container{
+
+  }
 }

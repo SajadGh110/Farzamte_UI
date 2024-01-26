@@ -15,6 +15,11 @@
                 <small *ngIf="registerform.controls['lastname'].dirty && registerform.hasError('required','lastname')" class="text-danger">*Last Name is Requierd!</small>
             </section>
             </section>
+            <section class="col">
+              <label for="username">User Name</label>
+              <input formControlName="username" type="text" class="form-control" id="username">
+              <small *ngIf="registerform.controls['username'].dirty && registerform.hasError('required','username')" class="text-danger">*User Name is Requierd!</small>
+            </section>
             <section class="form-group mb-3">
                 <label for="email">Email address</label>
                 <input formControlName="email" type="email" class="form-control" [class.is-invalid]="registerform.controls['email'].dirty && registerform.hasError('required','email')" id="email">
