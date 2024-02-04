@@ -8,15 +8,27 @@ trigger:
 
 pool:
   name: 'FarzamAgent'
+  demands: npm
 
 steps:
 - task: NodeTool@0
   inputs:
-    versionSpec: '10.x'
+    versionSource: 'spec'
+    versionSpec: '16.x'
   displayName: 'Install Node.js'
 
 - script: |
-    npm install -g @angular/cli
     npm install
-    ng build
-  displayName: 'npm install and build'
+  displayName: 'npm install'
+
+- script: |
+    ng build --prod
+  displayName: 'ng build'
+
+- task: CopyFiles@2
+  displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)/dist'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    CleanTargetFolder: true
+    OverWrite: true
