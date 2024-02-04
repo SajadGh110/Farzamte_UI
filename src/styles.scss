@@ -17,6 +17,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  transition: all 250ms ease-in-out;
 }
 li {
   list-style: none;
@@ -56,7 +57,6 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  width: 50em;
   margin: 0 auto;
 }
 
@@ -97,7 +97,6 @@ body {
   position: relative;
   z-index: 11;
   margin-top: 5px;
-  margin-left: -5px;
 }
 
 .spacer-2 {
@@ -107,7 +106,6 @@ body {
   position: relative;
   z-index: 10;
   margin-top: -8px;
-  margin-left: -5px;
 }
 
 .menu {
@@ -125,6 +123,8 @@ body {
 
 .wallpaper {
   background-image: url("assets/images/homewall1.png");
+  background-size: cover;
+  background-position: center;
   width: 193px;
   height: 252px;
 }
@@ -145,8 +145,8 @@ body {
 .social-media ul li {
   list-style: none;
   display: inline-block;
-  width: 23px;
-  margin-right: 5px;
+  width: 32px;
+  margin: 0 4px;
 }
 
 .social-media ul li a {
@@ -188,7 +188,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: auto auto 0;
+  margin: auto auto 1em;
 }
 
 .footer .footer-img {
@@ -375,31 +375,74 @@ body {
 }
 
 
-@media (max-width: 768px) {
+/*
+@media screen and (max-width:601px) {
+  .login-form .main-form{
+    background-color: red;
+  }
+}
+*/
+@media screen and (max-width:768px) {
   .container{
-
+    margin: 0 2em;
+  }
+  .main .pull-right{
+    margin-left: 1em;
+  }
+  .main .pull-left{
+    margin-right: 1em;
   }
   .title h1{
-    font-size: 40px;
+    font-size: 30px;
   }
-  .title{
-    margin-bottom: 0.5em;
+  .spacer-1{
+    width: 170px;
   }
-  .spacer-1 , .spacer-2 {
-    width: 250px;
+  .spacer-2{
+    width: 170px;
+  }
+  .menu ul li a span{
+    font-size: 15px;
+  }
+  .wallpaper{
+    width: 122px;
+    height: 195px;
   }
   .menu ul li a{
     font-size: 20px;
   }
-  .main .pull-right{
-    margin-left: 0;
-    margin-right: 0;
+  .social-media ul li{
+    width: 24px;
+    margin: 0 2px;
   }
-
+  .title{
+    margin-bottom: 0.75em;
+  }
+  .menu{
+    margin-top: 0.5em;
+  }
+  .footer .footer-img img{
+    width: 100px;
+  }
+  .footer .footer-cp{
+    font-size: 12px;
+  }
+  .login-form .main-form{
+    background-color: blue;
+  }
 }
-
-@media (max-width: 480px) {
-  .container{
-
+@media screen and (min-width:769px){
+  .login-form .main-form{
+    background-color: yellow;
+  }
+}
+@media screen and (min-width:993px){
+  .login-form .main-form{
+    background-color: magenta;
+  }
+}
+@media screen and (min-width:1201px){
+  .login-form .main-form{
+    background-color: cyan;
   }
 }
