@@ -1,8 +1,3 @@
-# Node.js with Angular
-# Build a Node.js project that uses Angular.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
-
 trigger:
 - main
 
@@ -10,13 +5,33 @@ pool:
   name: 'FarzamAgent'
 
 steps:
-- task: NodeTool@0
+- task: UseNode@1
   inputs:
-    versionSpec: '10.x'
+    version: '20.x'
   displayName: 'Install Node.js'
 
 - script: |
     npm install -g @angular/cli
-    npm install
-    ng build --prod
-  displayName: 'npm install and build'
+    npm install --save-dev @angular-devkit/build-angular
+    npm update
+  displayName: 'npm install'
+
+- script: |
+    npm run build
+  displayName: 'npm build'
+
+- task: CopyFiles@2
+  inputs:
+    sourceFolder: '$(Build.SourcesDirectory)'
+    contents: |
+       src/*
+       public/*
+    targetFolder: '$(Build.ArtifactStagingDirectory)'
+  displayName: 'Copy project files'
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    artifactName: e2e-server
+    targetPath: '$(Build.ArtifactStagingDirectory)'
+    publishLocation: 'pipeline'
+  displayName: 'Publish npm artifact'
