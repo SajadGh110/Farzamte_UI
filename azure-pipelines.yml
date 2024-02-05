@@ -12,7 +12,8 @@ steps:
 
 - script: |
     npm install -g @angular/cli
-    npm install
+    npm install --save-dev @angular-devkit/build-angular
+    npm update
   displayName: 'npm install'
 
 - script: |
