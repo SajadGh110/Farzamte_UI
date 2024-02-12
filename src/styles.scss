@@ -114,7 +114,6 @@ body {
   color: rgb(217, 162, 46);
   line-height: 1.798;
   text-align: left;
-  margin-top: 1em;
 }
 .menu ul li a {
   text-decoration: none;
@@ -207,7 +206,7 @@ body {
 .login-form {
   width: 720px;
   height: 510px;
-  margin: 12.5rem auto 4rem;
+  margin: auto;
   border-radius: 5rem;
   box-shadow: 0px 26px 77px 19px rgba(0,0,0,0.1);
 }
@@ -242,6 +241,8 @@ body {
 
 .login-form .main-form input[type=text],
 .login-form .main-form input[type=password] {
+  width: 390px;
+  height: 56px;
   font-size: 30px;
   font-family: Acumin_vc;
   margin: 0 0 40px;
@@ -285,6 +286,7 @@ body {
 }
 
 .login-form .main-form input[type=submit] {
+  height: 44px;
   font-size: 22px;
   font-family: Acumin_vc;
   color: rgb(255, 255, 255);
@@ -299,12 +301,11 @@ body {
 }
 
 .abs-nav {
+  width: 90%;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  position: absolute;
-  top: 1em;
-  left: 1em;
+  align-items: flex-start;
+  margin: 1rem;
 }
 
 .abs-nav a img {
@@ -374,6 +375,14 @@ body {
   -ms-transform: matrix(1, 0, 0, 1.2, 0, 0);
 }
 
+.container-login {
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
 
 /*
 @media screen and (max-width:601px) {
@@ -421,15 +430,44 @@ body {
   .menu{
     margin-top: 0.5em;
   }
+  .footer {
+    margin: 1rem auto 1em;
+  }
   .footer .footer-img img{
     width: 100px;
   }
   .footer .footer-cp{
     font-size: 12px;
   }
-  /*.login-form .main-form{
-    background-color: blue;
-  }*/
+  .abs-nav .login-img{
+    display: none;
+  }
+  .footer .footer-img-login img {
+    width: 100px;
+  }
+  .login-form {
+    width: 326px;
+    height: 480px;
+    margin: auto;
+    border-radius: 15px;
+  }
+  .login-form .top-form img {
+    width: 249px;
+  }
+  .login-form .top-form {
+    height: 150px;
+    border-top-right-radius: 15px;
+    border-top-left-radius: 15px;
+  }
+  .login-form .main-form {
+    height: 330px;
+    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+  }
+  .login-form .main-form input[type=text],
+  .login-form .main-form input[type=password] {
+    width: 200px;
+  }
 }
 @media screen and (min-width:769px){
   /*.login-form .main-form{
