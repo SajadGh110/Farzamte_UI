@@ -1,0 +1,58 @@
+ul li a {
+  text-decoration: none;
+}
+ul li a {
+  font-size: 26px;
+  font-weight: bold;
+  line-height: normal;
+}
+ul li a span {
+  font-size: 17px;
+  font-family: Wingdings;
+  line-height: 1.798;
+}
+ul li.m-crm a {
+  color: #965d63;
+}
+ul li.m-callcenter a {
+  color: #90947d;
+}
+ul li.m-report a {
+  color: #3d3e41;
+}
+ul li.m-about a {
+  color: #3ebeed;
+}
+/*
+@media screen and (max-width:601px) {
+  .login-form .main-form{
+    background-color: red;
+  }
+}
+*/
+@media screen and (max-width:768px) {
+  ul li a{
+    font-size: 20px;
+  }
+  ul li a span{
+    font-size: 15px;
+  }
+  app-menu1{
+    margin-top: 0.5em;
+  }
+}
+@media screen and (min-width:769px){
+  /*.login-form .main-form{
+    background-color: yellow;
+  }*/
+}
+@media screen and (min-width:993px){
+  /*.login-form .main-form{
+    background-color: magenta;
+  }*/
+}
+@media screen and (min-width:1201px){
+  /*.login-form .main-form{
+    background-color: cyan;
+  }*/
+}
