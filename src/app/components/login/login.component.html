@@ -1,12 +1,6 @@
 <section class="container-login">
   <section class="abs-nav">
-    <section class="menu">
-      <ul>
-        <li class="m-signin"><a href="/login"><span></span> Sign In</a></li>
-        <li class="m-home"><a href="/"><span></span> FarzamTe</a></li>
-        <li class="m-supp"><a href="/support"><span></span> Support</a></li>
-      </ul>
-    </section>
+    <app-menu1></app-menu1>
   </section>
   <section class="login-form">
     <section class="top-form">
@@ -20,8 +14,5 @@
         <input (click)="onLogin()" type="submit" class="submit" value="Log in">
     </form>
   </section>
-  <section class="footer">
-    <a class="footer-img-login" href="/"><img src="assets/images/footer-box.png" alt=""></a>
-    <p class="footer-cp">لازمه باقی ماندن در عرصه رقابت حفظ مشتریان ، ارتباط موثر  و استاندارد است</p>
-  </section>
+  <app-footer1></app-footer1>
 </section>
