@@ -52,7 +52,21 @@ body {
   height: 100svh;
   flex-direction: column;
   justify-content: space-between;
+  align-items: center;
   margin: 0 auto;
+}
+.abs-nav {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 1rem;
+}
+.abs-nav a img {
+  width: 87px;
+}
+.rev {
+  align-items: flex-end;
 }
 .header {
   display: flex;
@@ -100,6 +114,9 @@ app-footer1 {
 @media screen and (max-width:768px) {
   .container{
     margin: 0 2em;
+  }
+  .abs-nav .login-img{
+    display: none;
   }
   app-menu1{
     margin-top: 0.5em;
