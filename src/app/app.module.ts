@@ -20,6 +20,10 @@ import { Footer1Component } from './components/Template/footer1/footer1.componen
 import { Menu1Component } from './components/Template/menu1/menu1.component';
 import { Menu2Component } from './components/Template/menu2/menu2.component';
 import { Footer2Component } from './components/Template/footer2/footer2.component';
+import { Footer3Component } from './components/Template/footer3/footer3.component';
+import { Menu3Component } from './components/Template/menu3/menu3.component';
+import { HeaderComponent } from './components/Template/header/header.component';
+import { Note1Component } from './components/Template/note1/note1.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +41,11 @@ import { Footer2Component } from './components/Template/footer2/footer2.componen
     Footer1Component,
     Menu1Component,
     Menu2Component,
-    Footer2Component
+    Footer2Component,
+    Footer3Component,
+    Menu3Component,
+    HeaderComponent,
+    Note1Component
   ],
   imports: [
     BrowserModule,

@@ -66,13 +66,6 @@
   height: 100%;
 }
 
-/*
-@media screen and (max-width:601px) {
-  .login-form .main-form{
-    background-color: red;
-  }
-}
-*/
 @media screen and (max-width:768px) {
   .container{
     margin: 0 2em;
@@ -98,6 +91,9 @@
   }
   .title{
     margin-bottom: 0.75em;
+  }
+  .social-media ul li {
+    width: 28px;
   }
 }
 @media screen and (min-width:769px){

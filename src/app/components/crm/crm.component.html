@@ -1,3 +1,22 @@
-<p>crm works!</p>
-<app-menu1></app-menu1>
-<app-menu2></app-menu2>
+<section class="container">
+  <section class="abs-nav">
+    <app-menu1></app-menu1>
+  </section>
+  <section class="abs-nav rev">
+    <app-menu2></app-menu2>
+  </section>
+  <section class="row">
+    <app-note1
+      [title]="'پشتیبانی'"
+      [text]="'جمع آوری ، سازماندهی و آنالیز داده های مشتریان که ارتباط با آنهارا آسانتر و سودمنتدتر میکند.'"
+      [color]="'#009a9b'"></app-note1>
+    <app-note1
+      [title]="'فروش'"
+      [text]="'بررسی و گزارش گیری از فعالیت ها ، ارتباطات مشتری و نیازسنجی جهت تقویت روابط ، کاهش هزینه ها و افزایش بهره وری و سودآوری.'"
+      [color]="'#fba919'"></app-note1>
+    <app-note1
+      [title]="'بازاریابی'"
+      [text]="'ارتباط با مشتریان موجود و رونق یافتن کسب و کار از طریق جذب مشتریان بیشتر.'"
+      [color]="'#ee2f3f'"></app-note1>
+  </section>
+</section>

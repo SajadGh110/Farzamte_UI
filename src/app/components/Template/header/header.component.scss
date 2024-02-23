@@ -1,30 +1,14 @@
-ul li a {
-  text-decoration: none;
+a.logo {
+  display: inline-flex;
+  margin: 0 auto;
 }
-ul li a span {
-  font-size: 17px;
-  font-family: Wingdings;
-  line-height: 1.798;
-}
-ul li.m-signin a {
-  color: #d9a22e;
-}
-ul li.m-home a {
-  color: #1b9ac4;
-}
-ul li.m-supp a {
-  color: #65828f;
+a.logo img {
+  width: 130px;
 }
 
 @media screen and (max-width:768px) {
-  ul li a{
-    font-size: 20px;
-  }
-  ul li a span{
-    font-size: 15px;
-  }
-  app-menu1{
-    margin-top: 0.5em;
+  a.logo img {
+    width: 100px;
   }
 }
 @media screen and (min-width:769px){
