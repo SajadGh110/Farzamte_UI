@@ -5,7 +5,7 @@
 h2.title {
   width: fit-content;
   font-size: 26px;
-  font-family: Cinema;
+  font-family: Cinema,Bahnschrift;
   margin-bottom: -3px;
   padding-right: 10px;
   font-weight: 500;
@@ -16,7 +16,7 @@ h2.title {
 .border-special {
   width: 6rem;
   height: 5rem;
-  margin-left: -3rem;
+  margin-left: -3.2rem;
   border-top: 3px solid;
   border-left: 3px solid;
   border-top-left-radius: 50px;
@@ -35,7 +35,7 @@ h2.title {
 .information {
   width: 500px;
   text-align: center;
-  font-family: Cinema;
+  font-family: Cinema,Bahnschrift;
   margin-top: -3rem;
 }
 .information h3 {
@@ -63,4 +63,5 @@ h2.title {
 .list ul li p {
   display: table-caption;
   width: max-content;
+  font-weight: 500;
 }

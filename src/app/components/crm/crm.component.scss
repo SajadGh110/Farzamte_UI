@@ -2,9 +2,19 @@
   display: flex;
   flex-direction: row;
   direction: rtl;
+  margin: 5rem auto;
+}
+.note-container {
+  margin: 0 auto 5em;
 }
 .note-list-container {
   display: flex;
   direction: rtl;
-  margin: auto;
+  margin: 2rem auto 5rem;
+}
+.crm_footer_icons {
+  margin: 2rem auto 0;
+}
+.crm_footer_icons img {
+  width: 220px;
 }
