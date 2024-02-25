@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Footer3Component } from './footer3.component';
+import { NotelistComponent } from './notelist.component';
 
-describe('Footer3Component', () => {
-  let component: Footer3Component;
-  let fixture: ComponentFixture<Footer3Component>;
+describe('NotelistComponent', () => {
+  let component: NotelistComponent;
+  let fixture: ComponentFixture<NotelistComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [Footer3Component]
+      declarations: [NotelistComponent]
     });
-    fixture = TestBed.createComponent(Footer3Component);
+    fixture = TestBed.createComponent(NotelistComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

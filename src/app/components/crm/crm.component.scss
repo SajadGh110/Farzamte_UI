@@ -1,4 +1,10 @@
 .row{
   display: flex;
   flex-direction: row;
+  direction: rtl;
+}
+.note-list-container {
+  display: flex;
+  direction: rtl;
+  margin: auto;
 }

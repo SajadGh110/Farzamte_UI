@@ -1,0 +1,50 @@
+.main {
+  flex-direction: column;
+  align-items: flex-end;
+}
+.main h2.title {
+  width: fit-content;
+  font-size: 26px;
+  font-family: Cinema;
+  margin-bottom: -3px;
+  margin-right: 2rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-align: left;
+  border-bottom: 3px dotted;
+}
+.main .border-special {
+  width: 70px;
+  height: 70px;
+  margin-left: -2rem;
+  border-top: 3px solid;
+  border-left: 3px solid;
+  border-top-left-radius: 30px;
+}
+.main .list {
+  display: flex;
+  flex-direction: column;
+  padding-top: 1.5rem;
+  padding-left: 4rem;
+  margin-top: -65px;
+}
+.main .list ul li {
+  display: flex;
+  font-size: 20px;
+  line-height: 30px;
+  margin: 5px 0;
+}
+.main .list ul li:before{
+  content: ".";
+  font-size: 80px;
+  font-family: Cinema;
+  margin-top: -10px;
+  margin-left: 10px;
+}
+p {
+  color: black;
+  font-size: 20px;
+  font-family: Cinema;
+  font-weight: normal;
+}
+

@@ -1,0 +1,10 @@
+<section class="main">
+  <h2 class="title" [style.color]="color" [style.border-color]="color">{{title}}</h2>
+  <section class="border-special" [style.border-color]="color"></section>
+  <section class="list">
+    <ul>
+      <li *ngFor="let item of items" [style.color]="color"><p>{{ item }}</p></li>
+    </ul>
+    <p>و...</p>
+  </section>
+</section>

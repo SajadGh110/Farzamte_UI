@@ -22,10 +22,7 @@
   height: 252px;
 }
 .main {
-  display: flex;
-  direction: rtl;
-  align-items: center;
-  margin: auto;
+  flex-direction: row;
 }
 .main .pull-right {
   display: flex;

@@ -6,4 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./crm.component.scss']
 })
 export class CrmComponent {
+    protected readonly History = History;
 }
