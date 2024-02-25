@@ -1,1 +1,10 @@
-<p>note3 works!</p>
+<section class="main">
+  <h2 class="title" [style.color]="title_color" [style.border-color]="border_color">{{title}}</h2>
+  <section class="border-special" [style.border-color]="border_color"></section>
+  <section class="information" [style.border-color]="border_color">
+    <h3 [style.color]="title2_color">{{ title2 }}</h3>
+    <h4 [style.color]="title3_color">{{ title3 }}</h4>
+    <p [style.color]="text_color">{{ text }}</p>
+  </section>
+  <section class="border-special2" [style.border-color]="border_color"></section>
+</section>

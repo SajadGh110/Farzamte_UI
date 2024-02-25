@@ -38,13 +38,15 @@
   margin-bottom: 1.5em;
 }
 .title h1 {
-  font-size: 50px;
+  font-size: 46px;
   font-family: Acumin_vc;
   color: #080a0a;
-  font-weight: 700;
+  font-weight: 600;
 }
 .social-media ul {
   direction: ltr;
+  display: flex;
+  flex-direction: row;
 }
 .social-media ul li {
   list-style: none;
@@ -61,6 +63,34 @@
   display: block;
   width: 100%;
   height: 100%;
+}
+.menu1 {
+  font-size: 26px;
+  font-family: Calibri;
+  text-align: left;
+  font-weight: bold;
+  line-height: normal;
+}
+
+.menu1 ul li {
+  display: grid;
+}
+.menu1 ul li a {
+  text-decoration: none;
+}
+.menu1 ul li a span {
+  font-size: 17px;
+  font-family: Wingdings;
+  line-height: 1.798;
+}
+.menu1 ul li.m-signin a {
+  color: #d9a22e;
+}
+.menu1 ul li.m-home a {
+  color: #1b9ac4;
+}
+.menu1 ul li.m-supp a {
+  color: #65828f;
 }
 
 @media screen and (max-width:768px) {
@@ -90,7 +120,13 @@
     margin-bottom: 0.75em;
   }
   .social-media ul li {
-    width: 28px;
+    width: 24px;
+  }
+  .menu1 ul li a{
+    font-size: 20px;
+  }
+  .menu1 ul li a span{
+    font-size: 15px;
   }
 }
 @media screen and (min-width:769px){

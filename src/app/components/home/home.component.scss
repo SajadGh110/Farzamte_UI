@@ -1,11 +1,12 @@
 .main {
   flex-direction: column;
+  margin: 2rem auto;
 }
 .main .title {
   width: fit-content;
   color: #d6a026;
   font-size: 26px;
-  font-family: Cinema;
+  font-family: Cinema , Bahnschrift;
   margin-bottom: -3px;
   margin-right: 2rem;
   padding-bottom: 1rem;
@@ -16,7 +17,7 @@
 .main h5.main-footer-title {
   color: #d6a026;
   font-size: 26px;
-  font-family: Cinema;
+  font-family: Cinema , Bahnschrift;
   font-weight: 500;
   letter-spacing: 0.5px;
 }
@@ -35,7 +36,7 @@
 }
 .main .fill .information {
   font-size: 17px;
-  font-family: Cinema;
+  font-family: Cinema , Bahnschrift;
 }
 .main .fill .image {
   margin-right: -10rem;

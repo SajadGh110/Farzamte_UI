@@ -10,6 +10,11 @@
   font-family: Cinema;
   src: url('/assets/fonts/Cinema-fa.ttf');
 }
+@font-face {
+  font-family: Bahnschrift;
+  src: url('/assets/fonts/BAHNSCHRIFT.TTF');
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -45,11 +50,11 @@ ul,p{
 body {
   background-color: #f2f2f2;
   direction: ltr;
-  font: 14px Myriad Pro, Primus, sans-serif;
+  font: 14px Myriad Pro, Bahnschrift;
 }
 .container {
   display: flex;
-  height: 100svh;
+  min-height: 99svh;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
@@ -58,9 +63,10 @@ body {
 .abs-nav {
   width: 90%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-between;
   align-items: flex-start;
-  margin: 1rem;
+  margin: 2rem 0;
 }
 .abs-nav a img {
   width: 87px;
@@ -79,22 +85,25 @@ app-header {
   margin: 1em auto auto;
 }
 app-menu1 {
-  font-size: 26px;
+  font-size: 22px;
   font-family: Calibri;
   text-align: left;
-  font-weight: bold;
+  font-weight: 600;
   line-height: normal;
 }
 app-menu2{
-  font-size: 17px;
-  font-family: Cinema , Serif;
+  font-family: Cinema,Bahnschrift;
   text-align: right;
-  font-weight: bold;
-  line-height: normal;
-  letter-spacing: 1px;
   direction: rtl;
+  margin-top: 4rem;
 }
 app-footer1 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto auto 1em;
+}
+app-footer2{
   display: flex;
   flex-direction: column;
   align-items: center;

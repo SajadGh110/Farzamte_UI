@@ -1,10 +1,26 @@
+.menu1-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.menu1-container a {
+  display: flex;
+}
+.menu1-container a img {
+  width: 70px;
+  margin-right: 1rem;
+}
+ul li {
+  display: grid;
+}
 ul li a {
   text-decoration: none;
 }
 ul li a span {
-  font-size: 17px;
-  font-family: Wingdings;
-  line-height: 1.798;
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  margin-right: 0.5rem;
 }
 ul li.m-signin a {
   color: #d9a22e;
@@ -22,9 +38,6 @@ ul li.m-supp a {
   }
   ul li a span{
     font-size: 15px;
-  }
-  app-menu1{
-    margin-top: 0.5em;
   }
 }
 @media screen and (min-width:769px){

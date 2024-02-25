@@ -1,15 +1,23 @@
+ul li {
+  margin-bottom: 5px;
+}
 ul li a {
+  position: relative;
   text-decoration: none;
 }
 ul li a {
   font-size: 22px;
-  font-weight: bold;
+  font-weight: 500;
   line-height: normal;
 }
 ul li a span {
-  font-size: 17px;
-  font-family: Wingdings;
-  line-height: 1.798;
+  display: inline-block;
+  transform: rotate(180deg);
+  margin-left: 1rem;
+}
+ul li a span.selected {
+  position: absolute;
+  right: -12px;
 }
 ul li.m-crm a {
   color: #965d63;
@@ -23,6 +31,11 @@ ul li.m-report a {
 ul li.m-about a {
   color: #3ebeed;
 }
+img {
+  width: 240px;
+  margin-right: 2rem;
+  margin-bottom: 0.5rem;
+}
 
 @media screen and (max-width:768px) {
   ul li a{
@@ -33,6 +46,9 @@ ul li.m-about a {
   }
   app-menu1{
     margin-top: 0.5em;
+  }
+  img {
+    width: 180px;
   }
 }
 @media screen and (min-width:769px){

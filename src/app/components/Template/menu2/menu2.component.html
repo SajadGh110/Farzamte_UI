@@ -1,6 +1,7 @@
+<img src="/assets/images/icons-2.png" alt="icons">
 <ul>
-  <li class="m-crm"><a href="/crm"><span></span>  مدیریت ارتباط با مشتریان  (CRM)</a></li>
-  <li class="m-callcenter"><a href="/callcenter"><span></span>  مرکز تماس و پشتیبانی مشتریان  (CallCenter)</a></li>
-  <li class="m-report"><a href="/report"><span></span>  گزارشات تخصصی  (Reports on farzamte)</a></li>
-  <li class="m-about"><a href="/about"><span></span>  درباره ما  (About us)</a></li>
+  <li class="m-crm"><a href="/crm"><span class="selected" *ngIf="Selected.includes('crm')">〡</span><span>▶</span>  مدیریت ارتباط با مشتریان  (CRM)</a></li>
+  <li class="m-callcenter"><a href="/callcenter"><span class="selected" *ngIf="Selected.includes('callcenter')">〡</span><span>▶</span>  مرکز تماس و پشتیبانی مشتریان  (CallCenter)</a></li>
+  <li class="m-report"><a href="/report"><span class="selected" *ngIf="Selected.includes('report')">〡</span><span>▶</span>  گزارشات تخصصی  (Reports on farzamte)</a></li>
+  <li class="m-about"><a href="/about"><span class="selected" *ngIf="Selected.includes('about')">〡</span><span>▶</span>  درباره ما  (About us)</a></li>
 </ul>

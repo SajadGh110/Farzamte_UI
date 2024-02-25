@@ -1,9 +1,23 @@
 <section class="container">
   <section class="abs-nav">
     <app-menu1></app-menu1>
+    <app-menu2 [Selected]="'crm'"></app-menu2>
   </section>
-  <section class="abs-nav rev">
-    <app-menu2></app-menu2>
+  <section class="note-container">
+    <app-note4
+      [title]="'CRM'"
+      [title2]="'مدیریت ارتباط با مشتریان'"
+      [title3]="'قوی ترین و کارآمدترین رویکرد در حفظ و ایجاد روابط مشتریان'"
+      [items]="[
+      'ماژول،کامپوننت و پلاگین های تخصصی بازار سرمایه',
+      'نیروی اختصاصی برای پشتیبانی از نرم افزار',
+      'تضمین امنیت اطلاعات',
+      'قیمت منصفانه']"
+      [border_color]="'#955b61'"
+      [title_color]="'#955b61'"
+      [title2_color]="'#062513'"
+      [title3_color]="'#b2747a'"
+      [item_color]="'#03230d'"></app-note4>
   </section>
   <section class="row">
     <app-note1
@@ -33,6 +47,9 @@
     'مدیریت فرآیند کسب و کار(BPMS)',
     'هپی کال ، نظرسنجی',
     'تضمین کیفیت(QA)',]"></app-notelist>
+  </section>
+  <section class="crm_footer_icons">
+    <img src="/assets/images/icons-2.png" alt="icons">
   </section>
   <app-footer2></app-footer2>
 </section>
