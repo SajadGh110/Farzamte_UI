@@ -1,12 +1,20 @@
 .note-container {
   display: flex;
   direction: rtl;
-  margin: auto;
+  margin: 0 auto 5em;
 }
 .row{
   display: flex;
   flex-direction: row;
   direction: rtl;
+  margin: 5rem auto;
 }
 .r_wallpaper {
+  margin: 2rem auto 7rem;
+}
+.report_footer_icons img {
+  width: 220px;
+}
+app-note1 {
+  display: flex;
 }

@@ -7,30 +7,30 @@ h2.title {
   font-size: 26px;
   font-family: Cinema,Bahnschrift;
   margin-bottom: -3px;
-  margin-right: 2rem;
+  padding-right: 7px;
   font-weight: 500;
   letter-spacing: 0.5px;
   text-align: left;
   border-bottom: 3px dotted;
 }
 .border-special {
-  width: 6rem;
+  width: 10.5rem;
   height: 5rem;
-  margin-left: -3rem;
+  margin-left: -3.2rem;
   border-top: 3px solid;
   border-left: 3px solid;
   border-top-left-radius: 50px;
 }
 .border-special2 {
   width: 4rem;
-  height: 15rem;
+  height: 16rem;
   border-top: 3px solid;
   border-right: 3px solid;
   border-bottom: 3px solid;
   border-top-right-radius: 50px;
   border-bottom-right-radius: 50px;
   margin-left: 24rem;
-  margin-top: -12.5rem;
+  margin-top: -14rem;
 }
 .information {
   width: 400px;
@@ -39,13 +39,16 @@ h2.title {
   margin-top: -3rem;
 }
 .information h3 {
-  font-size: 28px;
+  font-size: 35px;
   font-weight: 500;
+  margin-bottom: 5px;
 }
 .information h4 {
   font-size: 24px;
   font-weight: 500;
+  margin-bottom: 5px;
 }
 .information p {
-  font-size: 20px;
+  font-size: 22px;
+  margin-bottom: 5px;
 }

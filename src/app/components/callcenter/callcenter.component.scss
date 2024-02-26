@@ -2,9 +2,20 @@
   display: flex;
   flex-direction: row;
   direction: rtl;
+  margin: 5rem auto;
+}
+.note-container {
+  margin: 0 auto 5em;
 }
 .note-list-container {
   display: flex;
   direction: rtl;
-  margin: auto;
+  margin: 2rem auto 5rem;
+}
+app-note1 {
+  width: 220px;
+  display: flex;
+}
+.callcenter_footer_icons img {
+  width: 220px;
 }
