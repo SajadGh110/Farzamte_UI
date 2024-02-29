@@ -26,6 +26,7 @@ import { NotelistComponent } from './components/Template/notelist/notelist.compo
 import { Note2Component } from './components/Template/note2/note2.component';
 import { Note3Component } from './components/Template/note3/note3.component';
 import { Note4Component } from './components/Template/note4/note4.component';
+import { SpanspecialComponent } from './components/Template/spanspecial/spanspecial.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { Note4Component } from './components/Template/note4/note4.component';
     NotelistComponent,
     Note2Component,
     Note3Component,
-    Note4Component
+    Note4Component,
+    SpanspecialComponent
   ],
   imports: [
     BrowserModule,
