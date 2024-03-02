@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 @Component({
   selector: 'app-footer1',
@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./footer1.component.scss']
 })
 export class Footer1Component {
-
+  @Input() img: boolean = false;
 }

@@ -3,5 +3,31 @@
     <app-menu1></app-menu1>
     <app-menu2 [Selected]="'support'"></app-menu2>
   </section>
+  <section class="supp_main">
+    <section class="contact_form">
+      <form>
+        <section class="frm_row">
+          <input type="text" id="subject" name="subject" placeholder="عنوان">
+          <input type="text" id="tel" name="tel" placeholder="شماره تماس">
+        </section>
+        <section class="frm_row">
+          <input type="text" id="name" name="name" placeholder="نام و نام خانوادگی">
+          <input type="email" id="email" name="email" placeholder="ایمیل">
+        </section>
+        <section class="frm_row">
+          <textarea id="text" name="text" rows="5" cols="40"></textarea>
+        </section>
+        <button id="submit" name="submit">Submit</button>
+      </form>
+    </section>
+    <section class="info_sup">
+      <img src="/assets/images/Logo.png" alt="logo">
+      <a href="tel:02191002313">02191002313</a>
+      <a href="tel:09190944201">09190944201</a>
+      <a href="mailto:info@farzamte.com">info@farzamte.com</a>
+      <a href="/">www.farzamte.com</a>
+      <a href="https://t.me/farzamte">@Farzamte</a>
+    </section>
+  </section>
   <app-footer2></app-footer2>
 </section>

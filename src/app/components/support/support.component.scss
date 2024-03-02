@@ -1,0 +1,25 @@
+.supp_main {
+  display: flex;
+  flex-direction: row;
+  direction: rtl;
+  margin: 5rem auto;
+}
+.supp_main .info_sup {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: 22px;
+  color: #534e52;
+  font-family: Bahnschrift;
+}
+.supp_main .info_sup img {
+  width: 100px;
+  margin-bottom: 2rem;
+}
+.supp_main .info_sup a {
+  direction: ltr;
+  margin-bottom: 5px;
+}
+app-menu2 {
+  display: none;
+}
