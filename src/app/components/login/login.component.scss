@@ -95,6 +95,9 @@
 }
 
 @media screen and (max-width:768px) {
+  .container-login {
+    margin: 0 1em;
+  }
   .login-form {
     width: 326px;
     height: 480px;
