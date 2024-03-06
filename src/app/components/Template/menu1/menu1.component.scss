@@ -32,27 +32,24 @@ ul li.m-home a {
 ul li.m-supp a {
   color: #65828f;
 }
+/* Adaptive Codes */
+@media screen and (max-width:1200px){
 
+}
+@media screen and (max-width:992px){
+
+}
 @media screen and (max-width:768px) {
   ul li a{
-    font-size: 20px;
+    font-size: 18px;
   }
   ul li a span{
     font-size: 15px;
   }
+  .menu1-container a img {
+    width: 55px;
+  }
 }
-@media screen and (min-width:769px){
-  /*.login-form .main-form{
-    background-color: yellow;
-  }*/
-}
-@media screen and (min-width:993px){
-  /*.login-form .main-form{
-    background-color: magenta;
-  }*/
-}
-@media screen and (min-width:1201px){
-  /*.login-form .main-form{
-    background-color: cyan;
-  }*/
+@media screen and (max-width:600px) {
+
 }

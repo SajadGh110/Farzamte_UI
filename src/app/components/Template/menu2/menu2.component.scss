@@ -6,6 +6,8 @@ ul li a {
   text-decoration: none;
 }
 ul li a {
+  display: flex;
+  align-items: center;
   font-size: 22px;
   font-weight: 500;
   line-height: normal;
@@ -14,7 +16,7 @@ ul li a span {
   display: inline-block;
   transform: rotate(180deg);
   font-family: Wingdings;
-  margin-left: 1rem;
+  margin-left: 10px;
 }
 ul li a span.selected {
   position: absolute;
@@ -38,32 +40,39 @@ a img {
   margin-bottom: 0.5rem;
 }
 
+/* Adaptive Codes */
+@media screen and (max-width:1200px){
+
+}
+@media screen and (max-width:992px){
+
+}
 @media screen and (max-width:768px) {
   ul li a{
     font-size: 18px;
   }
   ul li a span{
     font-size: 15px;
+    margin-left: 8px;
   }
   app-menu1{
     margin-top: 0.5em;
   }
   a img {
     width: 180px;
+    margin-right: 1.5rem;
   }
 }
-@media screen and (min-width:769px){
-  /*.login-form .main-form{
-    background-color: yellow;
-  }*/
-}
-@media screen and (min-width:993px){
-  /*.login-form .main-form{
-    background-color: magenta;
-  }*/
-}
-@media screen and (min-width:1201px){
-  /*.login-form .main-form{
-    background-color: cyan;
-  }*/
+@media screen and (max-width:600px) {
+  ul li a{
+    font-size: 16px;
+  }
+  ul li a span{
+    font-size: 14px;
+    margin-left: 5px;
+  }
+  a img {
+    width: 150px;
+    margin-right: 1rem;
+  }
 }

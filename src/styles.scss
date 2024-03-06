@@ -95,7 +95,7 @@ app-menu2{
   font-family: Cinema,Bahnschrift;
   text-align: right;
   direction: rtl;
-  margin-top: 4rem;
+  margin-top: 2rem;
 }
 app-footer1 {
   display: flex;
@@ -125,18 +125,22 @@ app-note1 .note {
   border: 2px solid red;
   border-radius: 30px;
 }
+/* Adaptive Codes */
+@media screen and (max-width:1200px){
 
-
-/*
-@media screen and (max-width:601px) {
-  .login-form .main-form{
-    background-color: red;
-  }
 }
-*/
+@media screen and (max-width:992px){
+
+}
 @media screen and (max-width:768px) {
   .container{
     margin: 0 2em;
+  }
+  .abs-nav {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
   }
   .abs-nav .login-img{
     display: none;
@@ -147,19 +151,16 @@ app-note1 .note {
   app-footer1 {
     margin: auto auto 1em;
   }
+  app-menu2{
+    margin-top: 0;
+  }
 }
-@media screen and (min-width:769px){
-  /*.login-form .main-form{
-    background-color: yellow;
-  }*/
-}
-@media screen and (min-width:993px){
-  /*.login-form .main-form{
-    background-color: magenta;
-  }*/
-}
-@media screen and (min-width:1201px){
-  /*.login-form .main-form{
-    background-color: cyan;
-  }*/
+@media screen and (max-width:600px) {
+  .abs-nav {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  app-menu2{
+    margin-top: 2rem;
+  }
 }
