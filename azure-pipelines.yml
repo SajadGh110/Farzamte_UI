@@ -11,11 +11,7 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
-    npm -v
-  displayName: 'npm install'
-
-- script: |
-    npm run build
+    ng build
   displayName: 'npm build'
 
 - task: CopyFiles@2
