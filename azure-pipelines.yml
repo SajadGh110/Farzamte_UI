@@ -27,13 +27,20 @@ steps:
     targetFolder: '$(Build.ArtifactStagingDirectory)'
   displayName: 'Copy project files'
 
-- task: CopyFiles@2
+- task: ArchiveFiles@2
   inputs:
-    SourceFolder: 'C:\agent\_work\1\s\dist\angular-ui'
-    Contents: '*'
-    TargetFolder: 'C:\Farzamte\ui'
-    OverWrite: true
-    flattenFolders: true
+    rootFolderOrFile: '$(Build.BinariesDirectory)'
+    includeRootFolder: true
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    replaceExistingArchive: true
+
+- task: ExtractFiles@1
+  inputs:
+    archiveFilePatterns: '**/*.zip'
+    destinationFolder: 'C:\Farzamte\ui'
+    cleanDestinationFolder: false
+    overwriteExistingFiles: true
 
 - task: PublishPipelineArtifact@1
   inputs:
