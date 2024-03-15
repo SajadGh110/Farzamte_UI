@@ -19,6 +19,7 @@
   width: 220px;
 }
 
+
 /* Adaptive Codes */
 @media screen and (max-width:1440px){
 }
@@ -35,8 +36,18 @@
     justify-content: center;
     margin: 0 0 5em;
   }
+  .row {
+    width: 100%;
+    margin: 2rem 0;
+    align-items: center;
+    justify-content: center;
+  }
+
 }
 @media screen and (max-width:600px) {
+  .row {
+    flex-direction: column;
+  }
 }
 @media screen and (max-width:480px) {
 }

@@ -17,3 +17,24 @@ p{
   font-weight: normal;
   text-align: center;
 }
+/* Adaptive Codes */
+@media screen and (max-width:1440px){
+}
+@media screen and (max-width:1200px){
+}
+@media screen and (max-width:992px){
+}
+@media screen and (max-width:890px){
+}
+@media screen and (max-width:768px) {
+  h3 {
+    font-size: 24px;
+  }
+  p{
+    font-size: 18px;
+  }
+}
+@media screen and (max-width:600px) {
+}
+@media screen and (max-width:480px) {
+}
