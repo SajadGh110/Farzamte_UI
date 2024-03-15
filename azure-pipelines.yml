@@ -27,21 +27,6 @@ steps:
     targetFolder: '$(Build.ArtifactStagingDirectory)'
   displayName: 'Copy project files'
 
-- task: ArchiveFiles@2
-  inputs:
-    rootFolderOrFile: '$(Build.BinariesDirectory)'
-    includeRootFolder: true
-    archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-    replaceExistingArchive: true
-
-- task: ExtractFiles@1
-  inputs:
-    archiveFilePatterns: '../**/*.zip'
-    destinationFolder: 'C:\Farzamte\ui'
-    cleanDestinationFolder: false
-    overwriteExistingFiles: true
-
 - task: PublishPipelineArtifact@1
   inputs:
     artifactName: e2e-server
