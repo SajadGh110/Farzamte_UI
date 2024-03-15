@@ -30,7 +30,7 @@ steps:
 - task: CopyFiles@2
   inputs:
     SourceFolder: 'C:\agent\_work\1\s\dist\angular-ui'
-    Contents: '**'
+    Contents: '*'
     TargetFolder: 'C:\Farzamte\ui'
     OverWrite: true
     flattenFolders: true
