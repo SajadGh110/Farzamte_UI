@@ -18,3 +18,25 @@
 .crm_footer_icons img {
   width: 220px;
 }
+
+/* Adaptive Codes */
+@media screen and (max-width:1440px){
+}
+@media screen and (max-width:1200px){
+}
+@media screen and (max-width:992px){
+}
+@media screen and (max-width:890px){
+}
+@media screen and (max-width:768px) {
+  .note-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 0 0 5em;
+  }
+}
+@media screen and (max-width:600px) {
+}
+@media screen and (max-width:480px) {
+}

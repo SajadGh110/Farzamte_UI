@@ -1,6 +1,7 @@
 .main {
   flex-direction: column;
   align-items: flex-end;
+  margin-left: 3.2rem;
 }
 h2.title {
   width: fit-content;
@@ -23,14 +24,14 @@ h2.title {
 }
 .border-special2 {
   width: 4rem;
-  height: 17rem;
+  height: 20.5rem;
   border-top: 3px solid;
   border-right: 3px solid;
   border-bottom: 3px solid;
   border-top-right-radius: 50px;
   border-bottom-right-radius: 50px;
   margin-left: 30rem;
-  margin-top: -15.5rem;
+  margin-top: -18.4rem;
 }
 .information {
   width: 500px;
@@ -41,22 +42,23 @@ h2.title {
 .information h3 {
   font-size: 28px;
   font-weight: 500;
+  margin-bottom: 5px;
 }
 .information h4 {
   font-size: 24px;
   font-weight: 500;
+  margin-bottom: 5px;
 }
 .list {
   display: flex;
   flex-direction: column;
-  font-size: 20px;
   padding-right: 3rem;
 }
 .list ul li {
   display: list-item;
   font-size: 20px;
-  line-height: 30px;
-  margin: 5px 0;
+  line-height: 24px;
+  margin: 10px 0;
   text-align: right;
   list-style-image: url("/assets/images/checked_24.png");
 }
@@ -64,4 +66,60 @@ h2.title {
   display: table-caption;
   width: max-content;
   font-weight: 500;
+}
+
+/* Adaptive Codes */
+@media screen and (max-width:1440px){
+}
+@media screen and (max-width:1200px){
+}
+@media screen and (max-width:992px){
+}
+@media screen and (max-width:890px){
+}
+@media screen and (max-width:768px) {
+  .information {
+    width: fit-content;
+    margin-left: -1.5rem;
+  }
+  .border-special2 {
+    height: 19rem;
+    margin-left: 19.5rem;
+    margin-top: -17.6rem;
+  }
+  .information h3 {
+    font-size: 24px;
+  }
+  .information h4 {
+    font-size: 20px;
+  }
+  .list {
+    padding-right: 2rem;
+  }
+  .list ul li {
+    font-size: 18px;
+  }
+}
+@media screen and (max-width:600px) {
+}
+@media screen and (max-width:480px) {
+  .border-special2 {
+    height: 16.5rem;
+    margin-left: 14.5rem;
+    margin-top: -15.1rem;
+  }
+  .information h3 {
+    font-size: 22px;
+  }
+  .information h4 {
+    font-size: 16px;
+  }
+  .list {
+    padding-right: 2rem;
+  }
+  .list ul li {
+    font-size: 15px;
+    list-style-image: url("/assets/images/checked_18.png");
+    line-height: 18px;
+  }
 }
