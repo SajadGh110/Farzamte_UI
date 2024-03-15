@@ -43,6 +43,10 @@
   color: #080a0a;
   font-weight: 600;
 }
+.social-media ul li.social-whatsapp ,
+.social-media ul li.social-instagram{
+  display: none;
+}
 .social-media ul {
   direction: ltr;
   display: flex;

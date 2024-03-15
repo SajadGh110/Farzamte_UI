@@ -34,12 +34,22 @@ ul li.m-report a {
 ul li.m-about a {
   color: #3ebeed;
 }
-a img {
-  width: 240px;
+.menu2_img {
+  display: flex;
+  align-items: center;
   margin-right: 2rem;
   margin-bottom: 0.5rem;
 }
-
+.menu2_img a {
+  width: 52px;
+  margin-left: 12px;
+}
+.menu2_img a:last-child{
+  margin-left: 0;
+}
+.menu2_img a img {
+  width: 100%;
+}
 /* Adaptive Codes */
 @media screen and (max-width:1200px){
 
@@ -58,9 +68,12 @@ a img {
   app-menu1{
     margin-top: 0.5em;
   }
-  a img {
-    width: 180px;
+  .menu2_img {
     margin-right: 1.5rem;
+  }
+  .menu2_img a {
+    width: 40px;
+    margin-left: 10px;
   }
 }
 @media screen and (max-width:600px) {
@@ -71,8 +84,11 @@ a img {
     font-size: 14px;
     margin-left: 5px;
   }
-  a img {
-    width: 150px;
+  .menu2_img {
     margin-right: 1rem;
+  }
+  .menu2_img a {
+    width: 35px;
+    margin-left: 8px;
   }
 }
