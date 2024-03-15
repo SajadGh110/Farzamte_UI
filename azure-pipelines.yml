@@ -24,8 +24,16 @@ steps:
     contents: |
        src/*
        public/*
-    targetFolder: '../../../'
+    targetFolder: '$(Build.ArtifactStagingDirectory)'
   displayName: 'Copy project files'
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: 'C:\agent\_work\1\s\dist\angular-ui'
+    Contents: '**'
+    TargetFolder: 'C:\Farzamte\ui'
+    OverWrite: true
+    flattenFolders: true
 
 - task: PublishPipelineArtifact@1
   inputs:
