@@ -37,7 +37,7 @@ steps:
 
 - task: ExtractFiles@1
   inputs:
-    archiveFilePatterns: '**/*.zip'
+    archiveFilePatterns: '../**/*.zip'
     destinationFolder: 'C:\Farzamte\ui'
     cleanDestinationFolder: false
     overwriteExistingFiles: true
