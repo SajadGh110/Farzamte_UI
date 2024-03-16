@@ -9,12 +9,72 @@
   direction: rtl;
   margin: 5rem auto;
 }
+.row .row-note {
+  display: flex;
+}
 .r_wallpaper {
+  display: flex;
+  justify-content: center;
   margin: 2rem auto 7rem;
+}
+.r_wallpaper img {
+  width: 430px;
 }
 .report_footer_icons img {
   width: 220px;
 }
 app-note1 {
   display: flex;
+}
+/* Adaptive Codes */
+@media screen and (max-width:1440px){
+}
+@media screen and (max-width:1200px){
+  .row {
+    flex-direction: column;
+  }
+  .row .row-note {
+    margin-bottom: 4rem;
+    justify-content: center;
+  }
+  app-note1 {
+    width: 250px;
+    margin: 0 2rem;
+  }
+  .r_wallpaper img {
+    width: 330px;
+  }
+}
+@media screen and (max-width:992px){
+}
+@media screen and (max-width:768px) {
+  .note-container {
+    width: 100%;
+    justify-content: center;
+  }
+  app-note1 {
+    width: 220px;
+    margin: 0 1rem;
+  }
+  .r_wallpaper {
+    width: 100%;
+  }
+  .r_wallpaper img {
+    width: 280px;
+  }
+}
+@media screen and (max-width:600px) {
+  .row .row-note {
+    flex-direction: column;
+    margin-bottom: 0;
+  }
+  app-note1 {
+    width: 200px;
+    margin: 2rem auto;
+  }
+  .r_wallpaper img {
+    width: 250px;
+  }
+}
+@media screen and (max-width:480px) {
 }
