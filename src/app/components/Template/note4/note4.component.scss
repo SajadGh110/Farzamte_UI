@@ -16,7 +16,7 @@ h2.title {
 }
 .border-special {
   width: 6rem;
-  height: 5rem;
+  height: 80px;
   margin-left: -3.2rem;
   border-top: 3px solid;
   border-left: 3px solid;
@@ -24,7 +24,7 @@ h2.title {
 }
 .border-special2 {
   width: 4rem;
-  height: 20.5rem;
+  height: 328px;
   border-top: 3px solid;
   border-right: 3px solid;
   border-bottom: 3px solid;
@@ -83,7 +83,7 @@ h2.title {
     margin-left: -1.5rem;
   }
   .border-special2 {
-    height: 19rem;
+    height: 304px;
     margin-left: 19.5rem;
     margin-top: -17.6rem;
   }
@@ -104,7 +104,7 @@ h2.title {
 }
 @media screen and (max-width:480px) {
   .border-special2 {
-    height: 16.5rem;
+    height: 264px;
     margin-left: 14.5rem;
     margin-top: -15.1rem;
   }
