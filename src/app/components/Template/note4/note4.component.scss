@@ -42,12 +42,12 @@ h2.title {
 .information h3 {
   font-size: 28px;
   font-weight: 500;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
 .information h4 {
   font-size: 24px;
   font-weight: 500;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
 .list {
   display: flex;
@@ -62,6 +62,8 @@ h2.title {
   list-style-image: url("/assets/images/checked_24.png");
 }
 .list ul li p {
+  width: max-content;
+  display: table-caption;
   font-weight: 500;
 }
 
