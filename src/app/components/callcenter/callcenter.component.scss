@@ -9,6 +9,7 @@
 }
 .note-list-container {
   display: flex;
+  justify-content: center;
   direction: rtl;
   margin: 2rem auto 5rem;
 }
@@ -18,4 +19,47 @@ app-note1 {
 }
 .callcenter_footer_icons img {
   width: 220px;
+}
+
+/* Adaptive Codes */
+@media screen and (max-width:1440px){
+}
+@media screen and (max-width:1200px){
+  app-notelist {
+    width: 80%;
+  }
+}
+@media screen and (max-width:992px){
+}
+@media screen and (max-width:890px){
+}
+@media screen and (max-width:768px) {
+  .note-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 0 0 5em;
+  }
+  .row {
+    width: 100%;
+    margin: 2rem 0;
+    justify-content: center;
+  }
+  app-note1 {
+    width: 175px;
+  }
+  app-notelist {
+    width: 90%;
+  }
+}
+@media screen and (max-width:600px) {
+  .row {
+    flex-direction: column;
+    align-items: center;
+  }
+  app-note1 {
+    width: 250px;
+  }
+}
+@media screen and (max-width:480px) {
 }

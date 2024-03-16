@@ -1,7 +1,7 @@
 <section class="main">
   <h2 class="title" [style.color]="color" [style.border-color]="color">{{title}}</h2>
-  <section class="border-special" [style.border-color]="color"></section>
-  <section class="list">
+  <section class="border-special" [style.border-color]="color" [style.width]="bs_width"></section>
+  <section class="list" [style.margin-left]="bs_width_reverse">
     <ul>
       <li *ngFor="let item of items" [style.color]="color"><p>{{ item }}</p></li>
     </ul>
