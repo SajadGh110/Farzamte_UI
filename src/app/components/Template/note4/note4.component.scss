@@ -15,7 +15,7 @@ h2.title {
   border-bottom: 3px dotted;
 }
 .border-special {
-  width: 6rem;
+  width: 96px;
   height: 80px;
   margin-left: -3.2rem;
   border-top: 3px solid;
@@ -31,7 +31,7 @@ h2.title {
   border-top-right-radius: 50px;
   border-bottom-right-radius: 50px;
   margin-left: 30rem;
-  margin-top: -18.4rem;
+  margin-top: -18.6rem;
 }
 .information {
   width: 500px;
@@ -57,14 +57,11 @@ h2.title {
 .list ul li {
   display: list-item;
   font-size: 20px;
-  line-height: 24px;
   margin: 10px 0;
   text-align: right;
   list-style-image: url("/assets/images/checked_24.png");
 }
 .list ul li p {
-  display: table-caption;
-  width: max-content;
   font-weight: 500;
 }
 
@@ -83,9 +80,9 @@ h2.title {
     margin-left: -1.5rem;
   }
   .border-special2 {
-    height: 304px;
+    height: 308px;
     margin-left: 19.5rem;
-    margin-top: -17.6rem;
+    margin-top: -17.9rem;
   }
   .information h3 {
     font-size: 24px;
@@ -104,9 +101,9 @@ h2.title {
 }
 @media screen and (max-width:480px) {
   .border-special2 {
-    height: 264px;
+    height: 272px;
     margin-left: 14.5rem;
-    margin-top: -15.1rem;
+    margin-top: -15.3rem;
   }
   .information h3 {
     font-size: 22px;
@@ -120,6 +117,5 @@ h2.title {
   .list ul li {
     font-size: 15px;
     list-style-image: url("/assets/images/checked_18.png");
-    line-height: 18px;
   }
 }
