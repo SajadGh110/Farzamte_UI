@@ -88,6 +88,11 @@ app-menu2 {
   border: none;
   cursor: pointer;
 }
+.contact_form form .frm_row input[type=text].is-invalid ,
+.contact_form form .frm_row input[type=email].is-invalid ,
+.contact_form form .frm_row textarea.is-invalid {
+  border-color: red;
+}
 @media screen and (max-width:990px) {
   .supp_main {
     width: 100%;
