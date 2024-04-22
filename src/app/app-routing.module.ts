@@ -11,6 +11,7 @@ import {AboutComponent} from "./components/about/about.component";
 import {ReportComponent} from "./components/report/report.component";
 import {CrmComponent} from "./components/crm/crm.component";
 import {CallcenterComponent} from "./components/callcenter/callcenter.component";
+import {View360Component} from "./components/view-360/view-360.component";
 
 const routes: Routes = [
   {path:'', component: IndexComponent},
@@ -22,7 +23,8 @@ const routes: Routes = [
   {path:'crm', component: CrmComponent},
   {path:'callcenter', component: CallcenterComponent},
   {path:'register', component: RegisterComponent},
-  {path:'dashboard', component: DashboardComponent,canActivate:[authGuard]}
+  {path:'dashboard', component: DashboardComponent,canActivate:[authGuard]},
+  {path:'view-360', component: View360Component,canActivate:[authGuard]}
 ];
 
 @NgModule({

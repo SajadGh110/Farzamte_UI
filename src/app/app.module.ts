@@ -27,7 +27,8 @@ import { Note2Component } from './components/Template/note2/note2.component';
 import { Note3Component } from './components/Template/note3/note3.component';
 import { Note4Component } from './components/Template/note4/note4.component';
 import { SpanspecialComponent } from './components/Template/spanspecial/spanspecial.component';
-
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {NgxChartsModule} from "@swimlane/ngx-charts";
 @NgModule({
   declarations: [
     AppComponent,
@@ -58,7 +59,9 @@ import { SpanspecialComponent } from './components/Template/spanspecial/spanspec
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
-    NgToastModule
+    NgToastModule,
+    BrowserAnimationsModule,
+    NgxChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

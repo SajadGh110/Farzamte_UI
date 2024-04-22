@@ -15,7 +15,7 @@
   height: 468px;
 }
 .container-dashboard .sidebar-dashboard {
-  width: 370px;
+  width: 330px;
   display: flex;
   flex-direction: column;
 }
@@ -39,11 +39,14 @@
 .container-dashboard .sidebar-dashboard nav ul li a p {
   width: 100%;
   text-align: center;
-  font-size: 29px;
+  font-size: 24px;
   font-family: Acumin_vc;
   color: rgb(145, 150, 126);
   font-weight: bold;
   -moz-transform: matrix(1, 0, 0, 1.2, 0, 0);
   -webkit-transform: matrix(1, 0, 0, 1.2, 0, 0);
   -ms-transform: matrix(1, 0, 0, 1.2, 0, 0);
+}
+.container-dashboard .sidebar-dashboard nav ul li a img {
+  height: 55px;
 }
