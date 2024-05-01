@@ -1,52 +1,5 @@
-.container-dashboard {
-  display: flex;
-  direction: rtl;
-  align-items: center;
-  justify-content: space-evenly;
-  flex-direction: row-reverse;
-  margin: 50px auto 0;
-}
-.main-dashboard {
-  display: flex;
-}
-.container-dashboard .main-dashboard .background-dashboard {
+.dashboard-wrapper .dashboard-main .background-dashboard {
   background-image: url('/assets/images/background-dashboard.png');
   width: 438px;
   height: 468px;
-}
-.container-dashboard .sidebar-dashboard {
-  width: 330px;
-  display: flex;
-  flex-direction: column;
-}
-.container-dashboard .sidebar-dashboard nav ul {
-  direction: ltr;
-}
-.container-dashboard .sidebar-dashboard nav ul li {
-  display: flex;
-  flex-direction: row-reverse;
-  background-color: #ffffff;
-  margin: 0 0 10px;
-  border-radius: 1rem;
-  box-shadow: 10px 10px 15px -3px rgba(0,0,0,0.1);
-}
-.container-dashboard .sidebar-dashboard nav ul li a {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  justify-content: flex-end;
-}
-.container-dashboard .sidebar-dashboard nav ul li a p {
-  width: 100%;
-  text-align: center;
-  font-size: 24px;
-  font-family: Acumin_vc;
-  color: rgb(145, 150, 126);
-  font-weight: bold;
-  -moz-transform: matrix(1, 0, 0, 1.2, 0, 0);
-  -webkit-transform: matrix(1, 0, 0, 1.2, 0, 0);
-  -ms-transform: matrix(1, 0, 0, 1.2, 0, 0);
-}
-.container-dashboard .sidebar-dashboard nav ul li a img {
-  height: 55px;
 }

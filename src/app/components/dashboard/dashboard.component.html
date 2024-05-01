@@ -1,23 +1,16 @@
-<section class="container-dashboard">
-  <section class="main-dashboard">
-    <section class="background-dashboard"></section>
-  </section>
-  <section class="sidebar-dashboard">
-    <nav>
-      <ul>
-        <li><a href="/view-360"><p>360 Degrees</p><img src="assets/images/360.png" alt="360"></a></li>
-        <li><a href=""><p>Happy Call</p><img src="assets/images/happycall.png" alt="happycall"></a></li>
-        <li><a href=""><p>Call in</p><img src="assets/images/callin.png" alt="callin"></a></li>
-        <li><a href=""><p>Notices</p><img src="assets/images/noticies.png" alt="noticies"></a></li>
-        <li><a href=""><p>Ticket</p><img src="assets/images/ticket.png" alt="ticket"></a></li>
-        <li><a href=""><p>Marketing</p><img src="assets/images/marketing.png" alt="marketing"></a></li>
-        <li><a href=""><p>Survey</p><img src="assets/images/survey.png" alt="survey"></a></li>
-        <li><a href=""><p>Q.A</p><img src="assets/images/q.a.png" alt="q.a"></a></li>
-        <li><a href=""><p>Other ...</p><img src="assets/images/other.png" alt="other"></a></li>
-        <li><a href=""><p>Disorder</p><img src="assets/images/disorder.png" alt="disorder"></a></li>
-        <li><a href=""><p>Ai Custom Analysis</p><img src="assets/images/aicustomanalysis.png" alt="aicustomanalysis"></a></li>
-        <li><a href="/login" (click)="logout()"><p>Logout</p><img src="assets/images/logout.png" alt="logout" width="60"></a></li>
-      </ul>
-    </nav>
+<section class="dashboard-wrapper">
+  <app-dashboard-topmenu></app-dashboard-topmenu>
+  <app-dashboard-sidebar></app-dashboard-sidebar>
+  <section class="dashboard-main">
+    <section class="row">
+      <section class="background-dashboard"></section>
+    </section>
+    <section class="row">
+      <section class="background-dashboard"></section>
+    </section>
+    <section class="row">
+      <section class="background-dashboard"></section>
+    </section>
+    <section class="row"></section>
   </section>
 </section>

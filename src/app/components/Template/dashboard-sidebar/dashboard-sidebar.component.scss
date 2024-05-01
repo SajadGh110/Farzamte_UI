@@ -1,0 +1,42 @@
+nav {
+  margin-top: 2rem;
+}
+nav ul {
+  direction: ltr;
+}
+nav ul li {
+  display: flex;
+  flex-direction: row-reverse;
+  border-bottom: #1c1b3a 2px solid;
+}
+nav ul li a {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0.5rem 1rem;
+}
+nav ul li a:hover p {
+  color: #b8a9ff;
+}
+nav ul li a:hover .svg_menu_color {
+  fill: #b8a9ff;
+}
+nav ul li a p {
+  width: 100%;
+  text-align: start;
+  font-size: 20px;
+  font-family: Acumin_vc;
+  color: white;
+  padding: 5px 0 0 1rem;
+  -moz-transform: matrix(1, 0, 0, 1.2, 0, 0);
+  -webkit-transform: matrix(1, 0, 0, 1.2, 0, 0);
+  -ms-transform: matrix(1, 0, 0, 1.2, 0, 0);
+}
+.svg_menu_color {
+  fill: #ffffff;
+}
+nav ul li a img {
+  width: 32px;
+  height: 32px;
+}

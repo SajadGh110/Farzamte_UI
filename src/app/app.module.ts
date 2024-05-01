@@ -29,6 +29,8 @@ import { Note4Component } from './components/Template/note4/note4.component';
 import { SpanspecialComponent } from './components/Template/spanspecial/spanspecial.component';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {NgxChartsModule} from "@swimlane/ngx-charts";
+import {DashboardTopmenuComponent} from "./components/Template/dashboard-topmenu/dashboard-topmenu.component";
+import {DashboardSidebarComponent} from "./components/Template/dashboard-sidebar/dashboard-sidebar.component";
 @NgModule({
   declarations: [
     AppComponent,
@@ -61,7 +63,9 @@ import {NgxChartsModule} from "@swimlane/ngx-charts";
     HttpClientModule,
     NgToastModule,
     BrowserAnimationsModule,
-    NgxChartsModule
+    NgxChartsModule,
+    DashboardTopmenuComponent,
+    DashboardSidebarComponent
   ],
   providers: [],
   bootstrap: [AppComponent]
