@@ -1,6 +1,25 @@
 nav {
   margin-top: 2rem;
 }
+nav .top-sidebar {
+  display: flex;
+  min-height: 105px;
+  justify-content: center;
+  align-items: flex-end;
+  margin-bottom: 1rem;
+}
+nav .top-sidebar .logo img {
+  width: 120px;
+}
+nav .top-sidebar .logo {
+  margin-right: 2rem;
+}
+.logo-mini {
+  display: none;
+}
+.logo-mini img {
+  width: 45px;
+}
 nav ul {
   direction: ltr;
 }
@@ -13,7 +32,6 @@ nav ul li a {
   display: flex;
   width: 100%;
   align-items: center;
-  justify-content: flex-end;
   padding: 0.5rem 1rem;
 }
 nav ul li a:hover p {

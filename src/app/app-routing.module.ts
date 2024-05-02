@@ -4,7 +4,7 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { IndexComponent } from './components/index/index.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import {authGuard} from "./guards/auth.guard";
+import {authGuard, loginCheck} from "./guards/auth.guard";
 import {HomeComponent} from "./components/home/home.component";
 import {SupportComponent} from "./components/support/support.component";
 import {AboutComponent} from "./components/about/about.component";
@@ -16,13 +16,13 @@ import {View360Component} from "./components/view-360/view-360.component";
 const routes: Routes = [
   {path:'', component: IndexComponent},
   {path:'home', component: HomeComponent},
-  {path:'login', component: LoginComponent},
+  {path:'login', component: LoginComponent , canActivate:[loginCheck]},
   {path:'support', component: SupportComponent},
   {path:'about', component: AboutComponent},
   {path:'report', component: ReportComponent},
   {path:'crm', component: CrmComponent},
   {path:'callcenter', component: CallcenterComponent},
-  {path:'register', component: RegisterComponent},
+  {path:'register', component: RegisterComponent,canActivate:[authGuard]},
   {path:'dashboard', component: DashboardComponent,canActivate:[authGuard]},
   {path:'view-360', component: View360Component,canActivate:[authGuard]}
 ];

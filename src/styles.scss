@@ -1,3 +1,15 @@
+/* Main Variables */
+$Background : #f2f2f2;
+$Foreground : #544f53;
+$Font-Size : 14px;
+$Font-Family-En : Myriad Pro, Bahnschrift;
+$Font-Family-Fa : Cinema, Bahnschrift;
+/* Dashboard Variables */
+$Dash-Background : #161d31;
+$Dash-Background-Secondary : #283046;
+$Dash-Foreground : 0;
+
+
 @font-face {
   font-family: Acumin_vc;
   src: url('/assets/fonts/Acumin-Variable-Concept.ttf');
@@ -18,7 +30,9 @@
   font-family: Yekan;
   src: url('/assets/fonts/BYekan.ttf');
 }
-* {
+*,
+*:before,
+*:after{
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -51,9 +65,9 @@ ul,p{
   clear: both;
 }
 body {
-  background-color: #f2f2f2;
+  background-color: $Background;
   direction: ltr;
-  font: 14px Myriad Pro, Bahnschrift;
+  font: $Font-Size $Font-Family-En;
 }
 .container {
   display: flex;
@@ -95,7 +109,7 @@ app-menu1 {
   line-height: normal;
 }
 app-menu2{
-  font-family: Cinema,Bahnschrift;
+  font-family: $Font-Family-Fa;
   text-align: right;
   direction: rtl;
   margin-top: 2rem;
@@ -128,6 +142,7 @@ app-note1 .note {
   border: 2px solid red;
   border-radius: 30px;
 }
+
 .dashboard-wrapper {
   display: flex;
   direction: ltr;
@@ -141,34 +156,62 @@ app-note1 .note {
   display: flex;
   flex-direction: column;
   width: calc(100% - 15rem);
-  margin: 3rem 0 0 15rem;
-  min-height: calc(100vh - 3rem);
-  background: #1c1b3a;
+  padding: calc(2rem + 4.45rem + 1.3rem) 2rem 0;
+  margin-left: 15rem;
+  min-height: 100vh;
+  background: $Dash-Background;
   z-index: 8;
 }
 .dashboard-main .row {
   display: flex;
   flex-wrap: wrap;
-  margin: 1rem 2rem;
+  background: $Dash-Background-Secondary;
+  border-radius: .428rem;
+  padding: .8rem 1rem;
+  margin-bottom: 2rem;
 }
 app-dashboard-topmenu{
-  width: 100%;
   position: fixed;
-  height: 3rem;
-  background: #323258;
-  box-shadow: 0px 10px 20px 10px rgba(0, 0, 0, 0.45);
+  top: 0;
+  right: 0;
+  margin-top: 1.3rem;
+  margin-right: 2rem;
+  border-radius: .428rem;
+  width: calc(100vw - (100vw - 100%) - calc(2rem * 2) - 15rem);
+  background: $Dash-Background-Secondary;
   z-index: 10;
 }
 app-dashboard-sidebar{
   width: 15rem;
-  height: calc(100vh - 3rem);
+  height: 100vh;
   display: flex;
   flex-direction: column;
   position: fixed;
   left: 0;
-  margin-top: 3rem;
-  background: #323258;
+  background: $Dash-Background-Secondary;
   z-index: 9;
+}
+app-dashboard-topmenu:has(input:checked) ~ app-dashboard-sidebar {
+  width: 5rem;
+}
+app-dashboard-topmenu:has(input:checked) ~ .dashboard-main {
+  width: calc(100% - 5rem);
+  margin-left: 5rem;
+}
+.dashboard-wrapper:has(input:checked) app-dashboard-topmenu {
+  width: calc(100vw - (100vw - 100%) - calc(2rem * 2) - 5rem);
+}
+app-dashboard-topmenu:has(input:checked) ~ app-dashboard-sidebar .main-slider li a p {
+  display: none;
+}
+app-dashboard-topmenu:has(input:checked) ~ app-dashboard-sidebar .main-slider li a{
+  justify-content: center;
+}
+app-dashboard-topmenu:has(input:checked) ~ app-dashboard-sidebar .logo {
+  display: none;
+}
+app-dashboard-topmenu:has(input:checked) ~ app-dashboard-sidebar .logo-mini {
+  display: block;
 }
 .svgedit{
   filter: invert(1);

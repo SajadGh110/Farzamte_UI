@@ -1,6 +1,74 @@
-.dashboard-topmenu {
-
+nav {
+  padding: .8rem 1rem;
 }
-.dashboard-topmenu nav ul {
+nav ul {
   display: flex;
+}
+
+/*  hamburger menu  */
+$bar-width: 32px;
+$bar-height: 6px;
+$hamburger-gap: 4px;
+$foreground: #fff;
+$background: #283046;
+$hamburger-margin: 8px;
+$animation-timing: 200ms ease-in-out;
+$hamburger-height: calc($bar-height * 3 + $hamburger-gap * 2);
+
+.hamburger-menu {
+  display: flex;
+  flex-direction: column;
+  gap: $hamburger-gap;
+  width: $bar-width;
+  z-index: 11;
+  cursor: pointer;
+}
+
+.hamburger-menu:has(input:focus-visible)::before,
+.hamburger-menu:has(input:focus-visible)::after,
+.hamburger-menu input:focus-visible {
+  border: 1px solid $background;
+  box-shadow: 0 0 0 1px $foreground;
+}
+
+.hamburger-menu::before,
+.hamburger-menu::after,
+.hamburger-menu input {
+  content: "";
+  width: $bar-width;
+  height: $bar-height;
+  background-color: $foreground;
+  border-radius: 9999px;
+  transform-origin: left center;
+  transition: opacity $animation-timing, width $animation-timing,
+  rotate $animation-timing, translate $animation-timing,
+  background-color $animation-timing;
+}
+
+.hamburger-menu input {
+  appearance: none;
+  padding: 0;
+  margin: 0;
+  outline: none;
+  pointer-events: none;
+}
+
+.hamburger-menu:has(input:checked)::before {
+  rotate: 45deg;
+  width: 20px;
+  translate: 17px -2px;
+}
+
+.hamburger-menu:has(input:checked)::after {
+  rotate: -45deg;
+  width: 20px;
+  translate: 17px 2px;
+}
+
+.hamburger-menu input:checked {
+  width: $bar-width;
+}
+
+input[type="checkbox"]:hover , .hamburger-menu:hover::before , .hamburger-menu:hover::after{
+  background-color: #b8a9ff;
 }

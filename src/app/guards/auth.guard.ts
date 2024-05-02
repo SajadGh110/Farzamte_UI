@@ -20,8 +20,21 @@ class AuthGuard{
       return false;
     }
   }
+
+  IsSignedIn(): boolean {
+    if (this.auth.isLoggedIn()){
+      this.toast.error({detail:"Redirect" , summary:"You Are Signed In Currently , Go to Your Dashboard!"});
+      this.router.navigate(['dashboard']);
+      return false;
+    } else {
+      return true;
+    }
+  }
 }
 
 export const authGuard: CanActivateFn = ():boolean => {
   return inject(AuthGuard).canActivate();
+};
+export const loginCheck: CanActivateFn = ():boolean => {
+  return inject(AuthGuard).IsSignedIn();
 };
