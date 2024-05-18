@@ -34,11 +34,8 @@ nav ul li a {
   align-items: center;
   padding: 0.5rem 1rem;
 }
-nav ul li a:hover p {
-  color: #b8a9ff;
-}
-nav ul li a:hover .svg_menu_color {
-  fill: #b8a9ff;
+nav ul li a:hover{
+  background-color: #6754e0!important;
 }
 nav ul li a p {
   width: 100%;
@@ -50,9 +47,6 @@ nav ul li a p {
   -moz-transform: matrix(1, 0, 0, 1.2, 0, 0);
   -webkit-transform: matrix(1, 0, 0, 1.2, 0, 0);
   -ms-transform: matrix(1, 0, 0, 1.2, 0, 0);
-}
-.svg_menu_color {
-  fill: #ffffff;
 }
 nav ul li a img {
   width: 32px;

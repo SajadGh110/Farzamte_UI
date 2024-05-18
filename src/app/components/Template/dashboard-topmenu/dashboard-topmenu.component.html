@@ -1,15 +1,20 @@
 <section class="dashboard-topmenu">
-  <nav>
+  <nav class="nav-left">
     <ul>
       <li>
         <label class="hamburger-menu">
           <input type="checkbox" />
         </label>
       </li>
-      <li><a href="">Farzamte</a></li>
-      <li><a href="">Search icon</a></li>
-      <li><a href="">Search bar</a></li>
-      <li><a href="">Account</a></li>
+      <li><a class="title" href="">{{gettitle()}}</a></li>
+    </ul>
+  </nav>
+  <nav class="nav-right">
+    <ul>
+      <li><a class="search" href="javascript:void(0)">
+        <svg class="feather feather-search" fill="none" height="24" stroke="#c9c9ff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>
+      </a></li>
+      <li><a class="account" href="/profile"><img src="assets/images/user.png" alt="user"><p>{{ getUserName() }}</p></a></li>
     </ul>
   </nav>
 </section>

@@ -7,7 +7,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { IndexComponent } from './components/index/index.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { DashboardComponent } from './components/panel/dashboard/dashboard.component';
 import { NgToastModule } from 'ng-angular-popup';
 import { AboutComponent } from './components/about/about.component';
 import { SupportComponent } from './components/support/support.component';
@@ -36,13 +36,12 @@ import {DashboardSidebarComponent} from "./components/Template/dashboard-sidebar
     LoginComponent,
     RegisterComponent,
     IndexComponent,
-    DashboardComponent,
+    HomeComponent,
     AboutComponent,
     SupportComponent,
     ReportComponent,
     CrmComponent,
     CallcenterComponent,
-    HomeComponent,
     Footer1Component,
     Menu1Component,
     Menu2Component,
@@ -64,7 +63,8 @@ import {DashboardSidebarComponent} from "./components/Template/dashboard-sidebar
     BrowserAnimationsModule,
     NgxChartsModule,
     DashboardTopmenuComponent,
-    DashboardSidebarComponent
+    DashboardSidebarComponent,
+    DashboardComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

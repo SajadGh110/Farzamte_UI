@@ -1,15 +1,12 @@
 nav {
   padding: .8rem 1rem;
 }
-nav ul {
-  display: flex;
-}
 
 /*  hamburger menu  */
 $bar-width: 32px;
 $bar-height: 6px;
 $hamburger-gap: 4px;
-$foreground: #fff;
+$foreground: #c9c9ff;
 $background: #283046;
 $hamburger-margin: 8px;
 $animation-timing: 200ms ease-in-out;
@@ -71,4 +68,37 @@ $hamburger-height: calc($bar-height * 3 + $hamburger-gap * 2);
 
 input[type="checkbox"]:hover , .hamburger-menu:hover::before , .hamburger-menu:hover::after{
   background-color: #b8a9ff;
+}
+.dashboard-topmenu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.nav-left ul {
+  display: flex;
+  align-items: center;
+}
+.nav-right ul {
+  display: flex;
+  align-items: center;
+}
+.nav-right ul li a.account {
+  display: flex;
+  align-items: center;
+}
+.nav-left ul li a.title {
+  font: 18px Myriad Pro, Bahnschrift;
+  color: #c9c9ff;
+}
+.nav-right ul li a.account img {
+  width: 40px;
+  border-radius: 50%;
+}
+li:not(:first-child) {
+  margin-left: 1rem;
+}
+.nav-right ul li a.account p {
+  font: 14px Myriad Pro, Bahnschrift;
+  color: #c9c9ff;
+  margin-left: 0.5rem;
 }

@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {BarChartModule, LineChartModule, PieChartModule} from "@swimlane/ngx-charts";
-import {DashboardSidebarComponent} from "../Template/dashboard-sidebar/dashboard-sidebar.component";
-import {DashboardTopmenuComponent} from "../Template/dashboard-topmenu/dashboard-topmenu.component";
+import {DashboardSidebarComponent} from "../../Template/dashboard-sidebar/dashboard-sidebar.component";
+import {DashboardTopmenuComponent} from "../../Template/dashboard-topmenu/dashboard-topmenu.component";
 @Component({
   selector: 'app-view-360',
   standalone: true,

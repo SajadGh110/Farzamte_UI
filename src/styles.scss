@@ -4,7 +4,7 @@ $Foreground : #544f53;
 $Font-Size : 14px;
 $Font-Family-En : Myriad Pro, Bahnschrift;
 $Font-Family-Fa : Cinema, Bahnschrift;
-/* Dashboard Variables */
+/* dashboard Variables */
 $Dash-Background : #161d31;
 $Dash-Background-Secondary : #283046;
 $Dash-Foreground : 0;
@@ -170,6 +170,9 @@ app-note1 .note {
   padding: .8rem 1rem;
   margin-bottom: 2rem;
 }
+.dashboard-main .row p {
+  color: #ffffff;
+}
 app-dashboard-topmenu{
   position: fixed;
   top: 0;
@@ -216,6 +219,13 @@ app-dashboard-topmenu:has(input:checked) ~ app-dashboard-sidebar .logo-mini {
 .svgedit{
   filter: invert(1);
 }
+.svg_menu_color {
+  fill: #ffffff;
+}
+.menu_item_selected{
+  background-color: #6754e0;
+}
+
 
 /* Adaptive Codes */
 @media screen and (max-width:1200px){

@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http'
+import {HttpClient, HttpHeaders} from '@angular/common/http'
 import {Router} from "@angular/router";
+import {jwtDecode} from "jwt-decode";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private baseUrl:string = "https://localhost:7108/api/Users/"
+  private baseUrl:string = "https://api.farzamte.com/api/Users/"
 
   constructor(private http : HttpClient, private router : Router) { }
 
@@ -16,7 +17,9 @@ export class AuthService {
   }
 
   login(userObj:any){
-    return this.http.post<any>(`${this.baseUrl}Login`,userObj);
+    let header = new HttpHeaders();
+    header = header.append("api-key","DWV1PdzszOW3BLen");
+    return this.http.post<any>(`${this.baseUrl}Login`,userObj,{headers:header});
   }
 
   logout(){
@@ -28,8 +31,18 @@ export class AuthService {
     localStorage.setItem('token',TokenValue);
   }
 
-  getToken(){
-    return localStorage.getItem('token');
+  getToken():string{
+    return jwtDecode(localStorage.getItem('token')+"");
+  }
+
+  getUserName():string{
+    var tokken_string = JSON.stringify(this.getToken());
+    return tokken_string.split(',')[1].split('"')[3];
+  }
+
+  getUserRole():string{
+    var tokken_string = JSON.stringify(this.getToken());
+    return tokken_string.split(',')[0].split('"')[3];
   }
 
   isLoggedIn():boolean{
