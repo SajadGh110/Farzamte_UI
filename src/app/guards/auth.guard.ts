@@ -23,7 +23,7 @@ class AuthGuard{
 
   IsSignedIn(): boolean {
     if (this.auth.isLoggedIn()){
-      this.toast.error({detail:"Redirect" , summary:"You Are Signed In Currently , Go to Your dashboard!"});
+      this.toast.info({detail:"Redirect" , summary:"You Are Signed In Currently , Go to Your dashboard!"});
       this.router.navigate(['dashboard']);
       return false;
     } else {

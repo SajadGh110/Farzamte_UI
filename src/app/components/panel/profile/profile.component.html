@@ -3,7 +3,53 @@
   <app-dashboard-sidebar></app-dashboard-sidebar>
   <section class="dashboard-main">
     <section class="row">
-      <p>User Role : {{getUserRole()}}</p>
+      <form [formGroup]="profileform" class="main-form">
+        <section class="item">
+          <label for="firstName">First Name : </label>
+          <input class="firstName" type="text" formControlName="firstName" id="firstName" placeholder="First Name" value="{{formData.firstName}}">
+        </section>
+        <section class="item">
+          <label for="lastName">Last Name : </label>
+          <input class="lastName" type="text" formControlName="lastName" id="lastName" placeholder="Last Name" value="{{formData.lastName}}">
+        </section>
+        <section class="item">
+          <label for="email">Email : </label>
+          <input class="email" type="text" formControlName="email" id="email" placeholder="Email" value="{{formData.email}}">
+        </section>
+        <section class="item">
+          <label for="phoneNumber">Phone Number : </label>
+          <input class="phoneNumber" type="text" formControlName="phoneNumber" id="phoneNumber" placeholder="Phone Number" value="{{formData.phoneNumber}}">
+        </section>
+        <section class="item">
+          <label for="city">City : </label>
+          <input class="city" type="text" formControlName="city" id="city" placeholder="City" value="{{formData.city}}">
+        </section>
+        <section class="item">
+          <label for="address">Address : </label>
+          <input class="address" type="text" formControlName="address" id="address" placeholder="Address" value="{{formData.address}}">
+        </section>
+        <section class="item">
+          <label for="postalCode">Postal Code : </label>
+          <input class="postalCode" type="text" formControlName="postalCode" id="postalCode" placeholder="Postal Code" value="{{formData.postalCode}}">
+        </section>
+        <section class="breakline"></section>
+        <section class="item">
+          <label>Role : </label>
+          <p>{{formData.role}}</p>
+        </section>
+        <section class="item">
+          <label>User Name : </label>
+          <p>{{formData.userName}}</p>
+        </section>
+        <section class="item">
+          <label for="password">Password : </label>
+          <input class="password" type="password" formControlName="password" id="password" [class.is-invalid]="profileform.controls['password'].dirty && profileform.hasError('required','password')" placeholder="Password">
+          <small *ngIf="profileform.controls['password'].dirty && profileform.hasError('required','password')" class="text-error">Password is Requierd!</small>
+        </section>
+        <section class="item">
+          <input (click)="onUpdate()" type="submit" class="submit" value="Update">
+        </section>
+      </form>
     </section>
   </section>
 </section>

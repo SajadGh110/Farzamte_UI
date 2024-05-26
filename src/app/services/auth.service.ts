@@ -2,15 +2,16 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http'
 import {Router} from "@angular/router";
 import {jwtDecode} from "jwt-decode";
+import {JwtHelperService} from "./jwt-helper.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private baseUrl:string = "https://api.farzamte.com/api/Users/"
+  private baseUrl:string = "https://localhost:7108/api/Users/"
 
-  constructor(private http : HttpClient, private router : Router) { }
+  constructor(private http : HttpClient, private router : Router, private jwt : JwtHelperService) { }
 
   register(userObj:any){
     return this.http.post<any>(`${this.baseUrl}Register`,userObj);
@@ -35,6 +36,11 @@ export class AuthService {
     return jwtDecode(localStorage.getItem('token')+"");
   }
 
+  getUserID():number{
+    var tokken_string = JSON.stringify(this.getToken());
+    return parseInt(tokken_string.split(',')[2].split('"')[3]);
+  }
+
   getUserName():string{
     var tokken_string = JSON.stringify(this.getToken());
     return tokken_string.split(',')[1].split('"')[3];
@@ -46,6 +52,11 @@ export class AuthService {
   }
 
   isLoggedIn():boolean{
-    return !!localStorage.getItem('token');
+    if (localStorage.getItem('token')){
+      let token: string = localStorage.getItem('token') + "";
+      return !this.jwt.tokenExpired(token);
+    }
+    else
+      return false;
   }
 }

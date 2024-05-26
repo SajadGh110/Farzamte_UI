@@ -1,0 +1,58 @@
+.dashboard-main .row{
+  flex-direction: column;
+}
+.dashboard-main .row form {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.dashboard-main .row form .item {
+  height: 35px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.dashboard-main .row form .item label {
+  width: 120px;
+  color: white;
+}
+
+.dashboard-main .row form .item input[type=text] ,
+.dashboard-main .row form .item input[type=password] {
+  background: #c9c9ff;
+  outline: none;
+  color: #161d31;
+  border: solid 2px #161d31;
+  border-radius: 5px;
+  padding: 5px;
+  font: 14px Myriad Pro, Bahnschrift;
+}
+.dashboard-main .row form .item input[type=text]::placeholder ,
+.dashboard-main .row form .item input[type=password]::placeholder {
+  color: #161d31;
+}
+.dashboard-main .row form .item input[type=text]:focus ,
+.dashboard-main .row form .item input[type=password]:focus {
+  border: solid 2px #6754e0;
+}
+.dashboard-main .row form .item input[type=submit] {
+  outline: none;
+  padding: 5px 15px;
+  color: white;
+  background: #161d31;
+  border: solid 2px #6754e0;
+  border-radius: 5px;
+  font: 18px Myriad Pro, Bahnschrift;
+  cursor: pointer;
+}
+.dashboard-main .row form .item input[type=submit]:hover,
+.dashboard-main .row form .item input[type=submit]:focus{
+  background: #6754e0;
+  border-color: #161d31;
+}
+.breakline {
+  width: 100%;
+  height: 4px;
+  background: #6754e0;
+  margin-bottom: 1rem;
+}
