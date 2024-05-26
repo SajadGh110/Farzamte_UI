@@ -9,7 +9,7 @@ import {JwtHelperService} from "./jwt-helper.service";
 })
 export class AuthService {
 
-  private baseUrl:string = "https://localhost:7108/api/Users/"
+  private baseUrl:string = "https://api.farzamte.com/api/Users/"
 
   constructor(private http : HttpClient, private router : Router, private jwt : JwtHelperService) { }
 

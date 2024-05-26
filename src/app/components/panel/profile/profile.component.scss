@@ -27,10 +27,6 @@
   padding: 5px;
   font: 14px Myriad Pro, Bahnschrift;
 }
-.dashboard-main .row form .item input[type=text]::placeholder ,
-.dashboard-main .row form .item input[type=password]::placeholder {
-  color: #161d31;
-}
 .dashboard-main .row form .item input[type=text]:focus ,
 .dashboard-main .row form .item input[type=password]:focus {
   border: solid 2px #6754e0;

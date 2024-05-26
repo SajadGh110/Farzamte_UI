@@ -11,7 +11,7 @@ import {Observable} from "rxjs";
 export class ProfileService {
   private token: string = "bearer " + localStorage.getItem('token');
 
-  private baseUrl:string = "https://localhost:7108/api/Users/";
+  private baseUrl:string = "https://api.farzamte.com/api/Users/";
 
   constructor(private http : HttpClient, private router : Router) { }
 
