@@ -39,7 +39,7 @@ export class ProfileComponent implements OnInit{
 
   ngOnInit() {
     let id : number = this.auth.getUserID();
-    this.profile.getinfo(id).subscribe(response => {
+    this.profile.getinfo().subscribe(response => {
       this.formData.firstName = response.firstName;
       this.formData.lastName = response.lastName;
       this.formData.userName = response.userName;

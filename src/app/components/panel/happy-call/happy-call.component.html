@@ -3,7 +3,72 @@
   <app-dashboard-sidebar></app-dashboard-sidebar>
   <section class="dashboard-main">
     <section class="row">
-      <p>happy-call content!</p>
+      <section class="datepicker-input">
+        <section class="detail">
+          <h2>انتخاب بازه زمانی</h2>
+        </section>
+        <form [formGroup]="dateform">
+          <label for="StartDate">Start Date : </label>
+          <input type="date" id="StartDate" formControlName="StartDate" value="{{StartDate}}">
+          <label for="EndDate">End Date : </label>
+          <input type="date" id="EndDate" formControlName="EndDate" value="{{EndDate}}">
+          <input type="submit" value="Search" (click)="OnUpdateDate()">
+        </form>
+      </section>
+    </section>
+    <section class="row">
+      <section class="detail">
+        <h2>آمار کل تماس ها</h2>
+      </section>
+      <section class="loading-spinner" *ngIf="!flag_count">
+        <mat-spinner></mat-spinner>
+      </section>
+      <section class="bar-chart-c1" *ngIf="flag_count">
+        <ngx-charts-line-chart
+          [results]="series_happycalls"
+          [gradient]="false"
+          [animations]="true"
+          [customColors]="customcolor"
+          [xAxis]="true"
+          [yAxis]="true"
+          [legend]="true"
+          [roundDomains]="true"
+          [showXAxisLabel]="true"
+          [showYAxisLabel]="true"
+          [xAxisLabel]="'تاریخ'"
+          [yAxisLabel]="'تعداد'">
+        </ngx-charts-line-chart>
+      </section>
+    </section>
+    <section class="row">
+      <section class="detail">
+        <h2>لیست موقت</h2>
+      </section>
+      <section class="loading-spinner" *ngIf="!flag_data">
+        <mat-spinner></mat-spinner>
+      </section>
+      <section class="table-c1" *ngIf="flag_data">
+        <section class="table">
+          <section class="table-header">
+            <section class="cell-header"><p>کد</p></section>
+            <section class="cell-header"><p>مشتری</p></section>
+            <section class="cell-header"><p>اوپراتور</p></section>
+            <section class="cell-header"><p>وضعیت تماس</p></section>
+            <section class="cell-header"><p>حساب مشتری</p></section>
+            <section class="cell-header"><p>تاریخ ثبت نام</p></section>
+            <section class="cell-header"><p>تاریخ تماس</p></section>
+          </section>
+          <section *ngFor="let item of data" class="table-row">
+            <section class="cell"><p>{{item.id}}</p></section>
+            <section class="cell"><p>{{item.callTo}}</p></section>
+            <section class="cell"><p>{{item.callFrom}}</p></section>
+            <section class="cell"><p>{{item.statusReason}}</p></section>
+            <section class="cell"><p>{{item.tradeStatus}}</p></section>
+            <section class="cell"><p>{{item.registerDate}}</p></section>
+            <section class="cell"><p>{{item.createDate}}</p></section>
+          </section>
+        </section>
+      </section>
     </section>
   </section>
 </section>

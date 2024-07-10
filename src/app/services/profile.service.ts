@@ -1,29 +1,20 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http'
-import {Router} from "@angular/router";
-import {jwtDecode} from "jwt-decode";
-import {AuthService} from "./auth.service";
 import {Observable} from "rxjs";
+import {AppConfigService} from "./app-config.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProfileService {
-  private token: string = "bearer " + localStorage.getItem('token');
+  constructor(private http : HttpClient, private appConfigService: AppConfigService) { }
+  header = new HttpHeaders().append("api-key",this.appConfigService.getApiKey()).append("Authorization",this.appConfigService.getToken());
 
-  private baseUrl:string = "https://api.farzamte.com/api/Users/";
-
-  constructor(private http : HttpClient, private router : Router) { }
-
-  getinfo(id:number):Observable<any>{
-    let header = new HttpHeaders();
-    header = header.append("api-key","DWV1PdzszOW3BLen").append("Authorization",this.token);
-    return this.http.get(`${this.baseUrl}GetUser?id=${id}`,{headers:header});
+  getinfo():Observable<any>{
+    return this.http.get(`${this.appConfigService.getApiUrl()}Users/GetUser`,{headers:this.header});
   }
 
   useredit(user:any):Observable<any>{
-    let header = new HttpHeaders();
-    header = header.append("api-key","DWV1PdzszOW3BLen").append("Authorization",this.token);
-    return this.http.put(`${this.baseUrl}EditUser`,user,{headers:header});
+    return this.http.put(`${this.appConfigService.getApiUrl()}Users/EditUser`,user,{headers:this.header});
   }
 }

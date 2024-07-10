@@ -3,24 +3,21 @@ import {HttpClient, HttpHeaders} from '@angular/common/http'
 import {Router} from "@angular/router";
 import {jwtDecode} from "jwt-decode";
 import {JwtHelperService} from "./jwt-helper.service";
+import {AppConfigService} from "./app-config.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-
-  private baseUrl:string = "https://api.farzamte.com/api/Users/"
-
-  constructor(private http : HttpClient, private router : Router, private jwt : JwtHelperService) { }
+  constructor(private http : HttpClient, private router : Router, private jwt : JwtHelperService, private appConfigService: AppConfigService) { }
+  header = new HttpHeaders().append("api-key",this.appConfigService.getApiKey());
 
   register(userObj:any){
-    return this.http.post<any>(`${this.baseUrl}Register`,userObj);
+    return this.http.post<any>(`${this.appConfigService.getApiUrl()}Users/Register`,userObj,{headers:this.header});
   }
 
   login(userObj:any){
-    let header = new HttpHeaders();
-    header = header.append("api-key","DWV1PdzszOW3BLen");
-    return this.http.post<any>(`${this.baseUrl}Login`,userObj,{headers:header});
+    return this.http.post<any>(`${this.appConfigService.getApiUrl()}Users/Login`,userObj,{headers:this.header});
   }
 
   logout(){
