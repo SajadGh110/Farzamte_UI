@@ -4,7 +4,14 @@ import {DashboardSidebarComponent} from "../../Template/dashboard-sidebar/dashbo
 import {FormBuilder, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {NgToastService} from "ng-angular-popup";
 import {format, subDays} from "date-fns";
-import {BarChartModule, LineChartModule, NumberCardModule, ScaleType} from "@swimlane/ngx-charts";
+import {
+  BarChartModule,
+  LegendPosition,
+  LineChartModule,
+  NumberCardModule,
+  PieChartModule,
+  ScaleType, TreeMapModule
+} from "@swimlane/ngx-charts";
 import {NgForOf, NgIf} from "@angular/common";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {HappycallService} from "../../../services/happycall.service";
@@ -21,7 +28,9 @@ import {HappycallService} from "../../../services/happycall.service";
     NgIf,
     LineChartModule,
     NgForOf,
-    NumberCardModule
+    NumberCardModule,
+    PieChartModule,
+    TreeMapModule
   ],
   templateUrl: './happy-call.component.html',
   styleUrl: './happy-call.component.scss'
@@ -35,6 +44,11 @@ export class HappyCallComponent implements OnInit {
   dateform! : FormGroup;
   protected flag_count:boolean=false;
   protected flag_g1:boolean=false;
+  protected flag_g4:boolean=false;
+  protected flag_ActiveIntroduction:boolean=false;
+  protected flag_InactiveIntroduction:boolean=false;
+  protected flag_ActiveChoosingBrokerage:boolean=false;
+  protected flag_InactiveChoosingBrokerage:boolean=false;
   public constructor(private toast:NgToastService, private fb:FormBuilder, private getData:HappycallService) {}
   //StartDate:string = format(subDays(this.currentDate, 30), 'yyyy-MM-dd');
   //EndDate:string = format(this.currentDate, 'yyyy-MM-dd');
@@ -42,6 +56,11 @@ export class HappyCallComponent implements OnInit {
   EndDate:string = "2024-06-01";
   series_happycalls: any[] = [{ name: "کل تماس ها", series: [] }, { name: "تماس های موفق", series: [] }, { name: "تماس های ناموفق", series: [] }];
   series_numbercards: any[] = [];
+  series_ActiveIntroduction: any[] = [];
+  series_InactiveIntroduction: any[] = [];
+  series_ActiveChoosingBrokerage: any[] = [];
+  series_InactiveChoosingBrokerage: any[] = [];
+  AllCalls_Count:Number = 0;
   Customers_Count:Number = 0;
   Active_Customers_Count:Number = 0;
   Inactive_Customers_Count:Number = 0;
@@ -49,6 +68,19 @@ export class HappyCallComponent implements OnInit {
   ActiveAfterCalls_Count:Number = 0;
   ActiveInOtherBrockers_Count:Number = 0;
   ExplanationClub_Count:Number = 0;
+  ActiveSuccessfulCalls_Count:Number = 0;
+  InactiveSuccessfulCalls_Count:Number = 0;
+  DisinclinationCalls_Count:Number = 0;
+  ReCalls_Count:Number = 0;
+  LackInfoCalls_Count:Number = 0;
+  RepeatCalls_Count:Number = 0;
+  UnResponsiveCalls_Count:Number = 0;
+  OffCalls_Count:Number = 0;
+  RejectCalls_Count:Number = 0;
+  UnavailableCalls_Count:Number = 0;
+  BusyCalls_Count:Number = 0;
+  UserRequests_Count:Number = 0;
+
   async ngOnInit(){
     this.dateform = this.fb.group({
       StartDate: [''],
@@ -61,7 +93,17 @@ export class HappyCallComponent implements OnInit {
 
   async do(stDate:string,enDate:string){
     this.flag_count = false;
+    this.flag_g1 = false;
+    this.flag_ActiveIntroduction = false;
+    this.flag_InactiveIntroduction = false;
+    this.flag_ActiveChoosingBrokerage = false;
+    this.flag_InactiveChoosingBrokerage = false;
     this.series_happycalls = [{ name: "کل تماس ها", series: [] }, { name: "تماس های موفق", series: [] }, { name: "تماس های ناموفق", series: [] }];
+    this.series_numbercards = [];
+    this.series_ActiveIntroduction = [];
+    this.series_InactiveIntroduction = [];
+    this.series_ActiveChoosingBrokerage = [];
+    this.series_InactiveChoosingBrokerage = [];
     try {
       // ------------------------------------
       let res1 = await this.getData.get_Total_Count_Day(stDate,enDate).toPromise();
@@ -126,8 +168,42 @@ export class HappyCallComponent implements OnInit {
           "value": this.ExplanationClub_Count
         }
         ]
-
       this.flag_g1 = true;
+
+      let res_ActiveIntroduction = await this.getData.get_ActiveIntroduction(stDate,enDate).toPromise();
+      for (let i = 0; i < res_ActiveIntroduction.length; i++)
+        this.series_ActiveIntroduction.push({ name: res_ActiveIntroduction[i].introduction, value: res_ActiveIntroduction[i].count });
+      this.flag_ActiveIntroduction = true;
+
+      let res_InactiveIntroduction = await this.getData.get_InactiveIntroduction(stDate,enDate).toPromise();
+      for (let i = 0; i < res_InactiveIntroduction.length; i++)
+        this.series_InactiveIntroduction.push({ name: res_InactiveIntroduction[i].introduction, value: res_InactiveIntroduction[i].count });
+      this.flag_InactiveIntroduction = true;
+
+      let res_ActiveChoosingBrokerage = await this.getData.get_ActiveChoosingBrokerage(stDate,enDate).toPromise();
+      for (let i = 0; i < res_ActiveChoosingBrokerage.length; i++)
+        this.series_ActiveChoosingBrokerage.push({ name: res_ActiveChoosingBrokerage[i].choosingBrokerage, value: res_ActiveChoosingBrokerage[i].count });
+      this.flag_ActiveChoosingBrokerage = true;
+
+      let res_InactiveChoosingBrokerage = await this.getData.get_InactiveChoosingBrokerage(stDate,enDate).toPromise();
+      for (let i = 0; i < res_InactiveChoosingBrokerage.length; i++)
+        this.series_InactiveChoosingBrokerage.push({ name: res_InactiveChoosingBrokerage[i].choosingBrokerage, value: res_InactiveChoosingBrokerage[i].count });
+      this.flag_InactiveChoosingBrokerage = true;
+
+      this.AllCalls_Count = await this.getData.get_AllCalls_Count(stDate,enDate).toPromise();
+      this.ActiveSuccessfulCalls_Count = await this.getData.get_ActiveSuccessfulCalls_Count(stDate,enDate).toPromise();
+      this.InactiveSuccessfulCalls_Count = await this.getData.get_InactiveSuccessfulCalls_Count(stDate,enDate).toPromise();
+      this.DisinclinationCalls_Count = await this.getData.get_DisinclinationCalls_Count(stDate,enDate).toPromise();
+      this.ReCalls_Count = await this.getData.get_ReCalls_Count(stDate,enDate).toPromise();
+      this.LackInfoCalls_Count = await this.getData.get_LackInfoCalls_Count(stDate,enDate).toPromise();
+      this.RepeatCalls_Count = await this.getData.get_RepeatCalls_Count(stDate,enDate).toPromise();
+      this.UnResponsiveCalls_Count = await this.getData.get_UnResponsiveCalls_Count(stDate,enDate).toPromise();
+      this.OffCalls_Count = await this.getData.get_OffCalls_Count(stDate,enDate).toPromise();
+      this.RejectCalls_Count = await this.getData.get_RejectCalls_Count(stDate,enDate).toPromise();
+      this.UnavailableCalls_Count = await this.getData.get_UnavailableCalls_Count(stDate,enDate).toPromise();
+      this.BusyCalls_Count = await this.getData.get_BusyCalls_Count(stDate,enDate).toPromise();
+      this.flag_g4 = true;
+
     }catch (error:any){
       this.toast.error({ detail: "ERROR", summary: error.message, duration: 5000, position: 'topRight' });
     }
@@ -139,4 +215,6 @@ export class HappyCallComponent implements OnInit {
     this.EndDate = this.dateform.controls['EndDate'].value;
     await this.do(this.StartDate,this.EndDate);
   }
+
+  protected readonly LegendPosition = LegendPosition;
 }

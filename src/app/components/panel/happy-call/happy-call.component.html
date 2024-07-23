@@ -57,7 +57,134 @@
     </section>
     <section class="row">
       <section class="detail">
-        <h2>بزودی ...</h2>
+        <h2>مسیر آشنایی با کارگزاری</h2>
+      </section>
+      <section class="both-view">
+        <section class="Active-Customers">
+          <section class="detail">
+            <h3>مشتریان فعال</h3>
+          </section>
+          <section class="loading-spinner" *ngIf="!flag_ActiveIntroduction">
+            <mat-spinner></mat-spinner>
+          </section>
+          <section class="pie-chart-c2" *ngIf="flag_ActiveIntroduction">
+            <ngx-charts-advanced-pie-chart
+              [results]="series_ActiveIntroduction"
+              [animations]="true"
+              [scheme]="'vivid'">
+            </ngx-charts-advanced-pie-chart>
+          </section>
+        </section>
+        <section class="Inactive-Customers">
+          <section class="detail">
+            <h3>مشتریان غیرفعال</h3>
+          </section>
+          <section class="loading-spinner" *ngIf="!flag_InactiveIntroduction">
+            <mat-spinner></mat-spinner>
+          </section>
+          <section class="pie-chart-c2" *ngIf="flag_InactiveIntroduction">
+            <ngx-charts-bar-vertical
+              [results]="series_InactiveIntroduction"
+              [animations]="true"
+              [scheme]="'vivid'"
+              [xAxis]="true"
+              [yAxis]="true"
+              [showDataLabel]="true"
+              [rotateXAxisTicks]="false"
+              [legend]="false"
+              [showXAxisLabel]="true"
+              [showYAxisLabel]="true">
+            </ngx-charts-bar-vertical>
+          </section>
+        </section>
+      </section>
+    </section>
+    <section class="row">
+      <section class="detail">
+        <h2>دلیل انتخاب کارگزاری</h2>
+      </section>
+      <section class="both-view">
+        <section class="Active-Customers">
+          <section class="detail">
+            <h3>مشتریان فعال</h3>
+          </section>
+          <section class="loading-spinner" *ngIf="!flag_ActiveChoosingBrokerage">
+            <mat-spinner></mat-spinner>
+          </section>
+          <section class="pie-chart-c2" *ngIf="flag_ActiveChoosingBrokerage">
+            <ngx-charts-pie-chart
+              [results]="series_ActiveChoosingBrokerage"
+              [animations]="true"
+              [labels]="true"
+              [scheme]="'vivid'">
+            </ngx-charts-pie-chart>
+          </section>
+        </section>
+        <section class="Inactive-Customers">
+          <section class="detail">
+            <h3>مشتریان غیرفعال</h3>
+          </section>
+          <section class="loading-spinner" *ngIf="!flag_InactiveChoosingBrokerage">
+            <mat-spinner></mat-spinner>
+          </section>
+          <section class="pie-chart-c2" *ngIf="flag_InactiveChoosingBrokerage">
+            <ngx-charts-tree-map
+              [results]="series_InactiveChoosingBrokerage"
+              [animations]="true"
+              [scheme]="'vivid'">
+            </ngx-charts-tree-map>
+          </section>
+        </section>
+      </section>
+    </section>
+    <section class="row">
+      <section class="detail">
+        <h2>گزارش ارتباطات</h2>
+      </section>
+      <section class="loading-spinner" *ngIf="!flag_g4">
+        <mat-spinner></mat-spinner>
+      </section>
+      <section class="data-g4" *ngIf="flag_g4">
+        <section class="table-g4">
+          <section class="table-header-g4">
+            <section class="table-header-none-g4"></section>
+            <section class="cell-header-key-g4">تعداد کل ارتباطات</section>
+            <section class="cell-header-value-g4">{{AllCalls_Count}}</section>
+          </section>
+          <section class="table-body-g4">
+            <section class="table-column-lbl-g4">
+              <section class="cell-lbl-g4">وضعیت تماس ها</section>
+            </section>
+            <section class="table-column-key-g4">
+              <section class="cell-key-g4">جمع کل تماس موفق</section>
+              <section class="cell-key-g4">تماس موفق مشتریان فعال</section>
+              <section class="cell-key-g4">تماس موفق مشتریان غیرفعال</section>
+              <section class="cell-key-g4">عدم تمایل به مکالمه</section>
+              <section class="cell-key-g4">تماس مجدد</section>
+              <section class="cell-key-g4">عدم اطلاع</section>
+              <section class="cell-key-g4">تماس تکراری</section>
+              <section class="cell-key-g4">عدم پاسخگویی</section>
+              <section class="cell-key-g4">خاموش</section>
+              <section class="cell-key-g4">رد کردن</section>
+              <section class="cell-key-g4">غیر قابل دسترس</section>
+              <section class="cell-key-g4">مشغول</section>
+            </section>
+            <section class="table-column-value-g4">
+              <section class="cell-value-g4">{{SuccessfulCalls_Count}}</section>
+              <section class="cell-value-g4">{{ActiveSuccessfulCalls_Count}}</section>
+              <section class="cell-value-g4">{{InactiveSuccessfulCalls_Count}}</section>
+              <section class="cell-value-g4">{{DisinclinationCalls_Count}}</section>
+              <section class="cell-value-g4">{{ReCalls_Count}}</section>
+              <section class="cell-value-g4">{{LackInfoCalls_Count}}</section>
+              <section class="cell-value-g4">{{RepeatCalls_Count}}</section>
+              <section class="cell-value-g4">{{UnResponsiveCalls_Count}}</section>
+              <section class="cell-value-g4">{{OffCalls_Count}}</section>
+              <section class="cell-value-g4">{{RejectCalls_Count}}</section>
+              <section class="cell-value-g4">{{UnavailableCalls_Count}}</section>
+              <section class="cell-value-g4">{{BusyCalls_Count}}</section>
+            </section>
+          </section>
+        </section>
       </section>
     </section>
   </section>
