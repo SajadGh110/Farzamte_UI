@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {DashboardSidebarComponent} from "../../Template/dashboard-sidebar/dashboard-sidebar.component";
-import {DashboardTopmenuComponent} from "../../Template/dashboard-topmenu/dashboard-topmenu.component";
+import {Menu1Component} from "../../Template/menu1/menu1.component";
 
 @Component({
   selector: 'app-dashboard',
@@ -8,7 +8,7 @@ import {DashboardTopmenuComponent} from "../../Template/dashboard-topmenu/dashbo
   standalone: true,
   imports: [
     DashboardSidebarComponent,
-    DashboardTopmenuComponent
+    Menu1Component
   ],
   styleUrls: ['./dashboard.component.scss']
 })

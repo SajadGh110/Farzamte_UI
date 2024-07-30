@@ -8,9 +8,7 @@ import {NgToastService} from "ng-angular-popup";
   providedIn: 'root'
 })
 class AuthGuard{
-  constructor(private auth : AuthService, private router : Router, private toast : NgToastService) {
-
-  }
+  constructor(private auth : AuthService, private router : Router, private toast : NgToastService) {}
   canActivate(): boolean {
     if (this.auth.isLoggedIn()){
       return true;
@@ -20,7 +18,6 @@ class AuthGuard{
       return false;
     }
   }
-
   IsSignedIn(): boolean {
     if (this.auth.isLoggedIn()){
       this.toast.info({detail:"Redirect" , summary:"You Are Signed In Currently , Go to Your dashboard!"});

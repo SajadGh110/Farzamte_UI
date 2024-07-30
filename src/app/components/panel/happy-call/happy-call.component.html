@@ -1,21 +1,6 @@
 <section class="dashboard-wrapper">
-  <app-dashboard-topmenu></app-dashboard-topmenu>
-  <app-dashboard-sidebar></app-dashboard-sidebar>
+  <app-dashboard-sidebar (formSubmitted)="OnUpdateDate()"></app-dashboard-sidebar>
   <section class="dashboard-main">
-    <section class="row">
-      <section class="datepicker-input">
-        <section class="detail">
-          <h2>انتخاب بازه زمانی</h2>
-        </section>
-        <form [formGroup]="dateform">
-          <label for="StartDate">Start Date : </label>
-          <input type="date" id="StartDate" formControlName="StartDate" value="{{StartDate}}">
-          <label for="EndDate">End Date : </label>
-          <input type="date" id="EndDate" formControlName="EndDate" value="{{EndDate}}">
-          <input type="submit" value="Search" (click)="OnUpdateDate()">
-        </form>
-      </section>
-    </section>
     <section class="row">
       <section class="detail">
         <h2>آمار تماس ها</h2>
@@ -24,117 +9,53 @@
         <mat-spinner></mat-spinner>
       </section>
       <section class="line-chart-c1" *ngIf="flag_count">
-        <ngx-charts-line-chart
-          [results]="series_happycalls"
-          [gradient]="false"
-          [animations]="true"
-          [customColors]="linecharts_colors"
-          [xAxis]="true"
-          [yAxis]="true"
-          [legend]="true"
-          [roundDomains]="true"
-          [showXAxisLabel]="true"
-          [showYAxisLabel]="true"
-          [xAxisLabel]="'تاریخ'"
-          [yAxisLabel]="'تعداد'">
-        </ngx-charts-line-chart>
+        <section echarts [options]="series_calls_count_day"></section>
       </section>
     </section>
     <section class="row">
       <section class="detail">
-        <h2>آمار مشتریان - (نسخه بتا)</h2>
+        <h2>آمار مشتریان</h2>
       </section>
       <section class="loading-spinner" *ngIf="!flag_g1">
         <mat-spinner></mat-spinner>
       </section>
-      <section class="number-card-c1">
-        <ngx-charts-number-card
-          [results]="series_numbercards"
-          [customColors]="numbercards_colors"
-          [animations]="true">
-        </ngx-charts-number-card>
+      <section class="number-card-c2" *ngIf="flag_g1">
+        <section class="card Customers_Count"><p class="key">تعداد مشتریان</p><p class="value">{{Customers_Count}}</p></section>
+        <section class="card Active_Customers_Count"><p class="key">مشتریان فعال</p><p class="value">{{Active_Customers_Count}}</p></section>
+        <section class="card Inactive_Customers_Count"><p class="key">مشتریان غیرفعال</p><p class="value">{{Inactive_Customers_Count}}</p></section>
+        <section class="card SuccessfulCalls_Count"><p class="key">تماس موفق</p><p class="value">{{SuccessfulCalls_Count}}</p></section>
+        <section class="card ActiveAfterCalls_Count"><p class="key">فعال شدن پس از هپی کال</p><p class="value">{{ActiveAfterCalls_Count}}</p></section>
+        <section class="card ActiveInOtherBrokers_Count"><p class="key">فعال در سایر کارگزاری ها</p><p class="value">{{ActiveInOtherBrokers_Count}}</p></section>
+        <section class="card ExplanationClub_Count"><p class="key">ارائه توضیحات درمورد باشگاه مشتریان</p><p class="value">{{ExplanationClub_Count}}</p></section>
+      </section>
+      <section class="st_to_en">
+        <p>{{st_to_en}}</p>
       </section>
     </section>
     <section class="row">
       <section class="detail">
         <h2>مسیر آشنایی با کارگزاری</h2>
       </section>
-      <section class="both-view">
-        <section class="Active-Customers">
-          <section class="detail">
-            <h3>مشتریان فعال</h3>
-          </section>
-          <section class="loading-spinner" *ngIf="!flag_ActiveIntroduction">
-            <mat-spinner></mat-spinner>
-          </section>
-          <section class="pie-chart-c2" *ngIf="flag_ActiveIntroduction">
-            <ngx-charts-advanced-pie-chart
-              [results]="series_ActiveIntroduction"
-              [animations]="true"
-              [scheme]="'vivid'">
-            </ngx-charts-advanced-pie-chart>
-          </section>
-        </section>
-        <section class="Inactive-Customers">
-          <section class="detail">
-            <h3>مشتریان غیرفعال</h3>
-          </section>
-          <section class="loading-spinner" *ngIf="!flag_InactiveIntroduction">
-            <mat-spinner></mat-spinner>
-          </section>
-          <section class="pie-chart-c2" *ngIf="flag_InactiveIntroduction">
-            <ngx-charts-bar-vertical
-              [results]="series_InactiveIntroduction"
-              [animations]="true"
-              [scheme]="'vivid'"
-              [xAxis]="true"
-              [yAxis]="true"
-              [showDataLabel]="true"
-              [rotateXAxisTicks]="false"
-              [legend]="false"
-              [showXAxisLabel]="true"
-              [showYAxisLabel]="true">
-            </ngx-charts-bar-vertical>
-          </section>
-        </section>
+      <section class="loading-spinner" *ngIf="!flag_Introduction">
+        <mat-spinner></mat-spinner>
+      </section>
+      <section class="pie-chart-c2" *ngIf="flag_Introduction">
+        <section echarts [options]="series_Introduction"></section>
       </section>
     </section>
     <section class="row">
       <section class="detail">
         <h2>دلیل انتخاب کارگزاری</h2>
       </section>
-      <section class="both-view">
-        <section class="Active-Customers">
-          <section class="detail">
-            <h3>مشتریان فعال</h3>
-          </section>
-          <section class="loading-spinner" *ngIf="!flag_ActiveChoosingBrokerage">
-            <mat-spinner></mat-spinner>
-          </section>
-          <section class="pie-chart-c2" *ngIf="flag_ActiveChoosingBrokerage">
-            <ngx-charts-pie-chart
-              [results]="series_ActiveChoosingBrokerage"
-              [animations]="true"
-              [labels]="true"
-              [scheme]="'vivid'">
-            </ngx-charts-pie-chart>
-          </section>
-        </section>
-        <section class="Inactive-Customers">
-          <section class="detail">
-            <h3>مشتریان غیرفعال</h3>
-          </section>
-          <section class="loading-spinner" *ngIf="!flag_InactiveChoosingBrokerage">
-            <mat-spinner></mat-spinner>
-          </section>
-          <section class="pie-chart-c2" *ngIf="flag_InactiveChoosingBrokerage">
-            <ngx-charts-tree-map
-              [results]="series_InactiveChoosingBrokerage"
-              [animations]="true"
-              [scheme]="'vivid'">
-            </ngx-charts-tree-map>
-          </section>
-        </section>
+      <section class="loading-spinner" *ngIf="!flag_ChoosingBrokerage">
+        <mat-spinner></mat-spinner>
+      </section>
+      <section class="both-view" *ngIf="flag_ChoosingBrokerage">
+        <section class="tree-map-c1" echarts [options]="series_ChoosingBrokerage_Active_tmp"></section>
+        <section class="tree-map-c1" echarts [options]="series_ChoosingBrokerage_Inactive_tmp"></section>
+      </section>
+      <section class="st_to_en">
+        <p>{{st_to_en}}</p>
       </section>
     </section>
     <section class="row">

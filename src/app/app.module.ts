@@ -30,6 +30,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {NgxChartsModule} from "@swimlane/ngx-charts";
 import {DashboardTopmenuComponent} from "./components/Template/dashboard-topmenu/dashboard-topmenu.component";
 import {DashboardSidebarComponent} from "./components/Template/dashboard-sidebar/dashboard-sidebar.component";
+import {NgxEchartsModule} from "ngx-echarts";
 @NgModule({
   declarations: [
     AppComponent,
@@ -43,7 +44,6 @@ import {DashboardSidebarComponent} from "./components/Template/dashboard-sidebar
     CrmComponent,
     CallcenterComponent,
     Footer1Component,
-    Menu1Component,
     Menu2Component,
     Footer2Component,
     HeaderComponent,
@@ -64,9 +64,17 @@ import {DashboardSidebarComponent} from "./components/Template/dashboard-sidebar
     NgxChartsModule,
     DashboardTopmenuComponent,
     DashboardSidebarComponent,
-    DashboardComponent
+    Menu1Component,
+    DashboardComponent,
+    NgxEchartsModule.forRoot({
+      echarts: () => import('echarts')
+    })
   ],
   providers: [],
+  exports: [
+    Menu1Component,
+    Footer1Component
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -8,7 +8,8 @@ $Font-Family-Fa : Cinema, Bahnschrift;
 $Dash-Background : #161d31;
 $Dash-Background-Secondary : #283046;
 $Dash-Foreground : 0;
-
+$table_one: #a8bdff;
+$table_two: #7995eb;
 
 @font-face {
   font-family: Acumin_vc;
@@ -146,33 +147,44 @@ app-note1 .note {
 .dashboard-wrapper {
   display: flex;
   direction: ltr;
-  align-items: center;
-  justify-content: flex-start;
-  flex-direction: column;
-  position: relative;
-  transition: .5s cubic-bezier(.685,.0473,.346,1);
+  flex-direction: row-reverse;
+  background-color: #f2f2f2;
+  transition: 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);
 }
 .dashboard-main {
   display: flex;
+  direction: rtl;
   flex-direction: column;
-  width: calc(100% - 15rem);
-  padding: calc(2rem + 4.45rem + 1.3rem) 2rem 0;
-  margin-left: 15rem;
-  min-height: 100vh;
-  background: $Dash-Background;
-  z-index: 8;
+  width: calc(100% - 18rem);
+  min-height: calc(100vh - 4rem);
+  margin: 2rem 1rem 0 2rem;
+}
+.dashboard-main-small {
+  width: calc(100% - 17rem - 19rem);
+  min-height: calc(100vh - 4rem);
+  margin: 2rem 1rem;
 }
 .dashboard-main .row {
   display: flex;
   flex-wrap: nowrap;
   flex-direction: column;
-  background: #283046;
   border-radius: .428rem;
   padding: .8rem 1rem;
+  background-color: #ffffff;
+  box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
   margin-bottom: 2rem;
 }
+.dashboard-main .solo {
+  margin-bottom: 0;
+}
+.dashboard-main-small .row {
+  width: 100%;
+  height: 100%;
+  align-items: center;
+}
 .dashboard-main .row p {
-  color: #ffffff;
+  font: 14px Cinema, Myriad Pro, Bahnschrift, serif;
+  color: black;
 }
 app-dashboard-topmenu{
   position: fixed;
@@ -186,36 +198,20 @@ app-dashboard-topmenu{
   z-index: 10;
 }
 app-dashboard-sidebar{
-  width: 15rem;
-  height: 100vh;
+  min-width: 12rem;
   display: flex;
+  margin: 2rem 2rem 2rem 1rem;
   flex-direction: column;
+}
+app-dashboard-sidebar aside.v1 {
+  width: 15rem;
+}
+app-dashboard-sidebar aside.v2 {
+  width: 12rem;
+}
+app-dashboard-sidebar aside.v2 nav {
+  width: inherit;
   position: fixed;
-  left: 0;
-  background: $Dash-Background-Secondary;
-  z-index: 9;
-}
-app-dashboard-topmenu:has(input:checked) ~ app-dashboard-sidebar {
-  width: 5rem;
-}
-app-dashboard-topmenu:has(input:checked) ~ .dashboard-main {
-  width: calc(100% - 5rem);
-  margin-left: 5rem;
-}
-.dashboard-wrapper:has(input:checked) app-dashboard-topmenu {
-  width: calc(100vw - (100vw - 100%) - calc(2rem * 2) - 5rem);
-}
-app-dashboard-topmenu:has(input:checked) ~ app-dashboard-sidebar .main-slider li a p {
-  display: none;
-}
-app-dashboard-topmenu:has(input:checked) ~ app-dashboard-sidebar .main-slider li a{
-  justify-content: center;
-}
-app-dashboard-topmenu:has(input:checked) ~ app-dashboard-sidebar .logo {
-  display: none;
-}
-app-dashboard-topmenu:has(input:checked) ~ app-dashboard-sidebar .logo-mini {
-  display: block;
 }
 .svgedit{
   filter: invert(1);
@@ -223,10 +219,6 @@ app-dashboard-topmenu:has(input:checked) ~ app-dashboard-sidebar .logo-mini {
 .svg_menu_color {
   fill: #ffffff;
 }
-.menu_item_selected{
-  background-color: #6754e0;
-}
-
 
 /* Adaptive Codes */
 @media screen and (max-width:1200px){
@@ -281,62 +273,64 @@ app-dashboard-topmenu:has(input:checked) ~ app-dashboard-sidebar .logo-mini {
 .mat-mdc-progress-spinner .mdc-circular-progress__determinate-circle, .mat-mdc-progress-spinner .mdc-circular-progress__indeterminate-circle-graphic {
   stroke: #1b9ac4!important;
 }
-.advanced-pie-legend .total-label,
-.advanced-pie-legend .total-value,
-.advanced-pie-legend .legend-items-container .legend-items .legend-item .item-value,
-.advanced-pie-legend .legend-items-container .legend-items .legend-item .item-label,
-.advanced-pie-legend .legend-items-container .legend-items .legend-item .item-percent{
-  color: white;
-}
 .advanced-pie-legend .legend-items-container .legend-items .legend-item .item-value{
   margin-top: 0!important;
-}
-.ng-star-inserted,
-.pie-grid .percent-label,
-.ngx-charts .label,
-.pie-label{
-  fill: white;
 }
 .ngx-charts .gridline-path{
   stroke: #161616!important;
 }
 .line-chart-c1{
   width: 100%;
-  height: 400px;
+  direction: ltr;
 }
 .bar-chart-c1{
   width: 100%;
   min-height: 500px;
+  direction: ltr;
 }
 .pie-chart-c1{
   width: 60%;
   height: 400px;
+  direction: ltr;
 }
 .pie-chart-c2{
   width: 100%;
-  height: 400px;
+  direction: ltr;
 }
 .tree-map-c1{
-  width: 100%;
+  width: 50%;
+  direction: ltr;
 }
 .pie-grid-c1{
   width: 40%;
   height: 400px;
+  direction: ltr;
 }
 .data-g4{
   width: 50%;
   margin: auto;
+  direction: ltr;
 }
 .table-c1 {
   width: 100%;
+  direction: ltr;
 }
 .number-card-c1 {
   width: 100%;
   max-width: 1030px;
   height: 400px;
+  direction: ltr;
+}
+.number-card-c2{
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 .advanced-pie-legend .legend-items-container .legend-items::-webkit-scrollbar {
-
   width: 12px;
   border-radius: 20px;
 }
@@ -362,46 +356,48 @@ app-dashboard-topmenu:has(input:checked) ~ app-dashboard-sidebar .logo-mini {
 }
 
 .datepicker-input{
-  display: flex;
   width: 100%;
-  justify-content: space-between;
-  align-items: center;
-  flex-direction: row-reverse;
+  margin-top: 1rem;
+  justify-content: center;
 }
 .datepicker-input form {
   display: flex;
+  flex-direction: column;
   align-items: center;
 }
 .datepicker-input label {
-  color: white;
-  margin-right: 1rem;
+  color: #65828f;
   font: 16px Acumin_vc;
+  margin-bottom: 5px;
 }
 
 .datepicker-input input {
-  margin-right: 1rem;
+  margin-bottom: 15px;
 }
 
 .datepicker-input input[type=date]{
   padding: 5px;
   font: 18px Acumin_vc;
-  background-color: #c9c9ff;
-  border-radius: 5px;
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  border-bottom: 2px solid #65828f;
+  background-color: #f2f2f2;
 }
 .datepicker-input input[type=date]:hover{
-  background-color: #b8a9ff;
   cursor: pointer;
 }
 
 .datepicker-input input[type=submit]{
-  background-color: #c9c9ff;
   padding: 8px 8px 5px 8px;
   font: 18px Acumin_vc;
-  border: none;
+  border: 2px solid #65828f;
   border-radius: 5px;
+  color: #65828f;
 }
 .datepicker-input input[type=submit]:hover{
-  background-color: #b8a9ff;
+  background-color: #65828f;
+  color: #ffffff;
   cursor: pointer;
 }
 .row .both-chart {
@@ -413,14 +409,13 @@ app-dashboard-topmenu:has(input:checked) ~ app-dashboard-sidebar .logo-mini {
 .row .detail {
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
 }
 .row .detail h2,
 .row .detail p {
-  color: white;
+  color: black;
   text-align: right;
-  font: 22px Cinema , Bahnschrift;
-  direction: rtl;
+  font: 22px Yekan , Bahnschrift;
+  font-weight: bold;
 }
 .row .detail h2,
 .row .detail h3{
@@ -433,17 +428,8 @@ app-dashboard-topmenu:has(input:checked) ~ app-dashboard-sidebar .logo-mini {
 }
 .both-view{
   display: flex;
-  flex-direction: row-reverse;
-}
-.Active-Customers,
-.Inactive-Customers{
-  width: 50%;
-}
-.Active-Customers h3{
-  color: chartreuse;
-}
-.Inactive-Customers h3{
-  color: crimson;
+  flex-direction: row;
+  width: 100%;
 }
 .row .detail,
 .row .line-chart-c1,
@@ -510,9 +496,9 @@ text.value-text {
 .table-header-g4{
   display: flex;
   flex-direction: row-reverse;
-  border-left: 2px solid #9e8ffe;
-  border-top: 2px solid #9e8ffe;
-  border-right: 2px solid #9e8ffe;
+  border-left: 2px solid $table_two;
+  border-top: 2px solid $table_two;
+  border-right: 2px solid $table_two;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   overflow: hidden;
@@ -526,7 +512,7 @@ text.value-text {
 .cell-lbl-g4,
 .cell-key-g4,
 .cell-value-g4{
-  font: 18px Cinema , Bahnschrift , Serif;
+  font: 18px Yekan , Bahnschrift , Serif;
   color: black;
   text-align: right;
   padding: 5px;
@@ -534,16 +520,18 @@ text.value-text {
 }
 .table-header-none-g4{
   width: 25%;
-  background: #b8a9ff;
+  background: $table_one;
 }
 .cell-header-key-g4{
   width: 50%;
-  background: #b8a9ff;
+  background: $table_one;
+  font-weight: bold;
 }
 .cell-header-value-g4{
   width: 25%;
-  background: #b8a9ff;
+  background: $table_one;
   text-align: center;
+  font-weight: bold;
 }
 .table-column-lbl-g4{
   width: 25%;
@@ -551,7 +539,7 @@ text.value-text {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: #9e8ffe;
+  background: $table_two;
   border-bottom-right-radius: 5px;
 }
 .table-column-key-g4{
@@ -562,26 +550,78 @@ text.value-text {
 }
 .cell-lbl-g4{
   margin-top: -4rem;
+  font-weight: bold;
 }
 .cell-key-g4:nth-child(odd),
 .cell-value-g4:nth-child(odd) {
-  background: #9e8ffe;
+  background: $table_two;
 }
 .cell-key-g4:nth-child(even),
 .cell-value-g4:nth-child(even) {
-  background: #b8a9ff;
+  background: $table_one;
 }
 .cell-key-g4:nth-child(even){
-  border-left: 2px solid #9e8ffe;
+  border-left: 2px solid $table_two;
 }
 .cell-value-g4{
   text-align: center;
-  border-left: 2px solid #9e8ffe;
+  border-left: 2px solid $table_two;
 }
 .cell-value-g4:last-child {
   border-bottom-left-radius: 5px;
-  border-bottom: 2px solid #9e8ffe;
+  border-bottom: 2px solid $table_two;
 }
 .cell-key-g4:last-child {
-  border-bottom: 2px solid #9e8ffe;
+  border-bottom: 2px solid $table_two;
+}
+.number-card-c2 .card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  width: 12rem;
+  border-radius: 5px;
+  margin: 10px;
+  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  border-bottom: 10px solid #004e75;
+}
+.number-card-c2 .card:hover {
+  opacity: 0.8;
+}
+.number-card-c2 .card p.key {
+  font: 18px Cinema, Bahnschrift, serif;
+  margin-bottom: 5px;
+}
+.number-card-c2 .card p.value {
+  font: 18px Bahnschrift, serif;
+}
+.number-card-c2 .Customers_Count {
+  background: #5DADE2;
+}
+.number-card-c2 .Active_Customers_Count {
+  background: #48C9B0;
+}
+.number-card-c2 .Inactive_Customers_Count {
+  background: #EC7063;
+}
+.number-card-c2 .SuccessfulCalls_Count {
+  background: #AF7AC5;
+}
+.number-card-c2 .ActiveAfterCalls_Count {
+  background: #F4D03F;
+}
+.number-card-c2 .ActiveInOtherBrokers_Count {
+  background: #EB984E;
+}
+.number-card-c2 .ExplanationClub_Count {
+  background: #AAB7B8;
+}
+.row .st_to_en {
+  direction: ltr;
+}
+.row .st_to_en p {
+  font: 14px Bahnschrift , Serif;
+  color: #000000;
+  text-align: center;
 }

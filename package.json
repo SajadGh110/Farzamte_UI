@@ -23,8 +23,10 @@
     "@emailjs/browser": "^4.3.3",
     "@swimlane/ngx-charts": "^20.5.0",
     "date-fns": "^3.6.0",
+    "echarts": "^5.5.1",
     "jwt-decode": "^4.0.0",
     "ng-angular-popup": "^0.4.7",
+    "ngx-echarts": "^18.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.4"

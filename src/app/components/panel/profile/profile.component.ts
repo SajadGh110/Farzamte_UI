@@ -4,9 +4,10 @@ import {DashboardTopmenuComponent} from "../../Template/dashboard-topmenu/dashbo
 import {AuthService} from "../../../services/auth.service";
 import {ProfileService} from "../../../services/profile.service";
 import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
-import {NgIf} from "@angular/common";
+import {NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault} from "@angular/common";
 import {NgToastService} from "ng-angular-popup";
 import {Router} from "@angular/router";
+import {MatProgressSpinner} from "@angular/material/progress-spinner";
 
 @Component({
   selector: 'app-profile',
@@ -16,7 +17,11 @@ import {Router} from "@angular/router";
     DashboardTopmenuComponent,
     FormsModule,
     NgIf,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgSwitch,
+    NgSwitchCase,
+    NgSwitchDefault,
+    MatProgressSpinner
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
@@ -28,12 +33,20 @@ export class ProfileComponent implements OnInit{
     lastName: "",
     userName: "",
     email: "",
+    broker: "",
     phoneNumber: "",
     city: "",
     address: "",
     postalCode: "",
     role: ""
   };
+  changepass_form!: FormGroup;
+  chp_form = {
+    password: "",
+    new_password: "",
+    re_password: ""
+  }
+  protected flag_profile: boolean = false;
   public constructor(private auth:AuthService, private profile:ProfileService, private fb:FormBuilder, private toast:NgToastService, private router:Router) {
   }
 
@@ -44,6 +57,7 @@ export class ProfileComponent implements OnInit{
       this.formData.lastName = response.lastName;
       this.formData.userName = response.userName;
       this.formData.email = response.email;
+      this.formData.broker = response.broker;
       this.formData.phoneNumber = response.phoneNumber;
       this.formData.city = response.city;
       this.formData.address = response.address;
@@ -54,11 +68,13 @@ export class ProfileComponent implements OnInit{
       this.profileform.controls['lastName'].setValue(response.lastName);
       this.profileform.controls['userName'].setValue(response.userName);
       this.profileform.controls['email'].setValue(response.email);
+      this.profileform.controls['broker'].setValue(response.broker);
       this.profileform.controls['phoneNumber'].setValue(response.phoneNumber);
       this.profileform.controls['city'].setValue(response.city);
       this.profileform.controls['address'].setValue(response.address);
       this.profileform.controls['postalCode'].setValue(response.postalCode);
       this.profileform.controls['role'].setValue(response.role);
+      this.flag_profile = true;
     },error => {
       this.toast.error({detail:"ERROR",summary:"Can't Connect to the Server!",duration:5000, position:'topRight'})
     });
@@ -68,12 +84,18 @@ export class ProfileComponent implements OnInit{
       lastName : ['', Validators.required],
       userName : ['', Validators.required],
       email : ['', Validators.required],
-      phoneNumber : ['', Validators.required],
+      broker: ['', Validators.required],
+      phoneNumber : [''],
       city : [''],
       address : [''],
       postalCode : [''],
       role : [''],
       password : ['', Validators.required]
+    })
+    this.changepass_form = this.fb.group({
+      password: ['', Validators.required],
+      new_password: ['', Validators.required],
+      re_password: ['', Validators.required]
     })
   }
 
@@ -95,6 +117,30 @@ export class ProfileComponent implements OnInit{
       this.toast.error({detail:"ERROR",summary:"Your Form Is Not Valid!",duration:5000, position:'topRight'});
     }
 
+  }
+
+  onChangePassword(){
+    if (this.changepass_form.valid){
+      if (this.changepass_form.controls['new_password'].value == this.changepass_form.controls['re_password'].value){
+        this.profile.change_password(this.changepass_form.value).subscribe({
+          error:(res=>{
+            if (res.status == 200){
+              this.toast.success({detail:"SUCCESS",summary:res.error.text,duration:5000, position:'topRight'});
+              this.router.navigate(['dashboard']);
+            }
+            else
+              this.toast.error({detail:"ERROR",summary:res.error,duration:5000, position:'topRight'});
+          })
+        });
+      }
+      else {
+        this.toast.error({detail:"ERROR",summary:"The new password and re-password are not the same!",duration:5000, position:'topRight'});
+      }
+    }
+    else {
+      this.ValidateAllFormFields(this.changepass_form);
+      this.toast.error({detail:"ERROR",summary:"Your Form Is Not Valid!",duration:5000, position:'topRight'});
+    }
   }
 
   private ValidateAllFormFields(formgroup: FormGroup){

@@ -1,55 +1,118 @@
 <section class="dashboard-wrapper">
-  <app-dashboard-topmenu></app-dashboard-topmenu>
   <app-dashboard-sidebar></app-dashboard-sidebar>
   <section class="dashboard-main">
     <section class="row">
-      <form [formGroup]="profileform" class="main-form">
-        <section class="item">
-          <label for="firstName">First Name : </label>
-          <input class="firstName" type="text" formControlName="firstName" id="firstName" placeholder="First Name" value="{{formData.firstName}}">
+      <section class="detail">
+        <h2>پروفایل</h2>
+      </section>
+      <section class="profile">
+        <section class="information">
+          <form [formGroup]="profileform" class="main-form">
+            <section class="header">
+              <h3>اطلاعات حساب کاربری</h3>
+            </section>
+            <section class="loading-spinner" *ngIf="!flag_profile">
+              <mat-spinner></mat-spinner>
+            </section>
+            <section class="form" *ngIf="flag_profile">
+              <section class="item">
+                <label for="firstName">نام : </label>
+                <input class="firstName" type="text" formControlName="firstName" id="firstName" placeholder="نام" value="{{formData.firstName}}">
+              </section>
+              <section class="item">
+                <label for="lastName">نام خانوادگی : </label>
+                <input class="lastName" type="text" formControlName="lastName" id="lastName" placeholder="نام خانوادگی" value="{{formData.lastName}}">
+              </section>
+              <section class="item">
+                <label for="email">ایمیل : </label>
+                <input class="email" type="text" formControlName="email" id="email" placeholder="ایمیل" value="{{formData.email}}">
+              </section>
+              <section class="item">
+                <label for="phoneNumber">تلفن همراه : </label>
+                <input class="phoneNumber" type="text" formControlName="phoneNumber" id="phoneNumber" placeholder="تلفن تماس" value="{{formData.phoneNumber}}">
+              </section>
+              <section class="item">
+                <label for="city">شهر : </label>
+                <input class="city" type="text" formControlName="city" id="city" placeholder="شهر" value="{{formData.city}}">
+              </section>
+              <section class="item">
+                <label for="address">آدرس : </label>
+                <input class="address" type="text" formControlName="address" id="address" placeholder="آدرس" value="{{formData.address}}">
+              </section>
+              <section class="item">
+                <label for="postalCode">کدپستی : </label>
+                <input class="postalCode" type="text" formControlName="postalCode" id="postalCode" placeholder="کدپستی" value="{{formData.postalCode}}">
+              </section>
+              <section class="item">
+                <label>سطح کاربری : </label>
+                <section ngSwitch="{{formData.role}}">
+                  <input class="role" type="text" *ngSwitchCase="'Normal'" value="عادی" disabled>
+                  <input class="role" type="text" *ngSwitchCase="'Owner'" value="توسعه دهنده" disabled>
+                  <input class="role" type="text" *ngSwitchDefault value="نقش شناخته شده نیست" disabled>
+                </section>
+              </section>
+              <section class="item">
+                <label for="postalCode">کارگزاری : </label>
+                <section ngSwitch="{{formData.role}}">
+                  <input class="broker" type="text" *ngSwitchCase="'Normal'" value="{{formData.broker}}" disabled>
+                  <section *ngSwitchCase="'Owner'">
+                    <input type="text" formControlName="broker" list="brokers"/>
+                    <datalist id="brokers">
+                      <option>Mobin</option>
+                      <option>Pishro</option>
+                      <option>Pouyan</option>
+                      <option>Khobregan</option>
+                    </datalist>
+                  </section>
+                  <input class="role" type="text" *ngSwitchDefault value="کارگزاری مشخص نیست" disabled>
+                </section>
+              </section>
+              <section class="item">
+                <label>نام کاربری : </label>
+                <input class="username" type="text" value="{{formData.userName}}" disabled>
+              </section>
+              <section class="item">
+                <label for="password">گذرواژه : </label>
+                <input class="password" type="password" formControlName="password" id="password" [class.is-invalid]="profileform.controls['password'].dirty && profileform.hasError('required','password')" placeholder="گذرواژه">
+                <small *ngIf="profileform.controls['password'].dirty && profileform.hasError('required','password')" class="text-error">وارد کردن گذرواژه الزامیست!</small>
+              </section>
+              <section class="item">
+                <input (click)="onUpdate()" type="submit" class="submit" value="ویرایش اطلاعات">
+              </section>
+            </section>
+          </form>
         </section>
-        <section class="item">
-          <label for="lastName">Last Name : </label>
-          <input class="lastName" type="text" formControlName="lastName" id="lastName" placeholder="Last Name" value="{{formData.lastName}}">
+        <section class="change-password">
+          <form [formGroup]="changepass_form">
+            <section class="header">
+              <h3>ویرایش گذرواژه</h3>
+            </section>
+            <section class="loading-spinner" *ngIf="!flag_profile">
+              <mat-spinner></mat-spinner>
+            </section>
+            <section class="form" *ngIf="flag_profile">
+              <section class="item">
+                <label for="password">گذرواژه : </label>
+                <input class="password" type="password" formControlName="password" id="chp_password" [class.is-invalid]="changepass_form.controls['password'].dirty && changepass_form.hasError('required','password')" placeholder="گذرواژه">
+                <small *ngIf="changepass_form.controls['password'].dirty && changepass_form.hasError('required','password')" class="text-error">وارد کردن گذرواژه الزامیست!</small>
+              </section>
+              <section class="item">
+                <label for="password">گذرواژه جدید : </label>
+                <input class="password" type="password" formControlName="new_password" id="chp_new_password" [class.is-invalid]="changepass_form.controls['new_password'].dirty && changepass_form.hasError('required','new_password')" placeholder="گذرواژه جدید">
+                <small *ngIf="changepass_form.controls['new_password'].dirty && changepass_form.hasError('required','new_password')" class="text-error">وارد کردن گذرواژه جدید الزامیست!</small>
+              </section>
+              <section class="item">
+                <label for="password">تکرار گذرواژه : </label>
+                <input class="password" type="password" formControlName="re_password" id="chp_re_password" [class.is-invalid]="changepass_form.controls['re_password'].dirty && changepass_form.hasError('required','re_password')" placeholder="تکرار گذرواژه">
+                <small *ngIf="changepass_form.controls['re_password'].dirty && changepass_form.hasError('required','re_password')" class="text-error">وارد کردن تکرار گذرواژه الزامیست!</small>
+              </section>
+              <section class="item">
+                <input (click)="onChangePassword()" type="submit" class="submit" value="ویرایش گذرواژه">
+              </section>
+            </section>
+          </form>
         </section>
-        <section class="item">
-          <label for="email">Email : </label>
-          <input class="email" type="text" formControlName="email" id="email" placeholder="Email" value="{{formData.email}}">
-        </section>
-        <section class="item">
-          <label for="phoneNumber">Phone Number : </label>
-          <input class="phoneNumber" type="text" formControlName="phoneNumber" id="phoneNumber" placeholder="Phone Number" value="{{formData.phoneNumber}}">
-        </section>
-        <section class="item">
-          <label for="city">City : </label>
-          <input class="city" type="text" formControlName="city" id="city" placeholder="City" value="{{formData.city}}">
-        </section>
-        <section class="item">
-          <label for="address">Address : </label>
-          <input class="address" type="text" formControlName="address" id="address" placeholder="Address" value="{{formData.address}}">
-        </section>
-        <section class="item">
-          <label for="postalCode">Postal Code : </label>
-          <input class="postalCode" type="text" formControlName="postalCode" id="postalCode" placeholder="Postal Code" value="{{formData.postalCode}}">
-        </section>
-        <section class="breakline"></section>
-        <section class="item">
-          <label>Role : </label>
-          <p>{{formData.role}}</p>
-        </section>
-        <section class="item">
-          <label>User Name : </label>
-          <p>{{formData.userName}}</p>
-        </section>
-        <section class="item">
-          <label for="password">Password : </label>
-          <input class="password" type="password" formControlName="password" id="password" [class.is-invalid]="profileform.controls['password'].dirty && profileform.hasError('required','password')" placeholder="Password">
-          <small *ngIf="profileform.controls['password'].dirty && profileform.hasError('required','password')" class="text-error">Password is Requierd!</small>
-        </section>
-        <section class="item">
-          <input (click)="onUpdate()" type="submit" class="submit" value="Update">
-        </section>
-      </form>
+      </section>
     </section>
   </section>
 </section>

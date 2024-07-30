@@ -17,4 +17,8 @@ export class ProfileService {
   useredit(user:any):Observable<any>{
     return this.http.put(`${this.appConfigService.getApiUrl()}Users/EditUser`,user,{headers:this.header});
   }
+
+  change_password(user:any):Observable<any>{
+    return this.http.put(`${this.appConfigService.getApiUrl()}Users/ChangePassword`,user,{headers:this.header});
+  }
 }

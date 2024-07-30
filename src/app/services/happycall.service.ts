@@ -35,7 +35,7 @@ export class HappycallService {
     return this.http.get(`${this.appConfigService.getApiUrl()}HappyCall/ActiveAfterCalls_Count?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
   }
 
-  get_ActiveInOtherBrockers_Count(StartDate:string, EndDate:string):Observable<any>{
+  get_ActiveInOtherBrokers_Count(StartDate:string, EndDate:string):Observable<any>{
     return this.http.get(`${this.appConfigService.getApiUrl()}HappyCall/ActiveInOtherBrockers_Count?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
   }
 

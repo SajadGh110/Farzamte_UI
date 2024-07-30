@@ -1,54 +1,107 @@
 .dashboard-main .row{
-  flex-direction: column;
-}
-.dashboard-main .row form {
   display: flex;
+  height: calc(100vh - 4rem);
   flex-direction: column;
-  align-items: stretch;
 }
+.dashboard-main .row .profile {
+  display: flex;
+  height: calc(100% - 4rem);
+  flex-direction: column;
+  justify-content: space-around;
+}
+.dashboard-main .row .information{
+  display: flex;
+  height: 57%;
+  flex-direction: column;
+  margin: 1rem;
+}
+.dashboard-main .row .information form,
+.dashboard-main .row .change-password form{
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.dashboard-main .row .information form .form,
+.dashboard-main .row .change-password form .form{
+  display: flex;
+  height: calc(100% - 3rem);
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+.dashboard-main .row .change-password form .form {
+  flex-wrap: nowrap;
+}
+
+.dashboard-main .row .change-password{
+  display: flex;
+  height: 35%;
+  flex-direction: column;
+  margin: 1rem;
+}
+
 .dashboard-main .row form .item {
   height: 35px;
   display: flex;
   align-items: center;
   margin-bottom: 1rem;
+  margin-left: 3rem;
+}
+.dashboard-main .row form .item:last-child {
+  margin-bottom: 0;
 }
 .dashboard-main .row form .item label {
   width: 120px;
-  color: white;
+  color: black;
+  font: 18px Yekan, Bahnschrift, serif;
 }
 
 .dashboard-main .row form .item input[type=text] ,
 .dashboard-main .row form .item input[type=password] {
-  background: #c9c9ff;
   outline: none;
-  color: #161d31;
-  border: solid 2px #161d31;
-  border-radius: 5px;
+  color: black;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: solid 2px #65828f;
   padding: 5px;
-  font: 14px Myriad Pro, Bahnschrift;
+  font: 16px Bahnschrift, Yekan, serif;
 }
 .dashboard-main .row form .item input[type=text]:focus ,
 .dashboard-main .row form .item input[type=password]:focus {
-  border: solid 2px #6754e0;
+  border-bottom: solid 2px #d9a22e;
 }
 .dashboard-main .row form .item input[type=submit] {
   outline: none;
   padding: 5px 15px;
   color: white;
-  background: #161d31;
-  border: solid 2px #6754e0;
+  background: #1b9ac4;
+  border: solid 2px #65828f;
   border-radius: 5px;
-  font: 18px Myriad Pro, Bahnschrift;
+  font: 18px Bahnschrift, Yekan, serif;
   cursor: pointer;
 }
 .dashboard-main .row form .item input[type=submit]:hover,
 .dashboard-main .row form .item input[type=submit]:focus{
-  background: #6754e0;
-  border-color: #161d31;
+  background: #65828f;
+  border-color: #1b9ac4;
 }
-.breakline {
-  width: 100%;
-  height: 4px;
-  background: #6754e0;
+.dashboard-main .row form .item input,
+.dashboard-main .row form .item input::placeholder {
+  text-align: center;
+}
+#email{
+  direction: ltr;
+}
+.password{
+  direction: ltr;
+}
+input:disabled{
+  background-color: white;
+}
+.dashboard-main .row h3 {
+  font: 22px Yekan, Bahnschrift, serif;
   margin-bottom: 1rem;
+  font-weight: bold;
 }
