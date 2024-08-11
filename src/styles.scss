@@ -186,17 +186,6 @@ app-note1 .note {
   font: 14px Cinema, Myriad Pro, Bahnschrift, serif;
   color: black;
 }
-app-dashboard-topmenu{
-  position: fixed;
-  top: 0;
-  right: 0;
-  margin-top: 1.3rem;
-  margin-right: 2rem;
-  border-radius: .428rem;
-  width: calc(100vw - (100vw - 100%) - calc(2rem * 2) - 15rem);
-  background: $Dash-Background-Secondary;
-  z-index: 10;
-}
 app-dashboard-sidebar{
   min-width: 12rem;
   display: flex;
@@ -211,6 +200,7 @@ app-dashboard-sidebar aside.v2 {
 }
 app-dashboard-sidebar aside.v2 nav {
   width: inherit;
+  height: 100%;
   position: fixed;
 }
 .svgedit{
@@ -355,51 +345,6 @@ app-dashboard-sidebar aside.v2 nav {
   margin: 2rem;
 }
 
-.datepicker-input{
-  width: 100%;
-  margin-top: 1rem;
-  justify-content: center;
-}
-.datepicker-input form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.datepicker-input label {
-  color: #65828f;
-  font: 16px Acumin_vc;
-  margin-bottom: 5px;
-}
-
-.datepicker-input input {
-  margin-bottom: 15px;
-}
-
-.datepicker-input input[type=date]{
-  padding: 5px;
-  font: 18px Acumin_vc;
-  border-top: none;
-  border-right: none;
-  border-left: none;
-  border-bottom: 2px solid #65828f;
-  background-color: #f2f2f2;
-}
-.datepicker-input input[type=date]:hover{
-  cursor: pointer;
-}
-
-.datepicker-input input[type=submit]{
-  padding: 8px 8px 5px 8px;
-  font: 18px Acumin_vc;
-  border: 2px solid #65828f;
-  border-radius: 5px;
-  color: #65828f;
-}
-.datepicker-input input[type=submit]:hover{
-  background-color: #65828f;
-  color: #ffffff;
-  cursor: pointer;
-}
 .row .both-chart {
   display: flex;
   width: 100%;
@@ -625,4 +570,45 @@ text.value-text {
   font: 14px Bahnschrift , Serif;
   color: #000000;
   text-align: center;
+}
+.overlay {
+  position: fixed;
+  direction: ltr;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  transition: opacity 500ms;
+  visibility: visible;
+  opacity: 1;
+  z-index: 99;
+}
+.overlay .popup {
+  margin: 70px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 5px;
+  width: 60%;
+  position: relative;
+  transition: all 5s ease-in-out;
+}
+.overlay .popup h2 {
+  margin: 0 0 1rem;
+  color: #333;
+  font-family: Bahnschrift, serif;
+}
+.overlay .popup .close {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  transition: all 200ms;
+  font-size: 35px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #333;
+}
+.overlay .popup .close:hover {
+  color: #EC7063;
+  cursor: pointer;
 }

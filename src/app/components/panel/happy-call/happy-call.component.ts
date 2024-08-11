@@ -32,6 +32,8 @@ export class HappyCallComponent implements OnInit {
   protected flag_g4:boolean=false;
   protected flag_Introduction:boolean=false;
   protected flag_ChoosingBrokerage:boolean=false;
+  protected flag_popup:boolean=false;
+  protected flag_popup_data:boolean=false;
   public constructor(private toast:NgToastService, private fb:FormBuilder, private getData:HappycallService, private TimeService:TimeService, private datePipe: DatePipe) {}
   StartDate:string = "";
   EndDate:string = "";
@@ -40,6 +42,7 @@ export class HappyCallComponent implements OnInit {
   series_InactiveChoosingBrokerage: any[] = [];
   AllCalls_Count:Number = 0;
   Customers_Count:Number = 0;
+  series_Popup_List: any[] = [];
   Active_Customers_Count:Number = 0;
   Inactive_Customers_Count:Number = 0;
   SuccessfulCalls_Count:Number = 0;
@@ -153,14 +156,12 @@ export class HappyCallComponent implements OnInit {
       StartDate: [''],
       EndDate: ['']
     });
-    this.StartDate = this.TimeService.StartDate;
-    this.EndDate = this.TimeService.EndDate;
-    await this.do(this.StartDate,this.EndDate);
   }
 
   async do(stDate:string,enDate:string){
     this.flag_count = false;
     this.flag_g1 = false;
+    this.flag_g4 = false;
     this.flag_Introduction = false;
     this.flag_ChoosingBrokerage = false;
     this.series_ActiveIntroduction = [];
@@ -242,6 +243,21 @@ export class HappyCallComponent implements OnInit {
 
     }catch (error:any){
       this.toast.error({ detail: "ERROR", summary: error.message, duration: 5000, position: 'topRight' });
+    }
+  }
+
+  async Popup_List(List:string){
+    this.flag_popup = true;
+    switch(List){
+      case "Customers":
+        this.series_Popup_List = await this.getData.get_Customers_List(this.StartDate,this.EndDate).toPromise();
+        this.flag_popup_data = true;
+        console.log(this.series_Popup_List);
+        break;
+      case "Active_Customers":
+        break;
+      case "Inactive_Customers":
+        break;
     }
   }
 

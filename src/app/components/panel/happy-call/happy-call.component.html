@@ -20,16 +20,43 @@
         <mat-spinner></mat-spinner>
       </section>
       <section class="number-card-c2" *ngIf="flag_g1">
-        <section class="card Customers_Count"><p class="key">تعداد مشتریان</p><p class="value">{{Customers_Count}}</p></section>
-        <section class="card Active_Customers_Count"><p class="key">مشتریان فعال</p><p class="value">{{Active_Customers_Count}}</p></section>
-        <section class="card Inactive_Customers_Count"><p class="key">مشتریان غیرفعال</p><p class="value">{{Inactive_Customers_Count}}</p></section>
+        <section class="card Customers_Count" (click)="Popup_List('Customers')"><p class="key">تعداد مشتریان</p><p class="value">{{Customers_Count}}</p></section>
+        <section class="card Active_Customers_Count" (click)="Popup_List('Active_Customers')"><p class="key">مشتریان فعال</p><p class="value">{{Active_Customers_Count}}</p></section>
+        <section class="card Inactive_Customers_Count" (click)="Popup_List('Inactive_Customers')"><p class="key">مشتریان غیرفعال</p><p class="value">{{Inactive_Customers_Count}}</p></section>
         <section class="card SuccessfulCalls_Count"><p class="key">تماس موفق</p><p class="value">{{SuccessfulCalls_Count}}</p></section>
         <section class="card ActiveAfterCalls_Count"><p class="key">فعال شدن پس از هپی کال</p><p class="value">{{ActiveAfterCalls_Count}}</p></section>
         <section class="card ActiveInOtherBrokers_Count"><p class="key">فعال در سایر کارگزاری ها</p><p class="value">{{ActiveInOtherBrokers_Count}}</p></section>
         <section class="card ExplanationClub_Count"><p class="key">ارائه توضیحات درمورد باشگاه مشتریان</p><p class="value">{{ExplanationClub_Count}}</p></section>
       </section>
-      <section class="st_to_en">
+      <section class="st_to_en" *ngIf="flag_g1">
         <p>{{st_to_en}}</p>
+      </section>
+      <section class="overlay" *ngIf="flag_popup">
+        <section class="popup">
+          <h2>List</h2>
+          <a class="close" (click)="flag_popup = false;flag_popup_data = false">&times;</a>
+          <section class="loading-spinner" *ngIf="!flag_popup_data">
+            <mat-spinner></mat-spinner>
+          </section>
+          <section class="table" *ngIf="flag_popup_data">
+            <section class="table-header">
+              <section class="cell-header"></section>
+              <section class="cell-header"></section>
+              <section class="cell-header"></section>
+              <section class="cell-header"></section>
+              <section class="cell-header"></section>
+              <section class="cell-header"></section>
+            </section>
+            <section *ngFor="let item of series_Popup_List" class="table-row">
+              <section class="cell">{{item.customer}}</section>
+              <section class="cell"></section>
+              <section class="cell"></section>
+              <section class="cell"></section>
+              <section class="cell"></section>
+              <section class="cell"></section>
+            </section>
+          </section>
+        </section>
       </section>
     </section>
     <section class="row">
@@ -54,7 +81,7 @@
         <section class="tree-map-c1" echarts [options]="series_ChoosingBrokerage_Active_tmp"></section>
         <section class="tree-map-c1" echarts [options]="series_ChoosingBrokerage_Inactive_tmp"></section>
       </section>
-      <section class="st_to_en">
+      <section class="st_to_en" *ngIf="flag_ChoosingBrokerage">
         <p>{{st_to_en}}</p>
       </section>
     </section>

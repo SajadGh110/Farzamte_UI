@@ -11,12 +11,16 @@ export class HappycallService {
   constructor(private http : HttpClient, private appConfigService: AppConfigService) { }
   header = new HttpHeaders().append("api-key",this.appConfigService.getApiKey()).append("Authorization",this.appConfigService.getToken());
 
+  get_LastDate():Observable<any>{
+    return this.http.get(`${this.appConfigService.getApiUrl()}HappyCall/LastDate`,{headers:this.header});
+  }
+
   get_Customers_Count(StartDate:string, EndDate:string):Observable<any>{
     return this.http.get(`${this.appConfigService.getApiUrl()}HappyCall/Customers_Count?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
   }
 
-  get_UniqueCustomers(StartDate:string, EndDate:string):Observable<any>{
-    return this.http.get(`${this.appConfigService.getApiUrl()}HappyCall/UniqueCustomers?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
+  get_Customers_List(StartDate:string, EndDate:string):Observable<any>{
+    return this.http.get(`${this.appConfigService.getApiUrl()}HappyCall/Customers_List?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
   }
 
   get_Active_Customers_Count(StartDate:string, EndDate:string):Observable<any>{

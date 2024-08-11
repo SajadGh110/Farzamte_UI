@@ -100,3 +100,76 @@ aside.v1 nav .datepicker-input {
 aside.v2 nav .datepicker-input {
   display: flex;
 }
+.datepicker-input{
+  width: 100%;
+  margin-top: 1rem;
+  justify-content: center;
+}
+.datepicker-input form {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+}
+.datepicker-input form .row{
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+.datepicker-input form .row label {
+  color: #65828f;
+  font: 18px Acumin_vc;
+}
+.datepicker-input form .row input {
+  display: block;
+  width: 130px;
+}
+.datepicker-input form .row input[type=date]{
+  padding: 5px;
+  font: 18px Acumin_vc;
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  border-bottom: 2px solid #65828f;
+  background-color: #f2f2f2;
+}
+.datepicker-input form .row input[type=date]:hover{
+  cursor: pointer;
+}
+
+.datepicker-input form .row input[type=submit]{
+  padding: 8px 8px 5px 8px;
+  width: 100%;
+  font: 18px Acumin_vc;
+  border: 2px solid #65828f;
+  border-radius: 5px;
+  color: #65828f;
+}
+.datepicker-input form .row input[type=submit]:hover,
+.datepicker-input form .row input[type=submit]:focus{
+  background-color: #65828f;
+  color: #ffffff;
+  cursor: pointer;
+}
+.datepicker-input form .row input[type=submit].auto {
+  margin: 0 5px;
+  padding: 6px 6px 3px 6px;
+  font-size: 15px;
+  border: none;
+  background-color: #004e75;
+  color: #ffffff;
+  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.3);
+}
+.datepicker-input form .row input[type=submit].auto:hover,
+.datepicker-input form .row input[type=submit].auto:focus {
+  margin-top: -4px;
+}
+.datepicker-input form .row input[type=submit].auto:first-child{
+  margin-left: 0;
+}
+.datepicker-input form .row input[type=submit].auto:last-child{
+  margin-right: 0;
+}
