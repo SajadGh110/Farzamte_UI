@@ -252,11 +252,14 @@ export class HappyCallComponent implements OnInit {
       case "Customers":
         this.series_Popup_List = await this.getData.get_Customers_List(this.StartDate,this.EndDate).toPromise();
         this.flag_popup_data = true;
-        console.log(this.series_Popup_List);
         break;
       case "Active_Customers":
+        this.series_Popup_List = await this.getData.get_Active_Customers_List(this.StartDate,this.EndDate).toPromise();
+        this.flag_popup_data = true;
         break;
       case "Inactive_Customers":
+        this.series_Popup_List = await this.getData.get_Inactive_Customers_List(this.StartDate,this.EndDate).toPromise();
+        this.flag_popup_data = true;
         break;
     }
   }

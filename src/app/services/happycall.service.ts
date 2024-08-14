@@ -27,8 +27,16 @@ export class HappycallService {
     return this.http.get(`${this.appConfigService.getApiUrl()}HappyCall/Active_Customers_Count?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
   }
 
+  get_Active_Customers_List(StartDate:string, EndDate:string):Observable<any>{
+    return this.http.get(`${this.appConfigService.getApiUrl()}HappyCall/Active_Customers_List?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
+  }
+
   get_Inactive_Customers_Count(StartDate:string, EndDate:string):Observable<any>{
     return this.http.get(`${this.appConfigService.getApiUrl()}HappyCall/Inactive_Customers_Count?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
+  }
+
+  get_Inactive_Customers_List(StartDate:string, EndDate:string):Observable<any>{
+    return this.http.get(`${this.appConfigService.getApiUrl()}HappyCall/Inactive_Customers_List?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
   }
 
   get_SuccessfulCalls_Count(StartDate:string, EndDate:string):Observable<any>{

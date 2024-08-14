@@ -40,20 +40,16 @@
           </section>
           <section class="table" *ngIf="flag_popup_data">
             <section class="table-header">
-              <section class="cell-header"></section>
-              <section class="cell-header"></section>
-              <section class="cell-header"></section>
-              <section class="cell-header"></section>
-              <section class="cell-header"></section>
-              <section class="cell-header"></section>
+              <section class="cell-header cell-large">نام و نام خانوادگی</section>
+              <section class="cell-header">کدملی</section>
+              <section class="cell-header">تلفن</section>
+              <section class="cell-header cell-small">تعداد تماس</section>
             </section>
             <section *ngFor="let item of series_Popup_List" class="table-row">
-              <section class="cell">{{item.customer}}</section>
-              <section class="cell"></section>
-              <section class="cell"></section>
-              <section class="cell"></section>
-              <section class="cell"></section>
-              <section class="cell"></section>
+              <section class="cell cell-large">{{item.customer}}</section>
+              <section class="cell">{{item.nationalCode}}</section>
+              <section class="cell">{{item.phoneNumber}}</section>
+              <section class="cell cell-small">{{item.callCount}}</section>
             </section>
           </section>
         </section>

@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class AppConfigService {
   private SiteUrl: string = "https://farzamte.com/";
-  private ApiUrl: string = "https://localhost:7108/";
+  private ApiUrl: string = "https://api.farzamte.com/";
   private Token:string = "bearer " + localStorage.getItem('token');
   private ApiKey:string = "DWV1PdzszOW3BLen";
 
