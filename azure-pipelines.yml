@@ -33,3 +33,23 @@ steps:
     targetPath: '$(Build.ArtifactStagingDirectory)'
     publishLocation: 'pipeline'
   displayName: 'Publish npm artifact'
+
+- task: DeleteFiles@1
+  inputs:
+    SourceFolder: 'C:\Farzamte\ui'
+    Contents: '**/*'
+  displayName: 'Delete old files'
+
+- task: CopyFiles@2
+  inputs:
+    sourceFolder: '$(Build.ArtifactStagingDirectory)'
+    contents: '**/*'
+    targetFolder: 'C:\Farzamte\ui'
+  displayName: 'Copy files to destination'
+
+- task: CopyFiles@2
+  inputs:
+    sourceFolder: 'C:\Farzamte\ui_need'
+    contents: '**/*'
+    targetFolder: 'C:\Farzamte\ui'
+  displayName: 'Copy additional files to destination'
