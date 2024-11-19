@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import emailjs, {EmailJSResponseStatus, send} from '@emailjs/browser';
+import emailjs from '@emailjs/browser';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgToastService } from 'ng-angular-popup';
 

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {Title} from "@angular/platform-browser";
 import {AuthService} from "../../../services/auth.service";
-import {jwtDecode} from "jwt-decode";
+
 @Component({
   selector: 'app-dashboard-topmenu',
   standalone: true,

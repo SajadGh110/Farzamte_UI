@@ -6,7 +6,7 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { IndexComponent } from './components/index/index.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { BrokeragesComponent } from './components/panel/brokerages/brokerages.component';
 import { NgToastModule } from 'ng-angular-popup';
 import { AboutComponent } from './components/about/about.component';
@@ -31,50 +31,43 @@ import {NgxChartsModule} from "@swimlane/ngx-charts";
 import {DashboardTopmenuComponent} from "./components/Template/dashboard-topmenu/dashboard-topmenu.component";
 import {DashboardSidebarComponent} from "./components/Template/dashboard-sidebar/dashboard-sidebar.component";
 import {NgxEchartsModule} from "ngx-echarts";
-@NgModule({
-  declarations: [
-    AppComponent,
-    LoginComponent,
-    RegisterComponent,
-    IndexComponent,
-    HomeComponent,
-    AboutComponent,
-    SupportComponent,
-    ReportComponent,
-    CrmComponent,
-    CallcenterComponent,
-    Footer1Component,
-    Menu2Component,
-    Footer2Component,
-    HeaderComponent,
-    Note1Component,
-    NotelistComponent,
-    Note2Component,
-    Note3Component,
-    Note4Component,
-    SpanspecialComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    NgToastModule,
-    BrowserAnimationsModule,
-    NgxChartsModule,
-    DashboardTopmenuComponent,
-    DashboardSidebarComponent,
-    Menu1Component,
-    BrokeragesComponent,
-    NgxEchartsModule.forRoot({
-      echarts: () => import('echarts')
-    })
-  ],
-  providers: [],
-  exports: [
-    Menu1Component,
-    Footer1Component
-  ],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [
+        AppComponent,
+        LoginComponent,
+        RegisterComponent,
+        IndexComponent,
+        HomeComponent,
+        AboutComponent,
+        SupportComponent,
+        ReportComponent,
+        CrmComponent,
+        CallcenterComponent,
+        Footer1Component,
+        Menu2Component,
+        Footer2Component,
+        HeaderComponent,
+        Note1Component,
+        NotelistComponent,
+        Note2Component,
+        Note3Component,
+        Note4Component,
+        SpanspecialComponent
+    ],
+    exports: [
+        Menu1Component,
+        Footer1Component
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        AppRoutingModule,
+        ReactiveFormsModule,
+        NgToastModule,
+        BrowserAnimationsModule,
+        NgxChartsModule,
+        DashboardTopmenuComponent,
+        DashboardSidebarComponent,
+        Menu1Component,
+        BrokeragesComponent,
+        NgxEchartsModule.forRoot({
+            echarts: () => import('echarts')
+        })], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule { }

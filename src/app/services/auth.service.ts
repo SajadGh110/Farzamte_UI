@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http'
+import { HttpClient, HttpHeaders } from '@angular/common/http'
 import {Router} from "@angular/router";
 import {jwtDecode} from "jwt-decode";
 import {JwtHelperService} from "./jwt-helper.service";

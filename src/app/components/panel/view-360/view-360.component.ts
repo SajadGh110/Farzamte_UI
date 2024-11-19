@@ -6,6 +6,7 @@ import {NgToastService} from "ng-angular-popup";
 import {AuthService} from "../../../services/auth.service";
 import {Router} from "@angular/router";
 import {FormBuilder} from "@angular/forms";
+
 @Component({
   selector: 'app-view-360',
   standalone: true,
