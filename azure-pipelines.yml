@@ -42,7 +42,7 @@ steps:
 
 - task: CopyFiles@2
   inputs:
-    sourceFolder: '$(Build.ArtifactStagingDirectory)'
+    sourceFolder: 'C:\agent\_work\1\s\dist\angular-ui'
     contents: '**/*'
     targetFolder: 'C:\Farzamte\ui'
   displayName: 'Copy files to destination'
