@@ -4,7 +4,7 @@ $Foreground : #544f53;
 $Font-Size : 14px;
 $Font-Family-En : Myriad Pro, Bahnschrift;
 $Font-Family-Fa : Cinema, Bahnschrift;
-/* dashboard Variables */
+/* brokerages Variables */
 $Dash-Background : #161d31;
 $Dash-Background-Secondary : #283046;
 $Dash-Foreground : 0;
@@ -16,12 +16,20 @@ $table_two: #7995eb;
   src: url('/assets/fonts/Acumin-Variable-Concept.ttf');
 }
 @font-face {
+  font-family: Nazanin;
+  src: url('/assets/fonts/B-NAZANIN.TTF');
+}
+@font-face {
   font-family: Wingdings;
   src: url('/assets/fonts/WINGDNG3.TTF');
 }
 @font-face {
   font-family: Cinema;
   src: url('/assets/fonts/Cinema-fa.ttf');
+}
+@font-face {
+  font-family: Casablanca;
+  src: url('/assets/fonts/Mj_Casablanca.ttf');
 }
 @font-face {
   font-family: Bahnschrift;
@@ -57,6 +65,20 @@ a:hover {
 }
 a:active {
   color: #000;
+}
+::-webkit-scrollbar {
+  width: 15px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #004e75;
+  border-radius: 8px;
+  border: 2px solid #f1f1f1;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #003b59;
 }
 ul,p{
   padding: 0;
@@ -179,7 +201,6 @@ app-note1 .note {
 }
 .dashboard-main-small .row {
   width: 100%;
-  height: 100%;
   align-items: center;
 }
 .dashboard-main .row p {
@@ -192,13 +213,10 @@ app-dashboard-sidebar{
   margin: 2rem 2rem 2rem 1rem;
   flex-direction: column;
 }
-app-dashboard-sidebar aside.v1 {
-  width: 15rem;
-}
-app-dashboard-sidebar aside.v2 {
+app-dashboard-sidebar aside {
   width: 12rem;
 }
-app-dashboard-sidebar aside.v2 nav {
+app-dashboard-sidebar aside nav {
   width: inherit;
   height: 100%;
   position: fixed;
@@ -209,7 +227,72 @@ app-dashboard-sidebar aside.v2 nav {
 .svg_menu_color {
   fill: #ffffff;
 }
-
+.row .datepicker-input {
+  display: flex;
+  flex-direction: column;
+}
+.row .datepicker-input form {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.row .datepicker-input form input {
+  margin-left: 10px;
+  cursor: pointer;
+}
+.row .datepicker-input form input[type=date] {
+  padding: 5px;
+  font: 18px Acumin_vc;
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  border-bottom: 2px solid #004e75;
+  background-color: white;
+}
+.row .datepicker-input form input[type=submit] {
+  padding: 5px;
+  font: 18px Nazanin, Bahnschrift, serif;
+  font-weight: bold;
+  border: 2px solid #004e75;
+  border-radius: 5px;
+  color: #004e75;
+  background-color: white;
+}
+.row .datepicker-input form input[type=submit]:hover {
+  background-color: #004e75;
+  color: white;
+}
+.row .datepicker-input form label {
+  font: 18px Nazanin, Bahnschrift, serif;
+  font-weight: bold;
+  margin-left: 10px;
+}
+.row .datepicker-input .time_auto {
+  display: flex;
+  flex-direction: row;
+  margin: 1rem 0;
+}
+.row .datepicker-input .time_auto button {
+  margin: 0 5px;
+  padding: 6px 12px;
+  font: 16px Nazanin, Bahnschrift, serif;
+  font-weight: bold;
+  border: 2px solid #004e75;
+  border-radius: 5px;
+  background-color: #004e75;
+  color: white;
+  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+.row .datepicker-input .time_auto button:hover {
+  background-color: white;
+  color: #004e75;
+  border: 2px solid #004e75;
+}
+.row .datepicker-input .time_text p {
+  font: 18px Nazanin, Bahnschrift, serif;
+  font-weight: bold;
+}
 /* Adaptive Codes */
 @media screen and (max-width:1200px){
 
@@ -275,8 +358,12 @@ app-dashboard-sidebar aside.v2 nav {
 }
 .bar-chart-c1{
   width: 100%;
-  min-height: 500px;
   direction: ltr;
+}
+.bar-chart-c2{
+  width: 100%;
+  min-height: 600px;
+  direction: rtl;
 }
 .pie-chart-c1{
   width: 60%;
@@ -287,9 +374,17 @@ app-dashboard-sidebar aside.v2 nav {
   width: 100%;
   direction: ltr;
 }
-.tree-map-c1{
+.pie-chart-c3{
   width: 50%;
   direction: ltr;
+}
+.tree-map-c1{
+  width: 50%;
+  direction: rtl;
+}
+.tree-map-c2{
+  width: 100%;
+  direction: rtl;
 }
 .pie-grid-c1{
   width: 40%;
@@ -298,7 +393,7 @@ app-dashboard-sidebar aside.v2 nav {
 }
 .data-g4{
   width: 50%;
-  margin: auto;
+  margin: 1rem auto 2rem;
   direction: ltr;
 }
 .table-c1 {
@@ -319,6 +414,19 @@ app-dashboard-sidebar aside.v2 nav {
   justify-content: center;
   margin-top: 2rem;
   margin-bottom: 2rem;
+}
+.c3 {
+  width: 50%;
+}
+.row .row-middle-h3 {
+  font: 18px Yekan, Bahnschrift, serif;
+  color: #474747;
+  font-weight: bold;
+  text-align: center;
+}
+.dashboard-main .top-contact,
+.dashboard-main-small .top-contact {
+  height: 9rem;
 }
 .advanced-pie-legend .legend-items-container .legend-items::-webkit-scrollbar {
   width: 12px;
@@ -354,15 +462,35 @@ app-dashboard-sidebar aside.v2 nav {
 .row .detail {
   display: flex;
   flex-direction: row;
+  width: 100%;
+}
+.row .detail h2 {
+  --f: 10px; /* control the folded part*/
+  --r: 15px; /* control the ribbon shape */
+  --t: 10px; /* the top offset */
+  margin-right: -26px;
+  padding: 5px 1rem 20px calc(1rem + var(--r));
+  clip-path:
+    polygon(0 0,100% 0,100% calc(100% - var(--f)),calc(100% - var(--f)) 100%,
+      calc(100% - var(--f)) calc(100% - var(--f)),0 calc(100% - var(--f)),
+      var(--r) calc(50% - var(--f)/2));
+  background: #1c1b3a;
+  color: white;
+  box-shadow: 0 calc(-1*var(--f)) 0 inset #0005;
+}
+.row .has-p {
+  flex-direction: column;
 }
 .row .detail h2,
 .row .detail p {
-  color: black;
   text-align: right;
-  font: 22px Yekan , Bahnschrift;
+  font: 22px Nazanin , Bahnschrift;
   font-weight: bold;
+  width: fit-content;
 }
-.row .detail h2,
+.row .detail p {
+  color: black;
+}
 .row .detail h3{
   margin-right: 1rem;
 }
@@ -376,11 +504,13 @@ app-dashboard-sidebar aside.v2 nav {
   flex-direction: row;
   width: 100%;
 }
-.row .detail,
+.both-view,
 .row .line-chart-c1,
+.row .line-chart-c2,
 .row .pie-chart-c1,
 .row .pie-grid-c1,
-.row .bar-chart-c1{
+.row .bar-chart-c1,
+.row .bar-chart-c2{
   margin-top: 1rem;
   margin-bottom: 1rem;
 }
@@ -425,11 +555,11 @@ app-dashboard-sidebar aside.v2 nav {
 }
 .table-header .cell-large,
 .table-row .cell-large {
-  width: 35%;
+  width: 55%;
 }
 .table-header .cell-small,
 .table-row .cell-small {
-  width: 15%;
+  width: 20%;
 }
 .table-header .cell-header p,
 .table-row .cell p{
@@ -533,12 +663,97 @@ text.value-text {
 .cell-key-g4:last-child {
   border-bottom: 2px solid $table_two;
 }
+.table2 {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  margin: 1rem 0 2rem;
+  border-collapse: collapse;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  background: linear-gradient(45deg, #eaeded, #aeb6bf);
+  border-radius: 5px;
+}
+.table2-header {
+  background-color: #0b3847;
+  color: white;
+  text-align: left;
+}
+.table2-row:hover {
+  background-color: rgba(255,255,255,0.3);
+}
+.table2-header , .table2-row {
+  display: flex;
+  flex-direction: row;
+  padding: 5px 15px;
+}
+.table2-header .cell2-header,
+.table2-row .cell2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 15%;
+  height: 4rem;
+  font-family: Nazanin, Bahnschrift, serif;
+}
+.table2-header .cell2-small,
+.table2-row .cell2-small {
+  width: 10%;
+}
+.table2-header .cell2-header {
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+}
+.table2-row .cell2 {
+  display: flex;
+  flex-direction: column;
+  font-size: 16px;
+  font-weight: bold;
+  position: relative;
+  color: black;
+}
+.table2-row .cell2 .cell-sub {
+  font: 14px Nazanin, Bahnschrift, serif;
+  font-weight: bold;
+}
+
+.table3 {
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  background: linear-gradient(45deg, #eaeded, #aeb6bf);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.table3 th {
+  background-color: #0b3847;
+  color: white;
+}
+.table3 th ,
+.table3 td {
+  text-align: center;
+}
+.table3 tr td:first-child ,
+.table3 tr th:first-child {
+  padding-left: 10px;
+}
+.table3 tr td:last-child ,
+.table3 tr th:last-child {
+  padding-right: 10px;
+}
+.table3 tr {
+  cursor: pointer;
+}
+.table3 tr:hover {
+  background-color: rgba(255,255,255,0.3);
+}
+
 .number-card-c2 .card {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 1rem;
-  width: 12rem;
+  min-width: 12rem;
+  width: auto;
   border-radius: 5px;
   margin: 10px;
   box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.3);
@@ -549,7 +764,8 @@ text.value-text {
   opacity: 0.8;
 }
 .number-card-c2 .card p.key {
-  font: 18px Cinema, Bahnschrift, serif;
+  font: 18px Nazanin, Bahnschrift, serif;
+  font-weight: bold;
   margin-bottom: 5px;
   text-align: center;
 }
@@ -578,6 +794,8 @@ text.value-text {
   background: #AAB7B8;
 }
 .row .st_to_en {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
   direction: ltr;
 }
 .row .st_to_en p {
@@ -625,4 +843,214 @@ text.value-text {
 .overlay .popup .close:hover {
   color: #EC7063;
   cursor: pointer;
+}
+.row .top-fix {
+  width: calc(100% - 4rem);
+  display: flex;
+  flex-direction: row;
+  margin: 1rem 2rem;
+  justify-content: center;
+}
+.row .top-fix .brokerage {
+  width: 80%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.row .top-fix .brokerage .brokerage-name {
+  font: 22px Nazanin, Bahnschrift, serif;
+  font-weight: bold;
+}
+.row .top-fix .brokerage .brokerage-logo {
+  margin: 0 1rem;
+}
+.row .top-fix .brokerage .brokerage-logo img {
+  width: auto;
+  height: 4rem;
+}
+.row .all-date {
+  width: auto;
+  direction: rtl;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  background-color: #f2f2f2;
+  border: 2px solid #fff;
+  border-radius: 5px;
+  padding: 1rem;
+  margin-left: 1rem;
+}
+.row .all-date h3 ,
+.row .all-brokerage .brokers-list h3 ,
+.row .all-cmp .comparison-list h3 {
+  font: 20px Nazanin, Bahnschrift, serif;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+.row .all-date .mat-mdc-tab-group {
+  height: 201px;
+}
+.row .all-date .mat-mdc-tab-body-wrapper {
+  height: 165px;
+}
+.row .all-date .mat-mdc-tab-body-content {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+.row .all-date .mdc-tab-indicator .mdc-tab-indicator__content {
+  display: none;
+}
+.row .all-date .mat-mdc-tab-label-container {
+  border: none;
+  margin-bottom: 10px;
+}
+.row .all-date .mdc-tab--active {
+  border-bottom: 4px solid #004e75;
+}
+.row .all-date .mdc-tab__text-label {
+  font: 18px Bahnschrift, serif;
+  font-weight: bold;
+}
+.row .all-date .item {
+  display: flex;
+  width: 5rem;
+  flex-direction: row;
+  margin-bottom: 8px;
+  justify-content: space-between;
+}
+.row .all-date .item label {
+  font: 16px Bahnschrift, serif;
+  cursor: pointer;
+}
+.row .all-date .item input[type=checkbox] {
+  cursor: pointer;
+}
+.row .all-date button {
+  font: 16px Nazanin, Bahnschrift, serif;
+  font-weight: bold;
+  background-color: #fff;
+  border: 2px solid #f2f2f2;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 5px 10px;
+}
+.row .top-fix .all-brokerage {
+  width: auto;
+  display: flex;
+  flex-direction: column;
+}
+.row .top-fix .all-brokerage .row-cmp {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+.row .top-fix .all-brokerage .brokers-list {
+  width: 250px;
+  direction: rtl;
+  display: flex;
+  flex-direction: column;
+  background-color: #f2f2f2;
+  border: 2px solid #fff;
+  border-radius: 5px;
+  padding: 1rem;
+  margin-left: 1rem;
+}
+.row .top-fix .all-brokerage .brokers-list ul {
+  direction: ltr;
+  height: 200px;
+  overflow-y: scroll;
+}
+.row .top-fix .all-brokerage .brokers-list ul li {
+  font: 18px Nazanin, Bahnschrift, serif;
+  cursor: pointer;
+  text-align: center;
+  border-bottom: 2px solid #004e75;
+}
+.row .top-fix .all-cmp {
+  width: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.row .top-fix .all-cmp .comparison-list {
+  width: 250px;
+  height: 271px;
+  direction: rtl;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: #f2f2f2;
+  border: 2px solid #fff;
+  border-radius: 5px;
+  padding: 1rem;
+}
+.row .top-fix .all-cmp .comparison-list ul li {
+  font: 18px Nazanin, Bahnschrift, serif;
+  font-weight: bold;
+  cursor: pointer;
+  text-align: center;
+}
+.row .top-fix .all-cmp .comparison-list button {
+  font: 16px Nazanin, Bahnschrift, serif;
+  font-weight: bold;
+  background-color: #fff;
+  border: 2px solid #f2f2f2;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 5px 10px;
+}
+.row .top-fix .all-cmp .row-cmp p {
+  font: 22px Cinema, Bahnschrift, serif;
+  font-weight: lighter;
+}
+.loading {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0,0,0,0.5);
+}
+.loading .close {
+  font-size: 70px;
+  color: #dd3030;
+  padding: 1rem;
+}
+.ticket_detail {
+  display: flex;
+  flex-direction: column;
+  direction: rtl;
+  margin: 3rem 1rem;
+}
+.dashboard-main .row .ticket_detail p {
+  font: 22px Nazanin, Bahnschrift, serif;
+  font-weight: bold;
+}
+.dashboard-main .row .filter-table {
+  display: flex;
+  flex-direction: row;
+  margin: 1rem 0;
+}
+.dashboard-main .row .filter-table .ft-btn {
+  margin: 0 5px;
+  padding: 5px 10px;
+  background-color: #ffffff;
+  color: #3498DB;
+  font: 16px Nazanin, Bahnschrift, serif;
+  font-weight: bold;
+  cursor: pointer;
+  border: 2px solid #8ecbf4;
+  border-radius: 10px;
+}
+.dashboard-main .row .filter-table .selected {
+  background-color: #D6EAF8;
+  color: #2C3E50;
+  border-color: #2980B9;
 }

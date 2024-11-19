@@ -10,11 +10,11 @@ import {AboutComponent} from "./components/about/about.component";
 import {ReportComponent} from "./components/report/report.component";
 import {CrmComponent} from "./components/crm/crm.component";
 import {CallcenterComponent} from "./components/callcenter/callcenter.component";
-import { DashboardComponent } from './components/panel/dashboard/dashboard.component';
+import { BrokeragesComponent } from './components/panel/brokerages/brokerages.component';
 import {View360Component} from "./components/panel/view-360/view-360.component";
 import {ProfileComponent} from "./components/panel/profile/profile.component";
 import {HappyCallComponent} from "./components/panel/happy-call/happy-call.component";
-import {CallInComponent} from "./components/panel/call-in/call-in.component";
+import {IncomingCallComponent} from "./components/panel/incoming-call/incoming-call.component";
 import {NoticesComponent} from "./components/panel/notices/notices.component";
 import {TicketComponent} from "./components/panel/ticket/ticket.component";
 import {MarketingComponent} from "./components/panel/marketing/marketing.component";
@@ -23,10 +23,13 @@ import {QAComponent} from "./components/panel/q.a/q.a.component";
 import {OtherComponent} from "./components/panel/other/other.component";
 import {DisorderComponent} from "./components/panel/disorder/disorder.component";
 import {AiAnalysisComponent} from "./components/panel/ai-analysis/ai-analysis.component";
+import {BrokerageCmpComponent} from "./components/panel/brokerage-cmp/brokerage-cmp.component";
+import {NoticeSMSComponent} from "./components/panel/notices/notice-sms/notice-sms.component";
+import {NoticeCallComponent} from "./components/panel/notices/notice-call/notice-call.component";
 
 const routes: Routes = [
   {path:'', component: IndexComponent,title:'FarzamTE'},
-  {path:'home', component: HomeComponent,title:'dashboard'},
+  {path:'home', component: HomeComponent,title:'brokerages'},
   {path:'login', component: LoginComponent,title:'Login' , canActivate:[loginCheck]},
   {path:'support', component: SupportComponent,title:'Support'},
   {path:'about', component: AboutComponent,title:'About'},
@@ -34,12 +37,15 @@ const routes: Routes = [
   {path:'crm', component: CrmComponent,title:'CRM'},
   {path:'callcenter', component: CallcenterComponent,title:'CallCenter'},
   {path:'register', component: RegisterComponent,title:'Register' ,canActivate:[authGuard]},
-  {path:'dashboard', component: DashboardComponent,title:'Dashboard' ,canActivate:[authGuard]},
+  {path:'brokerages', component: BrokeragesComponent,title:'Brokerages' ,canActivate:[authGuard]},
+  {path:'brokerages_cmp', component: BrokerageCmpComponent,title:'Brokerages Comparison' ,canActivate:[authGuard]},
   {path:'profile',component: ProfileComponent,title:'Profile' , canActivate:[authGuard]},
   {path:'view_360', component: View360Component,title:'360 Degrees' ,canActivate:[authGuard]},
   {path:'happy_call',component: HappyCallComponent,title:'Happy Call' , canActivate:[authGuard]},
-  {path:'call_in',component: CallInComponent,title:'Call in' , canActivate:[authGuard]},
+  {path:'call_in',component: IncomingCallComponent,title:'Incoming Call' , canActivate:[authGuard]},
   {path:'notices',component: NoticesComponent,title:'Notices' , canActivate:[authGuard]},
+  {path:'notices/sms',component: NoticeSMSComponent,title:'Notices | Message' , canActivate:[authGuard]},
+  {path:'notices/call',component: NoticeCallComponent,title:'Notices | Call' , canActivate:[authGuard]},
   {path:'ticket',component: TicketComponent,title:'Ticket' , canActivate:[authGuard]},
   {path:'marketing',component: MarketingComponent,title:'Marketing' , canActivate:[authGuard]},
   {path:'survey',component: SurveyComponent,title:'Survey' , canActivate:[authGuard]},

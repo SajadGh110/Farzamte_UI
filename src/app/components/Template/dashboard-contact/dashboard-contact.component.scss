@@ -1,0 +1,62 @@
+.frm-title {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.frm-title h2{
+  font: 18px Nazanin,Serif;
+  font-weight: bold;
+  text-align: center;
+  color: #004d77;
+  margin-bottom: 4px;
+}
+form {
+  display: flex;
+  flex-direction: row;
+}
+.frm_row {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.contact_form {
+  width: 100%;
+}
+form input[type=text] {
+  font: 18px Yekan,Bahnschrift;
+  padding: 5px;
+  background-color: #f2f2f2;
+  border: 2px solid #fff;
+  border-radius: 5px;
+  transition: all 250ms ease-in-out;
+  outline: none;
+}
+form input[type=text]::placeholder{
+  color: #b4b4b4;
+}
+form input[type=text]:hover,
+#submit:hover {
+  border-color: #1b9ac4;
+}
+form input[type=text]:focus,
+#submit:focus {
+  border-color: #1b9ac4;
+}
+#name {
+  width: 10rem;
+}
+#text {
+  width: calc(100% - 10rem - 4rem - 4px);
+  margin-right: 2px;
+  margin-left: 2px;
+}
+#submit {
+  width: 4rem;
+  font: 18px Yekan,Bahnschrift;
+  padding: 5px;
+  background-color: #f2f2f2;
+  border: 2px solid #fff;
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+}

@@ -1,0 +1,13 @@
+<section class="contact_form">
+  <section class="frm-title">
+    <h2>مشتری در جایگاه شریک و واسطه روزی ما با خداوند است</h2>
+    <h2>لطفاً با ثبت نظر و یا درخواست خود ما را در مسیر موفقیت و مشتری مداری یاری کنید</h2>
+  </section>
+  <form [formGroup]="contactform" >
+    <section class="frm_row">
+      <input type="text" id="name" name="name" formControlName="name" [class.is-invalid]="contactform.controls['name'].dirty && contactform.hasError('required','name')" placeholder="نام و نام خانوادگی">
+      <input type="text" id="text" name="text" formControlName="text" [class.is-invalid]="contactform.controls['text'].dirty && contactform.hasError('required','text')" placeholder="توضیحات">
+      <input (click)="send()" id="submit" type="submit" class="submit" value="ارسال">
+    </section>
+  </form>
+</section>

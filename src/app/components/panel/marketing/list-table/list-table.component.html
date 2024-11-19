@@ -1,0 +1,61 @@
+<div class="table3" style="direction: ltr">
+  <table mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="کد">
+      <th [hidden]="true" *matHeaderCellDef> کد </th>
+      <td [hidden]="true" *matCellDef="let element"> {{element.id}} </td>
+    </ng-container>
+    <ng-container matColumnDef="تماس گیرنده">
+      <th *matHeaderCellDef> تماس گیرنده </th>
+      <td *matCellDef="let element"> {{element.from}} </td>
+    </ng-container>
+    <ng-container matColumnDef="مشتری">
+      <th *matHeaderCellDef> مشتری </th>
+      <td *matCellDef="let element"> {{element.to}} </td>
+    </ng-container>
+    <ng-container matColumnDef="توضیحات">
+      <th *matHeaderCellDef> توضیحات </th>
+      <td *matCellDef="let element"> {{element.description}} </td>
+    </ng-container>
+    <ng-container matColumnDef="تاریخ">
+      <th *matHeaderCellDef> تاریخ </th>
+      <td *matCellDef="let element"> {{element.createdon | date:'yyyy-MM-dd | HH:mm'}} </td>
+    </ng-container>
+    <ng-container matColumnDef="میزان رضایت">
+      <th *matHeaderCellDef> میزان رضایت </th>
+      <td *matCellDef="let element"> {{element.customerSatisfaction}} </td>
+    </ng-container>
+    <ng-container matColumnDef="نتیجه تماس">
+      <th *matHeaderCellDef> نتیجه تماس </th>
+      <td *matCellDef="let element"> {{element.resultOfCall}} </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onRowClick(row.id)"></tr>
+  </table>
+  <mat-paginator [pageSize]="10"
+                 hidePageSize
+                 showFirstLastButtons>
+  </mat-paginator>
+</div>
+<section class="overlay" *ngIf="flag_popup">
+  <section class="popup">
+    <h2>توضیحات تیکت</h2>
+    <a class="close" (click)="flag_popup = false;flag_popup_data = false">&times;</a>
+    <section class="loading-spinner" *ngIf="!flag_popup_data">
+      <mat-spinner></mat-spinner>
+    </section>
+    <section class="ticket_detail" *ngIf="flag_popup_data">
+      <p>تماس گیرنده : {{series_ticket_detail.from}}</p>
+      <p>مشتری : {{series_ticket_detail.to}}</p>
+      <p>توضیحات : {{series_ticket_detail.description}}</p>
+      <p *ngIf="series_ticket_detail.reasons[0]">دلیل اول : {{series_ticket_detail.reasons[0]}}</p>
+      <p *ngIf="series_ticket_detail.reasons[1]">دلیل دوم : {{series_ticket_detail.reasons[1]}}</p>
+      <p *ngIf="series_ticket_detail.reasons[2]">دلیل سوم : {{series_ticket_detail.reasons[2]}}</p>
+      <p *ngIf="series_ticket_detail.reasons[3]">دلیل چهارم : {{series_ticket_detail.reasons[3]}}</p>
+      <p>تاریخ : {{series_ticket_detail.createdon | date: 'yyyy-MM-dd | HH:mm'}}</p>
+      <p>تلفن تماس : {{series_ticket_detail.phonenumber}}</p>
+      <p>کدملی : {{series_ticket_detail.nationalCode}}</p>
+      <p>میزان رضایت : {{series_ticket_detail.customerSatisfaction}}</p>
+      <p>نتیجه تماس : {{series_ticket_detail.resultOfCall}}</p>
+    </section>
+  </section>
+</section>

@@ -1,0 +1,210 @@
+<section class="dashboard-wrapper">
+  <app-dashboard-sidebar></app-dashboard-sidebar>
+  <section class="dashboard-main dashboard-main-small">
+    <app-dashboard-contact class="row top-contact"></app-dashboard-contact>
+    <section class="row" id="top" #top>
+      <section class="detail">
+        <h2>برترین های شش ماه اخیر</h2>
+      </section>
+      <section class="loading-spinner" *ngIf="!flag_top6">
+        <mat-spinner></mat-spinner>
+      </section>
+      <section class="table2" *ngIf="flag_top6">
+        <section class="table2-header">
+          <section class="cell2-header cell2-small">تاریخ</section>
+          <section class="cell2-header">بورس اوراق بهادار</section>
+          <section class="cell2-header">فرابورس</section>
+          <section class="cell2-header">بورس اوراق بهادار و فرابورس</section>
+          <section class="cell2-header">بورس کالا</section>
+          <section class="cell2-header">بورس انرژی</section>
+          <section class="cell2-header">ارزش کل معاملات</section>
+        </section>
+        <section class="table2-row" *ngFor="let item of last6_top; let i = index">
+          <section class="cell2 cell2-small">{{last6_date[i]}}</section>
+          <section class="cell2"><p class="cell-sub">{{item.top_BOBT_Total_Value.name}}</p><p class="cell-sub">{{item.top_BOBT_Total_Value.total_Value | number}}</p></section>
+          <section class="cell2"><p class="cell-sub">{{item.top_FI_Total_Value.name}}</p><p class="cell-sub">{{item.top_FI_Total_Value.total_Value | number}}</p></section>
+          <section class="cell2"><p class="cell-sub">{{item.top_BOBTandFI_Total_Value.name}}</p><p class="cell-sub">{{item.top_BOBTandFI_Total_Value.total_Value | number}}</p></section>
+          <section class="cell2"><p class="cell-sub">{{item.top_BKI_Total_Value.name}}</p><p class="cell-sub">{{item.top_BKI_Total_Value.total_Value | number}}</p></section>
+          <section class="cell2"><p class="cell-sub">{{item.top_BEI_Total_Value.name}}</p><p class="cell-sub">{{item.top_BEI_Total_Value.total_Value | number}}</p></section>
+          <section class="cell2"><p class="cell-sub">{{item.top_All_Total_Value.name}}</p><p class="cell-sub">{{item.top_All_Total_Value.total_Value | number}}</p></section>
+        </section>
+      </section>
+    </section>
+    <section class="row" id="select_date" #select_date>
+      <section class="detail">
+        <h2>انتخاب تاریخ و کارگزاری ها</h2>
+      </section>
+      <section class="top-fix">
+        <section class="loading-spinner" *ngIf="!flag_date">
+          <mat-spinner></mat-spinner>
+        </section>
+        <section class="all-date" *ngIf="flag_date">
+          <h3>تاریخ (ماهانه)</h3>
+          <mat-tab-group selectedIndex="{{Object.keys(years).length}}">
+            <mat-tab *ngFor="let item of Object.keys(years)" label="{{item}}">
+              <section class="item" *ngFor="let item2 of years[item]">
+                <label for="{{item2}}">{{item2}}</label>
+                <input id="{{item2}}" type="checkbox" value="{{item2}}" [checked]="selected_date.includes(item2)" (change)="onCheckboxChange($event, item2)" [disabled]="item2 == '1402-04'">
+              </section>
+            </mat-tab>
+          </mat-tab-group>
+        </section>
+        <section class="loading-spinner" *ngIf="!flag_all_brokers">
+          <mat-spinner></mat-spinner>
+        </section>
+        <section class="all-brokerage" *ngIf="flag_all_brokers">
+          <section class="brokers-list">
+            <h3>لیست کارگزاری ها</h3>
+            <ul>
+              <li *ngFor="let broker of all_brokers" (click)="addToComparison(broker)">{{ broker.name }}</li>
+            </ul>
+          </section>
+        </section>
+        <section class="all-cmp" *ngIf="flag_all_brokers">
+          <section class="comparison-list">
+            <h3>لیست مقایسه</h3>
+            <ul>
+              <li>{{brokerage_name}}</li>
+              <li *ngFor="let broker of comparison_list" (click)="removeFromComparison(broker)">{{ broker.name }}</li>
+            </ul>
+            <button type="button" (click)="do(selected_date)">نمایش</button>
+          </section>
+        </section>
+      </section>
+    </section>
+    <section class="row" id="view" #view>
+      <section class="detail">
+        <h2>نگاه کلی</h2>
+      </section>
+      <section class="loading-spinner" *ngIf="!flag_chart1">
+        <mat-spinner></mat-spinner>
+      </section>
+      <section class="line-chart-c1" *ngIf="flag_chart1">
+        <section echarts [options]="series_Chart1_radar"></section>
+      </section>
+      <section class="bar-chart-c1" *ngIf="flag_chart1">
+        <section echarts [options]="series_Chart1_bar"></section>
+      </section>
+      <section class="bar-chart-c1" *ngIf="flag_chart1">
+        <section echarts [options]="series_Chart1_bar_total"></section>
+      </section>
+    </section>
+    <section class="row" id="totals" #totals>
+      <section class="detail">
+        <h2>سهم از بازار</h2>
+      </section>
+      <section class="loading-spinner" *ngIf="!flag_totals">
+        <mat-spinner></mat-spinner>
+      </section>
+      <section class="table2" *ngIf="flag_totals">
+        <section class="table2-header">
+          <section class="cell2-header cell2-small">کارگزاری</section>
+          <section class="cell2-header">سهم بازار بورس اوراق بهادار</section>
+          <section class="cell2-header">سهم بازار فرابورس</section>
+          <section class="cell2-header">سهم بازار بورس اوراق بهادار و فرابورس</section>
+          <section class="cell2-header">سهم بازار بورس کالا</section>
+          <section class="cell2-header">سهم بازار بورس انرژی</section>
+          <section class="cell2-header">سهم ارزش کل معاملات</section>
+        </section>
+        <section class="table2-row" *ngFor="let item of series_totals">
+          <section class="cell2 cell2-small">{{item.name}}</section>
+          <section class="cell2">{{item.bobt_share}}%</section>
+          <section class="cell2">{{item.fi_share}}%</section>
+          <section class="cell2">{{item.bobt_fi_share}}%</section>
+          <section class="cell2">{{item.bki_share}}%</section>
+          <section class="cell2">{{item.bei_share}}%</section>
+          <section class="cell2">{{item.all_share}}%</section>
+        </section>
+      </section>
+    </section>
+    <section class="row" id="bob" #bob>
+      <section class="detail">
+        <h2>بورس اوراق بهادار</h2>
+      </section>
+      <section class="loading-spinner" *ngIf="!flag_chart2">
+        <mat-spinner></mat-spinner>
+      </section>
+      <section class="line-chart-c1" *ngIf="flag_chart2">
+        <section echarts [options]="series_Chart2_radar"></section>
+      </section>
+      <section class="bar-chart-c1" *ngIf="flag_chart2">
+        <section echarts [options]="series_Chart2_bar"></section>
+      </section>
+      <section class="bar-chart-c1" *ngIf="flag_chart2">
+        <section echarts [options]="series_Chart2_bar_total"></section>
+      </section>
+    </section>
+    <section class="row" id="fi" #fi>
+      <section class="detail">
+        <h2>فرابورس</h2>
+      </section>
+      <section class="loading-spinner" *ngIf="!flag_chart3">
+        <mat-spinner></mat-spinner>
+      </section>
+      <section class="line-chart-c1" *ngIf="flag_chart3">
+        <section echarts [options]="series_Chart3_radar"></section>
+      </section>
+      <section class="bar-chart-c1" *ngIf="flag_chart3">
+        <section echarts [options]="series_Chart3_bar"></section>
+      </section>
+      <section class="bar-chart-c1" *ngIf="flag_chart3">
+        <section echarts [options]="series_Chart3_bar_total"></section>
+      </section>
+    </section>
+    <section class="row" id="bki" #bki>
+      <section class="detail">
+        <h2>بورس کالا</h2>
+      </section>
+      <section class="loading-spinner" *ngIf="!flag_chart4">
+        <mat-spinner></mat-spinner>
+      </section>
+      <section class="line-chart-c1" *ngIf="flag_chart4">
+        <section echarts [options]="series_Chart4_radar"></section>
+      </section>
+      <section class="bar-chart-c1" *ngIf="flag_chart4">
+        <section echarts [options]="series_Chart4_bar"></section>
+      </section>
+      <section class="bar-chart-c1" *ngIf="flag_chart4">
+        <section echarts [options]="series_Chart4_bar_total"></section>
+      </section>
+    </section>
+    <section class="row" id="bei" #bei>
+      <section class="detail">
+        <h2>بورس انرژی</h2>
+      </section>
+      <section class="loading-spinner" *ngIf="!flag_chart5">
+        <mat-spinner></mat-spinner>
+      </section>
+      <section class="line-chart-c1" *ngIf="flag_chart5">
+        <section echarts [options]="series_Chart5_radar"></section>
+      </section>
+      <section class="bar-chart-c1" *ngIf="flag_chart5">
+        <section echarts [options]="series_Chart5_bar"></section>
+      </section>
+      <section class="bar-chart-c1" *ngIf="flag_chart5">
+        <section echarts [options]="series_Chart5_bar_total"></section>
+      </section>
+    </section>
+  </section>
+  <section class="list">
+    <section class="fix">
+      <section class="app-menu">
+        <section class="brokerage-logo"><img [src]="brokerage_logo" [alt]="brokerage_name"></section>
+        <p class="brokerage-name">کارگزاری {{brokerage_name}}</p>
+      </section>
+      <section class="quick-access">
+        <h3>دسترسی سریع</h3>
+        <ol>
+          <li (click)="ScrollTo('top')">برترین های سه ماه اخیر</li>
+          <li (click)="ScrollTo('select_date')">انتخاب تاریخ و کارگزاری ها</li>
+          <li (click)="ScrollTo('view')">نگاه کلی</li>
+          <li (click)="ScrollTo('totals')">سهم از بازار</li>
+          <li (click)="ScrollTo('bob')">بورس اوراق بهادار</li>
+          <li (click)="ScrollTo('fi')">فرابورس</li>
+          <li (click)="ScrollTo('bki')">بورس کالا</li>
+          <li (click)="ScrollTo('bei')">بورس انرژی</li>
+        </ol>
+      </section>
+    </section>
+  </section>
+</section>

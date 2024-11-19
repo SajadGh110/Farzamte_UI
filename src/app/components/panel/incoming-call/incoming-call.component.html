@@ -1,0 +1,89 @@
+<section class="dashboard-wrapper">
+  <app-dashboard-sidebar></app-dashboard-sidebar>
+  <section class="dashboard-main">
+    <app-dashboard-contact class="row top-contact"></app-dashboard-contact>
+    <section class="row">
+      <section class="detail">
+        <h2>انتخاب تاریخ گزارش</h2>
+      </section>
+      <section class="datepicker-input">
+        <section class="loading-spinner" *ngIf="!flag_time">
+          <mat-spinner></mat-spinner>
+        </section>
+        <form [formGroup]="dateform" *ngIf="flag_time">
+          <label for="StartDate">از تاریخ : </label>
+          <input type="date" id="StartDate" formControlName="StartDate" value="{{StartDate}}">
+          <label for="EndDate">تا تاریخ : </label>
+          <input type="date" id="EndDate" formControlName="EndDate" value="{{EndDate}}">
+          <input type="submit" value="جست و جو" (click)="OnUpdateDate()">
+        </form>
+        <section class="time_auto" *ngIf="flag_time">
+          <button class="auto" (click)="SetTime(30)">یک ماهه</button>
+          <button class="auto" (click)="SetTime(90)">سه ماهه</button>
+          <button class="auto" (click)="SetTime(180)">شش ماهه</button>
+        </section>
+        <section class="time_text" *ngIf="flag_time">
+          <p>بازه زمانی انتخابی : {{selected_days}} روز</p>
+        </section>
+      </section>
+    </section>
+    <section class="row">
+      <section class="detail">
+        <h2>آمار تماس ها</h2>
+      </section>
+      <section class="loading-spinner" *ngIf="!flag_count">
+        <mat-spinner></mat-spinner>
+      </section>
+      <section class="line-chart-c1" *ngIf="flag_count">
+        <section echarts [options]="series_calls_count_day"></section>
+      </section>
+    </section>
+    <section class="row">
+      <section class="detail has-p">
+        <h2>دلایل تماس ورودی</h2>
+        <p>با کلیک روی هر قسمت از نمودار زیر، میتوانید جزئیات ثبت شده را در نمودار زیر مشاهده فرمایید.</p>
+      </section>
+      <section class="loading-spinner" *ngIf="!flag_Ph_Reasons">
+        <mat-spinner></mat-spinner>
+      </section>
+      <section style="min-height: 500px" class="tree-map-c2" id="Ph_Reasons" echarts [options]="series_Phonecall_Reasons_tmp" (chartClick)="chart_click($event);scroll()" *ngIf="flag_Ph_Reasons"></section>
+      <section class="st_to_en" *ngIf="flag_Ph_Reasons">
+        <p>{{st_to_en}}</p>
+      </section>
+    </section>
+    <section class="row" #target>
+      <section class="detail has-p">
+        <h2>جزئیات دلیل تماس ورودی <p>{{reason_selected}}</p></h2>
+        <p>با کلیک روی هر قسمت از نمودار زیر، میتوانید توضیحات ثبت شده را مشاهده فرمایید.</p>
+      </section>
+      <section class="loading-spinner" *ngIf="!flag_Reason_Detail">
+        <mat-spinner></mat-spinner>
+      </section>
+      <section class="bar-chart-c2" echarts [options]="series_Reason_Detail_bar" (chartClick)="Popup_List($event)" *ngIf="flag_Reason_Detail"></section>
+      <section class="loading" *ngIf="flag_loading">
+        <section class="loading-spinner">
+          <mat-spinner></mat-spinner>
+        </section>
+        <a class="close" (click)="flag_loading = false">&times;</a>
+      </section>
+      <section class="overlay" *ngIf="flag_popup">
+        <section class="popup">
+          <h2>لیست توضیحات مشتریان</h2>
+          <a class="close" (click)="flag_popup = false;flag_popup_data = false">&times;</a>
+          <section class="table" *ngIf="flag_popup_data">
+            <section class="table-header">
+              <section class="cell-header">نام و نام خانوادگی</section>
+              <section class="cell-header">تلفن تماس</section>
+              <section class="cell-header cell-large">توضیحات</section>
+            </section>
+            <section *ngFor="let item of series_Popup_List" class="table-row">
+              <section class="cell">{{item.fullName}}</section>
+              <section class="cell">{{item.phonenumber}}</section>
+              <section class="cell cell-large">{{item.description}}</section>
+            </section>
+          </section>
+        </section>
+      </section>
+    </section>
+  </section>
+</section>

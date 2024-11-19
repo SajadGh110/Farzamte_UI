@@ -1,0 +1,54 @@
+<div class="table3" style="direction: ltr">
+  <table mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="کد">
+      <th [hidden]="true" *matHeaderCellDef> کد </th>
+      <td [hidden]="true" *matCellDef="let element"> {{element.id}} </td>
+    </ng-container>
+    <ng-container matColumnDef="ایجاد کننده تیکت">
+      <th *matHeaderCellDef> ایجاد کننده تیکت </th>
+      <td *matCellDef="let element"> {{element.owner}} </td>
+    </ng-container>
+    <ng-container matColumnDef="تاریخ ایجاد">
+      <th *matHeaderCellDef> تاریخ ایجاد </th>
+      <td *matCellDef="let element"> {{element.createdon | date:'yyyy-MM-dd | HH:mm'}} </td>
+    </ng-container>
+    <ng-container matColumnDef="تاریخ بررسی تیکت">
+      <th *matHeaderCellDef> تاریخ بررسی تیکت </th>
+      <td *matCellDef="let element"> {{element.caseResolutionCreatedOn | date:'yyyy-MM-dd | HH:mm'}} </td>
+    </ng-container>
+    <ng-container matColumnDef="شخص بررسی کننده تیکت">
+      <th *matHeaderCellDef> شخص بررسی کننده تیکت </th>
+      <td *matCellDef="let element"> {{element.caseResolutionsolver}} </td>
+    </ng-container>
+    <ng-container matColumnDef="وضعیت">
+      <th *matHeaderCellDef> وضعیت </th>
+      <td *matCellDef="let element"> {{element.status}} </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onRowClick(row.id)"></tr>
+  </table>
+  <mat-paginator [pageSize]="10"
+                 hidePageSize
+                 showFirstLastButtons>
+  </mat-paginator>
+</div>
+<section class="overlay" *ngIf="flag_popup">
+  <section class="popup">
+    <h2>توضیحات تیکت</h2>
+    <a class="close" (click)="flag_popup = false;flag_popup_data = false">&times;</a>
+    <section class="loading-spinner" *ngIf="!flag_popup_data">
+      <mat-spinner></mat-spinner>
+    </section>
+    <section class="ticket_detail" *ngIf="flag_popup_data">
+      <p>ایجاد کننده تیکت : {{series_ticket_detail.owner}}</p>
+      <p>تاریخ ایجاد : {{series_ticket_detail.createdon | date: 'yyyy-MM-dd | HH:mm'}}</p>
+      <p>تاریخ بررسی تیکت : {{series_ticket_detail.caseResolutionCreatedOn | date: 'yyyy-MM-dd | HH:mm'}}</p>
+      <p>شخص بررسی کننده تیکت : {{series_ticket_detail.caseResolutionsolver}}</p>
+      <p>وضعیت : {{series_ticket_detail.status}}</p>
+      <p>نام مشتری : {{series_ticket_detail.customerName}}</p>
+      <p>عنوان تیکت : {{series_ticket_detail.phonecallReason}}</p>
+      <p>جزئیات : {{series_ticket_detail.casetype}}</p>
+      <p>کد تیکت : {{series_ticket_detail.caseAutoNumber}}</p>
+    </section>
+  </section>
+</section>

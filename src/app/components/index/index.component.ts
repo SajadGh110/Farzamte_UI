@@ -13,7 +13,7 @@ export class IndexComponent implements OnInit {
   ngOnInit() {
     if (this.auth.isLoggedIn()){
       this.Status = "Dashboard";
-      this.Link = "/dashboard";
+      this.Link = "/brokerages";
     }
     else {
       this.Status = "Sign In";

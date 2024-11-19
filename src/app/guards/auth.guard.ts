@@ -20,8 +20,8 @@ class AuthGuard{
   }
   IsSignedIn(): boolean {
     if (this.auth.isLoggedIn()){
-      this.toast.info({detail:"Redirect" , summary:"You Are Signed In Currently , Go to Your dashboard!"});
-      this.router.navigate(['dashboard']);
+      this.toast.info({detail:"Redirect" , summary:"You Are Signed In Currently , Go to Your Panel!"});
+      this.router.navigate(['brokerages']);
       return false;
     } else {
       return true;

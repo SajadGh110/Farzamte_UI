@@ -7,7 +7,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { IndexComponent } from './components/index/index.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { DashboardComponent } from './components/panel/dashboard/dashboard.component';
+import { BrokeragesComponent } from './components/panel/brokerages/brokerages.component';
 import { NgToastModule } from 'ng-angular-popup';
 import { AboutComponent } from './components/about/about.component';
 import { SupportComponent } from './components/support/support.component';
@@ -65,7 +65,7 @@ import {NgxEchartsModule} from "ngx-echarts";
     DashboardTopmenuComponent,
     DashboardSidebarComponent,
     Menu1Component,
-    DashboardComponent,
+    BrokeragesComponent,
     NgxEchartsModule.forRoot({
       echarts: () => import('echarts')
     })

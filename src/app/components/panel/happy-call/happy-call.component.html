@@ -1,6 +1,32 @@
 <section class="dashboard-wrapper">
-  <app-dashboard-sidebar (formSubmitted)="OnUpdateDate()"></app-dashboard-sidebar>
+  <app-dashboard-sidebar></app-dashboard-sidebar>
   <section class="dashboard-main">
+    <app-dashboard-contact class="row top-contact"></app-dashboard-contact>
+    <section class="row">
+      <section class="detail">
+        <h2>انتخاب تاریخ گزارش</h2>
+      </section>
+      <section class="datepicker-input">
+        <section class="loading-spinner" *ngIf="!flag_time">
+          <mat-spinner></mat-spinner>
+        </section>
+        <form [formGroup]="dateform" *ngIf="flag_time">
+          <label for="StartDate">از تاریخ : </label>
+          <input type="date" id="StartDate" formControlName="StartDate" value="{{StartDate}}">
+          <label for="EndDate">تا تاریخ : </label>
+          <input type="date" id="EndDate" formControlName="EndDate" value="{{EndDate}}">
+          <input type="submit" value="جست و جو" (click)="OnUpdateDate()">
+        </form>
+        <section class="time_auto" *ngIf="flag_time">
+          <button class="auto" (click)="SetTime(30)">یک ماهه</button>
+          <button class="auto" (click)="SetTime(90)">سه ماهه</button>
+          <button class="auto" (click)="SetTime(180)">شش ماهه</button>
+        </section>
+        <section class="time_text" *ngIf="flag_time">
+          <p>بازه زمانی انتخابی : {{selected_days}} روز</p>
+        </section>
+      </section>
+    </section>
     <section class="row">
       <section class="detail">
         <h2>آمار تماس ها</h2>
@@ -23,10 +49,10 @@
         <section class="card Customers_Count" (click)="Popup_List('Customers')"><p class="key">تعداد مشتریان</p><p class="value">{{Customers_Count}}</p></section>
         <section class="card Active_Customers_Count" (click)="Popup_List('Active_Customers')"><p class="key">مشتریان فعال</p><p class="value">{{Active_Customers_Count}}</p></section>
         <section class="card Inactive_Customers_Count" (click)="Popup_List('Inactive_Customers')"><p class="key">مشتریان غیرفعال</p><p class="value">{{Inactive_Customers_Count}}</p></section>
-        <section class="card SuccessfulCalls_Count"><p class="key">تماس موفق</p><p class="value">{{SuccessfulCalls_Count}}</p></section>
-        <section class="card ActiveAfterCalls_Count"><p class="key">فعال شدن پس از هپی کال</p><p class="value">{{ActiveAfterCalls_Count}}</p></section>
-        <section class="card ActiveInOtherBrokers_Count"><p class="key">فعال در سایر کارگزاری ها</p><p class="value">{{ActiveInOtherBrokers_Count}}</p></section>
-        <section class="card ExplanationClub_Count"><p class="key">ارائه توضیحات درمورد باشگاه مشتریان</p><p class="value">{{ExplanationClub_Count}}</p></section>
+        <section class="card SuccessfulCalls_Count" (click)="Popup_List('SuccessfulCalls')"><p class="key">تماس موفق</p><p class="value">{{SuccessfulCalls_Count}}</p></section>
+        <section class="card ActiveAfterCalls_Count" (click)="Popup_List('ActiveAfterCalls')"><p class="key">فعال شدن پس از هپی کال</p><p class="value">{{ActiveAfterCalls_Count}}</p></section>
+        <section class="card ActiveInOtherBrokers_Count" (click)="Popup_List('ActiveInOtherBrockers')"><p class="key">فعال در سایر کارگزاری ها</p><p class="value">{{ActiveInOtherBrokers_Count}}</p></section>
+        <section class="card ExplanationClub_Count" (click)="Popup_List('ExplanationClub')"><p class="key">ارائه توضیحات درمورد باشگاه مشتریان</p><p class="value">{{ExplanationClub_Count}}</p></section>
       </section>
       <section class="st_to_en" *ngIf="flag_g1">
         <p>{{st_to_en}}</p>
@@ -41,14 +67,12 @@
           <section class="table" *ngIf="flag_popup_data">
             <section class="table-header">
               <section class="cell-header cell-large">نام و نام خانوادگی</section>
-              <section class="cell-header">کدملی</section>
-              <section class="cell-header">تلفن</section>
+              <section class="cell-header">تاریخ عضویت</section>
               <section class="cell-header cell-small">تعداد تماس</section>
             </section>
             <section *ngFor="let item of series_Popup_List" class="table-row">
               <section class="cell cell-large">{{item.customer}}</section>
-              <section class="cell">{{item.nationalCode}}</section>
-              <section class="cell">{{item.phoneNumber}}</section>
+              <section class="cell">{{item.reg_Date}}</section>
               <section class="cell cell-small">{{item.callCount}}</section>
             </section>
           </section>
@@ -74,8 +98,8 @@
         <mat-spinner></mat-spinner>
       </section>
       <section class="both-view" *ngIf="flag_ChoosingBrokerage">
-        <section class="tree-map-c1" echarts [options]="series_ChoosingBrokerage_Active_tmp"></section>
-        <section class="tree-map-c1" echarts [options]="series_ChoosingBrokerage_Inactive_tmp"></section>
+        <section style="min-height: 600px" class="tree-map-c1" echarts [options]="series_ChoosingBrokerage_Active_tmp"></section>
+        <section style="min-height: 600px" class="tree-map-c1" echarts [options]="series_ChoosingBrokerage_Inactive_tmp"></section>
       </section>
       <section class="st_to_en" *ngIf="flag_ChoosingBrokerage">
         <p>{{st_to_en}}</p>
@@ -103,29 +127,15 @@
               <section class="cell-key-g4">جمع کل تماس موفق</section>
               <section class="cell-key-g4">تماس موفق مشتریان فعال</section>
               <section class="cell-key-g4">تماس موفق مشتریان غیرفعال</section>
-              <section class="cell-key-g4">عدم تمایل به مکالمه</section>
+              <section class="cell-key-g4">تماس ناموفق</section>
               <section class="cell-key-g4">تماس مجدد</section>
-              <section class="cell-key-g4">عدم اطلاع</section>
-              <section class="cell-key-g4">تماس تکراری</section>
-              <section class="cell-key-g4">عدم پاسخگویی</section>
-              <section class="cell-key-g4">خاموش</section>
-              <section class="cell-key-g4">رد کردن</section>
-              <section class="cell-key-g4">غیر قابل دسترس</section>
-              <section class="cell-key-g4">مشغول</section>
             </section>
             <section class="table-column-value-g4">
               <section class="cell-value-g4">{{SuccessfulCalls_Count}}</section>
               <section class="cell-value-g4">{{ActiveSuccessfulCalls_Count}}</section>
               <section class="cell-value-g4">{{InactiveSuccessfulCalls_Count}}</section>
-              <section class="cell-value-g4">{{DisinclinationCalls_Count}}</section>
+              <section class="cell-value-g4">{{UnsuccessfulCalls_Count}}</section>
               <section class="cell-value-g4">{{ReCalls_Count}}</section>
-              <section class="cell-value-g4">{{LackInfoCalls_Count}}</section>
-              <section class="cell-value-g4">{{RepeatCalls_Count}}</section>
-              <section class="cell-value-g4">{{UnResponsiveCalls_Count}}</section>
-              <section class="cell-value-g4">{{OffCalls_Count}}</section>
-              <section class="cell-value-g4">{{RejectCalls_Count}}</section>
-              <section class="cell-value-g4">{{UnavailableCalls_Count}}</section>
-              <section class="cell-value-g4">{{BusyCalls_Count}}</section>
             </section>
           </section>
         </section>

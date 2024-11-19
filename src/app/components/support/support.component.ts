@@ -25,7 +25,7 @@ export class SupportComponent {
   async send(){
     if(this.contactform.valid){
       emailjs.init('LJ2ENj7qErcphFqsb')
-      let response = await emailjs.send("service_b1ds5c2","template_zcwa4qw",this.contactform.value);
+      let response = await emailjs.send("service_r44wl6m","template_zcwa4qw",this.contactform.value);
       this.toast.success({detail:"SUCCESS",summary:"Contact Message Send!",duration:5000, position:'topRight'});
       this.ngOnInit();
     }

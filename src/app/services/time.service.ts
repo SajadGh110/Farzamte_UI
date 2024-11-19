@@ -1,25 +1,26 @@
 import {Injectable} from '@angular/core';
-import {addDays, format, subDays} from "date-fns";
-import {HappycallService} from "./happycall.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class TimeService{
 
-  constructor(private HappyCallService:HappycallService) { }
+  constructor() { }
   StartDate:string = '';
   EndDate:string = '';
+  available_days:number = 0;
 
-  set_Time(StartDate:string,EndDate:string){
-    this.StartDate = StartDate;
-    this.EndDate = EndDate;
+  async transfer_days(days:number){
+    this.available_days = days;
   }
-
-  async get_HappyCall_Date(time:number){
-    let res_date = await this.HappyCallService.get_LastDate().toPromise();
-    this.EndDate = res_date.endDate;
-    this.StartDate = format(subDays(this.EndDate, time), 'yyyy-MM-dd');
-    return [this.StartDate, this.EndDate];
+  calc_Diff_Date(StartDate:string, EndDate:string) :number {
+    if (StartDate && EndDate) {
+      const start = new Date(StartDate);
+      const end = new Date(EndDate);
+      const timeDiff = Math.abs(end.getTime() - start.getTime());
+      return Math.ceil(timeDiff / (1000 * 3600 * 24));
+    } else {
+      return 0;
+    }
   }
 }

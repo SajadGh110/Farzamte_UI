@@ -4,7 +4,7 @@ import {DashboardTopmenuComponent} from "../../Template/dashboard-topmenu/dashbo
 import {AuthService} from "../../../services/auth.service";
 import {ProfileService} from "../../../services/profile.service";
 import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
-import {NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault} from "@angular/common";
+import {NgForOf, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault} from "@angular/common";
 import {NgToastService} from "ng-angular-popup";
 import {Router} from "@angular/router";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
@@ -21,7 +21,8 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
     NgSwitch,
     NgSwitchCase,
     NgSwitchDefault,
-    MatProgressSpinner
+    MatProgressSpinner,
+    NgForOf
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
@@ -47,6 +48,7 @@ export class ProfileComponent implements OnInit{
     re_password: ""
   }
   protected flag_profile: boolean = false;
+  brokers = ['Mobin', 'Pishro', 'Pouyan', 'Khobregan'];
   public constructor(private auth:AuthService, private profile:ProfileService, private fb:FormBuilder, private toast:NgToastService, private router:Router) {
   }
 
@@ -90,7 +92,7 @@ export class ProfileComponent implements OnInit{
       address : [''],
       postalCode : [''],
       role : [''],
-      password : ['', Validators.required]
+      password : ['', Validators.required],
     })
     this.changepass_form = this.fb.group({
       password: ['', Validators.required],
@@ -105,7 +107,7 @@ export class ProfileComponent implements OnInit{
         error:(res=>{
           if (res.status == 200){
             this.toast.success({detail:"SUCCESS",summary:res.error.text,duration:5000, position:'topRight'});
-            this.router.navigate(['dashboard']);
+            this.router.navigate(['brokerages']);
           }
           else
             this.toast.error({detail:"ERROR",summary:res.error,duration:5000, position:'topRight'});
@@ -126,7 +128,7 @@ export class ProfileComponent implements OnInit{
           error:(res=>{
             if (res.status == 200){
               this.toast.success({detail:"SUCCESS",summary:res.error.text,duration:5000, position:'topRight'});
-              this.router.navigate(['dashboard']);
+              this.router.navigate(['brokerages']);
             }
             else
               this.toast.error({detail:"ERROR",summary:res.error,duration:5000, position:'topRight'});

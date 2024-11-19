@@ -47,22 +47,20 @@
                 <label>سطح کاربری : </label>
                 <section ngSwitch="{{formData.role}}">
                   <input class="role" type="text" *ngSwitchCase="'Normal'" value="عادی" disabled>
+                  <input class="role" type="text" *ngSwitchCase="'Admin'" value="ادمین کارگزاری" disabled>
                   <input class="role" type="text" *ngSwitchCase="'Owner'" value="توسعه دهنده" disabled>
                   <input class="role" type="text" *ngSwitchDefault value="نقش شناخته شده نیست" disabled>
                 </section>
               </section>
               <section class="item">
-                <label for="postalCode">کارگزاری : </label>
-                <section ngSwitch="{{formData.role}}">
-                  <input class="broker" type="text" *ngSwitchCase="'Normal'" value="{{formData.broker}}" disabled>
+                <label for="brokerSelect">کارگزاری: </label>
+                <section [ngSwitch]="formData.role">
+                  <input class="broker" type="text" *ngSwitchCase="'Admin'" [value]="formData.broker" disabled>
+                  <input class="broker" type="text" *ngSwitchCase="'Normal'" [value]="formData.broker" disabled>
                   <section *ngSwitchCase="'Owner'">
-                    <input type="text" formControlName="broker" list="brokers"/>
-                    <datalist id="brokers">
-                      <option>Mobin</option>
-                      <option>Pishro</option>
-                      <option>Pouyan</option>
-                      <option>Khobregan</option>
-                    </datalist>
+                    <select id="brokerSelect" formControlName="broker">
+                      <option *ngFor="let broker of brokers" [value]="broker">{{ broker }}</option>
+                    </select>
                   </section>
                   <input class="role" type="text" *ngSwitchDefault value="کارگزاری مشخص نیست" disabled>
                 </section>
@@ -92,17 +90,17 @@
             </section>
             <section class="form" *ngIf="flag_profile">
               <section class="item">
-                <label for="password">گذرواژه : </label>
+                <label for="chp_password">گذرواژه : </label>
                 <input class="password" type="password" formControlName="password" id="chp_password" [class.is-invalid]="changepass_form.controls['password'].dirty && changepass_form.hasError('required','password')" placeholder="گذرواژه">
                 <small *ngIf="changepass_form.controls['password'].dirty && changepass_form.hasError('required','password')" class="text-error">وارد کردن گذرواژه الزامیست!</small>
               </section>
               <section class="item">
-                <label for="password">گذرواژه جدید : </label>
+                <label for="chp_new_password">گذرواژه جدید : </label>
                 <input class="password" type="password" formControlName="new_password" id="chp_new_password" [class.is-invalid]="changepass_form.controls['new_password'].dirty && changepass_form.hasError('required','new_password')" placeholder="گذرواژه جدید">
                 <small *ngIf="changepass_form.controls['new_password'].dirty && changepass_form.hasError('required','new_password')" class="text-error">وارد کردن گذرواژه جدید الزامیست!</small>
               </section>
               <section class="item">
-                <label for="password">تکرار گذرواژه : </label>
+                <label for="chp_re_password">تکرار گذرواژه : </label>
                 <input class="password" type="password" formControlName="re_password" id="chp_re_password" [class.is-invalid]="changepass_form.controls['re_password'].dirty && changepass_form.hasError('required','re_password')" placeholder="تکرار گذرواژه">
                 <small *ngIf="changepass_form.controls['re_password'].dirty && changepass_form.hasError('required','re_password')" class="text-error">وارد کردن تکرار گذرواژه الزامیست!</small>
               </section>

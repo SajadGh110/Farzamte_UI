@@ -9,6 +9,10 @@ import {HappycallService} from "../../../services/happycall.service";
 import {TimeService} from "../../../services/time.service";
 import {EChartsOption} from "echarts";
 import {NgxEchartsDirective} from "ngx-echarts";
+import {DashboardContactComponent} from "../../Template/dashboard-contact/dashboard-contact.component";
+import {AuthService} from "../../../services/auth.service";
+import {Router} from "@angular/router";
+import {format, subDays} from "date-fns";
 
 @Component({
   selector: 'app-happy-call',
@@ -19,7 +23,8 @@ import {NgxEchartsDirective} from "ngx-echarts";
     MatProgressSpinner,
     NgIf,
     NgForOf,
-    NgxEchartsDirective
+    NgxEchartsDirective,
+    DashboardContactComponent
   ],
   providers: [DatePipe],
   templateUrl: './happy-call.component.html',
@@ -27,6 +32,7 @@ import {NgxEchartsDirective} from "ngx-echarts";
 })
 export class HappyCallComponent implements OnInit {
   dateform! : FormGroup;
+  protected flag_time:boolean = false;
   protected flag_count:boolean=false;
   protected flag_g1:boolean=false;
   protected flag_g4:boolean=false;
@@ -34,11 +40,15 @@ export class HappyCallComponent implements OnInit {
   protected flag_ChoosingBrokerage:boolean=false;
   protected flag_popup:boolean=false;
   protected flag_popup_data:boolean=false;
-  public constructor(private toast:NgToastService, private fb:FormBuilder, private getData:HappycallService, private TimeService:TimeService, private datePipe: DatePipe) {}
+  public constructor(private toast:NgToastService, private auth:AuthService, private router:Router, private fb:FormBuilder, private getData:HappycallService, private TimeService:TimeService, private datePipe: DatePipe) {}
   StartDate:string = "";
   EndDate:string = "";
   st_to_en:string = "";
+  selected_days:number = 0;
+  available_days:number = 0;
+  total_ActiveChoosingBrokerage: number = 0;
   series_ActiveChoosingBrokerage: any[] = [];
+  total_InactiveChoosingBrokerage: number = 0;
   series_InactiveChoosingBrokerage: any[] = [];
   AllCalls_Count:Number = 0;
   Customers_Count:Number = 0;
@@ -51,20 +61,23 @@ export class HappyCallComponent implements OnInit {
   ExplanationClub_Count:Number = 0;
   ActiveSuccessfulCalls_Count:Number = 0;
   InactiveSuccessfulCalls_Count:Number = 0;
-  DisinclinationCalls_Count:Number = 0;
+  UnsuccessfulCalls_Count:Number = 0;
   ReCalls_Count:Number = 0;
-  LackInfoCalls_Count:Number = 0;
-  RepeatCalls_Count:Number = 0;
-  UnResponsiveCalls_Count:Number = 0;
-  OffCalls_Count:Number = 0;
-  RejectCalls_Count:Number = 0;
-  UnavailableCalls_Count:Number = 0;
-  BusyCalls_Count:Number = 0;
-  UserRequests_Count:Number = 0;
+  TitleTextStyle: any= {
+    fontFamily: 'Nazanin', fontSize: '20px',
+  };
+  tooltipTextStyle: any = {
+    fontFamily: 'Nazanin', fontWeight: 'bold'
+  }
+  legendTextStyle: any = {
+    fontFamily: 'Nazanin', fontWeight: 'bold', fontSize:'14px'
+  }
+  label: any = {show:true,fontSize:14,fontWeight:'bold',fontFamily:'Nazanin',position:'top',formatter: (params:any) => {return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');}};
+
   series_calls_count_day:EChartsOption = {
-    title: {text: 'آمار کل تماس های هپی کال - بر حسب روز', textStyle:{fontFamily:'Yekan'},subtext:this.st_to_en, subtextStyle:{fontFamily:'Bahnschrift'}, right:0, textAlign:'center'},
-    tooltip: {trigger: 'axis', axisPointer: {type: 'cross', label: {backgroundColor: '#6a7985'}}},
-    legend: {data: ['کل تماس ها', 'تماس های موفق', 'تماس های ناموفق'],left:'10%'},
+    title: {text: 'آمار کل تماس های هپی کال - بر حسب روز', textStyle:this.TitleTextStyle,subtext:this.st_to_en, subtextStyle:{fontFamily:'Bahnschrift'}, right:0, textAlign:'center'},
+    tooltip: {trigger: 'axis', axisPointer: {type: 'cross', label: {backgroundColor: '#6a7985'}},textStyle:this.tooltipTextStyle},
+    legend: {data: ['کل تماس ها', 'تماس های موفق', 'تماس های ناموفق'],textStyle:this.legendTextStyle,left:'10%'},
     xAxis: {type: 'category', data: [], axisLabel: { interval: 0, rotate: 45 }},
     yAxis: {type: 'value'},
     toolbox: {show: true, orient: 'vertical', left: 'right', top: 'center', feature: {
@@ -79,11 +92,11 @@ export class HappyCallComponent implements OnInit {
   series_ActiveIntroduction: any[] = [];
   series_InactiveIntroduction: any[] = [];
   series_Introduction:EChartsOption = {
-    tooltip: {trigger: 'item'},
-    legend: {top: '10%', left: 'center'},
-    title: [{text: 'مسیر آشنایی با کارگزاری', left: 'center',textStyle:{fontFamily:'Yekan'}},
-      {subtext: 'مشتریان فعال', bottom:'15%', left:'75%', textAlign: 'center',subtextStyle:{fontFamily:'Yekan',fontSize:'16px',color:'#000000'}},
-      {subtext: 'مشتریان غیرفعال', bottom:'15%', left:'25%', textAlign: 'center',subtextStyle:{fontFamily:'Yekan',fontSize:'16px',color:'#000000'}},
+    tooltip: {trigger: 'item',textStyle:this.tooltipTextStyle},
+    legend: {top: '10%', left: 'center',textStyle:this.legendTextStyle},
+    title: [{text: 'مسیر آشنایی با کارگزاری', left: 'center',textStyle:this.TitleTextStyle},
+      {subtext: 'مشتریان فعال', bottom:'15%', left:'75%', textAlign: 'center',subtextStyle:{fontFamily:'Nazanin',fontSize:'16px',fontWeight:'bold',color:'#000000'}},
+      {subtext: 'مشتریان غیرفعال', bottom:'15%', left:'25%', textAlign: 'center',subtextStyle:{fontFamily:'Nazanin',fontSize:'16px',fontWeight:'bold',color:'#000000'}},
       {subtext: this.st_to_en, bottom:'5%', left:'50%', textAlign: 'center',subtextStyle:{fontFamily:'Bahnschrift',fontSize:'14px',color:'#000000'}}],
     toolbox: {show: true, orient: 'vertical', left: 'right', top: 'center', feature: {
         mark: { show: true },
@@ -98,7 +111,7 @@ export class HappyCallComponent implements OnInit {
         avoidLabelOverlap: false,
         itemStyle: {borderRadius: 4, borderColor: '#fff', borderWidth: 1},
         data: this.series_ActiveIntroduction,
-        label: {position: 'outer', alignTo: 'labelLine'},
+        label: {position: 'outer', alignTo: 'labelLine',fontFamily:'Nazanin',fontWeight:'bold',fontSize:'14px'},
         left: '50%',
         right: 0,
         top: 0,
@@ -111,7 +124,7 @@ export class HappyCallComponent implements OnInit {
         avoidLabelOverlap: false,
         itemStyle: {borderRadius: 4, borderColor: '#fff', borderWidth: 1},
         data: this.series_InactiveIntroduction,
-        label: {position: 'outer', alignTo: 'labelLine'},
+        label: {position: 'outer', alignTo: 'labelLine',fontFamily:'Nazanin',fontWeight:'bold',fontSize:'14px'},
         left: 0,
         right: '50%',
         top: 0,
@@ -119,8 +132,15 @@ export class HappyCallComponent implements OnInit {
     ]
   };
   series_ChoosingBrokerage_Active_tmp:EChartsOption = {
-    title: {text: 'مشتریان فعال', textStyle:{fontFamily:'Yekan'}, right:0, textAlign:'center'},
-    tooltip: {trigger: 'item'},
+    title: {text: 'مشتریان فعال', textStyle:this.TitleTextStyle, right:0, textAlign:'center'},
+    tooltip: {
+      trigger: 'item',
+      textStyle:this.tooltipTextStyle,
+      formatter: (params : any) => {
+        const total = this.total_ActiveChoosingBrokerage;
+        const percentage = ((params.value / total) * 100).toFixed(2);
+        return  `${percentage}% - ${params.name}`;
+      }},
     toolbox: {show: true, orient: 'vertical', left: 'right', top: 'center', feature: {
         mark: { show: true },
         dataView: { show: true, readOnly: false },
@@ -130,13 +150,31 @@ export class HappyCallComponent implements OnInit {
       {
         type: 'treemap',
         name:'مشتریان فعال',
+        roam: false,
+        nodeClick: false,
+        label: {
+          show: true,
+          fontFamily:'Nazanin',fontWeight:'bold',fontSize:'14px',position:'insideTopLeft', padding:15,
+          formatter: (params : any) => {
+            const total = this.total_ActiveChoosingBrokerage;
+            const percentage = ((params.value / total) * 100).toFixed(2) + '%';;
+            return  `${params.name}\n\n${percentage}`;
+          }
+        },
         data: this.series_ActiveChoosingBrokerage
       }
     ]
   };
   series_ChoosingBrokerage_Inactive_tmp:EChartsOption = {
-    title: {text: 'مشتریان غیرفعال', textStyle:{fontFamily:'Yekan'}, right:0, textAlign:'center'},
-    tooltip: {trigger: 'item'},
+    title: {text: 'مشتریان غیرفعال', textStyle:this.TitleTextStyle, right:0, textAlign:'center'},
+    tooltip: {
+      trigger: 'item',
+      textStyle:this.tooltipTextStyle,
+      formatter: (params : any) => {
+        const total = this.total_InactiveChoosingBrokerage;
+        const percentage = ((params.value / total) * 100).toFixed(2);
+        return  `${percentage}% - ${params.name}`;
+      }},
     toolbox: {show: true, orient: 'vertical', left: 'right', top: 'center', feature: {
         mark: { show: true },
         dataView: { show: true, readOnly: false },
@@ -146,16 +184,32 @@ export class HappyCallComponent implements OnInit {
       {
         type: 'treemap',
         name:'مشتریان غیرفعال',
+        roam: false,
+        nodeClick: false,
+        label: {
+          show: true,
+          fontFamily:'Nazanin',fontWeight:'bold',fontSize:'14px',position:'insideTopLeft', padding:15,
+          formatter: (params : any) => {
+            const total = this.total_InactiveChoosingBrokerage;
+            const percentage = ((params.value / total) * 100).toFixed(2) + '%';;
+            return  `${params.name}\n\n${percentage}`;
+          }
+        },
         data: this.series_InactiveChoosingBrokerage
       }
     ]
   };
 
   async ngOnInit(){
+    if(this.auth.getUserRole() !== "Owner" && this.auth.getUserRole() !== "Admin"){
+      this.toast.error({ detail: "ERROR", summary: "Access Denied!", duration: 5000, position: 'topRight' });
+      await this.router.navigate(['profile']);
+    }
     this.dateform = this.fb.group({
       StartDate: [''],
       EndDate: ['']
     });
+    this.DefaultTime();
   }
 
   async do(stDate:string,enDate:string){
@@ -164,6 +218,7 @@ export class HappyCallComponent implements OnInit {
     this.flag_g4 = false;
     this.flag_Introduction = false;
     this.flag_ChoosingBrokerage = false;
+    this.available_days = 0;
     this.series_ActiveIntroduction = [];
     this.series_InactiveIntroduction = [];
     this.series_ActiveChoosingBrokerage = [];
@@ -176,10 +231,12 @@ export class HappyCallComponent implements OnInit {
       for (let i = 0; i < res1.length; i++) {
         total_calls_date.push(res1[i].date);
         total_calls_count.push(res1[i].count);
+        this.available_days += 1;
       }
       let std = this.datePipe.transform(total_calls_date[0],'yyyy-MM-dd') || '';
       let end = this.datePipe.transform(total_calls_date[total_calls_date.length-1],'yyyy-MM-dd') || '';
       this.st_to_en = std + ' to ' + end;
+      this.TimeService.transfer_days(this.available_days);
       (this.series_calls_count_day.title as any).subtext = this.st_to_en;
       (this.series_calls_count_day.xAxis as any).data = total_calls_date;
       (this.series_calls_count_day.series as any)[0].data = total_calls_count;
@@ -218,11 +275,15 @@ export class HappyCallComponent implements OnInit {
       this.flag_Introduction = true;
 
       let res_ActiveChoosingBrokerage = await this.getData.get_ActiveChoosingBrokerage(stDate,enDate).toPromise();
-      for (let i = 0; i < res_ActiveChoosingBrokerage.length; i++)
+      for (let i = 0; i < res_ActiveChoosingBrokerage.length; i++){
         this.series_ActiveChoosingBrokerage.push({ name: res_ActiveChoosingBrokerage[i].choosingBrokerage, value: res_ActiveChoosingBrokerage[i].count });
+        this.total_ActiveChoosingBrokerage += res_ActiveChoosingBrokerage[i].count;
+      }
       let res_InactiveChoosingBrokerage = await this.getData.get_InactiveChoosingBrokerage(stDate,enDate).toPromise();
-      for (let i = 0; i < res_InactiveChoosingBrokerage.length; i++)
+      for (let i = 0; i < res_InactiveChoosingBrokerage.length; i++){
         this.series_InactiveChoosingBrokerage.push({ name: res_InactiveChoosingBrokerage[i].choosingBrokerage, value: res_InactiveChoosingBrokerage[i].count });
+        this.total_InactiveChoosingBrokerage += res_InactiveChoosingBrokerage[i].count;
+      }
       (this.series_ChoosingBrokerage_Active_tmp.series as any)[0].data = this.series_ActiveChoosingBrokerage;
       (this.series_ChoosingBrokerage_Inactive_tmp.series as any)[0].data = this.series_InactiveChoosingBrokerage;
       this.flag_ChoosingBrokerage = true;
@@ -230,15 +291,8 @@ export class HappyCallComponent implements OnInit {
       this.AllCalls_Count = await this.getData.get_AllCalls_Count(stDate,enDate).toPromise();
       this.ActiveSuccessfulCalls_Count = await this.getData.get_ActiveSuccessfulCalls_Count(stDate,enDate).toPromise();
       this.InactiveSuccessfulCalls_Count = await this.getData.get_InactiveSuccessfulCalls_Count(stDate,enDate).toPromise();
-      this.DisinclinationCalls_Count = await this.getData.get_DisinclinationCalls_Count(stDate,enDate).toPromise();
+      this.UnsuccessfulCalls_Count = await this.getData.get_UnsuccessfulCalls_Count(stDate,enDate).toPromise();
       this.ReCalls_Count = await this.getData.get_ReCalls_Count(stDate,enDate).toPromise();
-      this.LackInfoCalls_Count = await this.getData.get_LackInfoCalls_Count(stDate,enDate).toPromise();
-      this.RepeatCalls_Count = await this.getData.get_RepeatCalls_Count(stDate,enDate).toPromise();
-      this.UnResponsiveCalls_Count = await this.getData.get_UnResponsiveCalls_Count(stDate,enDate).toPromise();
-      this.OffCalls_Count = await this.getData.get_OffCalls_Count(stDate,enDate).toPromise();
-      this.RejectCalls_Count = await this.getData.get_RejectCalls_Count(stDate,enDate).toPromise();
-      this.UnavailableCalls_Count = await this.getData.get_UnavailableCalls_Count(stDate,enDate).toPromise();
-      this.BusyCalls_Count = await this.getData.get_BusyCalls_Count(stDate,enDate).toPromise();
       this.flag_g4 = true;
 
     }catch (error:any){
@@ -261,12 +315,55 @@ export class HappyCallComponent implements OnInit {
         this.series_Popup_List = await this.getData.get_Inactive_Customers_List(this.StartDate,this.EndDate).toPromise();
         this.flag_popup_data = true;
         break;
+      case "SuccessfulCalls":
+        this.series_Popup_List = await this.getData.get_SuccessfulCalls_List(this.StartDate,this.EndDate).toPromise();
+        this.flag_popup_data = true;
+        break;
+      case "ActiveAfterCalls":
+        this.series_Popup_List = await this.getData.get_ActiveAfterCalls_List(this.StartDate,this.EndDate).toPromise();
+        this.flag_popup_data = true;
+        break;
+      case "ActiveInOtherBrockers":
+        this.series_Popup_List = await this.getData.get_ActiveInOtherBrokers_List(this.StartDate,this.EndDate).toPromise();
+        this.flag_popup_data = true;
+        break;
+      case "ExplanationClub":
+        this.series_Popup_List = await this.getData.get_ExplanationClub_List(this.StartDate,this.EndDate).toPromise();
+        this.flag_popup_data = true;
+        break;
     }
   }
 
   async OnUpdateDate(){
-    this.StartDate = this.TimeService.StartDate;
-    this.EndDate = this.TimeService.EndDate;
+    this.flag_time = false;
+    this.StartDate = this.dateform.controls['StartDate'].value;
+    this.EndDate = this.dateform.controls['EndDate'].value;
+    this.selected_days = this.TimeService.calc_Diff_Date(this.StartDate, this.EndDate);
+    this.dateform.controls['StartDate'].setValue(this.StartDate);
+    this.dateform.controls['EndDate'].setValue(this.EndDate);
+    this.flag_time = true;
+    await this.do(this.StartDate,this.EndDate);
+  }
+
+  async SetTime(days:number){
+    let res_date = await this.getData.get_LastDate().toPromise();
+    this.EndDate = res_date.lastDate;
+    this.StartDate = format(subDays(this.EndDate, days), 'yyyy-MM-dd');
+    this.selected_days = this.TimeService.calc_Diff_Date(this.StartDate, this.EndDate);
+    this.dateform.controls['StartDate'].setValue(this.StartDate);
+    this.dateform.controls['EndDate'].setValue(this.EndDate);
+    this.flag_time = true;
+    await this.do(this.StartDate,this.EndDate);
+  }
+
+  async DefaultTime(){
+    let res_date = await this.getData.get_LastDate().toPromise();
+    this.EndDate = res_date.lastDate;
+    this.StartDate = res_date.startDate;
+    this.selected_days = this.TimeService.calc_Diff_Date(this.StartDate, this.EndDate);
+    this.dateform.controls['StartDate'].setValue(this.StartDate);
+    this.dateform.controls['EndDate'].setValue(this.EndDate);
+    this.flag_time = true;
     await this.do(this.StartDate,this.EndDate);
   }
 }

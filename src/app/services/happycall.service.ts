@@ -12,7 +12,7 @@ export class HappycallService {
   header = new HttpHeaders().append("api-key",this.appConfigService.getApiKey()).append("Authorization",this.appConfigService.getToken());
 
   get_LastDate():Observable<any>{
-    return this.http.get(`${this.appConfigService.getApiUrl()}HappyCall/LastDate`,{headers:this.header});
+    return this.http.get(`${this.appConfigService.getApiUrl()}HappyCall/Date`,{headers:this.header});
   }
 
   get_Customers_Count(StartDate:string, EndDate:string):Observable<any>{
@@ -43,16 +43,32 @@ export class HappycallService {
     return this.http.get(`${this.appConfigService.getApiUrl()}HappyCall/SuccessfulCalls_Count?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
   }
 
+  get_SuccessfulCalls_List(StartDate:string, EndDate:string):Observable<any>{
+    return this.http.get(`${this.appConfigService.getApiUrl()}HappyCall/SuccessfulCalls_List?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
+  }
+
   get_ActiveAfterCalls_Count(StartDate:string, EndDate:string):Observable<any>{
     return this.http.get(`${this.appConfigService.getApiUrl()}HappyCall/ActiveAfterCalls_Count?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
+  }
+
+  get_ActiveAfterCalls_List(StartDate:string, EndDate:string):Observable<any>{
+    return this.http.get(`${this.appConfigService.getApiUrl()}HappyCall/ActiveAfterCalls_List?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
   }
 
   get_ActiveInOtherBrokers_Count(StartDate:string, EndDate:string):Observable<any>{
     return this.http.get(`${this.appConfigService.getApiUrl()}HappyCall/ActiveInOtherBrockers_Count?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
   }
 
+  get_ActiveInOtherBrokers_List(StartDate:string, EndDate:string):Observable<any>{
+    return this.http.get(`${this.appConfigService.getApiUrl()}HappyCall/ActiveInOtherBrockers_List?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
+  }
+
   get_ExplanationClub_Count(StartDate:string, EndDate:string):Observable<any>{
     return this.http.get(`${this.appConfigService.getApiUrl()}HappyCall/ExplanationClub_Count?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
+  }
+
+  get_ExplanationClub_List(StartDate:string, EndDate:string):Observable<any>{
+    return this.http.get(`${this.appConfigService.getApiUrl()}HappyCall/ExplanationClub_List?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
   }
 
   get_Total_Count_Day(StartDate:string, EndDate:string):Observable<any>{
@@ -99,40 +115,12 @@ export class HappycallService {
     return this.http.get(`${this.appConfigService.getApiUrl()}HappyCall/InactiveSuccessfulCalls_Count?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
   }
 
-  get_DisinclinationCalls_Count(StartDate:string,EndDate:string):Observable<any>{
-    return this.http.get(`${this.appConfigService.getApiUrl()}HappyCall/DisinclinationCalls_Count?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
+  get_UnsuccessfulCalls_Count(StartDate:string,EndDate:string):Observable<any>{
+    return this.http.get(`${this.appConfigService.getApiUrl()}HappyCall/UnsuccessfulCalls_Count?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
   }
 
   get_ReCalls_Count(StartDate:string,EndDate:string):Observable<any>{
     return this.http.get(`${this.appConfigService.getApiUrl()}HappyCall/ReCalls_Count?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
-  }
-
-  get_LackInfoCalls_Count(StartDate:string,EndDate:string):Observable<any>{
-    return this.http.get(`${this.appConfigService.getApiUrl()}HappyCall/LackInfoCalls_Count?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
-  }
-
-  get_RepeatCalls_Count(StartDate:string,EndDate:string):Observable<any>{
-    return this.http.get(`${this.appConfigService.getApiUrl()}HappyCall/RepeatCalls_Count?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
-  }
-
-  get_UnResponsiveCalls_Count(StartDate:string,EndDate:string):Observable<any>{
-    return this.http.get(`${this.appConfigService.getApiUrl()}HappyCall/UnResponsiveCalls_Count?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
-  }
-
-  get_OffCalls_Count(StartDate:string,EndDate:string):Observable<any>{
-    return this.http.get(`${this.appConfigService.getApiUrl()}HappyCall/OffCalls_Count?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
-  }
-
-  get_RejectCalls_Count(StartDate:string,EndDate:string):Observable<any>{
-    return this.http.get(`${this.appConfigService.getApiUrl()}HappyCall/RejectCalls_Count?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
-  }
-
-  get_UnavailableCalls_Count(StartDate:string,EndDate:string):Observable<any>{
-    return this.http.get(`${this.appConfigService.getApiUrl()}HappyCall/UnavailableCalls_Count?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
-  }
-
-  get_BusyCalls_Count(StartDate:string,EndDate:string):Observable<any>{
-    return this.http.get(`${this.appConfigService.getApiUrl()}HappyCall/BusyCalls_Count?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
   }
 
   get_UserRequests_Count(StartDate:string,EndDate:string):Observable<any>{

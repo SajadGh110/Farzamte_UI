@@ -1,0 +1,52 @@
+.row {
+  justify-content: center;
+}
+.list {
+  display: flex;
+  flex-direction: column;
+  width: 14rem;
+  height: min-content;
+  margin: 2rem 1rem 2rem 1rem;
+}
+.fix {
+  position: fixed;
+}
+.app-menu ,
+.quick-access {
+  background-color: #ffffff;
+  padding: 1rem;
+  border-radius: 0.428rem;
+  box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+.app-menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.app-menu .brokerage-logo img {
+  height: 80px;
+}
+.app-menu p.brokerage-name {
+  font: 18px Nazanin, Bahnschrift, serif;
+  font-weight: bold;
+  margin-top: 10px;
+}
+.quick-access {
+  direction: rtl;
+}
+.quick-access h3 {
+  font: 20px Nazanin, sans-serif;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+.quick-access li {
+  padding: 10px;
+  font: 16px Nazanin, sans-serif;
+  font-weight: bold;
+  list-style: circle inside;
+  cursor: pointer;
+}
+.svg_CMP{
+  fill: #2F4F4F;
+}

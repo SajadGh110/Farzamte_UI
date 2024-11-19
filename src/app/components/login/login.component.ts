@@ -27,8 +27,10 @@ export class LoginComponent {
         next:(res=>{
           this.loginform.reset();
           this.auth.storeToken(res.token);
-          this.toast.success({detail:"SUCCESS",summary:res.message,duration:5000, position:'topRight'});
-          this.router.navigate(['dashboard']);
+          if (this.auth.getUserRole() === "Owner" || this.auth.getUserRole() === "Admin")
+            this.router.navigate(['brokerages']).then(()=>{location.reload()});
+          else
+            this.router.navigate(['profile']).then(()=>{location.reload()});
         }),
         error:(res=>{
             this.toast.error({detail:"ERROR",summary:res.error,duration:5000, position:'topRight'});

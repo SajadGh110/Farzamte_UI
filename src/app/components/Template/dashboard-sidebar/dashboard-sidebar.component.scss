@@ -30,10 +30,7 @@ aside nav ul li a {
   align-items: center;
   flex-direction: row-reverse;
 }
-aside.v1 nav ul li a {
-  padding: 10px 10px;
-}
-aside.v2 nav ul li a {
+aside nav ul li a {
   padding: 5px 10px;
 }
 aside nav ul li a p {
@@ -46,14 +43,14 @@ aside nav ul li a p {
   -ms-transform: matrix(1, 0, 0, 1.2, 0, 0);
   color: white;
 }
-aside.v1 nav ul li a p {
-  font-size: 18px;
-}
-aside.v2 nav ul li a p {
+aside nav ul li a p {
   font-size: 14px;
 }
-#Dashboard{
+#Brokerages{
   background-color: #1c1b3a;
+}
+#Brokerages-cmp{
+  background-color: #2F4F4F;
 }
 #profile{
   background-color: #1b9ac4;
@@ -67,7 +64,8 @@ aside.v2 nav ul li a p {
 #Call-in{
   background-color: #42b3a1;
 }
-#Notices{
+#Notices ,
+.Notices {
   background-color: #965d63;
 }
 #Ticket{
@@ -94,10 +92,7 @@ aside.v2 nav ul li a p {
 #Logout{
   background-color: #EC7063;
 }
-aside.v1 nav .datepicker-input {
-  display: none;
-}
-aside.v2 nav .datepicker-input {
+aside nav .datepicker-input {
   display: flex;
 }
 .datepicker-input{
@@ -117,7 +112,7 @@ aside.v2 nav .datepicker-input {
   flex-direction: row;
   align-items: flex-end;
   justify-content: space-between;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
 }
 .datepicker-input form .row label {
   color: #65828f;
@@ -172,4 +167,20 @@ aside.v2 nav .datepicker-input {
 }
 .datepicker-input form .row input[type=submit].auto:last-child{
   margin-right: 0;
+}
+.time_text p {
+  font: 16px Nazanin, Bahnschrift, serif;
+  font-weight: bold;
+}
+.submenu {
+  display: none;
+  list-style: none;
+  padding-left: 2rem;
+}
+.show-submenu {
+  display: block;
+}
+.submenu li a{
+  color: white;
+  justify-content: center;
 }
