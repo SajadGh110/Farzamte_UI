@@ -68,8 +68,21 @@
   padding: 5px;
   font: 16px Bahnschrift, Yekan, serif;
 }
+.dashboard-main .row form select.brokerSelect {
+  display: flex;
+  width: 203px;
+  font: 16px Bahnschrift, serif;
+  padding: 4px;
+  outline: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: solid 2px #65828f;
+  text-align: center;
+}
 .dashboard-main .row form .item input[type=text]:focus ,
-.dashboard-main .row form .item input[type=password]:focus {
+.dashboard-main .row form .item input[type=password]:focus ,
+.dashboard-main .row form .item select.brokerSelect:focus {
   border-bottom: solid 2px #d9a22e;
 }
 .dashboard-main .row form .item input[type=submit] {

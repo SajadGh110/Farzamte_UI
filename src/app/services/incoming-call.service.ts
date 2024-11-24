@@ -19,6 +19,10 @@ export class IncomingCallService {
     return this.http.get(`${this.appConfigService.getApiUrl()}InComingCall/Total_Count_Day?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
   }
 
+  get_Top_Reasons(StartDate:string, EndDate:string):Observable<any>{
+    return this.http.get(`${this.appConfigService.getApiUrl()}InComingCall/Top_Reasons?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
+  }
+
   get_Phonecall_Reasons(StartDate:string, EndDate:string):Observable<any>{
     return this.http.get(`${this.appConfigService.getApiUrl()}InComingCall/Phonecall_Reasons?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
   }

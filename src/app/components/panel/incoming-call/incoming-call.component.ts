@@ -43,6 +43,7 @@ export class IncomingCallComponent implements OnInit {
   protected flag_popup:boolean=false;
   protected flag_popup_data:boolean=false;
   protected flag_loading:boolean=false;
+  protected flag_Top_Reasons:boolean=false;
   public constructor(private toast:NgToastService,private auth:AuthService, private router:Router, private fb:FormBuilder, private getData:IncomingCallService, private TimeService:TimeService, private datePipe: DatePipe) {}
   StartDate:string = "";
   EndDate:string = "";
@@ -54,7 +55,8 @@ export class IncomingCallComponent implements OnInit {
   total_Reason_Detail: number = 0;
   series_Popup_List: any[] = [];
   series_Phonecall_Reasons: any[] = [];
-  series_color = ['#3ebeed','#EC7063','#42b3a1','#7f6487','#004e75'];
+  series_Top_Reasons: any[] = [];
+  series_color = ['#3ebeed','#EC7063','#004e75','#f1c40f','#7f6487','#42b3a1'];
   TitleTextStyle: any= {
     fontFamily: 'Nazanin', fontSize: '20px',
   };
@@ -79,6 +81,26 @@ export class IncomingCallComponent implements OnInit {
       }},
     series: [{name: 'تماس ورودی',data: [], type: 'line', color: '#3498DB', symbolSize: 10}]
   };
+  series_Top_Reasons_bar:EChartsOption = {
+      tooltip: {trigger: 'axis', axisPointer: {type: 'shadow'}, textStyle:this.tooltipTextStyle},
+      legend: {left:'2%', top:0, textStyle:this.legendTextStyle},
+      dataset: {
+        source: []
+      },
+      toolbox: {show: true, orient: 'vertical', left: 'right', top: 'center', feature: {
+          mark: { show: true },
+          dataView: { show: true, readOnly: false },
+          magicType: { show: true, type: ['line', 'bar'] },
+          restore: { show: true },
+          saveAsImage: { show: true }
+        }},
+      xAxis: {
+        type: 'category',
+        axisLabel:{show:true,fontFamily:'Nazanin',fontWeight:'bold',fontSize:14},
+      },
+      yAxis: {type: 'value'},
+      series: [{ type: 'bar',color:this.series_color[0] }, { type: 'bar',color:this.series_color[1] }, { type: 'bar',color:this.series_color[2] }]
+    };
   series_Phonecall_Reasons_tmp:EChartsOption = {
     title: { show: false },
     tooltip: {
@@ -160,9 +182,11 @@ export class IncomingCallComponent implements OnInit {
     this.flag_count = false;
     this.flag_Ph_Reasons = false;
     this.flag_Reason_Detail = false;
+    this.flag_Top_Reasons = false;
     this.total_Phonecall_Reasons = 0;
     this.total_Reason_Detail = 0;
     this.series_Phonecall_Reasons = [];
+    this.series_Top_Reasons = [];
     try {
       let res1 = await this.getData.get_Total_Count_Day(stDate, enDate).toPromise();
       let total_calls_date: any[] = [];
@@ -178,6 +202,9 @@ export class IncomingCallComponent implements OnInit {
       (this.series_calls_count_day.xAxis as any).data = total_calls_date;
       (this.series_calls_count_day.series as any)[0].data = total_calls_count;
       this.flag_count = true;
+      let res_top_reasons = await this.getData.get_Top_Reasons(stDate,enDate).toPromise();
+      (this.series_Top_Reasons_bar.dataset as any).source = res_top_reasons;
+      this.flag_Top_Reasons = true;
       let res2 = await this.getData.get_Phonecall_Reasons(stDate,enDate).toPromise();
       for (let i = 0; i < res2.length; i++){
         this.series_Phonecall_Reasons.push({ name: res2[i].reason, value: res2[i].count });

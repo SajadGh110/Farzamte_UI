@@ -39,6 +39,17 @@
       </section>
     </section>
     <section class="row">
+      <section class="detail">
+        <h2>سه دلیل برتر تماس ها</h2>
+      </section>
+      <section class="loading-spinner" *ngIf="!flag_Top_Reasons">
+        <mat-spinner></mat-spinner>
+      </section>
+      <section class="bar-chart-c1" *ngIf="flag_Top_Reasons">
+        <section echarts [options]="series_Top_Reasons_bar"></section>
+      </section>
+    </section>
+    <section class="row">
       <section class="detail has-p">
         <h2>دلایل تماس ورودی</h2>
         <p>با کلیک روی هر قسمت از نمودار زیر، میتوانید جزئیات ثبت شده را در نمودار زیر مشاهده فرمایید.</p>
