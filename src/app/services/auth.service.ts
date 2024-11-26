@@ -48,6 +48,11 @@ export class AuthService {
     return tokken_string.split(',')[0].split('"')[3];
   }
 
+  getUserBroker():string{
+    var tokken_string = JSON.stringify(this.getToken());
+    return tokken_string.split(',')[3].split('"')[3];
+  }
+
   isLoggedIn():boolean{
     if (localStorage.getItem('token')){
       let token: string = localStorage.getItem('token') + "";

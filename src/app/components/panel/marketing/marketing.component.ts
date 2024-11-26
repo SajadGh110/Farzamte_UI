@@ -72,6 +72,7 @@ export class MarketingComponent implements OnInit {
     fontFamily: 'Nazanin', fontWeight: 'bold', fontSize:'14px'
   }
 
+  /*
   series_tts_day:EChartsOption = {
     title: {text: 'آمار تماس های ترابرد - بر حسب روز', textStyle:this.TitleTextStyle,subtext:this.st_to_en, subtextStyle:{fontFamily:'Bahnschrift'}, right:0, textAlign:'center'},
     tooltip: {trigger: 'axis', axisPointer: {type: 'cross', label: {backgroundColor: '#6a7985'}},textStyle:this.tooltipTextStyle},
@@ -87,6 +88,7 @@ export class MarketingComponent implements OnInit {
       }},
     series: [{name: 'کل تماس های موفق',data: [], type: 'line', color: '#3498DB', symbolSize: 10},{name: 'ادامه با اسمارت',data: [], type: 'line', color: '#1ABC9C', symbolSize: 10},{name: 'برگشت به تدبیر',data: [], type: 'line', color: '#E74C3C', symbolSize: 10},]
   };
+   */
   series_TTSR_Smart_Pie:EChartsOption = {
     tooltip: {trigger: 'item',textStyle:this.tooltipTextStyle},
     legend: {top: '10%', left: 'center',textStyle:this.legendTextStyle},
@@ -187,7 +189,8 @@ export class MarketingComponent implements OnInit {
       StartDate: [''],
       EndDate: ['']
     });
-    this.SetTime(30);
+    if (this.getBroker() == 'Mobin')
+      this.DefaultTime();
   }
 
   async do(stDate:string,enDate:string){
@@ -202,6 +205,7 @@ export class MarketingComponent implements OnInit {
   this.series_All_Table = [];
     try {
       // Total Calls Day ------------------------------------
+      /*
       let res1 = await this.getData.get_Total_Count_Day(stDate,enDate).toPromise();
       let total_calls_date: any[] = [];
       let total_calls_count: any[] = [];
@@ -228,6 +232,7 @@ export class MarketingComponent implements OnInit {
         ReturnTadbir_count.push(res3[i].count);
       (this.series_tts_day.series as any)[2].data = ReturnTadbir_count;
       this.flag_daily = true;
+      */
       // ------------------------------------
       this.Total_Count = await this.getData.get_Total_Count(stDate,enDate).toPromise();
       this.ContinueSmart_Count = await this.getData.get_ContinueSmart_Count(stDate,enDate).toPromise();
@@ -318,13 +323,28 @@ export class MarketingComponent implements OnInit {
   }
 
   async SetTime(days:number){
-    let res_date = await this.getData.get_LastDate().toPromise();
-    this.EndDate = res_date.endDate;
+    let res_date = await this.getData.get_Date().toPromise();
+    this.EndDate = res_date.lastDate;
     this.StartDate = format(subDays(this.EndDate, days), 'yyyy-MM-dd');
     this.selected_days = this.TimeService.calc_Diff_Date(this.StartDate, this.EndDate);
     this.dateform.controls['StartDate'].setValue(this.StartDate);
     this.dateform.controls['EndDate'].setValue(this.EndDate);
     this.flag_time = true;
     await this.do(this.StartDate,this.EndDate);
+  }
+
+  async DefaultTime(){
+    let res_date = await this.getData.get_Date().toPromise();
+    this.EndDate = res_date.lastDate;
+    this.StartDate = res_date.startDate;
+    this.selected_days = this.TimeService.calc_Diff_Date(this.StartDate, this.EndDate);
+    this.dateform.controls['StartDate'].setValue(this.StartDate);
+    this.dateform.controls['EndDate'].setValue(this.EndDate);
+    this.flag_time = true;
+    await this.do(this.StartDate,this.EndDate);
+  }
+
+  getBroker(){
+    return this.auth.getUserBroker();
   }
 }

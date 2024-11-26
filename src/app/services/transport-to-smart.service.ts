@@ -11,8 +11,8 @@ export class TransportToSmartService {
   constructor(private http : HttpClient, private appConfigService: AppConfigService) { }
   header = new HttpHeaders().append("api-key",this.appConfigService.getApiKey()).append("Authorization",this.appConfigService.getToken());
 
-  get_LastDate():Observable<any>{
-    return this.http.get(`${this.appConfigService.getApiUrl()}TransportToSmart/LastDate`,{headers:this.header});
+  get_Date():Observable<any>{
+    return this.http.get(`${this.appConfigService.getApiUrl()}TransportToSmart/Date`,{headers:this.header});
   }
 
   get_Total_Count_Day(StartDate:string, EndDate:string):Observable<any>{

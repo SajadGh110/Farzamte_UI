@@ -1,6 +1,6 @@
 <section class="dashboard-wrapper">
   <app-dashboard-sidebar></app-dashboard-sidebar>
-  <section class="dashboard-main">
+  <section class="dashboard-main" *ngIf="getBroker() == 'Mobin'">
     <app-dashboard-contact class="row top-contact"></app-dashboard-contact>
     <section class="row">
       <section class="detail">
@@ -27,7 +27,7 @@
         </section>
       </section>
     </section>
-    <section class="row">
+    <!--section class="row">
       <section class="detail">
         <h2>آمار تماس های ترابرد روزانه</h2>
       </section>
@@ -37,7 +37,7 @@
       <section class="line-chart-c1" *ngIf="flag_daily">
         <section echarts [options]="series_tts_day"></section>
       </section>
-    </section>
+    </section-->
     <section class="row">
       <section class="detail">
         <h2>آمار کلی</h2>
@@ -107,6 +107,13 @@
         <button type="button" id="ft-Unsuccessful" [class.selected]="isSelected('Unsuccessful')" class="ft-btn" (click)="ft_table('Unsuccessful')">تماس های ناموفق</button>
       </section>
       <app-list-table [data]="series_All_Table" *ngIf="flag_table" style="margin: 1rem 0"></app-list-table>
+    </section>
+  </section>
+  <section class="dashboard-main" *ngIf="getBroker() != 'Mobin'">
+    <section class="row">
+      <section class="detail">
+        <h2>بزودی ...</h2>
+      </section>
     </section>
   </section>
 </section>
