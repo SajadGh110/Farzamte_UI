@@ -1033,6 +1033,27 @@ text.value-text {
   font: 22px Nazanin, Bahnschrift, serif;
   font-weight: bold;
 }
+.dashboard-main .row .btns {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.dashboard-main .row .export {
+  display: flex;
+  flex-direction: row;
+  margin: 1rem 0;
+}
+.dashboard-main .row .export button {
+  margin: 0 5px;
+  padding: 5px 10px;
+  background-color: #ffffff;
+  color: #129f18;
+  font: 16px Nazanin, Bahnschrift, serif;
+  font-weight: bold;
+  cursor: pointer;
+  border: 2px solid #1cca24;
+  border-radius: 10px;
+}
 .dashboard-main .row .filter-table {
   display: flex;
   flex-direction: row;

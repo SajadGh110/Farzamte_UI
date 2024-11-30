@@ -24,11 +24,13 @@
     "@swimlane/ngx-charts": "^20.5.0",
     "date-fns": "^3.6.0",
     "echarts": "^5.5.1",
+    "file-saver": "^2.0.5",
     "jwt-decode": "^4.0.0",
     "ng-angular-popup": "^0.4.7",
     "ngx-echarts": "^18.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
+    "xlsx": "^0.18.5",
     "zone.js": "~0.14.10"
   },
   "devDependencies": {
@@ -40,6 +42,7 @@
     "@types/d3-selection": "^3.0.10",
     "@types/d3-shape": "^3.1.6",
     "@types/date-fns": "^2.6.0",
+    "@types/file-saver": "^2.0.7",
     "@types/jasmine": "~4.3.0",
     "jasmine-core": "~4.6.0",
     "karma": "~6.4.0",

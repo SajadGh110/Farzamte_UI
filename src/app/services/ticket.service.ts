@@ -31,8 +31,24 @@ export class TicketService {
     return this.http.get(`${this.appConfigService.getApiUrl()}CaseReport/casetype_detail?startDate=${StartDate}&endDate=${EndDate}&casetype=${casetype}`,{headers:this.header});
   }
 
-  get_all_table(StartDate:string, EndDate:string):Observable<any>{
-    return this.http.get(`${this.appConfigService.getApiUrl()}CaseReport/all_table?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
+  get_Total_List(StartDate:string, EndDate:string):Observable<any>{
+    return this.http.get(`${this.appConfigService.getApiUrl()}CaseReport/Total_List?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
+  }
+
+  get_Solved_List(StartDate:string, EndDate:string):Observable<any>{
+    return this.http.get(`${this.appConfigService.getApiUrl()}CaseReport/Solved_List?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
+  }
+
+  get_InProgress_List(StartDate:string, EndDate:string):Observable<any>{
+    return this.http.get(`${this.appConfigService.getApiUrl()}CaseReport/InProgress_List?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
+  }
+
+  get_Cancelled_List(StartDate:string, EndDate:string):Observable<any>{
+    return this.http.get(`${this.appConfigService.getApiUrl()}CaseReport/Cancelled_List?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
+  }
+
+  get_InfoProvided_List(StartDate:string, EndDate:string):Observable<any>{
+    return this.http.get(`${this.appConfigService.getApiUrl()}CaseReport/InfoProvided_List?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
   }
 
   get_detail_table(id:number):Observable<any>{

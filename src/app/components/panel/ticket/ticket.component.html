@@ -66,7 +66,19 @@
       <section class="loading-spinner" *ngIf="!flag_table">
         <mat-spinner></mat-spinner>
       </section>
-      <app-all-tickets-table [data]="series_all_table" *ngIf="flag_table" style="margin: 1rem 0"></app-all-tickets-table>
+      <section class="btns">
+        <section class="filter-table">
+          <button type="button" id="ft-total" [class.selected]="isSelected('total')" class="ft-btn" (click)="ft_table('total')">کل تیکت ها</button>
+          <button type="button" id="ft-Solved" [class.selected]="isSelected('Solved')" class="ft-btn" (click)="ft_table('Solved')">مشکل حل شده</button>
+          <button type="button" id="ft-InProgress" [class.selected]="isSelected('InProgress')" class="ft-btn" (click)="ft_table('InProgress')">در حال پیش رفت</button>
+          <button type="button" id="ft-Cancelled" [class.selected]="isSelected('Cancelled')" class="ft-btn" (click)="ft_table('Cancelled')">لغو شده</button>
+          <button type="button" id="ft-InfoProvided" [class.selected]="isSelected('InfoProvided')" class="ft-btn" (click)="ft_table('InfoProvided')">اطلاعات ارائه شده</button>
+        </section>
+        <section class="export">
+          <button (click)="exportToExcel()">دانلود خروجی اکسل</button>
+        </section>
+      </section>
+      <app-all-tickets-table [data]="series_All_Table" *ngIf="flag_table" style="margin: 1rem 0"></app-all-tickets-table>
     </section>
     <section class="overlay" *ngIf="flag_CaseType_Popup">
       <section class="popup">

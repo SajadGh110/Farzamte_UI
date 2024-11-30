@@ -15,6 +15,8 @@ import {AllTicketsTableComponent} from "../ticket/all-tickets-table/all-tickets-
 import {AuthService} from "../../../services/auth.service";
 import {Router} from "@angular/router";
 import {format, subDays} from "date-fns";
+import * as XLSX from 'xlsx';
+import * as FileSaver from 'file-saver';
 
 @Component({
   selector: 'app-marketing',
@@ -61,6 +63,8 @@ export class MarketingComponent implements OnInit {
   series_TTSR_Smart: any[] = [];
   series_TTSR_Tadbir: any[] = [];
   series_All_Table: any[] = [];
+  EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+  EXCEL_EXTENSION = '.xlsx';
   series_color = ['#3ebeed','#EC7063','#73c6b6','#a569bd','#f7dc6f','#aeb6bf'];
   TitleTextStyle: any= {
     fontFamily: 'Nazanin', fontSize: '20px',
@@ -71,24 +75,6 @@ export class MarketingComponent implements OnInit {
   legendTextStyle: any = {
     fontFamily: 'Nazanin', fontWeight: 'bold', fontSize:'14px'
   }
-
-  /*
-  series_tts_day:EChartsOption = {
-    title: {text: 'آمار تماس های ترابرد - بر حسب روز', textStyle:this.TitleTextStyle,subtext:this.st_to_en, subtextStyle:{fontFamily:'Bahnschrift'}, right:0, textAlign:'center'},
-    tooltip: {trigger: 'axis', axisPointer: {type: 'cross', label: {backgroundColor: '#6a7985'}},textStyle:this.tooltipTextStyle},
-    legend: {data: ['کل تماس های موفق', 'ادامه با اسمارت', 'برگشت به تدبیر'],left:'10%',textStyle:this.legendTextStyle},
-    xAxis: {type: 'category', data: [], axisLabel: { interval: 0, rotate: 45 }},
-    yAxis: {type: 'value'},
-    toolbox: {show: true, orient: 'vertical', left: 'right', top: 'center', feature: {
-        mark: { show: true },
-        dataView: { show: true, readOnly: false },
-        magicType: { show: true, type: ['line', 'bar'] },
-        restore: { show: true },
-        saveAsImage: { show: true }
-      }},
-    series: [{name: 'کل تماس های موفق',data: [], type: 'line', color: '#3498DB', symbolSize: 10},{name: 'ادامه با اسمارت',data: [], type: 'line', color: '#1ABC9C', symbolSize: 10},{name: 'برگشت به تدبیر',data: [], type: 'line', color: '#E74C3C', symbolSize: 10},]
-  };
-   */
   series_TTSR_Smart_Pie:EChartsOption = {
     tooltip: {trigger: 'item',textStyle:this.tooltipTextStyle},
     legend: {top: '10%', left: 'center',textStyle:this.legendTextStyle},
@@ -204,36 +190,6 @@ export class MarketingComponent implements OnInit {
   this.series_TTSR_Tadbir = [];
   this.series_All_Table = [];
     try {
-      // Total Calls Day ------------------------------------
-      /*
-      let res1 = await this.getData.get_Total_Count_Day(stDate,enDate).toPromise();
-      let total_calls_date: any[] = [];
-      let total_calls_count: any[] = [];
-      for (let i = 0; i < res1.length; i++) {
-        total_calls_date.push(res1[i].date);
-        total_calls_count.push(res1[i].count);
-      }
-      let std = this.datePipe.transform(total_calls_date[0],'yyyy-MM-dd') || '';
-      let end = this.datePipe.transform(total_calls_date[total_calls_date.length-1],'yyyy-MM-dd') || '';
-      this.st_to_en = std + ' to ' + end;
-      (this.series_tts_day.title as any).subtext = this.st_to_en;
-      (this.series_tts_day.xAxis as any).data = total_calls_date;
-      (this.series_tts_day.series as any)[0].data = total_calls_count;
-      // ContinueSmart Day ------------------------------------
-      let res2 = await this.getData.get_ContinueSmart_Count_Day(stDate,enDate).toPromise();
-      let ContinueSmart_count: any[] = [];
-      for (let i = 0; i < res2.length; i++)
-        ContinueSmart_count.push(res2[i].count);
-      (this.series_tts_day.series as any)[1].data = ContinueSmart_count;
-      // ReturnTadbir Day ------------------------------------
-      let res3 = await this.getData.get_ReturnTadbir_Count_Day(stDate,enDate).toPromise();
-      let ReturnTadbir_count: any[] = [];
-      for (let i = 0; i < res3.length; i++)
-        ReturnTadbir_count.push(res3[i].count);
-      (this.series_tts_day.series as any)[2].data = ReturnTadbir_count;
-      this.flag_daily = true;
-      */
-      // ------------------------------------
       this.Total_Count = await this.getData.get_Total_Count(stDate,enDate).toPromise();
       this.ContinueSmart_Count = await this.getData.get_ContinueSmart_Count(stDate,enDate).toPromise();
       this.ReturnTadbir_Count = await this.getData.get_ReturnTadbir_Count(stDate,enDate).toPromise();
@@ -342,6 +298,31 @@ export class MarketingComponent implements OnInit {
     this.dateform.controls['EndDate'].setValue(this.EndDate);
     this.flag_time = true;
     await this.do(this.StartDate,this.EndDate);
+  }
+
+  exportToExcel(){
+    const dataToExport = this.series_All_Table.map(row => {
+      return {
+        'کد': row.id,
+        'تماس گیرنده': row.from,
+        'مشتری': row.to,
+        'توضیحات': row.description,
+        'تاریخ': new Date(row.createdon).toLocaleDateString() + ' ' + new Date(row.createdon).toLocaleTimeString(),
+        'میزان رضایت': row.customerSatisfaction,
+        'نتیجه تماس': row.resultOfCall
+      };
+    });
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataToExport);
+    const workbook: XLSX.WorkBook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
+
+    const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+
+    this.saveAsExcelFile(excelBuffer, 'report');
+  }
+
+  saveAsExcelFile(buffer: any, fileName: string): void {
+    const data: Blob = new Blob([buffer], { type: this.EXCEL_TYPE });
+    FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + this.EXCEL_EXTENSION);
   }
 
   getBroker(){

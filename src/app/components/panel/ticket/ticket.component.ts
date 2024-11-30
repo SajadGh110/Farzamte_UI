@@ -14,6 +14,8 @@ import {AllTicketsTableComponent} from "./all-tickets-table/all-tickets-table.co
 import {AuthService} from "../../../services/auth.service";
 import {Router} from "@angular/router";
 import {format, subDays} from "date-fns";
+import * as XLSX from "xlsx";
+import * as FileSaver from "file-saver";
 
 @Component({
   selector: 'app-ticket',
@@ -45,7 +47,10 @@ export class TicketComponent implements OnInit {
   series_TK_Reasons: any[] = [];
   series_CT_Detail: any[] = [];
   series_TK_Status: any[] = [];
-  series_all_table: any[] = [];
+  series_All_Table: any[] = [];
+  EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+  EXCEL_EXTENSION = '.xlsx';
+  selectedButton: string = 'total';
   series_color = ['#3ebeed','#EC7063','#42b3a1','#7f6487','#004e75'];
   TitleTextStyle: any= {
     fontFamily: 'Nazanin', fontSize: '20px',
@@ -178,7 +183,7 @@ export class TicketComponent implements OnInit {
     this.total_TK_Status = 0;
     this.series_TK_Reasons = [];
     this.series_TK_Status = [];
-    this.series_all_table = [];
+    this.series_All_Table = [];
     try {
       let res1 = await this.getData.get_Ticket_Reasons(stDate,enDate).toPromise();
       for (let i = 0; i < res1.length; i++){
@@ -209,11 +214,44 @@ export class TicketComponent implements OnInit {
       (this.series_TK_Status_Pie.series as any)[0].data = this.series_TK_Status;
       this.flag_TK_Status = true;
 
-      this.series_all_table = await this.getData.get_all_table(this.StartDate,this.EndDate).toPromise();
+      this.series_All_Table = await this.getData.get_Total_List(this.StartDate,this.EndDate).toPromise();
       this.flag_table = true;
     } catch (error:any){
       this.toast.error({ detail: "ERROR", summary: error.message, duration: 5000, position: 'topRight' });
     }
+  }
+
+  async ft_table(item:string){
+    if (this.selectedButton !== item){
+      switch(item){
+        case "total":
+          this.flag_table = false;
+          this.series_All_Table = await this.getData.get_Total_List(this.StartDate,this.EndDate).toPromise();
+          break;
+        case "Solved":
+          this.flag_table = false;
+          this.series_All_Table = await this.getData.get_Solved_List(this.StartDate,this.EndDate).toPromise();
+          break;
+        case "InProgress":
+          this.flag_table = false;
+          this.series_All_Table = await this.getData.get_InProgress_List(this.StartDate,this.EndDate).toPromise();
+          break;
+        case "Cancelled":
+          this.flag_table = false;
+          this.series_All_Table = await this.getData.get_Cancelled_List(this.StartDate,this.EndDate).toPromise();
+          break;
+        case "InfoProvided":
+          this.flag_table = false;
+          this.series_All_Table = await this.getData.get_InfoProvided_List(this.StartDate,this.EndDate).toPromise();
+          break;
+      }
+      this.flag_table = true;
+      this.selectedButton = item;
+    }
+  }
+
+  isSelected(item: string): boolean {
+    return this.selectedButton === item;
   }
 
   async chart_click(event:any){
@@ -262,6 +300,29 @@ export class TicketComponent implements OnInit {
     this.dateform.controls['EndDate'].setValue(this.EndDate);
     this.flag_time = true;
     await this.do(this.StartDate,this.EndDate);
+  }
+  exportToExcel(){
+    const dataToExport = this.series_All_Table.map(row => {
+      return {
+        'کد': row.id,
+        'ایجاد کننده تیکت': row.owner,
+        'تاریخ ایجاد': new Date(row.createdon).toLocaleDateString() + ' ' + new Date(row.createdon).toLocaleTimeString(),
+        'تاریخ بررسی تیکت': row.caseResolutionCreatedOn,
+        'شخص بررسی کننده تیکت': row.caseResolutionsolver,
+        'وضعیت': row.status,
+      };
+    });
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataToExport);
+    const workbook: XLSX.WorkBook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
+
+    const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+
+    this.saveAsExcelFile(excelBuffer, 'report');
+  }
+
+  saveAsExcelFile(buffer: any, fileName: string): void {
+    const data: Blob = new Blob([buffer], { type: this.EXCEL_TYPE });
+    FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + this.EXCEL_EXTENSION);
   }
 
   getBroker(){

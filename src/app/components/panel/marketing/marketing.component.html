@@ -99,12 +99,17 @@
       <section class="loading-spinner" *ngIf="!flag_table">
         <mat-spinner></mat-spinner>
       </section>
-      <section class="filter-table">
-        <button type="button" id="ft-total" [class.selected]="isSelected('total')" class="ft-btn" (click)="ft_table('total')">کل تماس ها</button>
-        <button type="button" id="ft-smart" [class.selected]="isSelected('smart')" class="ft-btn" (click)="ft_table('smart')">تماس های ادامه با اسمارت</button>
-        <button type="button" id="ft-tadbir" [class.selected]="isSelected('tadbir')" class="ft-btn" (click)="ft_table('tadbir')">تماس های بازگشت به تدبیر</button>
-        <button type="button" id="ft-Successful" [class.selected]="isSelected('Successful')" class="ft-btn" (click)="ft_table('Successful')">تماس های موفق</button>
-        <button type="button" id="ft-Unsuccessful" [class.selected]="isSelected('Unsuccessful')" class="ft-btn" (click)="ft_table('Unsuccessful')">تماس های ناموفق</button>
+      <section class="btns">
+        <section class="filter-table">
+          <button type="button" id="ft-total" [class.selected]="isSelected('total')" class="ft-btn" (click)="ft_table('total')">کل تماس ها</button>
+          <button type="button" id="ft-smart" [class.selected]="isSelected('smart')" class="ft-btn" (click)="ft_table('smart')">تماس های ادامه با اسمارت</button>
+          <button type="button" id="ft-tadbir" [class.selected]="isSelected('tadbir')" class="ft-btn" (click)="ft_table('tadbir')">تماس های بازگشت به تدبیر</button>
+          <button type="button" id="ft-Successful" [class.selected]="isSelected('Successful')" class="ft-btn" (click)="ft_table('Successful')">تماس های موفق</button>
+          <button type="button" id="ft-Unsuccessful" [class.selected]="isSelected('Unsuccessful')" class="ft-btn" (click)="ft_table('Unsuccessful')">تماس های ناموفق</button>
+        </section>
+        <section class="export">
+          <button (click)="exportToExcel()">دانلود خروجی اکسل</button>
+        </section>
       </section>
       <app-list-table [data]="series_All_Table" *ngIf="flag_table" style="margin: 1rem 0"></app-list-table>
     </section>
