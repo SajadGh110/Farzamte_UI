@@ -1,6 +1,6 @@
 <section class="dashboard-wrapper">
   <app-dashboard-sidebar></app-dashboard-sidebar>
-  <section class="dashboard-main" *ngIf="getBroker() == 'Mobin' || getBroker() == 'Pishro'">
+  <section class="dashboard-main" *ngIf="getBroker() == 'Mobin' || getBroker() == 'Pishro' || getBroker() == 'Khobregan' || this.getBroker() == 'demo'">
     <app-dashboard-contact class="row top-contact"></app-dashboard-contact>
     <section class="row">
       <section class="detail">
@@ -68,25 +68,17 @@
       <section class="detail">
         <h2>انواع پیامک ها</h2>
       </section>
-      <section class="loading-spinner" *ngIf="!flag_noticetype && getBroker() != 'Mobin'">
+      <section class="loading-spinner" *ngIf="!flag_noticetype">
         <mat-spinner></mat-spinner>
       </section>
-      <section class="pie-chart-c2" *ngIf="flag_noticetype && getBroker() != 'Mobin'">
+      <section class="pie-chart-c2" *ngIf="flag_noticetype">
         <section echarts [options]="series_Noticetype_Pie"></section>
       </section>
-      <section class="both-chart" *ngIf="getBroker() == 'Mobin'">
-        <section class="loading-spinner" *ngIf="!flag_noticetype">
-          <mat-spinner></mat-spinner>
-        </section>
-        <section class="pie-chart-c3" *ngIf="flag_noticetype">
-          <section echarts [options]="series_Noticetype_Pie"></section>
-        </section>
-        <section class="loading-spinner" *ngIf="!flag_capitalincrease">
-          <mat-spinner></mat-spinner>
-        </section>
-        <section class="pie-chart-c3" *ngIf="flag_capitalincrease">
-          <section echarts [options]="series_capitalincrease_Pie"></section>
-        </section>
+      <section class="loading-spinner" *ngIf="!flag_capitalincrease && getBroker() == 'Mobin'">
+        <mat-spinner></mat-spinner>
+      </section>
+      <section class="pie-chart-c2" *ngIf="flag_capitalincrease && getBroker() == 'Mobin'">
+        <section echarts [options]="series_capitalincrease_Pie"></section>
       </section>
       <section class="st_to_en" *ngIf="flag_capitalincrease">
         <p>{{st_to_en}}</p>
@@ -105,7 +97,7 @@
       </section>
     </section>
   </section>
-  <section class="dashboard-main" *ngIf="getBroker() != 'Mobin' && getBroker() != 'Pishro'">
+  <section class="dashboard-main" *ngIf="getBroker() != 'Mobin' && getBroker() != 'Pishro' && getBroker() != 'Khobregan' && getBroker() != 'demo'">
     <section class="row">
       <section class="detail">
         <h2>بزودی ...</h2>

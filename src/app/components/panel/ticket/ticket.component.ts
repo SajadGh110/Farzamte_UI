@@ -169,7 +169,7 @@ export class TicketComponent implements OnInit {
       StartDate: [''],
       EndDate: ['']
     });
-    if (this.getBroker() == 'Mobin')
+    if (this.getBroker() == 'Mobin' || this.getBroker() == 'demo')
       this.SetTime(30);
   }
 

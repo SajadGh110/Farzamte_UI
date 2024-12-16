@@ -175,7 +175,7 @@ export class IncomingCallComponent implements OnInit {
       StartDate: [''],
       EndDate: ['']
     });
-    if (this.getBroker() == 'Mobin' || this.getBroker() == 'Pishro' || this.getBroker() == 'Pouyan')
+    if (this.getBroker() == 'Mobin' || this.getBroker() == 'Pishro' || this.getBroker() == 'Pouyan' || this.getBroker() == 'demo')
       this.SetTime(30);
   }
 

@@ -209,8 +209,7 @@ export class HappyCallComponent implements OnInit {
       StartDate: [''],
       EndDate: ['']
     });
-    if (this.getBroker() == 'Mobin' || this.getBroker() == 'Pishro' || this.getBroker() == 'Pouyan')
-      this.DefaultTime();
+    this.DefaultTime();
   }
 
   async do(stDate:string,enDate:string){
@@ -366,9 +365,5 @@ export class HappyCallComponent implements OnInit {
     this.dateform.controls['EndDate'].setValue(this.EndDate);
     this.flag_time = true;
     await this.do(this.StartDate,this.EndDate);
-  }
-
-  getBroker(){
-    return this.auth.getUserBroker();
   }
 }

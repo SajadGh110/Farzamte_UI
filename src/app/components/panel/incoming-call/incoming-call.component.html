@@ -1,6 +1,6 @@
 <section class="dashboard-wrapper">
   <app-dashboard-sidebar></app-dashboard-sidebar>
-  <section class="dashboard-main" *ngIf="this.getBroker() == 'Mobin' || this.getBroker() == 'Pishro' || this.getBroker() == 'Pouyan'">
+  <section class="dashboard-main" *ngIf="this.getBroker() == 'Mobin' || this.getBroker() == 'Pishro' || this.getBroker() == 'Pouyan' || this.getBroker() == 'demo'">
     <app-dashboard-contact class="row top-contact"></app-dashboard-contact>
     <section class="row">
       <section class="detail">
@@ -97,7 +97,7 @@
       </section>
     </section>
   </section>
-  <section class="dashboard-main" *ngIf="getBroker() != 'Mobin' && getBroker() != 'Pishro' && getBroker() != 'Pouyan'">
+  <section class="dashboard-main" *ngIf="getBroker() != 'Mobin' && getBroker() != 'Pishro' && getBroker() != 'Pouyan' && getBroker() != 'demo'">
     <section class="row">
       <section class="detail">
         <h2>بزودی ...</h2>

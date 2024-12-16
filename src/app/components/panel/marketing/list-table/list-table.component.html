@@ -12,9 +12,15 @@
       <th *matHeaderCellDef> مشتری </th>
       <td *matCellDef="let element"> {{element.to}} </td>
     </ng-container>
+    <ng-container matColumnDef="کدملی">
+      <th *matHeaderCellDef> کدملی </th>
+      <td *matCellDef="let element"> {{element.nationalCode}} </td>
+    </ng-container>
     <ng-container matColumnDef="توضیحات">
       <th *matHeaderCellDef> توضیحات </th>
-      <td *matCellDef="let element"> {{element.description}} </td>
+      <td *matCellDef="let element">
+        {{ element.description ? (element.description.length > 20 ? element.description.substring(0, 20) + '...' : element.description) : 'بدون توضیحات' }}
+      </td>
     </ng-container>
     <ng-container matColumnDef="تاریخ">
       <th *matHeaderCellDef> تاریخ </th>
@@ -44,18 +50,18 @@
       <mat-spinner></mat-spinner>
     </section>
     <section class="ticket_detail" *ngIf="flag_popup_data">
-      <p>تماس گیرنده : {{series_ticket_detail.from}}</p>
-      <p>مشتری : {{series_ticket_detail.to}}</p>
-      <p>توضیحات : {{series_ticket_detail.description}}</p>
-      <p *ngIf="series_ticket_detail.reasons[0]">دلیل اول : {{series_ticket_detail.reasons[0]}}</p>
-      <p *ngIf="series_ticket_detail.reasons[1]">دلیل دوم : {{series_ticket_detail.reasons[1]}}</p>
-      <p *ngIf="series_ticket_detail.reasons[2]">دلیل سوم : {{series_ticket_detail.reasons[2]}}</p>
-      <p *ngIf="series_ticket_detail.reasons[3]">دلیل چهارم : {{series_ticket_detail.reasons[3]}}</p>
-      <p>تاریخ : {{series_ticket_detail.createdon | date: 'yyyy-MM-dd | HH:mm'}}</p>
-      <p>تلفن تماس : {{series_ticket_detail.phonenumber}}</p>
-      <p>کدملی : {{series_ticket_detail.nationalCode}}</p>
-      <p>میزان رضایت : {{series_ticket_detail.customerSatisfaction}}</p>
-      <p>نتیجه تماس : {{series_ticket_detail.resultOfCall}}</p>
+      <p>تماس گیرنده : {{series_tts_detail.from}}</p>
+      <p>مشتری : {{series_tts_detail.to}}</p>
+      <p>توضیحات : {{series_tts_detail.description}}</p>
+      <p *ngIf="series_tts_detail.reasons[0]">دلیل اول : {{series_tts_detail.reasons[0]}}</p>
+      <p *ngIf="series_tts_detail.reasons[1]">دلیل دوم : {{series_tts_detail.reasons[1]}}</p>
+      <p *ngIf="series_tts_detail.reasons[2]">دلیل سوم : {{series_tts_detail.reasons[2]}}</p>
+      <p *ngIf="series_tts_detail.reasons[3]">دلیل چهارم : {{series_tts_detail.reasons[3]}}</p>
+      <p>تاریخ : {{series_tts_detail.createdon | date: 'yyyy-MM-dd | HH:mm'}}</p>
+      <p>تلفن تماس : {{series_tts_detail.phonenumber}}</p>
+      <p>کدملی : {{series_tts_detail.nationalCode}}</p>
+      <p>میزان رضایت : {{series_tts_detail.customerSatisfaction}}</p>
+      <p>نتیجه تماس : {{series_tts_detail.resultOfCall}}</p>
     </section>
   </section>
 </section>

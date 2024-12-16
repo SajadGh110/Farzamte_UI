@@ -48,7 +48,7 @@ export class NoticeSMSComponent implements OnInit {
   total_capitalincrease:number = 0;
   total_symbol:number = 0;
   series_data_capitalincrease: any[] = [];
-  series_color = ['#3ebeed','#EC7063','#73c6b6','#a569bd','#f7dc6f','#aeb6bf'];
+  series_color = ['#3ebeed','#EC7063','#73c6b6','#a569bd','#f7dc6f','#aeb6bf','#6a89eb','#fc8452','#3ba272','#ea7ccc','#3ebeed','#EC7063','#73c6b6','#a569bd','#f7dc6f','#aeb6bf','#6a89eb','#fc8452','#3ba272','#ea7ccc','#3ebeed','#EC7063','#73c6b6','#a569bd','#f7dc6f','#aeb6bf','#6a89eb','#fc8452','#3ba272','#ea7ccc'];
   TitleTextStyle: any= {
     fontFamily: 'Nazanin', fontSize: '20px',
   };
@@ -76,7 +76,12 @@ export class NoticeSMSComponent implements OnInit {
   series_Noticetype_Pie:EChartsOption = {
     tooltip: {trigger: 'item',textStyle:this.tooltipTextStyle},
     title: [{text: 'انواع اطلاع رسانی', left: 'center',textStyle:this.TitleTextStyle}],
-    legend: {top: '10%', left: 'center',textStyle:this.legendTextStyle},
+    legend: {
+      orient: 'vertical',
+      right: '10%',
+      top: 'center',
+      textStyle:this.legendTextStyle
+    },
     toolbox: {show: true, orient: 'vertical', left: 'right', top: 'center', feature: {
         mark: { show: true },
         dataView: { show: true, readOnly: false },
@@ -88,10 +93,11 @@ export class NoticeSMSComponent implements OnInit {
         name:'انواع اطلاع رسانی',
         color: this.series_color,
         radius: ['30%', '45%'],
+        center: ['30%', 'center'],
         avoidLabelOverlap: false,
         itemStyle: {borderRadius: 4, borderColor: '#fff', borderWidth: 1},
         data: this.series_data_Noticetype,
-        label: { show:true , position: 'outer', alignTo: 'labelLine',fontFamily:'Nazanin',fontWeight:'bold',fontSize:'14px',
+        label: { show:true , position: 'outside', alignTo: 'labelLine',fontFamily:'Nazanin',fontWeight:'bold',fontSize:'14px',
           formatter: (params : any) => {
             const total = this.total_Noticetype;
             const percentage = ((params.value / total) * 100).toFixed(2);
@@ -102,7 +108,12 @@ export class NoticeSMSComponent implements OnInit {
   series_capitalincrease_Pie:EChartsOption = {
     tooltip: {trigger: 'item',textStyle:this.tooltipTextStyle},
     title: [{text: 'انواع افزایش سرمایه', left: 'center',textStyle:this.TitleTextStyle}],
-    legend: {top: '10%', left: 'center',textStyle:this.legendTextStyle},
+    legend: {
+      orient: 'vertical',
+      right: '10%',
+      top: 'center',
+      textStyle:this.legendTextStyle
+    },
     toolbox: {show: true, orient: 'vertical', left: 'right', top: 'center', feature: {
         mark: { show: true },
         dataView: { show: true, readOnly: false },
@@ -114,6 +125,7 @@ export class NoticeSMSComponent implements OnInit {
         name:'انواع افزایش سرمایه',
         color: this.series_color,
         radius: ['30%', '45%'],
+        center: ['30%', 'center'],
         avoidLabelOverlap: false,
         itemStyle: {borderRadius: 4, borderColor: '#fff', borderWidth: 1},
         data: this.series_data_Noticetype,
@@ -162,7 +174,7 @@ export class NoticeSMSComponent implements OnInit {
       StartDate: [''],
       EndDate: ['']
     });
-    if (this.getBroker() == 'Mobin' || this.getBroker() == 'Pishro')
+    if (this.getBroker() == 'Mobin' || this.getBroker() == 'Pishro' || this.getBroker() == 'Khobregan' || this.getBroker() == 'demo')
       this.SetTime(30);
   }
 

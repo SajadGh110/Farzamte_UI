@@ -32,13 +32,13 @@ import {TransportToSmartService} from "../../../../services/transport-to-smart.s
 })
 export class ListTableComponent implements AfterViewInit {
   constructor(private getData:TransportToSmartService, private toast:NgToastService) {}
-  displayedColumns: string[] = ['کد', 'تماس گیرنده', 'مشتری', 'توضیحات','تاریخ','میزان رضایت','نتیجه تماس'];
+  displayedColumns: string[] = ['کد', 'تماس گیرنده', 'مشتری', 'کدملی', 'توضیحات','تاریخ','میزان رضایت','نتیجه تماس'];
   dataSource:MatTableDataSource<PeriodicElement> = new MatTableDataSource<PeriodicElement>();
   @Input() data:PeriodicElement[] = [];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   protected flag_popup:boolean=false;
   protected flag_popup_data:boolean=false;
-  series_ticket_detail = {
+  series_tts_detail = {
     from: "",
     to: "",
     description: "",
@@ -57,15 +57,17 @@ export class ListTableComponent implements AfterViewInit {
 
   async onRowClick(id: number) {
     this.flag_popup = true;
-    this.series_ticket_detail = await this.getData.get_detail_table(id).toPromise();
+    this.series_tts_detail = await this.getData.get_detail_table(id).toPromise();
     this.flag_popup_data = true;
   }
 }
 export interface PeriodicElement {
   id: string;
-  owner: number;
-  createdon: number;
-  caseResolutionCreatedOn: string;
-  caseResolutionsolver: string;
-  status: string;
+  from: string;
+  to: string;
+  nationalCode: string;
+  description: string;
+  createdon: string;
+  customerSatisfaction: string;
+  resultOfCall: string;
 }

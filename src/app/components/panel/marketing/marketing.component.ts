@@ -175,7 +175,7 @@ export class MarketingComponent implements OnInit {
       StartDate: [''],
       EndDate: ['']
     });
-    if (this.getBroker() == 'Mobin')
+    if (this.getBroker() == 'Mobin' || this.getBroker() == 'demo')
       this.DefaultTime();
   }
 
@@ -306,6 +306,7 @@ export class MarketingComponent implements OnInit {
         'کد': row.id,
         'تماس گیرنده': row.from,
         'مشتری': row.to,
+        'کدملی': row.nationalCode,
         'توضیحات': row.description,
         'تاریخ': new Date(row.createdon).toLocaleDateString() + ' ' + new Date(row.createdon).toLocaleTimeString(),
         'میزان رضایت': row.customerSatisfaction,
