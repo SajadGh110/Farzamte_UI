@@ -897,6 +897,7 @@ text.value-text {
 }
 .row .all-date .mat-mdc-tab-body-content {
   display: flex;
+  width: max-content;
   flex-wrap: wrap;
   flex-direction: column;
 }
@@ -919,6 +920,8 @@ text.value-text {
   width: 5rem;
   flex-direction: row;
   margin-bottom: 8px;
+  margin-left: 10px;
+  margin-right: 10px;
   justify-content: space-between;
 }
 .row .all-date .item label {
