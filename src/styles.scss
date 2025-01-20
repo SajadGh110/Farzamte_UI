@@ -227,6 +227,11 @@ app-dashboard-sidebar aside nav {
 .svg_menu_color {
   fill: #ffffff;
 }
+.row .row-fix {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
 .row .datepicker-input {
   display: flex;
   flex-direction: column;
@@ -292,6 +297,31 @@ app-dashboard-sidebar aside nav {
 .row .datepicker-input .time_text p {
   font: 18px Nazanin, Bahnschrift, serif;
   font-weight: bold;
+}
+.row .row-fix .quick-access-2 {
+  display: flex;
+  flex-direction: column;
+  margin-left: 1rem;
+}
+.row .row-fix .quick-access-2 h3 {
+  font: 18px Nazanin, Bahnschrift, serif;
+  font-weight: bold;
+}
+.row .row-fix .quick-access-2 ol {
+  margin-top: 1rem;
+}
+.row .row-fix .quick-access-2 li {
+  padding: 5px 10px;
+  margin: 5px 0;
+  list-style: circle inside;
+  font: 14px Nazanin, Bahnschrift, serif;
+  font-weight: bold;
+  cursor: pointer;
+  color: white;
+  border-radius: 10px;
+}
+.row .back-to-quick-access {
+  cursor: pointer;
 }
 /* Adaptive Codes */
 @media screen and (max-width:1200px){
@@ -462,6 +492,7 @@ app-dashboard-sidebar aside nav {
 .row .detail {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   width: 100%;
 }
 .row .detail h2 {
@@ -482,7 +513,9 @@ app-dashboard-sidebar aside nav {
   flex-direction: column;
 }
 .row .detail h2,
-.row .detail p {
+.row .detail p,
+.row .detail-p p,
+.row .detail-p h2 {
   text-align: right;
   font: 22px Nazanin , Bahnschrift;
   font-weight: bold;

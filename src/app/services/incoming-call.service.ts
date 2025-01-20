@@ -19,19 +19,35 @@ export class IncomingCallService {
     return this.http.get(`${this.appConfigService.getApiUrl()}InComingCall/Total_Count_Day?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
   }
 
-  get_Top_Reasons(StartDate:string, EndDate:string):Observable<any>{
-    return this.http.get(`${this.appConfigService.getApiUrl()}InComingCall/Top_Reasons?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
+  get_Top_Reasons_Customers(StartDate:string, EndDate:string):Observable<any>{
+    return this.http.get(`${this.appConfigService.getApiUrl()}InComingCall/Top_Reasons_Customers?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
   }
 
-  get_Phonecall_Reasons(StartDate:string, EndDate:string):Observable<any>{
-    return this.http.get(`${this.appConfigService.getApiUrl()}InComingCall/Phonecall_Reasons?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
+  get_Top_Reasons_Others(StartDate:string, EndDate:string):Observable<any>{
+    return this.http.get(`${this.appConfigService.getApiUrl()}InComingCall/Top_Reasons_Others?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
   }
 
-  get_Reason_Detail(StartDate:string, EndDate:string, Reason:string):Observable<any>{
-    return this.http.get(`${this.appConfigService.getApiUrl()}InComingCall/Reason_Detail?startDate=${StartDate}&endDate=${EndDate}&Reason=${Reason}`,{headers:this.header});
+  get_Phonecall_Reasons_Customers(StartDate:string, EndDate:string):Observable<any>{
+    return this.http.get(`${this.appConfigService.getApiUrl()}InComingCall/Phonecall_Reasons_Customers?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
   }
 
-  get_description(StartDate:string, EndDate:string, Detail:string):Observable<any>{
-    return this.http.get(`${this.appConfigService.getApiUrl()}InComingCall/description?startDate=${StartDate}&endDate=${EndDate}&Detail=${Detail}`,{headers:this.header});
+  get_Phonecall_Reasons_Others(StartDate:string, EndDate:string):Observable<any>{
+    return this.http.get(`${this.appConfigService.getApiUrl()}InComingCall/Phonecall_Reasons_Others?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
+  }
+
+  get_Reason_Detail_Customers(StartDate:string, EndDate:string, Reason:string):Observable<any>{
+    return this.http.get(`${this.appConfigService.getApiUrl()}InComingCall/Reason_Detail_Customers?startDate=${StartDate}&endDate=${EndDate}&Reason=${Reason}`,{headers:this.header});
+  }
+
+  get_Reason_Detail_Others(StartDate:string, EndDate:string, Reason:string):Observable<any>{
+    return this.http.get(`${this.appConfigService.getApiUrl()}InComingCall/Reason_Detail_Others?startDate=${StartDate}&endDate=${EndDate}&Reason=${Reason}`,{headers:this.header});
+  }
+
+  get_description_Customers(StartDate:string, EndDate:string, Detail:string):Observable<any>{
+    return this.http.get(`${this.appConfigService.getApiUrl()}InComingCall/description_Customers?startDate=${StartDate}&endDate=${EndDate}&Detail=${Detail}`,{headers:this.header});
+  }
+
+  get_description_Others(StartDate:string, EndDate:string, Detail:string):Observable<any>{
+    return this.http.get(`${this.appConfigService.getApiUrl()}InComingCall/description_Others?startDate=${StartDate}&endDate=${EndDate}&Detail=${Detail}`,{headers:this.header});
   }
 }

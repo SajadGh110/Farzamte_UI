@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {DashboardTopmenuComponent} from "../../Template/dashboard-topmenu/dashboard-topmenu.component";
 import {DashboardSidebarComponent} from "../../Template/dashboard-sidebar/dashboard-sidebar.component";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
@@ -34,12 +34,13 @@ import {format, subDays} from "date-fns";
   styleUrl: './incoming-call.component.scss'
 })
 export class IncomingCallComponent implements OnInit {
-  @ViewChild('target') target!: ElementRef;
   dateform! : FormGroup;
   protected flag_time:boolean = false;
   protected flag_count:boolean=false;
-  protected flag_Ph_Reasons:boolean=false;
-  protected flag_Reason_Detail:boolean=false;
+  protected flag_Ph_Reasons_Customers:boolean=false;
+  protected flag_Ph_Reasons_Others:boolean=false;
+  protected flag_Reason_Detail_Customers:boolean=false;
+  protected flag_Reason_Detail_Others:boolean=false;
   protected flag_popup:boolean=false;
   protected flag_popup_data:boolean=false;
   protected flag_loading:boolean=false;
@@ -49,13 +50,17 @@ export class IncomingCallComponent implements OnInit {
   EndDate:string = "";
   st_to_en:string = "";
   selected_days:number = 0;
-  top_reason:string = "";
-  reason_selected = "";
-  total_Phonecall_Reasons: number = 0;
-  total_Reason_Detail: number = 0;
+  top_reason_Customers:string = "";
+  top_reason_Others:string = "";
+  reason_selected_Customers = "";
+  reason_selected_Others = "";
+  total_Phonecall_Reasons_Customers: number = 0;
+  total_Phonecall_Reasons_Others: number = 0;
+  total_Reason_Detail_Customers: number = 0;
+  total_Reason_Detail_Others: number = 0;
   series_Popup_List: any[] = [];
-  series_Phonecall_Reasons: any[] = [];
-  series_Top_Reasons: any[] = [];
+  series_Phonecall_Reasons_Customers: any[] = [];
+  series_Phonecall_Reasons_Others: any[] = [];
   series_color = ['#3ebeed','#EC7063','#004e75','#f1c40f','#7f6487','#42b3a1'];
   TitleTextStyle: any= {
     fontFamily: 'Nazanin', fontSize: '20px',
@@ -81,7 +86,7 @@ export class IncomingCallComponent implements OnInit {
       }},
     series: [{name: 'تماس ورودی',data: [], type: 'line', color: '#3498DB', symbolSize: 10}]
   };
-  series_Top_Reasons_bar:EChartsOption = {
+  series_Top_Reasons_bar_Customers:EChartsOption = {
       tooltip: {trigger: 'axis', axisPointer: {type: 'shadow'}, textStyle:this.tooltipTextStyle},
       legend: {left:'2%', top:0, textStyle:this.legendTextStyle},
       dataset: {
@@ -101,13 +106,33 @@ export class IncomingCallComponent implements OnInit {
       yAxis: {type: 'value'},
       series: [{ type: 'bar',color:this.series_color[0] }, { type: 'bar',color:this.series_color[1] }, { type: 'bar',color:this.series_color[2] }]
     };
-  series_Phonecall_Reasons_tmp:EChartsOption = {
+  series_Top_Reasons_bar_Others:EChartsOption = {
+    tooltip: {trigger: 'axis', axisPointer: {type: 'shadow'}, textStyle:this.tooltipTextStyle},
+    legend: {left:'2%', top:0, textStyle:this.legendTextStyle},
+    dataset: {
+      source: []
+    },
+    toolbox: {show: true, orient: 'vertical', left: 'right', top: 'center', feature: {
+        mark: { show: true },
+        dataView: { show: true, readOnly: false },
+        magicType: { show: true, type: ['line', 'bar'] },
+        restore: { show: true },
+        saveAsImage: { show: true }
+      }},
+    xAxis: {
+      type: 'category',
+      axisLabel:{show:true,fontFamily:'Nazanin',fontWeight:'bold',fontSize:14},
+    },
+    yAxis: {type: 'value'},
+    series: [{ type: 'bar',color:this.series_color[0] }, { type: 'bar',color:this.series_color[1] }, { type: 'bar',color:this.series_color[2] }]
+  };
+  series_Phonecall_Reasons_tmp_Customers:EChartsOption = {
     title: { show: false },
     tooltip: {
       trigger: 'item',
       textStyle:this.tooltipTextStyle,
       formatter: (params : any) => {
-        const total = this.total_Phonecall_Reasons;
+        const total = this.total_Phonecall_Reasons_Customers;
         const percentage = ((params.value / total) * 100).toFixed(2);
         return  `${percentage}% - ${params.name}`;
       }},
@@ -127,23 +152,58 @@ export class IncomingCallComponent implements OnInit {
           show: true,
           fontFamily:'Nazanin',fontWeight:'bold',fontSize:'14px',position:'insideTopLeft', padding:15,
           formatter: (params : any) => {
-            const total = this.total_Phonecall_Reasons;
+            const total = this.total_Phonecall_Reasons_Customers;
             const percentage = ((params.value / total) * 100).toFixed(2) + '%';
             return  `${params.name}\n\n${percentage}`;
           }
         },
-        data: this.series_Phonecall_Reasons
+        data: this.series_Phonecall_Reasons_Customers
       }
     ]
   };
-  series_Reason_Detail_bar:EChartsOption = {
+  series_Phonecall_Reasons_tmp_Others:EChartsOption = {
+    title: { show: false },
+    tooltip: {
+      trigger: 'item',
+      textStyle:this.tooltipTextStyle,
+      formatter: (params : any) => {
+        const total = this.total_Phonecall_Reasons_Others;
+        const percentage = ((params.value / total) * 100).toFixed(2);
+        return  `${percentage}% - ${params.name}`;
+      }},
+    toolbox: {show: true, orient: 'vertical', left: 'right', top: 'center', feature: {
+        mark: { show: true },
+        dataView: { show: true, readOnly: false },
+        saveAsImage: { show: true }
+      }},
+    series: [
+      {
+        type: 'treemap',
+        name:'دلایل تماس ورودی',
+        breadcrumb: {show: false},
+        roam: false,
+        nodeClick: false,
+        label: {
+          show: true,
+          fontFamily:'Nazanin',fontWeight:'bold',fontSize:'14px',position:'insideTopLeft', padding:15,
+          formatter: (params : any) => {
+            const total = this.total_Phonecall_Reasons_Others;
+            const percentage = ((params.value / total) * 100).toFixed(2) + '%';
+            return  `${params.name}\n\n${percentage}`;
+          }
+        },
+        data: this.series_Phonecall_Reasons_Customers
+      }
+    ]
+  };
+  series_Reason_Detail_bar_Customers:EChartsOption = {
     title: { show: false },
     tooltip: {
       trigger: 'item',
       textStyle:this.tooltipTextStyle,
       axisPointer: {type: 'shadow'},
       formatter: (params : any) => {
-        const total = this.total_Reason_Detail;
+        const total = this.total_Reason_Detail_Customers;
         const percentage = ((params.value / total) * 100).toFixed(2);
         return  `${percentage}% - ${params.name}`;
       }},
@@ -161,7 +221,40 @@ export class IncomingCallComponent implements OnInit {
         type: 'bar',
         color:this.series_color,
         label: { show:true , position:'right', fontFamily:'Nazanin', fontSize:'14px', fontWeight:"bold", formatter: (params : any) => {
-            const total = this.total_Reason_Detail;
+            const total = this.total_Reason_Detail_Customers;
+            const percentage = ((params.value / total) * 100).toFixed(2);
+            return `${percentage}%`;
+          }},
+        barWidth: '60%',
+        data: []
+      }]
+  };
+  series_Reason_Detail_bar_Others:EChartsOption = {
+    title: { show: false },
+    tooltip: {
+      trigger: 'item',
+      textStyle:this.tooltipTextStyle,
+      axisPointer: {type: 'shadow'},
+      formatter: (params : any) => {
+        const total = this.total_Reason_Detail_Others;
+        const percentage = ((params.value / total) * 100).toFixed(2);
+        return  `${percentage}% - ${params.name}`;
+      }},
+    grid: {left: '3%', right: '4%', bottom: '3%', containLabel: true},
+    xAxis: [{type: 'value'}],
+    yAxis: [{type: 'category', data: [], inverse:true, axisLabel:{fontFamily:'Nazanin',fontSize:16,fontWeight:'bold',color:'#000000',interval:0}, axisTick: {alignWithLabel: true}}],
+    toolbox: {show: true, orient: 'vertical', left: 'right', top: 'center', feature: {
+        mark: { show: true },
+        dataView: { show: true, readOnly: false },
+        saveAsImage: { show: true }
+      }},
+    series: [
+      {
+        name: 'جزئیات دلیل تماس ورودی',
+        type: 'bar',
+        color:this.series_color,
+        label: { show:true , position:'right', fontFamily:'Nazanin', fontSize:'14px', fontWeight:"bold", formatter: (params : any) => {
+            const total = this.total_Reason_Detail_Others;
             const percentage = ((params.value / total) * 100).toFixed(2);
             return `${percentage}%`;
           }},
@@ -181,13 +274,17 @@ export class IncomingCallComponent implements OnInit {
 
   async do(stDate:string,enDate:string) {
     this.flag_count = false;
-    this.flag_Ph_Reasons = false;
-    this.flag_Reason_Detail = false;
+    this.flag_Ph_Reasons_Customers = false;
+    this.flag_Ph_Reasons_Others = false;
+    this.flag_Reason_Detail_Customers = false;
+    this.flag_Reason_Detail_Others = false;
     this.flag_Top_Reasons = false;
-    this.total_Phonecall_Reasons = 0;
-    this.total_Reason_Detail = 0;
-    this.series_Phonecall_Reasons = [];
-    this.series_Top_Reasons = [];
+    this.total_Phonecall_Reasons_Customers = 0;
+    this.total_Phonecall_Reasons_Others = 0;
+    this.total_Reason_Detail_Customers = 0;
+    this.total_Reason_Detail_Others = 0;
+    this.series_Phonecall_Reasons_Customers = [];
+    this.series_Phonecall_Reasons_Others = [];
     try {
       let res1 = await this.getData.get_Total_Count_Day(stDate, enDate).toPromise();
       let total_calls_date: any[] = [];
@@ -203,57 +300,110 @@ export class IncomingCallComponent implements OnInit {
       (this.series_calls_count_day.xAxis as any).data = total_calls_date;
       (this.series_calls_count_day.series as any)[0].data = total_calls_count;
       this.flag_count = true;
-      let res_top_reasons = await this.getData.get_Top_Reasons(stDate,enDate).toPromise();
-      (this.series_Top_Reasons_bar.dataset as any).source = res_top_reasons;
+      let res_top_reasons_Customers = await this.getData.get_Top_Reasons_Customers(stDate,enDate).toPromise();
+      (this.series_Top_Reasons_bar_Customers.dataset as any).source = res_top_reasons_Customers;
+      let res_top_reasons_Others = await this.getData.get_Top_Reasons_Others(stDate,enDate).toPromise();
+      (this.series_Top_Reasons_bar_Others.dataset as any).source = res_top_reasons_Others;
       this.flag_Top_Reasons = true;
-      let res2 = await this.getData.get_Phonecall_Reasons(stDate,enDate).toPromise();
-      for (let i = 0; i < res2.length; i++){
-        this.series_Phonecall_Reasons.push({ name: res2[i].reason, value: res2[i].count });
-        this.total_Phonecall_Reasons += res2[i].count;
+      let res2_Customers = await this.getData.get_Phonecall_Reasons_Customers(stDate,enDate).toPromise();
+      for (let i = 0; i < res2_Customers.length; i++){
+        this.series_Phonecall_Reasons_Customers.push({ name: res2_Customers[i].reason, value: res2_Customers[i].count });
+        this.total_Phonecall_Reasons_Customers += res2_Customers[i].count;
       }
-      this.top_reason = this.series_Phonecall_Reasons[0].name;
-      (this.series_Phonecall_Reasons_tmp.series as any)[0].data = this.series_Phonecall_Reasons;
-      this.flag_Ph_Reasons = true;
+      this.top_reason_Customers = this.series_Phonecall_Reasons_Customers[0].name;
+      (this.series_Phonecall_Reasons_tmp_Customers.series as any)[0].data = this.series_Phonecall_Reasons_Customers;
+      this.flag_Ph_Reasons_Customers = true;
+      let res2_Others = await this.getData.get_Phonecall_Reasons_Others(stDate,enDate).toPromise();
+      for (let i = 0; i < res2_Others.length; i++){
+        this.series_Phonecall_Reasons_Others.push({ name: res2_Others[i].reason, value: res2_Others[i].count });
+        this.total_Phonecall_Reasons_Others += res2_Others[i].count;
+      }
+      this.top_reason_Others = this.series_Phonecall_Reasons_Others[0].name;
+      (this.series_Phonecall_Reasons_tmp_Others.series as any)[0].data = this.series_Phonecall_Reasons_Others;
+      this.flag_Ph_Reasons_Others = true;
 
-      let res3 = await this.getData.get_Reason_Detail(this.StartDate,this.EndDate,this.top_reason).toPromise();
-      let series_lbl: any[] = [];
-      let series_count: any[] = [];
-      for (let i = 0; i < res3.length; i++){
-        series_lbl.push(res3[i].reasonDetail);
-        series_count.push(res3[i].count);
-        this.total_Reason_Detail += res3[i].count;
+      let res3_Customers = await this.getData.get_Reason_Detail_Customers(this.StartDate,this.EndDate,this.top_reason_Customers).toPromise();
+      let series_lbl_Customers: any[] = [];
+      let series_count_Customers: any[] = [];
+      for (let i = 0; i < res3_Customers.length; i++){
+        series_lbl_Customers.push(res3_Customers[i].reasonDetail);
+        series_count_Customers.push(res3_Customers[i].count);
+        this.total_Reason_Detail_Customers += res3_Customers[i].count;
       }
-      this.reason_selected = this.top_reason;
-      (this.series_Reason_Detail_bar.yAxis as any)[0].data = series_lbl;
-      (this.series_Reason_Detail_bar.series as any)[0].data = series_count;
-      this.flag_Reason_Detail = true;
+      this.reason_selected_Customers = this.top_reason_Customers;
+      (this.series_Reason_Detail_bar_Customers.yAxis as any)[0].data = series_lbl_Customers;
+      (this.series_Reason_Detail_bar_Customers.series as any)[0].data = series_count_Customers;
+      this.flag_Reason_Detail_Customers = true;
+      let res3_Others = await this.getData.get_Reason_Detail_Others(this.StartDate,this.EndDate,this.top_reason_Customers).toPromise();
+      let series_lbl_Others: any[] = [];
+      let series_count_Others: any[] = [];
+      for (let i = 0; i < res3_Others.length; i++){
+        series_lbl_Others.push(res3_Others[i].reasonDetail);
+        series_count_Others.push(res3_Others[i].count);
+        this.total_Reason_Detail_Others += res3_Others[i].count;
+      }
+      this.reason_selected_Others = this.top_reason_Others;
+      (this.series_Reason_Detail_bar_Others.yAxis as any)[0].data = series_lbl_Others;
+      (this.series_Reason_Detail_bar_Others.series as any)[0].data = series_count_Others;
+      this.flag_Reason_Detail_Others = true;
     }catch (error:any){
       this.toast.error({ detail: "ERROR", summary: error.message, duration: 5000, position: 'topRight' });
     }
   }
 
-  async chart_click(event:any){
+  async chart_click_Customers(event:any){
     if (event.name){
-      this.flag_Reason_Detail = false;
-      this.total_Reason_Detail = 0;
-      let res = await this.getData.get_Reason_Detail(this.StartDate,this.EndDate,event.name).toPromise();
+      this.flag_Reason_Detail_Customers = false;
+      this.total_Reason_Detail_Customers = 0;
+      let res = await this.getData.get_Reason_Detail_Customers(this.StartDate,this.EndDate,event.name).toPromise();
       let series_lbl: any[] = [];
       let series_count: any[] = [];
       for (let i = 0; i < res.length; i++){
         series_lbl.push(res[i].reasonDetail);
         series_count.push(res[i].count);
-        this.total_Reason_Detail += res[i].count;
+        this.total_Reason_Detail_Customers += res[i].count;
       }
-      this.reason_selected = event.name;
-      (this.series_Reason_Detail_bar.yAxis as any)[0].data = series_lbl;
-      (this.series_Reason_Detail_bar.series as any)[0].data = series_count;
+      this.reason_selected_Customers = event.name;
+      (this.series_Reason_Detail_bar_Customers.yAxis as any)[0].data = series_lbl;
+      (this.series_Reason_Detail_bar_Customers.series as any)[0].data = series_count;
     }
-    this.flag_Reason_Detail = true;
+    this.flag_Reason_Detail_Customers = true;
   }
 
-  async Popup_List(event:any){
+  async chart_click_Others(event:any){
+    if (event.name){
+      this.flag_Reason_Detail_Others = false;
+      this.total_Reason_Detail_Others = 0;
+      let res = await this.getData.get_Reason_Detail_Others(this.StartDate,this.EndDate,event.name).toPromise();
+      let series_lbl: any[] = [];
+      let series_count: any[] = [];
+      for (let i = 0; i < res.length; i++){
+        series_lbl.push(res[i].reasonDetail);
+        series_count.push(res[i].count);
+        this.total_Reason_Detail_Others += res[i].count;
+      }
+      this.reason_selected_Others = event.name;
+      (this.series_Reason_Detail_bar_Others.yAxis as any)[0].data = series_lbl;
+      (this.series_Reason_Detail_bar_Others.series as any)[0].data = series_count;
+    }
+    this.flag_Reason_Detail_Others = true;
+  }
+
+  async Popup_List_Customers(event:any){
     this.flag_loading = true;
-    this.series_Popup_List = await this.getData.get_description(this.StartDate,this.EndDate,event.name).toPromise();
+    this.series_Popup_List = await this.getData.get_description_Customers(this.StartDate,this.EndDate,event.name).toPromise();
+    this.flag_loading = false;
+    if (this.series_Popup_List.length > 0){
+      this.flag_popup = true;
+      this.flag_popup_data = true;
+    } else {
+      this.toast.warning({ detail: "پیام", summary: 'توضیحاتی در این قسمت پیدا نشد!', duration: 1000, position: 'topRight' });
+    }
+  }
+
+  async Popup_List_Others(event:any){
+    this.flag_loading = true;
+    this.series_Popup_List = await this.getData.get_description_Others(this.StartDate,this.EndDate,event.name).toPromise();
     this.flag_loading = false;
     if (this.series_Popup_List.length > 0){
       this.flag_popup = true;
@@ -289,5 +439,13 @@ export class IncomingCallComponent implements OnInit {
     return this.auth.getUserBroker();
   }
 
-  scroll(){ this.target.nativeElement.scrollIntoView({ behavior: 'smooth' }); }
+  @ViewChildren('Quick, Target_Customers, Target_Others, Customers, Others') sections!: QueryList<ElementRef>;
+
+  ScrollTo(sectionName: string) {
+    console.log(sectionName);
+    let section:any = this.sections.find(sec => sec.nativeElement.id == sectionName);
+    if (section) {
+      section.nativeElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
 }
