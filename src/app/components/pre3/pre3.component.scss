@@ -1,0 +1,76 @@
+.body {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  background-image: url("/assets/images/front_background.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.f_container {
+  width: 100%;
+  direction: rtl;
+}
+.f_header {
+  display: flex;
+  margin-top: 4rem;
+}
+.main {
+  display: flex;
+  justify-content: center;
+  margin: 4rem auto;
+}
+.main .content {
+  display: flex;
+  position: relative;
+  width: 35rem;
+  height: 30rem;
+  flex-direction: column;
+  font: 22px Nazanin, Bahnschrift, serif;
+}
+.main .content .content-yellow {
+  display: flex;
+  flex-direction: column;
+  width: 35rem;
+  height: 30rem;
+  background-color: #ffd200;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+.main .content ul {
+  display: flex;
+  flex-direction: column;
+  margin: 10rem 12rem 2rem 12rem;
+}
+.main .content ul li {
+  text-align: center;
+}
+.main .content ul li:not(:first-child) {
+  margin-top: 1rem;
+}
+.main .content .p-top {
+  display: inline-block;
+  width: 500px;
+  position: absolute;
+  transform: rotate(-60deg);
+  left: -30%;
+  top: 38%;
+}
+.main .content .comma-left {
+  position: absolute;
+  right: 30%;
+  top: 0;
+  transform: rotate(180deg);
+}
+.main .content .line-top {
+  display: inline-block;
+  position: absolute;
+  background-color: black;
+  transform: rotate(30deg);
+  width: 4px;
+  height: 540px;
+  left: 140px;
+  top: 0;
+  border-radius: 5px;
+  z-index: 9999;
+}
+

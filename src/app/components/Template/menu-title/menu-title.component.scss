@@ -1,0 +1,40 @@
+header .title {
+  display: inline-block;
+  width: 460px;
+  background: #000000;
+  color: #ffffff;
+  clip-path: polygon(0 0, 95% 0, 100% 100%, 5% 100%);
+  margin-right: 7rem;
+}
+header .title p ,
+header .pre-title p {
+  font: 20px Nazanin;
+  font-weight: bold;
+}
+header .title p {
+  padding: 2px 2rem 2px 2rem;
+}
+header .pre-title {
+  display: inline-block;
+  position: absolute;
+  width: 10px;
+  height: 32px;
+  right: 6rem;
+  background: #d29702;
+  transform: skew(35deg);
+  margin-right: 14px;
+}
+header .sub-header {
+  width: fit-content;
+  background: #e6e7e9;
+  color: #68696b;
+  transform: skew(20deg);
+  margin-top: 5px;
+  margin-right: 120px;
+}
+header .sub-header p {
+  font: 14px Bahnschrift, serif;
+  font-weight: normal;
+  padding-right: 10px;
+  padding-left: 10px;
+}

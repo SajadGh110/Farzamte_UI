@@ -890,10 +890,12 @@ export class BrokeragesComponent implements OnInit {
 
   onCheckboxChange(event: any, item: any) {
     if (event.target.checked) {
-      if (this.selected_date.length > 4){
-        this.toast.warning({ detail: "Warning", summary: 'Cant Select More Than 5 Date!', duration: 1500, position: 'topRight' });
-        const index = this.selected_date.indexOf(item);
-        this.selected_date.splice(index, 1);
+      if (this.getBroker() != 'Khobregan'){
+        if (this.selected_date.length > 4){
+          this.toast.warning({ detail: "Warning", summary: 'Cant Select More Than 5 Date!', duration: 1500, position: 'topRight' });
+          const index = this.selected_date.indexOf(item);
+          this.selected_date.splice(index, 1);
+        }
       }
       if (!this.selected_date.includes(item)) {
         this.selected_date.push(item);
@@ -904,6 +906,10 @@ export class BrokeragesComponent implements OnInit {
         this.selected_date.splice(index, 1);
       }
     }
+  }
+
+  getBroker(){
+    return this.auth.getUserBroker();
   }
 
   @ViewChildren('select_date, view, totals, bob, fi, bki, bei') sections!: QueryList<ElementRef>;

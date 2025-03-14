@@ -1,0 +1,89 @@
+.body {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  background-image: url("/assets/images/front_background.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.f_container {
+  width: 100%;
+  direction: rtl;
+}
+.f_header {
+  display: flex;
+  margin-top: 4rem;
+}
+.main {
+  display: flex;
+  justify-content: flex-end;
+  margin: 2rem 10% 2rem 10%;
+}
+.main .content {
+  display: flex;
+  position: relative;
+  width: 35rem;
+  height: 35rem;
+  flex-direction: column;
+  font: 22px Nazanin, Bahnschrift, serif;
+}
+.main .content .content-yellow {
+  display: flex;
+  flex-direction: column;
+  width: 35rem;
+  height: 35rem;
+  background-color: #ffd200;
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+.main .content .content-yellow h4.h4-1 {
+  margin: 6rem 11rem 0 11rem;
+  text-align: center;
+}
+.main .content .content-yellow p.p-1 {
+  margin: 1rem 8rem 0 8rem;
+  text-align: justify;
+}
+.main .content .content-yellow p.p-2 {
+  margin: 0 8rem 0 8rem;
+  text-align: justify;
+}
+.main .content .line-top {
+  display: inline-block;
+  position: absolute;
+  background-color: black;
+  transform: rotate(135deg);
+  width: 4px;
+  height: 440px;
+  right: 155px;
+  top: -110px;
+  border-radius: 5px;
+}
+.main .content .line-bottom {
+  display: inline-block;
+  position: absolute;
+  background-color: black;
+  transform: rotate(135deg);
+  width: 4px;
+  height: 440px;
+  left: 172px;
+  bottom: -100px;
+  border-radius: 5px;
+}
+.main .content .comma-left {
+  display: flex;
+  position: absolute;
+  width: min-content;
+  height: min-content;
+  transform: rotate(180deg);
+  left: 0;
+  top: 28%;
+}
+.main .content .comma-right {
+  display: flex;
+  position: absolute;
+  width: min-content;
+  height: min-content;
+  right: 0;
+  bottom: 28%;
+}

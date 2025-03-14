@@ -39,8 +39,10 @@ export class IncomingCallComponent implements OnInit {
   protected flag_count:boolean=false;
   protected flag_Ph_Reasons_Customers:boolean=false;
   protected flag_Ph_Reasons_Others:boolean=false;
+  protected flag_Ph_Reasons_Totals:boolean=false;
   protected flag_Reason_Detail_Customers:boolean=false;
   protected flag_Reason_Detail_Others:boolean=false;
+  protected flag_Reason_Detail_Totals:boolean=false;
   protected flag_popup:boolean=false;
   protected flag_popup_data:boolean=false;
   protected flag_loading:boolean=false;
@@ -52,15 +54,20 @@ export class IncomingCallComponent implements OnInit {
   selected_days:number = 0;
   top_reason_Customers:string = "";
   top_reason_Others:string = "";
+  top_reason_Totals:string = "";
   reason_selected_Customers = "";
   reason_selected_Others = "";
+  reason_selected_Totals = "";
   total_Phonecall_Reasons_Customers: number = 0;
   total_Phonecall_Reasons_Others: number = 0;
+  total_Phonecall_Reasons_Totals: number = 0;
   total_Reason_Detail_Customers: number = 0;
   total_Reason_Detail_Others: number = 0;
+  total_Reason_Detail_Totals: number = 0;
   series_Popup_List: any[] = [];
   series_Phonecall_Reasons_Customers: any[] = [];
   series_Phonecall_Reasons_Others: any[] = [];
+  series_Phonecall_Reasons_Totals: any[] = [];
   series_color = ['#3ebeed','#EC7063','#004e75','#f1c40f','#7f6487','#42b3a1'];
   TitleTextStyle: any= {
     fontFamily: 'Nazanin', fontSize: '20px',
@@ -107,6 +114,26 @@ export class IncomingCallComponent implements OnInit {
       series: [{ type: 'bar',color:this.series_color[0] }, { type: 'bar',color:this.series_color[1] }, { type: 'bar',color:this.series_color[2] }]
     };
   series_Top_Reasons_bar_Others:EChartsOption = {
+    tooltip: {trigger: 'axis', axisPointer: {type: 'shadow'}, textStyle:this.tooltipTextStyle},
+    legend: {left:'2%', top:0, textStyle:this.legendTextStyle},
+    dataset: {
+      source: []
+    },
+    toolbox: {show: true, orient: 'vertical', left: 'right', top: 'center', feature: {
+        mark: { show: true },
+        dataView: { show: true, readOnly: false },
+        magicType: { show: true, type: ['line', 'bar'] },
+        restore: { show: true },
+        saveAsImage: { show: true }
+      }},
+    xAxis: {
+      type: 'category',
+      axisLabel:{show:true,fontFamily:'Nazanin',fontWeight:'bold',fontSize:14},
+    },
+    yAxis: {type: 'value'},
+    series: [{ type: 'bar',color:this.series_color[0] }, { type: 'bar',color:this.series_color[1] }, { type: 'bar',color:this.series_color[2] }]
+  };
+  series_Top_Reasons_bar_Totals:EChartsOption = {
     tooltip: {trigger: 'axis', axisPointer: {type: 'shadow'}, textStyle:this.tooltipTextStyle},
     legend: {left:'2%', top:0, textStyle:this.legendTextStyle},
     dataset: {
@@ -192,7 +219,42 @@ export class IncomingCallComponent implements OnInit {
             return  `${params.name}\n\n${percentage}`;
           }
         },
-        data: this.series_Phonecall_Reasons_Customers
+        data: this.series_Phonecall_Reasons_Others
+      }
+    ]
+  };
+  series_Phonecall_Reasons_tmp_Totals:EChartsOption = {
+    title: { show: false },
+    tooltip: {
+      trigger: 'item',
+      textStyle:this.tooltipTextStyle,
+      formatter: (params : any) => {
+        const total = this.total_Phonecall_Reasons_Totals;
+        const percentage = ((params.value / total) * 100).toFixed(2);
+        return  `${percentage}% - ${params.name}`;
+      }},
+    toolbox: {show: true, orient: 'vertical', left: 'right', top: 'center', feature: {
+        mark: { show: true },
+        dataView: { show: true, readOnly: false },
+        saveAsImage: { show: true }
+      }},
+    series: [
+      {
+        type: 'treemap',
+        name:'دلایل تماس ورودی',
+        breadcrumb: {show: false},
+        roam: false,
+        nodeClick: false,
+        label: {
+          show: true,
+          fontFamily:'Nazanin',fontWeight:'bold',fontSize:'14px',position:'insideTopLeft', padding:15,
+          formatter: (params : any) => {
+            const total = this.total_Phonecall_Reasons_Totals;
+            const percentage = ((params.value / total) * 100).toFixed(2) + '%';
+            return  `${params.name}\n\n${percentage}`;
+          }
+        },
+        data: this.series_Phonecall_Reasons_Totals
       }
     ]
   };
@@ -262,6 +324,39 @@ export class IncomingCallComponent implements OnInit {
         data: []
       }]
   };
+  series_Reason_Detail_bar_Totals:EChartsOption = {
+    title: { show: false },
+    tooltip: {
+      trigger: 'item',
+      textStyle:this.tooltipTextStyle,
+      axisPointer: {type: 'shadow'},
+      formatter: (params : any) => {
+        const total = this.total_Reason_Detail_Totals;
+        const percentage = ((params.value / total) * 100).toFixed(2);
+        return  `${percentage}% - ${params.name}`;
+      }},
+    grid: {left: '3%', right: '4%', bottom: '3%', containLabel: true},
+    xAxis: [{type: 'value'}],
+    yAxis: [{type: 'category', data: [], inverse:true, axisLabel:{fontFamily:'Nazanin',fontSize:16,fontWeight:'bold',color:'#000000',interval:0}, axisTick: {alignWithLabel: true}}],
+    toolbox: {show: true, orient: 'vertical', left: 'right', top: 'center', feature: {
+        mark: { show: true },
+        dataView: { show: true, readOnly: false },
+        saveAsImage: { show: true }
+      }},
+    series: [
+      {
+        name: 'جزئیات دلیل تماس ورودی',
+        type: 'bar',
+        color:this.series_color,
+        label: { show:true , position:'right', fontFamily:'Nazanin', fontSize:'14px', fontWeight:"bold", formatter: (params : any) => {
+            const total = this.total_Reason_Detail_Totals;
+            const percentage = ((params.value / total) * 100).toFixed(2);
+            return `${percentage}%`;
+          }},
+        barWidth: '60%',
+        data: []
+      }]
+  };
 
   async ngOnInit(){
     this.dateform = this.fb.group({
@@ -276,15 +371,20 @@ export class IncomingCallComponent implements OnInit {
     this.flag_count = false;
     this.flag_Ph_Reasons_Customers = false;
     this.flag_Ph_Reasons_Others = false;
+    this.flag_Ph_Reasons_Totals = false;
     this.flag_Reason_Detail_Customers = false;
     this.flag_Reason_Detail_Others = false;
+    this.flag_Reason_Detail_Totals = false;
     this.flag_Top_Reasons = false;
     this.total_Phonecall_Reasons_Customers = 0;
     this.total_Phonecall_Reasons_Others = 0;
+    this.total_Phonecall_Reasons_Totals = 0;
     this.total_Reason_Detail_Customers = 0;
     this.total_Reason_Detail_Others = 0;
+    this.total_Reason_Detail_Totals = 0;
     this.series_Phonecall_Reasons_Customers = [];
     this.series_Phonecall_Reasons_Others = [];
+    this.series_Phonecall_Reasons_Totals = [];
     try {
       let res1 = await this.getData.get_Total_Count_Day(stDate, enDate).toPromise();
       let total_calls_date: any[] = [];
@@ -304,6 +404,8 @@ export class IncomingCallComponent implements OnInit {
       (this.series_Top_Reasons_bar_Customers.dataset as any).source = res_top_reasons_Customers;
       let res_top_reasons_Others = await this.getData.get_Top_Reasons_Others(stDate,enDate).toPromise();
       (this.series_Top_Reasons_bar_Others.dataset as any).source = res_top_reasons_Others;
+      let res_top_reasons_Totals = await this.getData.get_Top_Reasons_Totals(stDate,enDate).toPromise();
+      (this.series_Top_Reasons_bar_Totals.dataset as any).source = res_top_reasons_Totals;
       this.flag_Top_Reasons = true;
       let res2_Customers = await this.getData.get_Phonecall_Reasons_Customers(stDate,enDate).toPromise();
       for (let i = 0; i < res2_Customers.length; i++){
@@ -321,6 +423,14 @@ export class IncomingCallComponent implements OnInit {
       this.top_reason_Others = this.series_Phonecall_Reasons_Others[0].name;
       (this.series_Phonecall_Reasons_tmp_Others.series as any)[0].data = this.series_Phonecall_Reasons_Others;
       this.flag_Ph_Reasons_Others = true;
+      let res2_Totals = await this.getData.get_Phonecall_Reasons_Totals(stDate,enDate).toPromise();
+      for (let i = 0; i < res2_Totals.length; i++){
+        this.series_Phonecall_Reasons_Totals.push({ name: res2_Totals[i].reason, value: res2_Totals[i].count });
+        this.total_Phonecall_Reasons_Totals += res2_Totals[i].count;
+      }
+      this.top_reason_Totals = this.series_Phonecall_Reasons_Totals[0].name;
+      (this.series_Phonecall_Reasons_tmp_Totals.series as any)[0].data = this.series_Phonecall_Reasons_Totals;
+      this.flag_Ph_Reasons_Totals = true;
 
       let res3_Customers = await this.getData.get_Reason_Detail_Customers(this.StartDate,this.EndDate,this.top_reason_Customers).toPromise();
       let series_lbl_Customers: any[] = [];
@@ -346,6 +456,18 @@ export class IncomingCallComponent implements OnInit {
       (this.series_Reason_Detail_bar_Others.yAxis as any)[0].data = series_lbl_Others;
       (this.series_Reason_Detail_bar_Others.series as any)[0].data = series_count_Others;
       this.flag_Reason_Detail_Others = true;
+      let res3_Totals = await this.getData.get_Reason_Detail_Totals(this.StartDate,this.EndDate,this.top_reason_Totals).toPromise();
+      let series_lbl_Totals: any[] = [];
+      let series_count_Totals: any[] = [];
+      for (let i = 0; i < res3_Totals.length; i++){
+        series_lbl_Totals.push(res3_Totals[i].reasonDetail);
+        series_count_Totals.push(res3_Totals[i].count);
+        this.total_Reason_Detail_Totals += res3_Totals[i].count;
+      }
+      this.reason_selected_Totals = this.top_reason_Totals;
+      (this.series_Reason_Detail_bar_Totals.yAxis as any)[0].data = series_lbl_Totals;
+      (this.series_Reason_Detail_bar_Totals.series as any)[0].data = series_count_Totals;
+      this.flag_Reason_Detail_Totals = true;
     }catch (error:any){
       this.toast.error({ detail: "ERROR", summary: error.message, duration: 5000, position: 'topRight' });
     }
@@ -389,6 +511,25 @@ export class IncomingCallComponent implements OnInit {
     this.flag_Reason_Detail_Others = true;
   }
 
+  async chart_click_Totals(event:any){
+    if (event.name){
+      this.flag_Reason_Detail_Totals = false;
+      this.total_Reason_Detail_Totals = 0;
+      let res = await this.getData.get_Reason_Detail_Totals(this.StartDate,this.EndDate,event.name).toPromise();
+      let series_lbl: any[] = [];
+      let series_count: any[] = [];
+      for (let i = 0; i < res.length; i++){
+        series_lbl.push(res[i].reasonDetail);
+        series_count.push(res[i].count);
+        this.total_Reason_Detail_Totals += res[i].count;
+      }
+      this.reason_selected_Totals = event.name;
+      (this.series_Reason_Detail_bar_Totals.yAxis as any)[0].data = series_lbl;
+      (this.series_Reason_Detail_bar_Totals.series as any)[0].data = series_count;
+    }
+    this.flag_Reason_Detail_Totals = true;
+  }
+
   async Popup_List_Customers(event:any){
     this.flag_loading = true;
     this.series_Popup_List = await this.getData.get_description_Customers(this.StartDate,this.EndDate,event.name).toPromise();
@@ -404,6 +545,18 @@ export class IncomingCallComponent implements OnInit {
   async Popup_List_Others(event:any){
     this.flag_loading = true;
     this.series_Popup_List = await this.getData.get_description_Others(this.StartDate,this.EndDate,event.name).toPromise();
+    this.flag_loading = false;
+    if (this.series_Popup_List.length > 0){
+      this.flag_popup = true;
+      this.flag_popup_data = true;
+    } else {
+      this.toast.warning({ detail: "پیام", summary: 'توضیحاتی در این قسمت پیدا نشد!', duration: 1000, position: 'topRight' });
+    }
+  }
+
+  async Popup_List_Totals(event:any){
+    this.flag_loading = true;
+    this.series_Popup_List = await this.getData.get_description_Totals(this.StartDate,this.EndDate,event.name).toPromise();
     this.flag_loading = false;
     if (this.series_Popup_List.length > 0){
       this.flag_popup = true;
@@ -439,7 +592,7 @@ export class IncomingCallComponent implements OnInit {
     return this.auth.getUserBroker();
   }
 
-  @ViewChildren('Quick, Target_Customers, Target_Others, Customers, Others') sections!: QueryList<ElementRef>;
+  @ViewChildren('Quick, Target_Customers, Target_Others, Target_Totals, Customers, Others, Totals') sections!: QueryList<ElementRef>;
 
   ScrollTo(sectionName: string) {
     console.log(sectionName);

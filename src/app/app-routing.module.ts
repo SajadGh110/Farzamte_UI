@@ -26,6 +26,13 @@ import {AiAnalysisComponent} from "./components/panel/ai-analysis/ai-analysis.co
 import {BrokerageCmpComponent} from "./components/panel/brokerage-cmp/brokerage-cmp.component";
 import {NoticeSMSComponent} from "./components/panel/notices/notice-sms/notice-sms.component";
 import {NoticeCallComponent} from "./components/panel/notices/notice-call/notice-call.component";
+import {Dev1Component} from "./components/dev1/dev1.component";
+import {Pre1Component} from "./components/pre1/pre1.component";
+import {Pre2Component} from "./components/pre2/pre2.component";
+import {Pre3Component} from "./components/pre3/pre3.component";
+import {Pre4Component} from "./components/pre4/pre4.component";
+import {Pre5Component} from "./components/pre5/pre5.component";
+import {Pre6Component} from "./components/pre6/pre6.component";
 
 const routes: Routes = [
   {path:'', component: IndexComponent,title:'FarzamTE'},
@@ -52,7 +59,14 @@ const routes: Routes = [
   {path:'q_a',component: QAComponent,title:'Q.A' , canActivate:[authGuard]},
   {path:'other',component: OtherComponent,title:'Other' , canActivate:[authGuard]},
   {path:'disorder',component: DisorderComponent,title:'Disorder' , canActivate:[authGuard]},
-  {path:'ai_analysis',component: AiAnalysisComponent,title:'Ai Analysis' , canActivate:[authGuard]}
+  {path:'ai_analysis',component: AiAnalysisComponent,title:'Ai Analysis' , canActivate:[authGuard]},
+  {path:'dev1-111111',component: Dev1Component,title:'Dev1' , canActivate:[authGuard]},
+  {path:'pre1',component: Pre1Component,title:'Pre1' , canActivate:[authGuard]},
+  {path:'pre2',component: Pre2Component,title:'Pre2' , canActivate:[authGuard]},
+  {path:'pre3',component: Pre3Component,title:'Pre3' , canActivate:[authGuard]},
+  {path:'pre4',component: Pre4Component,title:'Pre4' , canActivate:[authGuard]},
+  {path:'pre5',component: Pre5Component,title:'Pre5' , canActivate:[authGuard]},
+  {path:'pre6',component: Pre6Component,title:'Pre6' , canActivate:[authGuard]}
 ];
 
 @NgModule({
