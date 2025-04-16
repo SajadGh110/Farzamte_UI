@@ -4,13 +4,12 @@ import {NgToastService} from "ng-angular-popup";
 import emailjs from "@emailjs/browser";
 
 @Component({
-  selector: 'app-dashboard-contact',
-  standalone: true,
+    selector: 'app-dashboard-contact',
     imports: [
         ReactiveFormsModule
     ],
-  templateUrl: './dashboard-contact.component.html',
-  styleUrl: './dashboard-contact.component.scss'
+    templateUrl: './dashboard-contact.component.html',
+    styleUrl: './dashboard-contact.component.scss'
 })
 export class DashboardContactComponent {
   contactform!:FormGroup;

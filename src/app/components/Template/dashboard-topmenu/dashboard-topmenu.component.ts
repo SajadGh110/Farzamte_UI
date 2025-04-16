@@ -3,11 +3,10 @@ import {Title} from "@angular/platform-browser";
 import {AuthService} from "../../../services/auth.service";
 
 @Component({
-  selector: 'app-dashboard-topmenu',
-  standalone: true,
-  imports: [],
-  templateUrl: './dashboard-topmenu.component.html',
-  styleUrl: './dashboard-topmenu.component.scss'
+    selector: 'app-dashboard-topmenu',
+    imports: [],
+    templateUrl: './dashboard-topmenu.component.html',
+    styleUrl: './dashboard-topmenu.component.scss'
 })
 export class DashboardTopmenuComponent {
   public constructor(private titleservice:Title,private auth:AuthService) {

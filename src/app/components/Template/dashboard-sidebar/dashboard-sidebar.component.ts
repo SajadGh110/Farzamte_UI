@@ -5,15 +5,14 @@ import {NgClass, NgIf} from "@angular/common";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 
 @Component({
-  selector: 'app-dashboard-sidebar',
-  standalone: true,
-  imports: [
-    NgClass,
-    MatProgressSpinner,
-    NgIf
-  ],
-  templateUrl: './dashboard-sidebar.component.html',
-  styleUrl: './dashboard-sidebar.component.scss'
+    selector: 'app-dashboard-sidebar',
+    imports: [
+        NgClass,
+        MatProgressSpinner,
+        NgIf
+    ],
+    templateUrl: './dashboard-sidebar.component.html',
+    styleUrl: './dashboard-sidebar.component.scss'
 })
 export class DashboardSidebarComponent implements OnInit {
   constructor(private auth : AuthService,private title:Title) {}

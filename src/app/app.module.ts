@@ -2,19 +2,19 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './components/login/login.component';
-import { RegisterComponent } from './components/register/register.component';
-import { IndexComponent } from './components/index/index.component';
+import { Login } from './components/login/login';
+import { Register } from './components/register/register';
+import { Index } from './components/index';
 import { ReactiveFormsModule } from '@angular/forms';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { BrokeragesComponent } from './components/panel/brokerages/brokerages.component';
+import { Brokerages } from './components/panel/brokerages/brokerages';
 import { NgToastModule } from 'ng-angular-popup';
-import { AboutComponent } from './components/about/about.component';
-import { SupportComponent } from './components/support/support.component';
-import { ReportComponent } from './components/report/report.component';
-import { CrmComponent } from './components/crm/crm.component';
-import { CallcenterComponent } from './components/callcenter/callcenter.component';
-import { HomeComponent } from './components/home/home.component';
+import { About } from './components/about/about';
+import { Support } from './components/support/support';
+import { Report } from './components/report/report';
+import { Crm_old } from './components/crm-old/crm_old';
+import { Callcenter } from './components/callcenter/callcenter';
+import { Home } from './components/home/home';
 import { Footer1Component } from './components/Template/footer1/footer1.component';
 import { Menu1Component } from './components/Template/menu1/menu1.component';
 import { Menu2Component } from './components/Template/menu2/menu2.component';
@@ -33,15 +33,15 @@ import {DashboardSidebarComponent} from "./components/Template/dashboard-sidebar
 import {NgxEchartsModule} from "ngx-echarts";
 @NgModule({ declarations: [
         AppComponent,
-        LoginComponent,
-        RegisterComponent,
-        IndexComponent,
-        HomeComponent,
-        AboutComponent,
-        SupportComponent,
-        ReportComponent,
-        CrmComponent,
-        CallcenterComponent,
+        Login,
+        Register,
+        Index,
+        Home,
+        About,
+        Support,
+        Report,
+        Crm_old,
+        Callcenter,
         Footer1Component,
         Menu2Component,
         Footer2Component,
@@ -66,7 +66,7 @@ import {NgxEchartsModule} from "ngx-echarts";
         DashboardTopmenuComponent,
         DashboardSidebarComponent,
         Menu1Component,
-        BrokeragesComponent,
+        Brokerages,
         NgxEchartsModule.forRoot({
             echarts: () => import('echarts')
         })], providers: [provideHttpClient(withInterceptorsFromDi())] })

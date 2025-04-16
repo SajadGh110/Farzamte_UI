@@ -1,0 +1,327 @@
+.body {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  background-image: url("/assets/images/front_background.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.f_container {
+  width: 100%;
+  direction: rtl;
+}
+.f_header {
+  display: flex;
+  margin-top: 4rem;
+}
+.main {
+  display: flex;
+  justify-content: flex-end;
+  margin: 4rem 10% 2rem 20%;
+}
+.main .content {
+  display: flex;
+  position: relative;
+  width: 30rem;
+  height: 30rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font: 22px Nazanin, Bahnschrift, serif;
+}
+.main .content .circle {
+  position: relative;
+  width: 25rem;
+  height: 25rem;
+  border-radius: 50%;
+  overflow: hidden;
+  z-index: 2;
+}
+.main .content .circle .section {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  clip-path: polygon(52% 48%, 54% -25%, 205% 140%);
+  transform-origin: center;
+}
+.main .content .circle .section1 {
+  background-color: olive;
+  transform: rotate(30deg);
+}
+.main .content .circle .section2 {
+  background-color: teal;
+  transform: rotate(150deg);
+}
+.main .content .circle .section3 {
+  background-color: brown;
+  transform: rotate(270deg);
+}
+.main .content .circle .section p {
+  font: 40px Nazanin, Bahnschrift, serif;
+  color: white;
+  font-weight: bold;
+}
+.main .content .circle .section1 p {
+  position: absolute;
+  top: 27%;
+  right: 17%;
+  transform: rotate(-30deg);
+}
+.main .content .circle .section2 p {
+  position: absolute;
+  top: 32%;
+  right: 10%;
+  transform: rotate(210deg);
+}
+.main .content .circle .section3 p {
+  position: absolute;
+  top: 28%;
+  right: 15%;
+  transform: rotate(90deg);
+}
+.main .content .line-1 {
+  position: absolute;
+  width: 440px;
+  height: 220px;
+  border-top-left-radius: 220px;
+  border-top-right-radius: 220px;
+  border: 6px solid black;
+  border-bottom: none;
+  transform: rotate(-90deg);
+  right: 130px;
+  top: 130px;
+  z-index: 2;
+}
+.main .content .line-2 {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 220px;
+  height: 220px;
+  clip-path: circle(165px at 0px 0);
+  border: 6px solid black;
+  border-top-left-radius: 220px;
+  transform: rotate(180deg);
+  border-bottom: none;
+  border-right: none;
+  z-index: 2;
+}
+.main .content .line-3 {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 220px;
+  height: 220px;
+  clip-path: circle(160px at 50px 0px);
+  border: 6px solid black;
+  border-top-left-radius: 220px;
+  transform: rotate(90deg);
+  border-bottom: none;
+  border-right: none;
+  z-index: 2;
+}
+.main .content .comma-1 {
+  position: absolute;
+  right: 38%;
+  top: -15px;
+  transform: rotate(210deg);
+  z-index: 2;
+}
+.main .content .comma-2 {
+  position: absolute;
+  right: -5px;
+  top: 51%;
+  transform: rotate(23deg);
+  z-index: 2;
+}
+.main .content .comma-3 {
+  position: absolute;
+  right: 38%;
+  bottom: -5px;
+  transform: rotate(220deg);
+  z-index: 2;
+}
+.main .tooltip-1 {
+  position: absolute;
+  width: 32rem;
+  height: 18rem;
+  top: 10rem;
+  left: 32rem;
+  z-index: 1;
+}
+.main .tooltip-2 {
+  position: absolute;
+  width: 24rem;
+  height: 8rem;
+  bottom: -9rem;
+  left: -9rem;
+  z-index: 1;
+}
+.main .tooltip-3 {
+  position: absolute;
+  width: 30rem;
+  height: 12rem;
+  top: -8rem;
+  left: -12rem;
+  z-index: 1;
+}
+.dot {
+  --c:brown;
+  --r:4px;
+  --s:2px;
+  width:100px;
+  height:5px;
+  position: relative;
+  --g:radial-gradient(circle closest-side, var(--c) 85%,transparent);
+  background:
+    var(--g) calc(var(--s)/-2) 0/calc(var(--r) + var(--s)) var(--r) repeat-x,
+    var(--g) 0 calc(var(--s)/-2)/var(--r) calc(var(--r) + var(--s)) repeat-y;
+}
+.arrow::after {
+  content:"";
+  position:absolute;
+  top:calc(var(--r)/2);
+  left:100%;
+  width:12px;
+  height:12px;
+  transform:translateY(-50%);
+  background:var(--c);
+  clip-path:polygon(0 0, 100% 50%,0 100%);
+}
+.arrow-circle::after {
+  content: "";
+  position: absolute;
+  top:calc(var(--r)/2);
+  left:100%;
+  width: 12px;
+  height: 12px;
+  transform: translateY(-50%);
+  background: var(--c);
+  border-radius: 50%;
+}
+.main .tooltip-3 .shape {
+  position: relative;
+}
+.main .tooltip-3 .shape .d1 {
+  position: absolute;
+  top: 90px;
+  right: 50px;
+  transform: rotate(30deg);
+}
+.main .tooltip-3 .shape .d2{
+  position: absolute;
+  top: 65px;
+  right: 139px;
+  transform: rotate(180deg);
+}
+.main .tooltip-3 .shape .d3 {
+  position: absolute;
+  top: 93px;
+  right: 135px;
+  transform: rotate(90deg);
+}
+.main .tooltip-2 .shape .d4 {
+  position: absolute;
+  top: 28px;
+  right: -2px;
+  transform: rotate(325deg);
+}
+.main .tooltip-2 .shape .d5 {
+  position: absolute;
+  top: 55px;
+  right: 86px;
+  transform: rotate(180deg);
+}
+.main .tooltip-2 .shape .d6 {
+  position: absolute;
+  top: 62px;
+  right: 121px;
+  transform: rotate(90deg);
+}
+.main .tooltip-1 .shape .d7 {
+  position: absolute;
+  top: 52%;
+  left: -5px;
+  transform: rotate(210deg);
+}
+.main .tooltip-1 .shape .d8 {
+  position: absolute;
+  bottom: 117px;
+  left: 83px;
+  transform: rotate(-15deg);
+}
+.main .tooltip-1 .shape .d9 {
+  position: absolute;
+  top: 126px;
+  left: 38px;
+  transform: rotate(90deg);
+}
+.main .tooltip-1 p ,
+.main .tooltip-2 p ,
+.main .tooltip-3 p ,{
+  font: 18px Nazanin, Bahnschrift, serif;
+  font-weight: bold;
+}
+.main .tooltip-1 p {
+  color : olive;
+}
+.main .tooltip-2 p {
+  color : teal;
+}
+.main .tooltip-3 p {
+  color : brown;
+}
+.main .tooltip-1 p.p1 {
+  width: 310px;
+  text-align: center;
+  margin: 30px 30px 0 30px;
+}
+.main .tooltip-1 ul.ul1 {
+  width: 300px;
+  margin: 10px auto;
+}
+.main .tooltip-1 ul {
+  list-style: none;
+}
+.main .tooltip-1 ul.ul1 li:before {
+  content: '✓';
+  font-weight: bold;
+  color: olive;
+}
+.main .tooltip-1 ul.ul2 {
+  width: 130px;
+  margin: 0 auto;
+}
+.main .tooltip-1 ul.ul1 p {
+  display: inline-block;
+  margin-right: 5px;
+}
+.main .tooltip-1 ul.ul2 p {
+  display: inline-block;
+}
+.main .tooltip-1 ul.ul2 li {
+  display: flex;
+  align-items: center;
+}
+.main .tooltip-1 ul.ul2 li p {
+  color: #0b3847;
+}
+.main .tooltip-1 ul.ul2 li:before {
+  content: '⏴';
+  color: #0b3847;
+}
+.main .tooltip-2 ul.ul3 {
+  display: flex;
+  justify-content: flex-end;
+  width: 86%;
+  height: 90%;
+  align-items: center;
+}
+.main .tooltip-3 ul.ul4 {
+  width: 200px;
+  margin: 2rem 49% 2rem 2rem;
+}
+.main .tooltip-3 ul.ul5 {
+  margin-right: 5rem;
+}

@@ -1,9 +1,10 @@
 import {Component, Input} from '@angular/core';
 
 @Component({
-  selector: 'app-notelist',
-  templateUrl: './notelist.component.html',
-  styleUrls: ['./notelist.component.scss']
+    selector: 'app-notelist',
+    templateUrl: './notelist.component.html',
+    styleUrls: ['./notelist.component.scss'],
+    standalone: false
 })
 export class NotelistComponent {
   @Input() title!: string;
