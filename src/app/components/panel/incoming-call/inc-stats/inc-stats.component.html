@@ -1,0 +1,59 @@
+<section class="dashboard-wrapper">
+  <app-dashboard-sidebar></app-dashboard-sidebar>
+  <section class="dashboard-main" *ngIf="this.getBroker() == 'Mobin'">
+    <app-dashboard-contact class="row top-contact"></app-dashboard-contact>
+    <section class="row inc-stats-header">
+      <mat-form-field appearance="fill">
+        <mat-label>نوع صف پاسخگویی</mat-label>
+        <mat-select [(ngModel)]="selectedType">
+          <mat-option *ngFor="let t of types" [value]="t">{{ t }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>تاریخ</mat-label>
+        <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </section>
+
+    <section class="row inc-stats-table">
+      <table mat-table [dataSource]="filteredData" class="mat-elevation-z8">
+        <!-- Type Column -->
+        <ng-container matColumnDef="type">
+          <th mat-header-cell *matHeaderCellDef> نوع </th>
+          <td mat-cell *matCellDef="let element">{{ element.type }}</td>
+        </ng-container>
+
+        <!-- Date Column -->
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef> تاریخ </th>
+          <td mat-cell *matCellDef="let element">{{ element.date }}</td>
+        </ng-container>
+
+        <!-- Answered Column -->
+        <ng-container matColumnDef="answered">
+          <th mat-header-cell *matHeaderCellDef> پاسخ داده‌شده </th>
+          <td mat-cell *matCellDef="let element">{{ element.answered }}</td>
+        </ng-container>
+
+        <!-- Avg Wait Column -->
+        <ng-container matColumnDef="avgWait">
+          <th mat-header-cell *matHeaderCellDef> میانگین زمان انتظار </th>
+          <td mat-cell *matCellDef="let element">{{ element.avgWait }}</td>
+        </ng-container>
+
+        <!-- Avg Talk Column -->
+        <ng-container matColumnDef="avgTalk">
+          <th mat-header-cell *matHeaderCellDef> میانگین زمان مکالمه </th>
+          <td mat-cell *matCellDef="let element">{{ element.avgTalk }}</td>
+        </ng-container>
+
+        <!-- Table header and rows -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </section>
+  </section>
+</section>
