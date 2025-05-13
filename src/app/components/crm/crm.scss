@@ -95,4 +95,72 @@
     width: 60%;
     margin: 12vh auto 4vh;
   }
+  .main .content {
+    width: 30rem;
+    height: 30rem;
+    font: 18px Nazanin, Bahnschrift, serif;
+  }
+  .main .content .content-yellow {
+    width: 30rem;
+    height: 30rem;
+  }
+  .main .content .line-top {
+    height: 390px;
+    right: 140px;
+    top: -108px;
+  }
+  .main .content .line-bottom {
+    height: 390px;
+    left: 155px;
+    bottom: -100px;
+  }
+  .main .content .comma-left svg ,
+  .main .content .comma-right svg {
+    width: 50px;
+    height: 50px;
+  }
+  .main .content .content-yellow h4.h4-1 {
+    margin: 6rem 10rem 0 10rem;
+  }
+  .main .content .content-yellow p.p-1 {
+    margin: 1rem 7rem 0 7rem;
+  }
+  .main .content .content-yellow p.p-2 {
+    margin: 0 7rem 0 7rem;
+  }
+}
+@media screen and (max-width:768px){
+  .main .content {
+    width: 26rem;
+    height: 26rem;
+    font: 16px Nazanin, Bahnschrift, serif;
+  }
+  .main .content .content-yellow {
+    width: 26rem;
+    height: 26rem;
+  }
+  .main .content .line-top {
+    height: 350px;
+    right: 125px;
+    top: -105px;
+  }
+  .main .content .line-bottom {
+    height: 350px;
+    left: 138px;
+    bottom: -95px;
+  }
+  .main .content .comma-left svg ,
+  .main .content .comma-right svg {
+    width: 40px;
+    height: 40px;
+  }
+  .main .content .content-yellow h4.h4-1 {
+    margin: 4rem 8.5rem 0 8.5rem;
+  }
+  .main .content .content-yellow p.p-1 {
+    margin: 1rem 6.5rem 0 6.5rem;
+  }
+  .main .content .content-yellow p.p-2 {
+    margin: 0 6.5rem 0 6.5rem;
+  }
 }

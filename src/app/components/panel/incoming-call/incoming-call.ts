@@ -46,6 +46,7 @@ export class IncomingCall implements OnInit {
   protected flag_popup_data:boolean=false;
   protected flag_loading:boolean=false;
   protected flag_Top_Reasons:boolean=false;
+  protected flag_has_diffrent_data:boolean=false;
   public constructor(private toast:NgToastService,private auth:AuthService, private router:Router, private fb:FormBuilder, private getData:IncomingCallService, private TimeService:TimeService, private datePipe: DatePipe) {}
   StartDate:string = "";
   EndDate:string = "";
@@ -362,7 +363,7 @@ export class IncomingCall implements OnInit {
       StartDate: [''],
       EndDate: ['']
     });
-    if (this.getBroker() == 'Mobin' || this.getBroker() == 'Pishro' || this.getBroker() == 'Pouyan' || this.getBroker() == 'demo')
+    if (this.getBroker() == 'Mobin' || this.getBroker() == 'Pishro' || this.getBroker() == 'Pouyan' || this.getBroker() == 'Khobregan' || this.getBroker() == 'demo')
       this.SetTime(30);
   }
 
@@ -402,9 +403,12 @@ export class IncomingCall implements OnInit {
       let res_top_reasons_Customers = await this.getData.get_Top_Reasons_Customers(stDate,enDate).toPromise();
       (this.series_Top_Reasons_bar_Customers.dataset as any).source = res_top_reasons_Customers;
       let res_top_reasons_Others = await this.getData.get_Top_Reasons_Others(stDate,enDate).toPromise();
-      (this.series_Top_Reasons_bar_Others.dataset as any).source = res_top_reasons_Others;
-      let res_top_reasons_Totals = await this.getData.get_Top_Reasons_Totals(stDate,enDate).toPromise();
-      (this.series_Top_Reasons_bar_Totals.dataset as any).source = res_top_reasons_Totals;
+      if (res_top_reasons_Others.length > 0) {
+        this.flag_has_diffrent_data = true;
+        (this.series_Top_Reasons_bar_Others.dataset as any).source = res_top_reasons_Others;
+        let res_top_reasons_Totals = await this.getData.get_Top_Reasons_Totals(stDate,enDate).toPromise();
+        (this.series_Top_Reasons_bar_Totals.dataset as any).source = res_top_reasons_Totals;
+      }
       this.flag_Top_Reasons = true;
       let res2_Customers = await this.getData.get_Phonecall_Reasons_Customers(stDate,enDate).toPromise();
       for (let i = 0; i < res2_Customers.length; i++){
@@ -414,23 +418,24 @@ export class IncomingCall implements OnInit {
       this.top_reason_Customers = this.series_Phonecall_Reasons_Customers[0].name;
       (this.series_Phonecall_Reasons_tmp_Customers.series as any)[0].data = this.series_Phonecall_Reasons_Customers;
       this.flag_Ph_Reasons_Customers = true;
-      let res2_Others = await this.getData.get_Phonecall_Reasons_Others(stDate,enDate).toPromise();
-      for (let i = 0; i < res2_Others.length; i++){
-        this.series_Phonecall_Reasons_Others.push({ name: res2_Others[i].reason, value: res2_Others[i].count });
-        this.total_Phonecall_Reasons_Others += res2_Others[i].count;
+      if (this.flag_has_diffrent_data) {
+        let res2_Others = await this.getData.get_Phonecall_Reasons_Others(stDate,enDate).toPromise();
+        for (let i = 0; i < res2_Others.length; i++){
+          this.series_Phonecall_Reasons_Others.push({ name: res2_Others[i].reason, value: res2_Others[i].count });
+          this.total_Phonecall_Reasons_Others += res2_Others[i].count;
+        }
+        this.top_reason_Others = this.series_Phonecall_Reasons_Others[0].name;
+        (this.series_Phonecall_Reasons_tmp_Others.series as any)[0].data = this.series_Phonecall_Reasons_Others;
+        this.flag_Ph_Reasons_Others = true;
+        let res2_Totals = await this.getData.get_Phonecall_Reasons_Totals(stDate,enDate).toPromise();
+        for (let i = 0; i < res2_Totals.length; i++){
+          this.series_Phonecall_Reasons_Totals.push({ name: res2_Totals[i].reason, value: res2_Totals[i].count });
+          this.total_Phonecall_Reasons_Totals += res2_Totals[i].count;
+        }
+        this.top_reason_Totals = this.series_Phonecall_Reasons_Totals[0].name;
+        (this.series_Phonecall_Reasons_tmp_Totals.series as any)[0].data = this.series_Phonecall_Reasons_Totals;
+        this.flag_Ph_Reasons_Totals = true;
       }
-      this.top_reason_Others = this.series_Phonecall_Reasons_Others[0].name;
-      (this.series_Phonecall_Reasons_tmp_Others.series as any)[0].data = this.series_Phonecall_Reasons_Others;
-      this.flag_Ph_Reasons_Others = true;
-      let res2_Totals = await this.getData.get_Phonecall_Reasons_Totals(stDate,enDate).toPromise();
-      for (let i = 0; i < res2_Totals.length; i++){
-        this.series_Phonecall_Reasons_Totals.push({ name: res2_Totals[i].reason, value: res2_Totals[i].count });
-        this.total_Phonecall_Reasons_Totals += res2_Totals[i].count;
-      }
-      this.top_reason_Totals = this.series_Phonecall_Reasons_Totals[0].name;
-      (this.series_Phonecall_Reasons_tmp_Totals.series as any)[0].data = this.series_Phonecall_Reasons_Totals;
-      this.flag_Ph_Reasons_Totals = true;
-
       let res3_Customers = await this.getData.get_Reason_Detail_Customers(this.StartDate,this.EndDate,this.top_reason_Customers).toPromise();
       let series_lbl_Customers: any[] = [];
       let series_count_Customers: any[] = [];
@@ -443,30 +448,32 @@ export class IncomingCall implements OnInit {
       (this.series_Reason_Detail_bar_Customers.yAxis as any)[0].data = series_lbl_Customers;
       (this.series_Reason_Detail_bar_Customers.series as any)[0].data = series_count_Customers;
       this.flag_Reason_Detail_Customers = true;
-      let res3_Others = await this.getData.get_Reason_Detail_Others(this.StartDate,this.EndDate,this.top_reason_Customers).toPromise();
-      let series_lbl_Others: any[] = [];
-      let series_count_Others: any[] = [];
-      for (let i = 0; i < res3_Others.length; i++){
-        series_lbl_Others.push(res3_Others[i].reasonDetail);
-        series_count_Others.push(res3_Others[i].count);
-        this.total_Reason_Detail_Others += res3_Others[i].count;
+      if (this.flag_has_diffrent_data) {
+        let res3_Others = await this.getData.get_Reason_Detail_Others(this.StartDate,this.EndDate,this.top_reason_Customers).toPromise();
+        let series_lbl_Others: any[] = [];
+        let series_count_Others: any[] = [];
+        for (let i = 0; i < res3_Others.length; i++){
+          series_lbl_Others.push(res3_Others[i].reasonDetail);
+          series_count_Others.push(res3_Others[i].count);
+          this.total_Reason_Detail_Others += res3_Others[i].count;
+        }
+        this.reason_selected_Others = this.top_reason_Others;
+        (this.series_Reason_Detail_bar_Others.yAxis as any)[0].data = series_lbl_Others;
+        (this.series_Reason_Detail_bar_Others.series as any)[0].data = series_count_Others;
+        this.flag_Reason_Detail_Others = true;
+        let res3_Totals = await this.getData.get_Reason_Detail_Totals(this.StartDate,this.EndDate,this.top_reason_Totals).toPromise();
+        let series_lbl_Totals: any[] = [];
+        let series_count_Totals: any[] = [];
+        for (let i = 0; i < res3_Totals.length; i++){
+          series_lbl_Totals.push(res3_Totals[i].reasonDetail);
+          series_count_Totals.push(res3_Totals[i].count);
+          this.total_Reason_Detail_Totals += res3_Totals[i].count;
+        }
+        this.reason_selected_Totals = this.top_reason_Totals;
+        (this.series_Reason_Detail_bar_Totals.yAxis as any)[0].data = series_lbl_Totals;
+        (this.series_Reason_Detail_bar_Totals.series as any)[0].data = series_count_Totals;
+        this.flag_Reason_Detail_Totals = true;
       }
-      this.reason_selected_Others = this.top_reason_Others;
-      (this.series_Reason_Detail_bar_Others.yAxis as any)[0].data = series_lbl_Others;
-      (this.series_Reason_Detail_bar_Others.series as any)[0].data = series_count_Others;
-      this.flag_Reason_Detail_Others = true;
-      let res3_Totals = await this.getData.get_Reason_Detail_Totals(this.StartDate,this.EndDate,this.top_reason_Totals).toPromise();
-      let series_lbl_Totals: any[] = [];
-      let series_count_Totals: any[] = [];
-      for (let i = 0; i < res3_Totals.length; i++){
-        series_lbl_Totals.push(res3_Totals[i].reasonDetail);
-        series_count_Totals.push(res3_Totals[i].count);
-        this.total_Reason_Detail_Totals += res3_Totals[i].count;
-      }
-      this.reason_selected_Totals = this.top_reason_Totals;
-      (this.series_Reason_Detail_bar_Totals.yAxis as any)[0].data = series_lbl_Totals;
-      (this.series_Reason_Detail_bar_Totals.series as any)[0].data = series_count_Totals;
-      this.flag_Reason_Detail_Totals = true;
     }catch (error:any){
       this.toast.error({ detail: "ERROR", summary: error.message, duration: 5000, position: 'topRight' });
     }
@@ -594,7 +601,6 @@ export class IncomingCall implements OnInit {
   @ViewChildren('Quick, Target_Customers, Target_Others, Target_Totals, Customers, Others, Totals') sections!: QueryList<ElementRef>;
 
   ScrollTo(sectionName: string) {
-    console.log(sectionName);
     let section:any = this.sections.find(sec => sec.nativeElement.id == sectionName);
     if (section) {
       section.nativeElement.scrollIntoView({ behavior: 'smooth' });

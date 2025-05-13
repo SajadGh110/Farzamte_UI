@@ -1,6 +1,6 @@
 <section class="dashboard-wrapper">
   <app-dashboard-sidebar></app-dashboard-sidebar>
-  <section class="dashboard-main" *ngIf="this.getBroker() == 'Mobin' || this.getBroker() == 'Pishro' || this.getBroker() == 'Pouyan' || this.getBroker() == 'demo'">
+  <section class="dashboard-main" *ngIf="this.getBroker() == 'Mobin' || this.getBroker() == 'Pishro' || this.getBroker() == 'Pouyan' || this.getBroker() == 'Khobregan' || this.getBroker() == 'demo'">
     <app-dashboard-contact class="row top-contact"></app-dashboard-contact>
     <section class="row" id="Quick" #Quick>
       <section class="detail">
@@ -27,7 +27,7 @@
             <p>بازه زمانی انتخابی : {{selected_days}} روز</p>
           </section>
         </section>
-        <section class="quick-access-2">
+        <section class="quick-access-2" *ngIf="flag_has_diffrent_data">
           <h3>دسترسی سریع</h3>
           <ol>
             <li class="customers" (click)="ScrollTo('Customers')">گزارشات تماس ورودی مشتریان</li>
@@ -72,7 +72,7 @@
     <section class="row" id="Customers" #Customers>
       <section class="detail">
         <h2 class="customers">سه دلیل برتر تماس ها - مشتریان کارگزاری</h2>
-        <svg class="back-to-quick-access" (click)="ScrollTo('Quick')" width="40px" height="40px" fill="#117864" version="1.1" viewBox="0 0 151.85 151.85" xml:space="preserve" xmlns="http://www.w3.org/2000/svg">
+        <svg class="back-to-quick-access" *ngIf="flag_has_diffrent_data" (click)="ScrollTo('Quick')" width="40px" height="40px" fill="#117864" version="1.1" viewBox="0 0 151.85 151.85" xml:space="preserve" xmlns="http://www.w3.org/2000/svg">
           <path d="m124.26 70.052c-2.144-1.866-9.31-3.312-16.781-4.372l0.024-0.168v-52.439c0-7.207-5.62-13.073-12.55-13.073-6.924 0-12.556 5.86-12.556 13.073v28.202c-1.988-1.328-4.354-2.119-6.89-2.119-3.766 0-7.122 1.726-9.454 4.42-2.332-2.694-5.687-4.42-9.459-4.42-3.766 0-7.121 1.726-9.454 4.42-2.332-2.694-5.684-4.42-9.456-4.42-6.774 0-12.279 5.504-12.635 12.382l-0.067 0.344v54.787c0 26.609 20.944 45.182 50.942 45.182 29.995 0 50.941-18.572 50.941-45.182v-31.423c0.013-2.021-1.551-4.302-2.605-5.194zm-29.301-63.823c3.483 0 6.32 3.06 6.32 6.838v51.822c-2.643-0.305-5.176-0.56-7.331-0.767-2.034-0.21-3.738-0.162-5.31 0v-51.055c1e-3 -3.778 2.838-6.838 6.321-6.838zm-19.445 39.163c3.565 0 6.476 3.068 6.476 6.853v12.75l0.256 1.221c-2.238 1.511-3.535 3.544-4.244 5.496-0.887 2.411-0.947 4.932-0.351 7.282-0.566 0.167-1.147 0.28-1.757 0.28-3.479 0-6.281-2.938-6.424-6.579l0.027-0.269v-20.7l-0.188-0.917c0.643-3.074 3.111-5.417 6.205-5.417zm-18.913 0c3.254 0 5.849 2.605 6.299 5.915l-0.094 0.926v21.062l0.149 0.736c-0.704 2.978-3.13 5.231-6.159 5.231-3.444 0-6.205-2.874-6.4-6.46l9e-3 -0.03v-21.045l-0.088-0.438c0.447-3.304 3.035-5.897 6.284-5.897zm-18.904 0c3.254 0 5.849 2.605 6.296 5.915l-0.094 0.925v21.586c-0.627 3.081-3.096 5.444-6.196 5.444-3.568 0-6.473-3.069-6.473-6.853v-20.182c0-3.767 2.899-6.835 6.467-6.835zm82.947 61.265c0 22.932-18.378 38.952-44.707 38.952-26.327 0-44.707-16.021-44.707-38.952v-23.041c1.903 1.175 4.104 1.894 6.473 1.894 3.821 0 7.212-1.784 9.545-4.546 2.332 2.749 5.724 4.546 9.554 4.546 3.821 0 7.212-1.784 9.545-4.546 2.332 2.749 5.724 4.546 9.554 4.546 1.638 0 3.242-0.408 4.737-1.047 1.449 1.619 3.294 2.977 5.541 3.781l19.899 5.504c1.656 0.438 3.373-0.523 3.836-2.186 0.45-1.656-0.518-3.373-2.18-3.83l-19.656-5.42c-3.556-1.312-5.449-5.096-4.226-8.458 0.475-1.315 1.571-4.439 9.456-3.516 11.296 1.047 24.813 3.047 26.829 4.396l0.506 0.511v31.412h1e-3z"/>
         </svg>
       </section>
@@ -86,7 +86,7 @@
     <section class="row">
       <section class="detail">
         <h2 class="customers">دلایل تماس ورودی - مشتریان کارگزاری</h2>
-        <svg class="back-to-quick-access" (click)="ScrollTo('Quick')" width="40px" height="40px" fill="#117864" version="1.1" viewBox="0 0 151.85 151.85" xml:space="preserve" xmlns="http://www.w3.org/2000/svg">
+        <svg class="back-to-quick-access" *ngIf="flag_has_diffrent_data" (click)="ScrollTo('Quick')" width="40px" height="40px" fill="#117864" version="1.1" viewBox="0 0 151.85 151.85" xml:space="preserve" xmlns="http://www.w3.org/2000/svg">
           <path d="m124.26 70.052c-2.144-1.866-9.31-3.312-16.781-4.372l0.024-0.168v-52.439c0-7.207-5.62-13.073-12.55-13.073-6.924 0-12.556 5.86-12.556 13.073v28.202c-1.988-1.328-4.354-2.119-6.89-2.119-3.766 0-7.122 1.726-9.454 4.42-2.332-2.694-5.687-4.42-9.459-4.42-3.766 0-7.121 1.726-9.454 4.42-2.332-2.694-5.684-4.42-9.456-4.42-6.774 0-12.279 5.504-12.635 12.382l-0.067 0.344v54.787c0 26.609 20.944 45.182 50.942 45.182 29.995 0 50.941-18.572 50.941-45.182v-31.423c0.013-2.021-1.551-4.302-2.605-5.194zm-29.301-63.823c3.483 0 6.32 3.06 6.32 6.838v51.822c-2.643-0.305-5.176-0.56-7.331-0.767-2.034-0.21-3.738-0.162-5.31 0v-51.055c1e-3 -3.778 2.838-6.838 6.321-6.838zm-19.445 39.163c3.565 0 6.476 3.068 6.476 6.853v12.75l0.256 1.221c-2.238 1.511-3.535 3.544-4.244 5.496-0.887 2.411-0.947 4.932-0.351 7.282-0.566 0.167-1.147 0.28-1.757 0.28-3.479 0-6.281-2.938-6.424-6.579l0.027-0.269v-20.7l-0.188-0.917c0.643-3.074 3.111-5.417 6.205-5.417zm-18.913 0c3.254 0 5.849 2.605 6.299 5.915l-0.094 0.926v21.062l0.149 0.736c-0.704 2.978-3.13 5.231-6.159 5.231-3.444 0-6.205-2.874-6.4-6.46l9e-3 -0.03v-21.045l-0.088-0.438c0.447-3.304 3.035-5.897 6.284-5.897zm-18.904 0c3.254 0 5.849 2.605 6.296 5.915l-0.094 0.925v21.586c-0.627 3.081-3.096 5.444-6.196 5.444-3.568 0-6.473-3.069-6.473-6.853v-20.182c0-3.767 2.899-6.835 6.467-6.835zm82.947 61.265c0 22.932-18.378 38.952-44.707 38.952-26.327 0-44.707-16.021-44.707-38.952v-23.041c1.903 1.175 4.104 1.894 6.473 1.894 3.821 0 7.212-1.784 9.545-4.546 2.332 2.749 5.724 4.546 9.554 4.546 3.821 0 7.212-1.784 9.545-4.546 2.332 2.749 5.724 4.546 9.554 4.546 1.638 0 3.242-0.408 4.737-1.047 1.449 1.619 3.294 2.977 5.541 3.781l19.899 5.504c1.656 0.438 3.373-0.523 3.836-2.186 0.45-1.656-0.518-3.373-2.18-3.83l-19.656-5.42c-3.556-1.312-5.449-5.096-4.226-8.458 0.475-1.315 1.571-4.439 9.456-3.516 11.296 1.047 24.813 3.047 26.829 4.396l0.506 0.511v31.412h1e-3z"/>
         </svg>
       </section>
@@ -104,7 +104,7 @@
     <section class="row" id="Target_Customers" #Target_Customers>
       <section class="detail">
         <h2 class="customers">جزئیات دلیل تماس ورودی <p>{{reason_selected_Customers}}</p> - مشتریان کارگزاری</h2>
-        <svg class="back-to-quick-access" (click)="ScrollTo('Quick')" width="40px" height="40px" fill="#117864" version="1.1" viewBox="0 0 151.85 151.85" xml:space="preserve" xmlns="http://www.w3.org/2000/svg">
+        <svg class="back-to-quick-access" *ngIf="flag_has_diffrent_data" (click)="ScrollTo('Quick')" width="40px" height="40px" fill="#117864" version="1.1" viewBox="0 0 151.85 151.85" xml:space="preserve" xmlns="http://www.w3.org/2000/svg">
           <path d="m124.26 70.052c-2.144-1.866-9.31-3.312-16.781-4.372l0.024-0.168v-52.439c0-7.207-5.62-13.073-12.55-13.073-6.924 0-12.556 5.86-12.556 13.073v28.202c-1.988-1.328-4.354-2.119-6.89-2.119-3.766 0-7.122 1.726-9.454 4.42-2.332-2.694-5.687-4.42-9.459-4.42-3.766 0-7.121 1.726-9.454 4.42-2.332-2.694-5.684-4.42-9.456-4.42-6.774 0-12.279 5.504-12.635 12.382l-0.067 0.344v54.787c0 26.609 20.944 45.182 50.942 45.182 29.995 0 50.941-18.572 50.941-45.182v-31.423c0.013-2.021-1.551-4.302-2.605-5.194zm-29.301-63.823c3.483 0 6.32 3.06 6.32 6.838v51.822c-2.643-0.305-5.176-0.56-7.331-0.767-2.034-0.21-3.738-0.162-5.31 0v-51.055c1e-3 -3.778 2.838-6.838 6.321-6.838zm-19.445 39.163c3.565 0 6.476 3.068 6.476 6.853v12.75l0.256 1.221c-2.238 1.511-3.535 3.544-4.244 5.496-0.887 2.411-0.947 4.932-0.351 7.282-0.566 0.167-1.147 0.28-1.757 0.28-3.479 0-6.281-2.938-6.424-6.579l0.027-0.269v-20.7l-0.188-0.917c0.643-3.074 3.111-5.417 6.205-5.417zm-18.913 0c3.254 0 5.849 2.605 6.299 5.915l-0.094 0.926v21.062l0.149 0.736c-0.704 2.978-3.13 5.231-6.159 5.231-3.444 0-6.205-2.874-6.4-6.46l9e-3 -0.03v-21.045l-0.088-0.438c0.447-3.304 3.035-5.897 6.284-5.897zm-18.904 0c3.254 0 5.849 2.605 6.296 5.915l-0.094 0.925v21.586c-0.627 3.081-3.096 5.444-6.196 5.444-3.568 0-6.473-3.069-6.473-6.853v-20.182c0-3.767 2.899-6.835 6.467-6.835zm82.947 61.265c0 22.932-18.378 38.952-44.707 38.952-26.327 0-44.707-16.021-44.707-38.952v-23.041c1.903 1.175 4.104 1.894 6.473 1.894 3.821 0 7.212-1.784 9.545-4.546 2.332 2.749 5.724 4.546 9.554 4.546 3.821 0 7.212-1.784 9.545-4.546 2.332 2.749 5.724 4.546 9.554 4.546 1.638 0 3.242-0.408 4.737-1.047 1.449 1.619 3.294 2.977 5.541 3.781l19.899 5.504c1.656 0.438 3.373-0.523 3.836-2.186 0.45-1.656-0.518-3.373-2.18-3.83l-19.656-5.42c-3.556-1.312-5.449-5.096-4.226-8.458 0.475-1.315 1.571-4.439 9.456-3.516 11.296 1.047 24.813 3.047 26.829 4.396l0.506 0.511v31.412h1e-3z"/>
         </svg>
       </section>
@@ -123,7 +123,7 @@
       </section>
     </section>
     <!-- --- Others --- -->
-    <section class="row" id="Others" #Others>
+    <section class="row" id="Others" #Others *ngIf="flag_has_diffrent_data">
       <section class="detail">
         <h2 class="others">سه دلیل برتر تماس ها - سایرین</h2>
         <svg class="back-to-quick-access" (click)="ScrollTo('Quick')" width="40px" height="40px" fill="#943126" version="1.1" viewBox="0 0 151.85 151.85" xml:space="preserve" xmlns="http://www.w3.org/2000/svg">
@@ -137,7 +137,7 @@
         <section echarts [options]="series_Top_Reasons_bar_Others"></section>
       </section>
     </section>
-    <section class="row">
+    <section class="row" *ngIf="flag_has_diffrent_data">
       <section class="detail">
         <h2 class="others">دلایل تماس ورودی - سایرین</h2>
         <svg class="back-to-quick-access" (click)="ScrollTo('Quick')" width="40px" height="40px" fill="#943126" version="1.1" viewBox="0 0 151.85 151.85" xml:space="preserve" xmlns="http://www.w3.org/2000/svg">
@@ -155,7 +155,7 @@
         <p>{{st_to_en}}</p>
       </section>
     </section>
-    <section class="row" id="Target_Others" #Target_Others>
+    <section class="row" id="Target_Others" #Target_Others *ngIf="flag_has_diffrent_data">
       <section class="detail">
         <h2 class="others">جزئیات دلیل تماس ورودی <p>{{reason_selected_Others}}</p> - سایرین</h2>
         <svg class="back-to-quick-access" (click)="ScrollTo('Quick')" width="40px" height="40px" fill="#943126" version="1.1" viewBox="0 0 151.85 151.85" xml:space="preserve" xmlns="http://www.w3.org/2000/svg">
@@ -177,7 +177,7 @@
       </section>
     </section>
     <!-- --- Totals --- -->
-    <section class="row" id="Totals" #Totals *ngIf="getBroker() != 'Pouyan'">
+    <section class="row" id="Totals" #Totals *ngIf="getBroker() != 'Pouyan' && flag_has_diffrent_data">
       <section class="detail">
         <h2 class="Totals">سه دلیل برتر تماس ها - تجمیع</h2>
         <svg class="back-to-quick-access" (click)="ScrollTo('Quick')" width="40px" height="40px" fill="#0dc3ff" version="1.1" viewBox="0 0 151.85 151.85" xml:space="preserve" xmlns="http://www.w3.org/2000/svg">
@@ -191,7 +191,7 @@
         <section echarts [options]="series_Top_Reasons_bar_Totals"></section>
       </section>
     </section>
-    <section class="row" *ngIf="getBroker() != 'Pouyan'">
+    <section class="row" *ngIf="getBroker() != 'Pouyan' && flag_has_diffrent_data">
       <section class="detail">
         <h2 class="Totals">دلایل تماس ورودی - تجمیع</h2>
         <svg class="back-to-quick-access" (click)="ScrollTo('Quick')" width="40px" height="40px" fill="#0dc3ff" version="1.1" viewBox="0 0 151.85 151.85" xml:space="preserve" xmlns="http://www.w3.org/2000/svg">
@@ -209,7 +209,7 @@
         <p>{{st_to_en}}</p>
       </section>
     </section>
-    <section class="row" id="Target_Totals" #Target_Totals *ngIf="getBroker() != 'Pouyan'">
+    <section class="row" id="Target_Totals" #Target_Totals *ngIf="getBroker() != 'Pouyan' && flag_has_diffrent_data">
       <section class="detail">
         <h2 class="Totals">جزئیات دلیل تماس ورودی <p>{{reason_selected_Totals}}</p> - تجمیع</h2>
         <svg class="back-to-quick-access" (click)="ScrollTo('Quick')" width="40px" height="40px" fill="#0dc3ff" version="1.1" viewBox="0 0 151.85 151.85" xml:space="preserve" xmlns="http://www.w3.org/2000/svg">
@@ -231,7 +231,7 @@
       </section>
     </section>
   </section>
-  <section class="dashboard-main" *ngIf="getBroker() != 'Mobin' && getBroker() != 'Pishro' && getBroker() != 'Pouyan' && getBroker() != 'demo'">
+  <section class="dashboard-main" *ngIf="getBroker() != 'Mobin' && getBroker() != 'Pishro' && getBroker() != 'Pouyan' && getBroker() != 'Khobregan' && getBroker() != 'demo'">
     <section class="row">
       <section class="detail">
         <h2>بزودی ...</h2>

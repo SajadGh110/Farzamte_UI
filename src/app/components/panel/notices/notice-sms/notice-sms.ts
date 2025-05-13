@@ -191,7 +191,6 @@ export class NoticeSms implements OnInit {
     try {
       // SMS Day ------------------------------------
       let res1 = await this.getData.get_Count_SMS_Day(stDate,enDate).toPromise();
-      console.log("111");
       let sms_date: any[] = [];
       let sms_count: any[] = [];
       for (let i = 0; i < res1.length; i++) {
