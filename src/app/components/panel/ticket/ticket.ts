@@ -1,6 +1,5 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {DashboardSidebarComponent} from "../../Template/dashboard-sidebar/dashboard-sidebar.component";
-import {DashboardTopmenuComponent} from "../../Template/dashboard-topmenu/dashboard-topmenu.component";
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NgToastService} from "ng-angular-popup";
 import {TimeService} from "../../../services/time.service";
@@ -19,7 +18,7 @@ import * as FileSaver from "file-saver";
 
 @Component({
     selector: 'app-ticket',
-    imports: [DashboardSidebarComponent, DashboardTopmenuComponent, DashboardContactComponent, MatProgressSpinner, NgIf, NgxEchartsDirective, AllTicketsTable, NgForOf, DatePipe, FormsModule, ReactiveFormsModule],
+    imports: [DashboardSidebarComponent, DashboardContactComponent, MatProgressSpinner, NgIf, NgxEchartsDirective, AllTicketsTable, NgForOf, DatePipe, FormsModule, ReactiveFormsModule],
     templateUrl: './ticket.html',
     styleUrl: './ticket.scss'
 })

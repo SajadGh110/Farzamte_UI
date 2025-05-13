@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, Input, ViewChild} from '@angular/core';
-import {DatePipe, NgForOf, NgIf} from "@angular/common";
+import {DatePipe, NgIf} from "@angular/common";
 import {
   MatCellDef,
   MatColumnDef,
@@ -24,7 +24,7 @@ import {TransportToSmartService} from "../../../../services/transport-to-smart.s
         MatHeaderRowDef,
         MatPaginator,
         MatProgressSpinner,
-        MatRow, MatRowDef, MatTable, NgIf, MatTableModule, MatPaginatorModule, NgForOf
+        MatRow, MatRowDef, MatTable, NgIf, MatTableModule, MatPaginatorModule
     ],
     templateUrl: './list-table.html',
     styleUrl: './list-table.scss'

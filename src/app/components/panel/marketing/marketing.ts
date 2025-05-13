@@ -1,9 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {DashboardSidebarComponent} from "../../Template/dashboard-sidebar/dashboard-sidebar.component";
-import {DashboardTopmenuComponent} from "../../Template/dashboard-topmenu/dashboard-topmenu.component";
 import {NgToastService} from "ng-angular-popup";
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {DatePipe, NgForOf, NgIf} from '@angular/common';
+import {DatePipe, NgIf} from '@angular/common';
 import {TimeService} from "../../../services/time.service";
 import {DashboardContactComponent} from "../../Template/dashboard-contact/dashboard-contact.component";
 import {EChartsOption} from "echarts";
@@ -11,7 +10,6 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {NgxEchartsDirective} from "ngx-echarts";
 import {TransportToSmartService} from "../../../services/transport-to-smart.service";
 import {ListTable} from "./list-table/list-table";
-import {AllTicketsTable} from "../ticket/all-tickets-table/all-tickets-table";
 import {AuthService} from "../../../services/auth.service";
 import {Router} from "@angular/router";
 import {format, subDays} from "date-fns";
@@ -22,15 +20,11 @@ import * as FileSaver from 'file-saver';
     selector: 'app-marketing',
     imports: [
         DashboardSidebarComponent,
-        DashboardTopmenuComponent,
         DashboardContactComponent,
         MatProgressSpinner,
         NgIf,
         NgxEchartsDirective,
-        NgForOf,
-        DatePipe,
         ListTable,
-        AllTicketsTable,
         FormsModule,
         ReactiveFormsModule
     ],

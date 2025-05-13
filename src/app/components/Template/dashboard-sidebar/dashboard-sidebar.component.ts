@@ -2,13 +2,11 @@ import {Component,OnInit} from '@angular/core';
 import {AuthService} from "../../../services/auth.service";
 import {Title} from "@angular/platform-browser";
 import {NgClass, NgIf} from "@angular/common";
-import {MatProgressSpinner} from "@angular/material/progress-spinner";
 
 @Component({
     selector: 'app-dashboard-sidebar',
     imports: [
         NgClass,
-        MatProgressSpinner,
         NgIf
     ],
     templateUrl: './dashboard-sidebar.component.html',

@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {BarChartModule, LineChartModule, PieChartModule} from "@swimlane/ngx-charts";
 import {DashboardSidebarComponent} from "../../Template/dashboard-sidebar/dashboard-sidebar.component";
-import {DashboardTopmenuComponent} from "../../Template/dashboard-topmenu/dashboard-topmenu.component";
 import {NgToastService} from "ng-angular-popup";
 import {AuthService} from "../../../services/auth.service";
 import {Router} from "@angular/router";
@@ -14,7 +13,6 @@ import {FormBuilder} from "@angular/forms";
         PieChartModule,
         LineChartModule,
         DashboardSidebarComponent,
-        DashboardTopmenuComponent
     ],
     templateUrl: './view-360.html',
     styleUrl: './view-360.scss'

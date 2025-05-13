@@ -3,7 +3,6 @@ import {DashboardContactComponent} from "../../Template/dashboard-contact/dashbo
 import {DashboardSidebarComponent} from "../../Template/dashboard-sidebar/dashboard-sidebar.component";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatTab, MatTabGroup} from "@angular/material/tabs";
-import {Menu1Component} from "../../Template/menu1/menu1.component";
 import {DatePipe, DecimalPipe, NgForOf, NgIf} from "@angular/common";
 import {NgxEchartsDirective} from "ngx-echarts";
 import {NgToastService} from "ng-angular-popup";
@@ -20,7 +19,6 @@ import {AuthService} from "../../../services/auth.service";
         MatProgressSpinner,
         MatTab,
         MatTabGroup,
-        Menu1Component,
         NgForOf,
         NgIf,
         NgxEchartsDirective,

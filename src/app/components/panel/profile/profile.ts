@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {DashboardSidebarComponent} from "../../Template/dashboard-sidebar/dashboard-sidebar.component";
-import {DashboardTopmenuComponent} from "../../Template/dashboard-topmenu/dashboard-topmenu.component";
 import {AuthService} from "../../../services/auth.service";
 import {ProfileService} from "../../../services/profile.service";
 import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
@@ -13,7 +12,6 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
     selector: 'app-profile',
     imports: [
         DashboardSidebarComponent,
-        DashboardTopmenuComponent,
         FormsModule,
         NgIf,
         ReactiveFormsModule,

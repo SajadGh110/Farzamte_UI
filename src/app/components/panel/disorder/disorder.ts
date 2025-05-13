@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {DashboardTopmenuComponent} from "../../Template/dashboard-topmenu/dashboard-topmenu.component";
 import {DashboardSidebarComponent} from "../../Template/dashboard-sidebar/dashboard-sidebar.component";
 import {AuthService} from "../../../services/auth.service";
 import { NgToastService } from 'ng-angular-popup';
@@ -8,7 +7,6 @@ import {Router} from "@angular/router";
 @Component({
     selector: 'app-disorder',
     imports: [
-        DashboardTopmenuComponent,
         DashboardSidebarComponent
     ],
     templateUrl: './disorder.html',

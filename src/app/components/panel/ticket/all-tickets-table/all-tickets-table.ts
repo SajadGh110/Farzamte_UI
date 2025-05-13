@@ -2,13 +2,13 @@ import {AfterViewInit, Component, Input, ViewChild} from '@angular/core';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
-import {DatePipe, NgForOf, NgIf} from "@angular/common";
+import {DatePipe, NgIf} from "@angular/common";
 import {TicketService} from "../../../../services/ticket.service";
 import {NgToastService} from "ng-angular-popup";
 
 @Component({
     selector: 'app-all-tickets-table',
-    imports: [MatProgressSpinner, NgIf, MatTableModule, MatPaginatorModule, NgForOf, DatePipe],
+    imports: [MatProgressSpinner, NgIf, MatTableModule, MatPaginatorModule, DatePipe],
     templateUrl: './all-tickets-table.html',
     styleUrl: './all-tickets-table.scss'
 })

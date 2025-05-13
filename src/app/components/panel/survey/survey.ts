@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {DashboardSidebarComponent} from "../../Template/dashboard-sidebar/dashboard-sidebar.component";
-import {DashboardTopmenuComponent} from "../../Template/dashboard-topmenu/dashboard-topmenu.component";
 import {NgToastService} from "ng-angular-popup";
 import {AuthService} from "../../../services/auth.service";
 import {Router} from "@angular/router";
@@ -10,7 +9,6 @@ import {FormBuilder} from "@angular/forms";
     selector: 'app-survey',
     imports: [
         DashboardSidebarComponent,
-        DashboardTopmenuComponent
     ],
     templateUrl: './survey.html',
     styleUrl: './survey.scss'
