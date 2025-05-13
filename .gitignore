@@ -7,10 +7,6 @@ node_modules/
 # Ignore IDE folders and files
 .idea/
 
-# Ignore package-lock.json and package.json (optional - might not be desired)
-package-lock.json
-package.json
-
 # Ignore logs and temporary files
 *.log
 *.tmp
