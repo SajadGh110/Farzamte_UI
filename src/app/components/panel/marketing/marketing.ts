@@ -13,7 +13,7 @@ import {ListTable} from "./list-table/list-table";
 import {AuthService} from "../../../services/auth.service";
 import {Router} from "@angular/router";
 import {format, subDays} from "date-fns";
-import * as XLSX from 'xlsx';
+import * as ExcelJS from 'exceljs';
 import * as FileSaver from 'file-saver';
 
 @Component({
@@ -306,17 +306,26 @@ export class Marketing implements OnInit {
         'نتیجه تماس': row.resultOfCall
       };
     });
-    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataToExport);
-    const workbook: XLSX.WorkBook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
 
-    const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('data');
 
-    this.saveAsExcelFile(excelBuffer, 'report');
-  }
+    worksheet.columns = Object.keys(dataToExport[0]).map(key => ({
+      header: key,
+      key: key,
+      width: 25
+    }));
 
-  saveAsExcelFile(buffer: any, fileName: string): void {
-    const data: Blob = new Blob([buffer], { type: this.EXCEL_TYPE });
-    FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + this.EXCEL_EXTENSION);
+    dataToExport.forEach(item => {
+      worksheet.addRow(item);
+    });
+
+    workbook.xlsx.writeBuffer().then((buffer) => {
+      const blob = new Blob([buffer], {
+        type: this.EXCEL_TYPE
+      });
+      FileSaver.saveAs(blob, 'Marketing_export_' + new Date().getTime() + this.EXCEL_EXTENSION);
+    });
   }
 
   getBroker(){

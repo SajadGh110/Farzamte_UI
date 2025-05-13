@@ -27,10 +27,12 @@ import { Note3Component } from './components/Template/note3/note3.component';
 import { Note4Component } from './components/Template/note4/note4.component';
 import { SpanspecialComponent } from './components/Template/spanspecial/spanspecial.component';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {MatNativeDateModule} from '@angular/material/core';
 import {NgxChartsModule} from "@swimlane/ngx-charts";
 import {DashboardTopmenuComponent} from "./components/Template/dashboard-topmenu/dashboard-topmenu.component";
 import {DashboardSidebarComponent} from "./components/Template/dashboard-sidebar/dashboard-sidebar.component";
 import {NgxEchartsModule} from "ngx-echarts";
+import {MatDatepickerModule} from "@angular/material/datepicker";
 @NgModule({ declarations: [
         AppComponent,
         Login,
@@ -62,7 +64,9 @@ import {NgxEchartsModule} from "ngx-echarts";
         ReactiveFormsModule,
         NgToastModule,
         BrowserAnimationsModule,
+        MatNativeDateModule,
         NgxChartsModule,
+        MatDatepickerModule,
         DashboardTopmenuComponent,
         DashboardSidebarComponent,
         Menu1Component,

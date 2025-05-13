@@ -13,12 +13,23 @@ import {AllTicketsTable} from "./all-tickets-table/all-tickets-table";
 import {AuthService} from "../../../services/auth.service";
 import {Router} from "@angular/router";
 import {format, subDays} from "date-fns";
-import * as XLSX from "xlsx";
-import * as FileSaver from "file-saver";
+import * as ExcelJS from 'exceljs';
+import * as FileSaver from 'file-saver';
+
 
 @Component({
     selector: 'app-ticket',
-    imports: [DashboardSidebarComponent, DashboardContactComponent, MatProgressSpinner, NgIf, NgxEchartsDirective, AllTicketsTable, NgForOf, DatePipe, FormsModule, ReactiveFormsModule],
+    imports: [DashboardSidebarComponent,
+      DashboardContactComponent,
+      MatProgressSpinner,
+      NgIf,
+      NgxEchartsDirective,
+      AllTicketsTable,
+      NgForOf,
+      DatePipe,
+      FormsModule,
+      ReactiveFormsModule
+    ],
     templateUrl: './ticket.html',
     styleUrl: './ticket.scss'
 })
@@ -299,28 +310,40 @@ export class Ticket implements OnInit {
     this.flag_time = true;
     await this.do(this.StartDate,this.EndDate);
   }
-  exportToExcel(){
+  exportToExcel() {
     const dataToExport = this.series_All_Table.map(row => {
       return {
         'کد': row.id,
         'ایجاد کننده تیکت': row.owner,
         'تاریخ ایجاد': new Date(row.createdon).toLocaleDateString() + ' ' + new Date(row.createdon).toLocaleTimeString(),
-        'تاریخ بررسی تیکت': row.caseResolutionCreatedOn,
-        'شخص بررسی کننده تیکت': row.caseResolutionsolver,
-        'وضعیت': row.status,
+        'تاریخ بررسی تیکت': row.caseResolutionCreatedOn || '',
+        'شخص بررسی کننده تیکت': row.caseResolutionsolver || '',
+        'وضعیت': row.status || '',
       };
     });
-    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataToExport);
-    const workbook: XLSX.WorkBook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
 
-    const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('data');
 
-    this.saveAsExcelFile(excelBuffer, 'report');
-  }
+    // اضافه کردن سرتیترها
+    worksheet.columns = Object.keys(dataToExport[0]).map(key => ({
+      header: key,
+      key: key,
+      width: 25
+    }));
 
-  saveAsExcelFile(buffer: any, fileName: string): void {
-    const data: Blob = new Blob([buffer], { type: this.EXCEL_TYPE });
-    FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + this.EXCEL_EXTENSION);
+    // اضافه کردن ردیف‌ها
+    dataToExport.forEach(item => {
+      worksheet.addRow(item);
+    });
+
+    // ایجاد فایل و ذخیره آن
+    workbook.xlsx.writeBuffer().then((buffer) => {
+      const blob = new Blob([buffer], {
+        type: this.EXCEL_TYPE
+      });
+      FileSaver.saveAs(blob, 'Tickets_export_' + new Date().getTime() + this.EXCEL_EXTENSION);
+    });
   }
 
   getBroker(){
