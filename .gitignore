@@ -1,5 +1,27 @@
-node_modules
-.angular
-.idea
+# Ignore node_modules folder
+node_modules/
+
+# Ignore Angular build folder
+.angular/
+
+# Ignore IDE folders and files
+.idea/
+
+# Ignore package-lock.json and package.json (optional - might not be desired)
 package-lock.json
 package.json
+
+# Ignore logs and temporary files
+*.log
+*.tmp
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore any other build artifacts (optional, but often useful)
+dist/
+build/
+
+# Ignore environment files (optional, if you use them)
+.env
