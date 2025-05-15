@@ -12,7 +12,7 @@ import {MatInputModule} from '@angular/material/input';
 import {IncStatRow} from "../../../../models/inc-stat.model";
 import {IncStatService} from "../../../../services/inc-stat.service";
 import {NgToastService} from "ng-angular-popup";
-
+import {IncStatsChartComponent} from "./inc-stats-chart/inc-stats-chart.component";
 
 @Component({
   selector: 'app-inc-stats',
@@ -27,12 +27,15 @@ import {NgToastService} from "ng-angular-popup";
     MatSelectModule,
     MatDatepickerModule,
     FormsModule,
-    MatInputModule
+    MatInputModule,
+    IncStatsChartComponent
   ],
   templateUrl: './inc-stats.component.html',
   styleUrls: ['./inc-stats.component.scss']
 })
 export class IncStatsComponent implements OnInit {
+  chartData: {type: string, date: string, answered: number}[] = [];
+  allData: IncStatRow[] = [];
 
   constructor(
     private auth: AuthService,
@@ -52,43 +55,63 @@ export class IncStatsComponent implements OnInit {
   async ngOnInit() {
     try {
       this.types = await this.Service.get_AllTypes().toPromise();
-      this.selectedType = this.types[0] ?? '';
-
-      await this.GetData(this.selectedType);
+      if (this.types.length > 0)
+        this.selectedType = this.types[0];
+      await this.GetAllData(); // به جای GetData()
     } catch (error: any) {
       this.toast.error({ detail: "ERROR", summary: error.message, duration: 5000, position: 'topRight' });
     }
   }
 
   async onTypeChange() {
-    await this.GetData(this.selectedType);
+    // دیگر نیازی به درخواست جدید به سرور نیست
+    // فقط اگر خواستی جدول را فیلتر کنی اینجا انجام بده
+    // مثلاً:
+    this.dataSource.data = this.allData.filter(item => item.type === this.convertTypeToFarsi(this.selectedType));
   }
+
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
 
-  async GetData(type: string) {
+  async GetAllData() {
     try {
-      const result: any[] = await this.Service.get_IncStats(type).toPromise();
+      const allData: any[] = [];
 
-      this.dataSource.data = result.map(item => ({
-        type: this.convertTypeToFarsi(item.type),
-        date: item.month,
-        answered: item.answered,
-        avgWait: this.formatSeconds(item.avg_Wait),
-        avgTalk: this.formatSeconds(item.avg_Talk)
+      for (let type of this.types) {
+        const typeData = await this.Service.get_IncStats(type).toPromise();
+        for (let item of typeData) {
+          allData.push({
+            type: this.convertTypeToFarsi(item.type),
+            date: item.month,
+            answered: item.answered,
+            avgWait: this.formatSeconds(item.avg_Wait),
+            avgTalk: this.formatSeconds(item.avg_Talk)
+          });
+        }
+      }
+      this.allData = allData; // بعد از پر کردن allData
+
+      // پر کردن دیتا تیبل (اختیاری: می‌تونی فقط برای یک نوع نشون بدی یا همه رو)
+      this.dataSource.data = allData.filter(item => item.type === this.convertTypeToFarsi(this.selectedType));
+
+
+      // داده‌ی چارت: فقط type، date و answered
+      this.chartData = allData.map(item => ({
+        type: item.type,
+        date: item.date,
+        answered: item.answered
       }));
 
-      if (this.paginator)
-        this.paginator.firstPage();
-
+      if (this.paginator) this.paginator.firstPage();
       this.dataSource.paginator = this.paginator;
 
     } catch (error: any) {
       this.toast.error({ detail: "ERROR", summary: error.message, duration: 5000, position: 'topRight' });
     }
   }
+
 
   formatSeconds(seconds: number): string {
     const h = Math.floor(seconds / 3600).toString().padStart(2, '0');
