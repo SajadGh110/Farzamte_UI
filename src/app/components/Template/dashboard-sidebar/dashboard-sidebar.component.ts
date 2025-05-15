@@ -28,6 +28,9 @@ export class DashboardSidebarComponent implements OnInit {
   getRole():string{
     return this.auth.getUserRole();
   }
+  getBroker():string{
+    return this.auth.getUserBroker();
+  }
 
   toggleSubmenu(submenu: string) { this.openSubmenu = this.openSubmenu === submenu ? null : submenu; }
   isSubmenuOpen(submenu: string): boolean { return this.openSubmenu === submenu; }

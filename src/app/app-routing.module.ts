@@ -50,7 +50,7 @@ const routes: Routes = [
   {path:'view_360', component: View360,title:'360 Degrees' ,canActivate:[authGuard]},
   {path:'happy_call',component: HappyCall,title:'Happy Call' , canActivate:[authGuard]},
   {path:'call_in',component: IncomingCall,title:'Incoming Call' , canActivate:[authGuard]},
-  {path:'call_in_stats',component: IncStatsComponent,title:'Incoming Call Stats' , canActivate:[authGuard]},
+  {path:'call_in_stats',component: IncStatsComponent,title:'Incoming Call | Stats' , canActivate:[authGuard]},
   {path:'notices',component: Notices,title:'Notices' , canActivate:[authGuard]},
   {path:'notices/sms',component: NoticeSms,title:'Notices | Message' , canActivate:[authGuard]},
   {path:'notices/call',component: NoticeCall,title:'Notices | Call' , canActivate:[authGuard]},

@@ -61,7 +61,8 @@ aside nav ul li a p {
 #HappyCall{
   background-color: #92967f;
 }
-#Call-in{
+#Call-in ,
+.Call-in ,{
   background-color: #42b3a1;
 }
 #Notices ,
@@ -175,7 +176,7 @@ aside nav .datepicker-input {
 .submenu {
   display: none;
   list-style: none;
-  padding-left: 2rem;
+  padding-left: 1rem;
 }
 .show-submenu {
   display: block;
