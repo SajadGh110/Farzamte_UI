@@ -6,14 +6,17 @@
       <section class="detail">
         <h2>گزارشات صف های پاسخگویی تماس ورودی</h2>
       </section>
-      <app-inc-stats-chart class="mt-2" [data]="chartData" dir="ltr"></app-inc-stats-chart>
-      <mat-form-field appearance="outline" class="input-type">
+      <section class="loading-spinner" *ngIf="!flag_data">
+        <mat-spinner></mat-spinner>
+      </section>
+      <app-inc-stats-chart class="mt-2" [data]="chartData" dir="ltr" *ngIf="flag_data"></app-inc-stats-chart>
+      <mat-form-field appearance="outline" class="input-type" *ngIf="flag_data">
         <mat-label>نوع صف پاسخگویی</mat-label>
         <mat-select [(ngModel)]="selectedType" (selectionChange)="onTypeChange()">
           <mat-option *ngFor="let t of types" [value]="t">{{ convertTypeToFarsi(t) }}</mat-option>
         </mat-select>
       </mat-form-field>
-      <section class="table3" style="direction: rtl">
+      <section class="table3" style="direction: rtl" *ngIf="flag_data">
         <table mat-table [dataSource]="dataSource">
           <ng-container matColumnDef="type">
             <th *matHeaderCellDef> نوع </th>

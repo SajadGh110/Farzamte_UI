@@ -13,6 +13,7 @@ import {IncStatRow} from "../../../../models/inc-stat.model";
 import {IncStatService} from "../../../../services/inc-stat.service";
 import {NgToastService} from "ng-angular-popup";
 import {IncStatsChartComponent} from "./inc-stats-chart/inc-stats-chart.component";
+import {MatProgressSpinner} from "@angular/material/progress-spinner";
 
 @Component({
   selector: 'app-inc-stats',
@@ -28,12 +29,14 @@ import {IncStatsChartComponent} from "./inc-stats-chart/inc-stats-chart.componen
     MatDatepickerModule,
     FormsModule,
     MatInputModule,
-    IncStatsChartComponent
+    IncStatsChartComponent,
+    MatProgressSpinner,
   ],
   templateUrl: './inc-stats.component.html',
   styleUrls: ['./inc-stats.component.scss']
 })
 export class IncStatsComponent implements OnInit {
+  protected flag_data:boolean = false;
   chartData: {type: string, date: string, answered: number}[] = [];
   allData: IncStatRow[] = [];
 
@@ -106,7 +109,7 @@ export class IncStatsComponent implements OnInit {
 
       if (this.paginator) this.paginator.firstPage();
       this.dataSource.paginator = this.paginator;
-
+      this.flag_data = true;
     } catch (error: any) {
       this.toast.error({ detail: "ERROR", summary: error.message, duration: 5000, position: 'topRight' });
     }
