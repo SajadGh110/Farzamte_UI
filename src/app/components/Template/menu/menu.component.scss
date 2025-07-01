@@ -1,0 +1,122 @@
+ul#navigation {
+  list-style: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  height: 100%;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+ul#navigation.active {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  z-index: 998;
+}
+ul#navigation li {
+  width: 100%;
+}
+ul#navigation li a {
+  text-decoration: none;
+  color: #1c4d63;
+  font-weight: bold;
+  display: block;
+  font-size: 18px;
+  padding: 5px;
+}
+ul#navigation li a:hover {
+  background-color: #f0f0f0;
+}
+ul li {
+  margin-bottom: 5px;
+}
+ul li a {
+  position: relative;
+  text-decoration: none;
+}
+ul li a {
+  display: flex;
+  font: 18px Nazanin, Bahnschrift, serif;
+  color: #1c4d63;
+  font-weight: bold;
+}
+ul li a span {
+  display: inline-block;
+  transform: rotate(180deg);
+  font-family: Wingdings;
+  margin-left: 10px;
+  margin-right: 12px;
+  color: #1c4d63;
+}
+ul li a span.selected {
+  position: absolute;
+  font: 24px Nazanin, Bahnschrift, serif;
+  top: -5px;
+  right: -12px;
+  color: #d29702;
+  font-weight: bold;
+}
+.hamburger {
+  width: 40px;
+  height: 24px;
+  position: fixed;
+  cursor: pointer;
+  z-index: 1000;
+  top: 0;
+  margin: 12.5px;
+  span {
+    background: #ffd200;
+    position: absolute;
+    height: 4px;
+    width: 100%;
+    left: 0;
+    transition: all 0.3s ease;
+    border-radius: 3px;
+    &:nth-child(1) {
+      top: 0;
+    }
+    &:nth-child(2) {
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    &:nth-child(3) {
+      bottom: 0;
+    }
+  }
+  &.active {
+    span:nth-child(1) {
+      transform: rotate(45deg);
+      top: 50%;
+    }
+    span:nth-child(2) {
+      opacity: 0;
+    }
+    span:nth-child(3) {
+      transform: rotate(-45deg);
+      bottom: 50%;
+    }
+  }
+}
+@media screen and (max-width: 768px) {
+  .hamburger {
+    display: block;
+  }
+  ul#navigation {
+    width: 100%;
+    display: none;
+  }
+}
+@media screen and (min-width: 769px) {
+  .hamburger {
+    display: none;
+  }
+  ul#navigation {
+    position: relative;
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
+  }
+}

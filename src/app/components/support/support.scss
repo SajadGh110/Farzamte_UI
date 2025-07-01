@@ -1,10 +1,4 @@
-.supp_main {
-  display: flex;
-  flex-direction: row;
-  direction: rtl;
-  margin: 5rem auto;
-}
-.supp_main .info_sup {
+.info_sup {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -12,15 +6,15 @@
   color: #534e52;
   font-family: Bahnschrift;
 }
-.supp_main .info_sup img {
+.info_sup img {
   width: 100px;
   margin-bottom: 2rem;
 }
-.supp_main .info_sup a {
+.info_sup a {
   direction: ltr;
   margin-bottom: 5px;
 }
-.supp_main .info_sup .row {
+.info_sup .row {
   display: flex;
   flex-direction: column;
 }
@@ -93,50 +87,46 @@ app-menu2 {
 .contact_form form .frm_row textarea.is-invalid {
   border-color: red;
 }
-@media screen and (max-width:990px) {
-  .supp_main {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    direction: rtl;
-    margin: 5rem auto;
-  }
-  .contact_form {
-    margin: 0;
-  }
-  .contact_form form .frm_row {
-    width: 485px;
-  }
-}
-@media screen and (max-width:790px) {
-  .supp_main {
-    flex-direction: column-reverse;
-  }
-  .supp_main .info_sup {
+@media screen and (max-width:1024px) {
+  .info_sup {
+    flex-wrap: wrap;
     flex-direction: row-reverse;
     justify-content: center;
     margin-bottom: 2rem;
   }
-  .supp_main .info_sup img {
+  .info_sup img {
     margin-bottom: 0;
   }
-  .supp_main .info_sup .row {
+  .info_sup .row {
     margin-right: 1rem;
   }
-  .supp_main .info_sup .row:last-child {
+  .info_sup .row:last-child {
     margin-right: 0;
+  }
+  .contact_form {
+    margin: 0 auto;
   }
 }
 @media screen and (max-width:768px) {
-
+  .info_sup {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  .info_sup .row {
+    margin-right: 0;
+  }
+  .info_sup img {
+    margin-bottom: 1rem;
+  }
 }
 @media screen and (max-width:600px) {
-  .supp_main .info_sup {
+  .info_sup {
     flex-direction: column;
     align-items: center;
   }
-  .supp_main .info_sup img {
+  .info_sup img {
     margin-bottom: 1rem;
   }
   .contact_form form .frm_row {

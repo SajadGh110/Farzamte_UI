@@ -1,26 +1,4 @@
-.body {
-  display: flex;
-  width: 100vw;
-  height: 100vh;
-  background-image: url("/assets/images/front_background.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-}
-.f_container {
-  width: 100%;
-  direction: rtl;
-}
-.f_header {
-  display: flex;
-  margin-top: 4rem;
-}
-.main {
-  display: flex;
-  justify-content: center;
-  margin: 4rem auto;
-}
-.main .content {
+.shape {
   display: flex;
   position: relative;
   width: 35rem;
@@ -28,7 +6,7 @@
   flex-direction: column;
   font: 22px Nazanin, Bahnschrift, serif;
 }
-.main .content .content-yellow {
+.shape .content-yellow {
   display: flex;
   flex-direction: column;
   width: 35rem;
@@ -36,18 +14,18 @@
   background-color: #ffd200;
   clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
 }
-.main .content ul {
+.shape ul {
   display: flex;
   flex-direction: column;
   margin: 10rem 12rem 2rem 12rem;
 }
-.main .content ul li {
+.shape ul li {
   text-align: center;
 }
-.main .content ul li:not(:first-child) {
+.shape ul li:not(:first-child) {
   margin-top: 1rem;
 }
-.main .content .p-top {
+.shape p.p-top {
   display: inline-block;
   width: 500px;
   position: absolute;
@@ -55,22 +33,152 @@
   left: -30%;
   top: 38%;
 }
-.main .content .comma-left {
+.shape .comma-left {
+  width: fit-content;
+  height: fit-content;
   position: absolute;
   right: 30%;
   top: 0;
   transform: rotate(180deg);
 }
-.main .content .line-top {
+.shape .line-top {
   display: inline-block;
   position: absolute;
   background-color: black;
   transform: rotate(30deg);
   width: 4px;
-  height: 540px;
+  height: 33.75rem;
   left: 140px;
   top: 0;
   border-radius: 5px;
-  z-index: 9999;
+  z-index: 2;
 }
+/** Adaptive Codes **/
+@media screen and (max-width:1024px){
+  .shape {
+    width: 32.67rem;
+    height: 28rem;
+  }
+  .shape .content-yellow {
+    width: 32.67rem;
+    height: 28rem;
+  }
+  .shape p.p-top {
+    left: -32%;
+    font-size: 20px;
+  }
+  .shape ul li p {
+    font-size: 20px;
+  }
+  .shape .line-top {
+    height: 31.75rem;
+    left: 130px;
+  }
+  .shape ul {
+    margin: 10rem 11rem 2rem 11rem;
+  }
+}
+@media screen and (max-width:768px){
 
+}
+@media screen and (max-width:668px){
+  .shape {
+    width: 30rem;
+    height: 32.4rem;
+    align-items: center;
+  }
+  .shape .content-yellow {
+    width: 30rem;
+    height: 100%;
+    clip-path: polygon(100% 0%, 0% 0%, 50% 100%);
+  }
+  .shape p.p-top {
+    width: fit-content;
+    position: static;
+    transform: none;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  .shape ul {
+    margin: 1rem 10rem 1rem 10rem;
+  }
+  .shape .line-top {
+    right: 140px;
+    top: 80px;
+    height: 31rem;
+  }
+  .shape .comma-left {
+    top: auto;
+    right: auto;
+    left: 30%;
+    bottom: 0;
+  }
+}
+@media screen and (max-width:500px){
+  .shape {
+    width: 24rem;
+    height: 26.65rem;
+  }
+  .shape .content-yellow {
+    width: 24rem;
+    height: 100%;
+  }
+  .shape p.p-top {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  .shape ul {
+    margin: 1rem 5rem 1rem 5rem;
+  }
+  .shape ul li p {
+    font-size: 15px;
+    font-weight: bold;
+  }
+  .shape .line-top {
+    right: 115px;
+    top: 78px;
+    height: 25rem;
+  }
+  .shape .comma-left svg {
+    width: 50px;
+    height: 50px;
+  }
+}
+@media screen and (max-width:420px){
+  .shape {
+    width: 20rem;
+    height: 24.8rem;
+  }
+  .shape .content-yellow {
+    width: 20rem;
+    height: 100%;
+  }
+  .shape p.p-top {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  .shape ul {
+    margin: 1rem 5rem 1rem 5rem;
+  }
+  .shape ul li:not(:first-child) {
+    margin-top: 5px;
+  }
+  .shape ul li p {
+    font-size: 15px;
+  }
+  .shape .line-top {
+    right: 100px;
+    top: 110px;
+    height: 21rem;
+  }
+  .shape .comma-left {
+    left: 32%;
+    bottom: -10px;
+  }
+  .shape .comma-left svg {
+    width: 40px;
+    height: 40px;
+  }
+}

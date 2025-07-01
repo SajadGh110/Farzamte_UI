@@ -1,54 +1,30 @@
-.body {
-  display: flex;
-  width: 100vw;
-  height: 100vh;
-  background-image: url("/assets/images/front_background.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-}
-.f_container {
-  width: 100%;
-  direction: rtl;
-}
-.f_header {
-  display: flex;
-  margin-top: 4rem;
-}
-.main {
-  display: flex;
-  justify-content: flex-end;
-  margin: 2rem 10% 2rem 10%;
-}
-.main .content {
-  display: flex;
+.shape {
+  display: block;
   position: relative;
   width: 35rem;
   height: 35rem;
-  flex-direction: column;
-  font: 22px Nazanin, Bahnschrift, serif;
 }
-.main .content .content-yellow {
+.shape .content-yellow {
   display: flex;
   flex-direction: column;
-  width: 35rem;
-  height: 35rem;
+  width: 100%;
+  height: 100%;
   background-color: #ffd200;
   clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
 }
-.main .content .content-yellow h4.h4-1 {
+.shape .content-yellow h4.h4-1 {
   margin: 6rem 11rem 0 11rem;
   text-align: center;
 }
-.main .content .content-yellow p.p-1 {
+.shape .content-yellow p.p-1 {
   margin: 1rem 8rem 0 8rem;
   text-align: justify;
 }
-.main .content .content-yellow p.p-2 {
+.shape .content-yellow p.p-2 {
   margin: 0 8rem 0 8rem;
   text-align: justify;
 }
-.main .content .line-top {
+.shape .line-top {
   display: inline-block;
   position: absolute;
   background-color: black;
@@ -59,18 +35,18 @@
   top: -110px;
   border-radius: 5px;
 }
-.main .content .line-bottom {
+.shape .line-bottom {
   display: inline-block;
   position: absolute;
   background-color: black;
   transform: rotate(135deg);
   width: 4px;
   height: 440px;
-  left: 172px;
-  bottom: -100px;
+  left: 170px;
+  bottom: -98px;
   border-radius: 5px;
 }
-.main .content .comma-left {
+.shape .comma-left {
   display: flex;
   position: absolute;
   width: min-content;
@@ -79,7 +55,7 @@
   left: 0;
   top: 28%;
 }
-.main .content .comma-right {
+.shape .comma-right {
   display: flex;
   position: absolute;
   width: min-content;
@@ -87,80 +63,114 @@
   right: 0;
   bottom: 28%;
 }
+.catalog-content {
+  margin: 0 10%;
+}
 /** Adaptive Codes **/
-@media screen and (max-width:1024px){
-  .main {
-    display: flex;
-    justify-content: center;
-    width: 60%;
-    margin: 12vh auto 4vh;
+@media screen and (max-width:1200px){
+  .catalog-content {
+    margin: 0 auto;
   }
-  .main .content {
+}
+@media screen and (max-height:800px), screen and (max-width:1024px){
+  .catalog-main {
+    margin: 3rem 1rem 4rem;
+  }
+  .shape {
     width: 30rem;
     height: 30rem;
-    font: 18px Nazanin, Bahnschrift, serif;
+    font-size: 20px;
   }
-  .main .content .content-yellow {
-    width: 30rem;
-    height: 30rem;
-  }
-  .main .content .line-top {
+  .shape .line-top {
     height: 390px;
     right: 140px;
     top: -108px;
   }
-  .main .content .line-bottom {
+  .shape .line-bottom {
     height: 390px;
     left: 155px;
     bottom: -100px;
   }
-  .main .content .comma-left svg ,
-  .main .content .comma-right svg {
+  .shape .comma-left svg ,
+  .shape .comma-right svg {
     width: 50px;
     height: 50px;
   }
-  .main .content .content-yellow h4.h4-1 {
-    margin: 6rem 10rem 0 10rem;
+  .shape .content-yellow h4.h4-1 {
+    margin: 5rem 9.5rem 0 9.5rem;
   }
-  .main .content .content-yellow p.p-1 {
-    margin: 1rem 7rem 0 7rem;
+  .shape .content-yellow p.p-1 {
+    margin: 0.5rem 7rem 0 7rem;
   }
-  .main .content .content-yellow p.p-2 {
+  .shape .content-yellow p.p-2 {
     margin: 0 7rem 0 7rem;
   }
 }
 @media screen and (max-width:768px){
-  .main .content {
+  .shape {
     width: 26rem;
     height: 26rem;
-    font: 16px Nazanin, Bahnschrift, serif;
+    font-size: 18px;
   }
-  .main .content .content-yellow {
-    width: 26rem;
-    height: 26rem;
-  }
-  .main .content .line-top {
+  .shape .line-top {
     height: 350px;
     right: 125px;
     top: -105px;
   }
-  .main .content .line-bottom {
+  .shape .line-bottom {
     height: 350px;
     left: 138px;
     bottom: -95px;
   }
-  .main .content .comma-left svg ,
-  .main .content .comma-right svg {
+  .shape .comma-left svg ,
+  .shape .comma-right svg {
     width: 40px;
     height: 40px;
   }
-  .main .content .content-yellow h4.h4-1 {
-    margin: 4rem 8.5rem 0 8.5rem;
+  .shape .content-yellow h4.h4-1 {
+    margin: 4rem 8rem 0 8rem;
   }
-  .main .content .content-yellow p.p-1 {
-    margin: 1rem 6.5rem 0 6.5rem;
+  .shape .content-yellow p.p-1 {
+    margin: 0.5rem 6rem 0 6rem;
   }
-  .main .content .content-yellow p.p-2 {
-    margin: 0 6.5rem 0 6.5rem;
+  .shape .content-yellow p.p-2 {
+    margin: 0 6rem 0 6rem;
+  }
+}
+@media screen and (max-width:500px){
+  .shape {
+    width: 22rem;
+    height: 22rem;
+    font-size: 15px;
+  }
+  .shape .content-yellow h4.h4-1 {
+    margin: 3.2rem 7rem 0 7rem;
+  }
+  .shape .content-yellow p.p-1 {
+    margin: 5px 5rem 0 5rem;
+  }
+  .shape .content-yellow p.p-2 {
+    margin: 0 5.5rem 0 5rem;
+  }
+  .shape .line-top {
+    height: 300px;
+    right: 110px;
+    top: -95px;
+  }
+  .shape .line-bottom {
+    height: 300px;
+    left: 120px;
+    bottom: -85px;
+  }
+  .shape .comma-left svg ,
+  .shape .comma-right svg {
+    width: 35px;
+    height: 35px;
+  }
+  .shape .comma-left {
+    top: 30%;
+  }
+  .shape .comma-right {
+    bottom: 30%;
   }
 }

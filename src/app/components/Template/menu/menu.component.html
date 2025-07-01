@@ -1,0 +1,19 @@
+<nav>
+  <section class="hamburger" (click)="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </section>
+  <ul id="navigation" [class.active]="menuActive">
+    <li><a href="/"><span></span>صفحه اصلی</a></li>
+    <li><a href="{{Link}}"><span></span>{{Status}}</a></li>
+    <li><a href="/crm"><span class="selected" *ngIf="Selected == 'crm'">〡</span><span></span>مدیریت ارتباط با مشتریان (CRM)</a></li>
+    <li><a href="/crm_approaches"><span class="selected" *ngIf="Selected == 'crm_approaches'">〡</span><span></span>رویکردهای CRM</a></li>
+    <li><a href="/what_crm_is_not"><span class="selected" *ngIf="Selected == 'what_crm_is_not'">〡</span><span></span>CRM چه چیزی نیست ؟</a></li>
+    <li><a href="/why_need_crm"><span class="selected" *ngIf="Selected == 'why_need_crm'">〡</span><span></span>چرا به CRM نیاز داریم ؟</a></li>
+    <li><a href="/some_services"><span class="selected" *ngIf="Selected == 'some_services'">〡</span><span></span>برخی از خدمات</a></li>
+    <li><a href="/farzamte_features"><span class="selected" *ngIf="Selected == 'farzamte_features'">〡</span><span></span>ویژگی‌های Farzamte</a></li>
+    <li><a href="/support"><span class="selected" *ngIf="Selected == 'support'">〡</span><span></span>پشتیبانی</a></li>
+    <li><a href="/about"><span class="selected" *ngIf="Selected == 'about'">〡</span><span></span>درباره‌ما</a></li>
+  </ul>
+</nav>

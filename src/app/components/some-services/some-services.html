@@ -1,29 +1,33 @@
-<section class="body">
-  <section class="f_container">
-    <section class="f_header">
-      <app-menu-title [text_header]="'برخی از خدمات شرکت (توسعه ارتباطات هوشمند فرزام)'" [pre_color]="'#2e6ea2'"></app-menu-title>
+<section class="catalog-container">
+  <section class="catalog-header">
+    <app-menu-title [text_header]="'برخی از خدمات شرکت (توسعه ارتباطات هوشمند فرزام)'" [pre_color]="'#2e6ea2'"></app-menu-title>
+  </section>
+  <section class="catalog-main">
+    <section class="catalog-menu">
+      <app-menu [Selected]="'some_services'"></app-menu>
     </section>
-    <section class="main">
-      <section class="content">
-        <section class="shape">
-          <section class="Rectangle-fill"></section>
-          <section class="Rectangle-border"><a href="/">Farzamte.com</a></section>
-        </section>
-        <section class="text-list">
-          <ul>
-            <li><p>ثبت و ذخیره سازی اقدامات مشتریان به عنوان سوابق فعالیت و ارائه خدمات بهینه با توجه به این سوابق.</p></li>
-            <li><p>تحلیل رفتار مشتری بر اساس سوابق فعالیت و اطلاعات پایگاه داده (دیتابیس).</p></li>
-            <li><p>پیاده سازی استراتژی کارفرما در محیط CRM و اجرای منظم و اتوماتیک تمام یا بخشی از این استراتژی.</p></li>
-            <li><p>ارائه مشاوره برای بهبود فعالیت کارگزاری.</p></li>
-            <li><p>ارائه گزارش های مختلف از روند فعالیت و میزان بازدهی بر اساس اطلاعات ثبت شده.</p></li>
-            <li><p>مرکز تماس تخصصی حوزه بازار سرمایه.</p></li>
-            <li><p>جذب مشتریان جدید با استفاده از سرنخ های بازاریابی.</p></li>
-            <li><p>اطلاع رسانی پیامکی و تلفنی به مشتریان (به همه یا منتخبی از مشتریان)</p></li>
-            <li><p>QA , Survey</p></li>
-            <li><p>...</p></li>
-          </ul>
-        </section>
+    <section class="catalog-content">
+      <section class="text-list">
+        <ul>
+          <li><p>ثبت و ذخیره سازی اقدامات مشتریان به عنوان سوابق فعالیت و ارائه خدمات بهینه با توجه به این سوابق.</p></li>
+          <li><p>تحلیل رفتار مشتری بر اساس سوابق فعالیت و اطلاعات پایگاه داده (دیتابیس).</p></li>
+          <li><p>پیاده سازی استراتژی کارفرما در محیط CRM و اجرای منظم و اتوماتیک تمام یا بخشی از این استراتژی.</p></li>
+          <li><p>ارائه مشاوره برای بهبود فعالیت کارگزاری.</p></li>
+          <li><p>ارائه گزارش های مختلف از روند فعالیت و میزان بازدهی بر اساس اطلاعات ثبت شده.</p></li>
+          <li><p>مرکز تماس تخصصی حوزه بازار سرمایه.</p></li>
+          <li><p>جذب مشتریان جدید با استفاده از سرنخ های بازاریابی.</p></li>
+          <li><p>اطلاع رسانی پیامکی و تلفنی به مشتریان (به همه یا منتخبی از مشتریان)</p></li>
+          <li><p>QA , Survey</p></li>
+          <li><p>...</p></li>
+        </ul>
+      </section>
+      <section class="shape">
+        <section class="Rectangle-fill"></section>
+        <section class="Rectangle-border"><a href="/">Farzamte.com</a></section>
       </section>
     </section>
+  </section>
+  <section class="catalog-footer">
+    <app-footer2></app-footer2>
   </section>
 </section>

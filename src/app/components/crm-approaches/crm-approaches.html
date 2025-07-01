@@ -1,9 +1,12 @@
-<section class="body">
-  <section class="f_container">
-    <section class="f_header">
-      <app-menu-title [text_header]="'رویکردهای مدیریت ارتباط با مشتریان'" [pre_color]="'#a2a2a2'"></app-menu-title>
+<section class="catalog-container">
+  <section class="catalog-header">
+    <app-menu-title [text_header]="'رویکردهای مدیریت ارتباط با مشتریان'" [pre_color]="'#a2a2a2'"></app-menu-title>
+  </section>
+  <section class="catalog-main">
+    <section class="catalog-menu">
+      <app-menu [Selected]="'crm_approaches'"></app-menu>
     </section>
-    <section class="main">
+    <section class="catalog-content">
       <section class="content">
         <section class="line-1"></section>
         <section class="line-2"></section>
@@ -61,5 +64,8 @@
         </section>
       </section>
     </section>
+  </section>
+  <section class="catalog-footer">
+    <app-footer2></app-footer2>
   </section>
 </section>

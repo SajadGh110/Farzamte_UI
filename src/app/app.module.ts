@@ -18,7 +18,6 @@ import { Home } from './components/home/home';
 import { Footer1Component } from './components/Template/footer1/footer1.component';
 import { Menu1Component } from './components/Template/menu1/menu1.component';
 import { Menu2Component } from './components/Template/menu2/menu2.component';
-import { Footer2Component } from './components/Template/footer2/footer2.component';
 import { HeaderComponent } from './components/Template/header/header.component';
 import { Note1Component } from './components/Template/note1/note1.component';
 import { NotelistComponent } from './components/Template/notelist/notelist.component';
@@ -33,6 +32,9 @@ import {DashboardTopmenuComponent} from "./components/Template/dashboard-topmenu
 import {DashboardSidebarComponent} from "./components/Template/dashboard-sidebar/dashboard-sidebar.component";
 import {NgxEchartsModule} from "ngx-echarts";
 import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MenuComponent} from "./components/Template/menu/menu.component";
+import {Footer2Component} from "./components/Template/footer2/footer2.component";
+import {MenuTitle} from "./components/Template/menu-title/menu-title";
 @NgModule({ declarations: [
         AppComponent,
         Login,
@@ -46,7 +48,6 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
         Callcenter,
         Footer1Component,
         Menu2Component,
-        Footer2Component,
         HeaderComponent,
         Note1Component,
         NotelistComponent,
@@ -57,7 +58,7 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
     ],
     exports: [
         Menu1Component,
-        Footer1Component
+        Footer1Component,
     ],
     bootstrap: [AppComponent], imports: [BrowserModule,
         AppRoutingModule,
@@ -73,5 +74,5 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
         Brokerages,
         NgxEchartsModule.forRoot({
             echarts: () => import('echarts')
-        })], providers: [provideHttpClient(withInterceptorsFromDi())] })
+        }), MenuComponent, Footer2Component, MenuTitle], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule { }

@@ -1,43 +1,49 @@
-<section class="container">
-  <section class="abs-nav">
-    <app-menu1></app-menu1>
-    <app-menu2 [Selected]="'support'"></app-menu2>
+<section class="catalog-container">
+  <section class="catalog-header">
+    <app-menu-title [text_header]="'پشتیبانی'" [pre_color]="'#1B9AC4'"></app-menu-title>
   </section>
-  <section class="supp_main">
-    <section class="contact_form">
-      <form [formGroup]="contactform" >
-        <section class="frm_row">
-          <input type="text" id="subject" name="subject" formControlName="subject" [class.is-invalid]="contactform.controls['subject'].dirty && contactform.hasError('required','subject')" placeholder="عنوان">
-          <input type="text" id="tel" name="tel" formControlName="tel" [class.is-invalid]="contactform.controls['tel'].dirty && contactform.hasError('required','tel')" placeholder="شماره تماس">
-        </section>
-        <section class="frm_row">
-          <input type="text" id="name" name="name" formControlName="name" [class.is-invalid]="contactform.controls['name'].dirty && contactform.hasError('required','name')" placeholder="نام و نام خانوادگی">
-          <input type="email" id="email" name="email" formControlName="email" [class.is-invalid]="contactform.controls['email'].dirty && contactform.hasError('required','email')" placeholder="ایمیل">
-        </section>
-        <section class="frm_row">
-          <textarea id="text" name="text" formControlName="text" rows="5" cols="40" [class.is-invalid]="contactform.controls['text'].dirty && contactform.hasError('required','text')" placeholder="متن"></textarea>
-        </section>
-        <section class="frm_row_center">
-          <input (click)="send()" type="submit" class="submit" value="Submit">
-        </section>
-      </form>
+  <section class="catalog-main">
+    <section class="catalog-menu">
+      <app-menu [Selected]="'support'"></app-menu>
     </section>
-    <section class="info_sup">
-      <section class="row">
-        <img src="/assets/images/Logo.png" alt="logo">
+    <section class="catalog-content">
+      <section class="contact_form">
+        <form [formGroup]="contactform">
+          <section class="frm_row">
+            <input type="text" id="subject" name="subject" formControlName="subject" [class.is-invalid]="contactform.controls['subject'].dirty && contactform.hasError('required','subject')" placeholder="عنوان">
+            <input type="text" id="tel" name="tel" formControlName="tel" [class.is-invalid]="contactform.controls['tel'].dirty && contactform.hasError('required','tel')" placeholder="شماره تماس">
+          </section>
+          <section class="frm_row">
+            <input type="text" id="name" name="name" formControlName="name" [class.is-invalid]="contactform.controls['name'].dirty && contactform.hasError('required','name')" placeholder="نام و نام خانوادگی">
+            <input type="email" id="email" name="email" formControlName="email" [class.is-invalid]="contactform.controls['email'].dirty && contactform.hasError('required','email')" placeholder="ایمیل">
+          </section>
+          <section class="frm_row">
+            <textarea id="text" name="text" formControlName="text" rows="5" cols="40" [class.is-invalid]="contactform.controls['text'].dirty && contactform.hasError('required','text')" placeholder="متن"></textarea>
+          </section>
+          <section class="frm_row_center">
+            <input (click)="send()" type="submit" class="submit" value="Submit">
+          </section>
+        </form>
       </section>
-      <section class="row">
-        <a href="tel:02191002313">02191002313</a>
-        <a href="tel:09190944201">09190944201</a>
-      </section>
-      <section class="row">
-        <a href="mailto:info@farzamte.com">info&#64;farzamte.com</a>
-        <a href="/">www.farzamte.com</a>
-      </section>
-      <section class="row">
-        <a href="https://t.me/farzamte">&#64;Farzamte</a>
+      <section class="info_sup">
+        <section class="row">
+          <img src="/assets/images/Logo.png" alt="logo">
+        </section>
+        <section class="row">
+          <a href="tel:02191002313">02191002313</a>
+          <a href="tel:09190944201">09190944201</a>
+        </section>
+        <section class="row">
+          <a href="mailto:info@farzamte.com">info&#64;farzamte.com</a>
+          <a href="/">www.farzamte.com</a>
+        </section>
+        <section class="row">
+          <a href="https://t.me/farzamte">&#64;Farzamte</a>
+        </section>
       </section>
     </section>
   </section>
-  <app-footer2></app-footer2>
+  <section class="catalog-footer">
+    <app-footer2></app-footer2>
+  </section>
 </section>

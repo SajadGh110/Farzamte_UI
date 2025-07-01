@@ -1,25 +1,29 @@
-<section class="body">
-  <section class="f_container">
-    <section class="f_header">
-      <app-menu-title [text_header]="'ویژگی های شرکت (توسعه ارتباطات هوشمند فرزام)'" [pre_color]="'#4e862b'"></app-menu-title>
+<section class="catalog-container">
+  <section class="catalog-header">
+    <app-menu-title [text_header]="'ویژگی های شرکت (توسعه ارتباطات هوشمند فرزام)'" [pre_color]="'#4e862b'"></app-menu-title>
+  </section>
+  <section class="catalog-main">
+    <section class="catalog-menu">
+      <app-menu [Selected]="'farzamte_features'"></app-menu>
     </section>
-    <section class="main">
-      <section class="content">
-        <section class="shape">
-          <section class="Rectangle-fill"></section>
-          <section class="Rectangle-border"><a href="/">Farzamte.com</a></section>
-        </section>
-        <section class="text-list">
-          <ul>
-            <li><p>تخصصی بودن خدمات در حوزه بازار سرمایه.</p></li>
-            <li><p>دارا بودن کارشناسان متخصص در حوزه بازار سرمایه.</p></li>
-            <li><p>به روز نگه داشتن کارشناسان در زمینه ارتباط موثر با مشتریان با برگزاری کلاس های آموزشی.</p></li>
-            <li><p>جلب اعتماد چهار کارگزاری فعال و رتبه دار بورس کالا و اوراق بهادار و همکاری موثر با آنها.</p></li>
-            <li><p>گذر از آزمون و خطا و رسیدن به ماژول های مطمئن و جواب پس داده.</p></li>
-            <li><p>...</p></li>
-          </ul>
-        </section>
+    <section class="catalog-content">
+      <section class="text-list">
+        <ul>
+          <li><p>تخصصی بودن خدمات در حوزه بازار سرمایه.</p></li>
+          <li><p>دارا بودن کارشناسان متخصص در حوزه بازار سرمایه.</p></li>
+          <li><p>به روز نگه داشتن کارشناسان در زمینه ارتباط موثر با مشتریان با برگزاری کلاس های آموزشی.</p></li>
+          <li><p>جلب اعتماد چهار کارگزاری فعال و رتبه دار بورس کالا و اوراق بهادار و همکاری موثر با آنها.</p></li>
+          <li><p>گذر از آزمون و خطا و رسیدن به ماژول های مطمئن و جواب پس داده.</p></li>
+          <li><p>...</p></li>
+        </ul>
+      </section>
+      <section class="shape">
+        <section class="Rectangle-fill"></section>
+        <section class="Rectangle-border"><a href="/">Farzamte.com</a></section>
       </section>
     </section>
+  </section>
+  <section class="catalog-footer">
+    <app-footer2></app-footer2>
   </section>
 </section>

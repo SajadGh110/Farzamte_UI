@@ -1,26 +1,4 @@
-.body {
-  display: flex;
-  width: 100vw;
-  height: 100vh;
-  background-image: url("/assets/images/front_background.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-}
-.f_container {
-  width: 100%;
-  direction: rtl;
-}
-.f_header {
-  display: flex;
-  margin-top: 4rem;
-}
-.main {
-  display: flex;
-  justify-content: flex-end;
-  margin: 4rem 10% 2rem 20%;
-}
-.main .content {
+.content {
   display: flex;
   position: relative;
   width: 30rem;
@@ -30,7 +8,7 @@
   justify-content: center;
   font: 22px Nazanin, Bahnschrift, serif;
 }
-.main .content .circle {
+.content .circle {
   position: relative;
   width: 25rem;
   height: 25rem;
@@ -38,49 +16,49 @@
   overflow: hidden;
   z-index: 2;
 }
-.main .content .circle .section {
+.content .circle .section {
   position: absolute;
   width: 100%;
   height: 100%;
   clip-path: polygon(52% 48%, 54% -25%, 205% 140%);
   transform-origin: center;
 }
-.main .content .circle .section1 {
+.content .circle .section1 {
   background-color: olive;
   transform: rotate(30deg);
 }
-.main .content .circle .section2 {
+.content .circle .section2 {
   background-color: teal;
   transform: rotate(150deg);
 }
-.main .content .circle .section3 {
+.content .circle .section3 {
   background-color: brown;
   transform: rotate(270deg);
 }
-.main .content .circle .section p {
+.content .circle .section p {
   font: 40px Nazanin, Bahnschrift, serif;
   color: white;
   font-weight: bold;
 }
-.main .content .circle .section1 p {
+.content .circle .section1 p {
   position: absolute;
   top: 27%;
   right: 17%;
   transform: rotate(-30deg);
 }
-.main .content .circle .section2 p {
+.content .circle .section2 p {
   position: absolute;
   top: 32%;
   right: 10%;
   transform: rotate(210deg);
 }
-.main .content .circle .section3 p {
+.content .circle .section3 p {
   position: absolute;
   top: 28%;
   right: 15%;
   transform: rotate(90deg);
 }
-.main .content .line-1 {
+.content .line-1 {
   position: absolute;
   width: 440px;
   height: 220px;
@@ -93,7 +71,7 @@
   top: 130px;
   z-index: 2;
 }
-.main .content .line-2 {
+.content .line-2 {
   position: absolute;
   bottom: 20px;
   right: 20px;
@@ -107,7 +85,7 @@
   border-right: none;
   z-index: 2;
 }
-.main .content .line-3 {
+.content .line-3 {
   position: absolute;
   top: 20px;
   right: 20px;
@@ -121,28 +99,28 @@
   border-right: none;
   z-index: 2;
 }
-.main .content .comma-1 {
+.content .comma-1 {
   position: absolute;
   right: 38%;
   top: -15px;
   transform: rotate(210deg);
   z-index: 2;
 }
-.main .content .comma-2 {
+.content .comma-2 {
   position: absolute;
   right: -5px;
   top: 51%;
   transform: rotate(23deg);
   z-index: 2;
 }
-.main .content .comma-3 {
+.content .comma-3 {
   position: absolute;
   right: 38%;
   bottom: -5px;
   transform: rotate(220deg);
   z-index: 2;
 }
-.main .tooltip-1 {
+.tooltip-1 {
   position: absolute;
   width: 32rem;
   height: 18rem;
@@ -150,7 +128,7 @@
   left: 32rem;
   z-index: 1;
 }
-.main .tooltip-2 {
+.tooltip-2 {
   position: absolute;
   width: 24rem;
   height: 8rem;
@@ -158,7 +136,7 @@
   left: -9rem;
   z-index: 1;
 }
-.main .tooltip-3 {
+.tooltip-3 {
   position: absolute;
   width: 30rem;
   height: 12rem;
@@ -200,128 +178,131 @@
   background: var(--c);
   border-radius: 50%;
 }
-.main .tooltip-3 .shape {
+.tooltip-3 .shape {
   position: relative;
 }
-.main .tooltip-3 .shape .d1 {
+.tooltip-3 .shape .d1 {
   position: absolute;
   top: 90px;
   right: 50px;
   transform: rotate(30deg);
 }
-.main .tooltip-3 .shape .d2{
+.tooltip-3 .shape .d2{
   position: absolute;
   top: 65px;
   right: 139px;
   transform: rotate(180deg);
 }
-.main .tooltip-3 .shape .d3 {
+.tooltip-3 .shape .d3 {
   position: absolute;
   top: 93px;
   right: 135px;
   transform: rotate(90deg);
 }
-.main .tooltip-2 .shape .d4 {
+.tooltip-2 .shape .d4 {
   position: absolute;
   top: 28px;
   right: -2px;
   transform: rotate(325deg);
 }
-.main .tooltip-2 .shape .d5 {
+.tooltip-2 .shape .d5 {
   position: absolute;
   top: 55px;
   right: 86px;
   transform: rotate(180deg);
 }
-.main .tooltip-2 .shape .d6 {
+.tooltip-2 .shape .d6 {
   position: absolute;
   top: 62px;
   right: 121px;
   transform: rotate(90deg);
 }
-.main .tooltip-1 .shape .d7 {
+.tooltip-1 .shape .d7 {
   position: absolute;
   top: 52%;
   left: -5px;
   transform: rotate(210deg);
 }
-.main .tooltip-1 .shape .d8 {
+.tooltip-1 .shape .d8 {
   position: absolute;
   bottom: 117px;
   left: 83px;
   transform: rotate(-15deg);
 }
-.main .tooltip-1 .shape .d9 {
+.tooltip-1 .shape .d9 {
   position: absolute;
   top: 126px;
   left: 38px;
   transform: rotate(90deg);
 }
-.main .tooltip-1 p ,
-.main .tooltip-2 p ,
-.main .tooltip-3 p ,{
+.tooltip-1 p ,
+.tooltip-2 p ,
+.tooltip-3 p ,{
   font: 18px Nazanin, Bahnschrift, serif;
   font-weight: bold;
 }
-.main .tooltip-1 p {
+.tooltip-1 p {
   color : olive;
 }
-.main .tooltip-2 p {
+.tooltip-2 p {
   color : teal;
 }
-.main .tooltip-3 p {
+.tooltip-3 p {
   color : brown;
 }
-.main .tooltip-1 p.p1 {
+.tooltip-1 p.p1 {
   width: 310px;
   text-align: center;
   margin: 30px 30px 0 30px;
 }
-.main .tooltip-1 ul.ul1 {
+.tooltip-1 ul.ul1 {
   width: 300px;
   margin: 10px auto;
 }
-.main .tooltip-1 ul {
+.tooltip-1 ul {
   list-style: none;
 }
-.main .tooltip-1 ul.ul1 li:before {
+.tooltip-1 ul.ul1 li:before {
   content: '✓';
   font-weight: bold;
   color: olive;
 }
-.main .tooltip-1 ul.ul2 {
+.tooltip-1 ul.ul2 {
   width: 130px;
   margin: 0 auto;
 }
-.main .tooltip-1 ul.ul1 p {
+.tooltip-1 ul.ul1 p {
   display: inline-block;
   margin-right: 5px;
 }
-.main .tooltip-1 ul.ul2 p {
+.tooltip-1 ul.ul2 p {
   display: inline-block;
 }
-.main .tooltip-1 ul.ul2 li {
+.tooltip-1 ul.ul2 li {
   display: flex;
   align-items: center;
 }
-.main .tooltip-1 ul.ul2 li p {
+.tooltip-1 ul.ul2 li p {
   color: #0b3847;
 }
-.main .tooltip-1 ul.ul2 li:before {
+.tooltip-1 ul.ul2 li:before {
   content: '⏴';
   color: #0b3847;
 }
-.main .tooltip-2 ul.ul3 {
+.tooltip-2 ul.ul3 {
   display: flex;
   justify-content: flex-end;
   width: 86%;
   height: 90%;
   align-items: center;
 }
-.main .tooltip-3 ul.ul4 {
+.tooltip-3 ul.ul4 {
   width: 200px;
   margin: 2rem 49% 2rem 2rem;
 }
-.main .tooltip-3 ul.ul5 {
+.tooltip-3 ul.ul5 {
   margin-right: 5rem;
+}
+@media screen and (max-width:768px){
+
 }

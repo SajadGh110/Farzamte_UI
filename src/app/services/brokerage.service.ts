@@ -74,4 +74,12 @@ export class BrokerageService {
   get_Chart5_CMP(Date_Monthly:string,id:number):Observable<any>{
     return this.http.get(`${this.appConfigService.getApiUrl()}BrokerageCMP/Chart5?Date_Monthly=${Date_Monthly}&id=${id}`,{headers:this.header});
   }
+
+  GetBrokerageMoshtaghe(Date_Monthly:string):Observable<any>{
+    return this.http.get(`${this.appConfigService.getApiUrl()}Brokerage/GetBrokerageMoshtaghe?Date_Monthly=${Date_Monthly}`,{headers:this.header});
+  }
+
+  GetBrokerageOnline(Date_Monthly:string):Observable<any>{
+    return this.http.get(`${this.appConfigService.getApiUrl()}Brokerage/GetBrokerageOnline?Date_Monthly=${Date_Monthly}`,{headers:this.header});
+  }
 }
