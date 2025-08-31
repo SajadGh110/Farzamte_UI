@@ -11,6 +11,10 @@ export class BrokerageProfitService {
   constructor(private http : HttpClient, private appConfigService: AppConfigService) { }
   header = new HttpHeaders().append("api-key",this.appConfigService.getApiKey()).append("Authorization",this.appConfigService.getToken());
 
+  GetDateList(): Observable<any>{
+    return this.http.get(`${this.appConfigService.getApiUrl()}BrokerageProfit/GetDateList`,{headers:this.header});
+  }
+
   GetProfit(month:string): Observable<any>{
     return this.http.get(`${this.appConfigService.getApiUrl()}BrokerageProfit/GetProfit?month=${month}`,{headers:this.header});
   }
