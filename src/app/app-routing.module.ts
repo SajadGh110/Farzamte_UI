@@ -29,6 +29,8 @@ import {WhyNeedCrm} from "./components/why-need-crm/why-need-crm";
 import {SomeServices} from "./components/some-services/some-services";
 import {FarzamteFeatures} from "./components/farzamte-features/farzamte-features";
 import {IncStatsComponent} from "./components/panel/incoming-call/inc-stats/inc-stats.component";
+import {IncUnitComponent} from "./components/panel/incoming-call/inc-unit/inc-unit.component";
+import {BrokerageProfit} from "./components/panel/brokerages/brokerage-profit/brokerage-profit";
 
 const routes: Routes = [
   {path:'', component: Index,title:'FarzamTE'},
@@ -43,12 +45,14 @@ const routes: Routes = [
   {path:'some_services',component: SomeServices,title:'برخی از خدمات'},
   {path:'farzamte_features',component: FarzamteFeatures,title:'ویژگی های Farzamte'},
   {path:'brokerages', component: Brokerages,title:'Brokerages' ,canActivate:[authGuard]},
+  {path:'brokerages/profit', component: BrokerageProfit,title:'Brokerages | Profit' ,canActivate:[authGuard]},
   {path:'brokerages_cmp', component: BrokerageCmp,title:'Brokerages Comparison' ,canActivate:[authGuard]},
   {path:'profile',component: Profile,title:'Profile' , canActivate:[authGuard]},
   {path:'view_360', component: View360,title:'360 Degrees' ,canActivate:[authGuard]},
   {path:'happy_call',component: HappyCall,title:'Happy Call' , canActivate:[authGuard]},
   {path:'call_in',component: IncomingCall,title:'Incoming Call' , canActivate:[authGuard]},
   {path:'call_in_stats',component: IncStatsComponent,title:'Incoming Call | Stats' , canActivate:[authGuard]},
+  {path:'call_in_unit',component: IncUnitComponent,title:'Incoming Call | Unit' , canActivate:[authGuard]},
   {path:'notices',component: Notices,title:'Notices' , canActivate:[authGuard]},
   {path:'notices/sms',component: NoticeSms,title:'Notices | Message' , canActivate:[authGuard]},
   {path:'notices/call',component: NoticeCall,title:'Notices | Call' , canActivate:[authGuard]},

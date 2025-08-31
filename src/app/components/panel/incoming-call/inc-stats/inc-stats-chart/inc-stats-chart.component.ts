@@ -67,8 +67,6 @@ export class IncStatsChartComponent implements OnChanges, AfterViewInit, OnDestr
         type: 'line',
         data: dataForType,
         symbolSize: 10,
-        // هر نوع رنگ و استایل دلخواه می‌تونی اینجا اضافه کنی
-        // مثلا color: '#3498DB' ، می‌تونی بر اساس type رنگ متفاوت بدی
       };
     });
 

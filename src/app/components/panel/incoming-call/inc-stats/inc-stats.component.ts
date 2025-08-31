@@ -60,16 +60,13 @@ export class IncStatsComponent implements OnInit {
       this.types = await this.Service.get_AllTypes().toPromise();
       if (this.types.length > 0)
         this.selectedType = this.types[0];
-      await this.GetAllData(); // به جای GetData()
+      await this.GetAllData();
     } catch (error: any) {
       this.toast.error({ detail: "ERROR", summary: error.message, duration: 5000, position: 'topRight' });
     }
   }
 
   async onTypeChange() {
-    // دیگر نیازی به درخواست جدید به سرور نیست
-    // فقط اگر خواستی جدول را فیلتر کنی اینجا انجام بده
-    // مثلاً:
     this.dataSource.data = this.allData.filter(item => item.type === this.convertTypeToFarsi(this.selectedType));
   }
 
@@ -94,13 +91,11 @@ export class IncStatsComponent implements OnInit {
           });
         }
       }
-      this.allData = allData; // بعد از پر کردن allData
+      this.allData = allData;
 
-      // پر کردن دیتا تیبل (اختیاری: می‌تونی فقط برای یک نوع نشون بدی یا همه رو)
       this.dataSource.data = allData.filter(item => item.type === this.convertTypeToFarsi(this.selectedType));
 
 
-      // داده‌ی چارت: فقط type، date و answered
       this.chartData = allData.map(item => ({
         type: item.type,
         date: item.date,

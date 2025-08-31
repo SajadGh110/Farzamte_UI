@@ -28,6 +28,9 @@ export class DashboardSidebarComponent implements OnInit {
   getRole():string{
     return this.auth.getUserRole();
   }
+  getUserName():string{
+    return this.auth.getUserName();
+  }
   getBroker():string{
     return this.auth.getUserBroker();
   }

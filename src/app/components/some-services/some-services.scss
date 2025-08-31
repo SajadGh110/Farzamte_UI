@@ -1,9 +1,15 @@
+.catalog-content {
+  width: -webkit-fill-available;
+  flex-direction: column;
+  justify-content: space-around;
+}
 .shape {
   position: relative;
   display: flex;
   width: 15rem;
   height: 10rem;
   margin-top: 10px;
+  align-items: flex-end;
 }
 .text-list {
   display: flex;
