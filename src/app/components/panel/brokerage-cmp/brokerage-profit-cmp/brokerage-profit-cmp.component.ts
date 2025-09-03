@@ -1,38 +1,45 @@
 import {Component, OnInit} from '@angular/core';
 import {DashboardSidebarComponent} from "../../../Template/dashboard-sidebar/dashboard-sidebar.component";
+import {MatTab, MatTabGroup} from "@angular/material/tabs";
+import {DatePipe, DecimalPipe, NgForOf, NgIf} from "@angular/common";
+import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {AuthService} from "../../../../services/auth.service";
 import {Router} from "@angular/router";
 import {NgToastService} from "ng-angular-popup";
-import {BrokerageProfitService} from "../../../../services/brokerage-profit.service";
-import {DecimalPipe, NgForOf, NgIf} from "@angular/common";
-import {MatProgressSpinner} from "@angular/material/progress-spinner";
-import {MatTab, MatTabGroup} from "@angular/material/tabs";
 import {BrokerageService} from "../../../../services/brokerage.service";
+import {BrokerageProfitService} from "../../../../services/brokerage-profit.service";
+import {findIndex} from "rxjs";
 
 @Component({
-  selector: 'app-brokerage-profit',
+  selector: 'app-brokerage-profit-cmp',
   imports: [
     DashboardSidebarComponent,
     MatProgressSpinner,
+    MatTab,
+    MatTabGroup,
     NgForOf,
     NgIf,
-    DecimalPipe,
-    MatTab,
-    MatTabGroup
+    DecimalPipe
   ],
-  templateUrl: './brokerage-profit.html',
-  styleUrl: './brokerage-profit.scss'
+  providers: [DatePipe],
+  templateUrl: './brokerage-profit-cmp.component.html',
+  styleUrl: './brokerage-profit-cmp.component.scss'
 })
-export class BrokerageProfit implements OnInit {
+export class BrokerageProfitCmpComponent implements OnInit {
   public constructor(private auth:AuthService, private getData:BrokerageProfitService, private getDataBrokerage:BrokerageService, private router:Router, private toast:NgToastService) {}
-  protected flag_date:boolean=false;
-  protected flag_data:boolean=false;
   series_date:any = [];
   selected_date:any = [];
   series_data:any = [];
   brokerage_name:any = '';
   brokerage_logo:any = '';
+  protected flag_date:boolean=false;
+  protected flag_data:boolean=false;
+  protected flag_all_brokers:boolean=false;
   years:any = [];
+  all_brokers:any[] = [];
+  comparison_list:any[] = [];
+  list:any[]=[];
+
   Columns_b1_part1: string[] = ['b_1_1', 'b_1_2', 'b_1_3', 'b_1_4'];
   Columns_b1_part2: string[] = ['b_1_5', 'b_1_6', 'b_1_7'];
   Columns_b1_part3: string[] = ['b_1_8', 'b_1_9', 'b_1_10'];
@@ -85,7 +92,8 @@ export class BrokerageProfit implements OnInit {
   columnTitles_kt: { [key: string]: string } = {kt: "کل معاملات بورس کالا"}
   columnTitles_t: { [key: string]: string } = {t: "کل معاملات در بورس‌ها و فرابورس"}
 
-  async ngOnInit() {
+
+  async ngOnInit(){
     if (this.auth.getUserRole() !== "Owner" && this.auth.getUserName() !== 'Mobin.CEO' && this.auth.getUserName() !== 'Pishro.CEO' && this.auth.getUserName() !== 'Khobregan.CEO' && this.auth.getUserName() !== 'Pouyan.CEO' && this.auth.getUserName() !== 'Hosseinpoor.Pishro' && this.auth.getUserName() !== 'Zafarani.pishro') {
       this.toast.error({detail: "ERROR", summary: "Access Denied!", duration: 5000, position: 'topRight'});
       await this.router.navigate(['profile']);
@@ -95,7 +103,7 @@ export class BrokerageProfit implements OnInit {
       await this.router.navigate(['profile']);
     }
     let res_brokerage_name = await this.getDataBrokerage.Get_Brokerage_Name().toPromise();
-    this.brokerage_name = "کارگزاری " + res_brokerage_name[0].name;
+    this.brokerage_name = res_brokerage_name[0].name;
     this.brokerage_logo = "assets/images/brokers/" + res_brokerage_name[0].logo;
     this.series_date = await this.getData.GetDateList().toPromise();
     this.series_date = this.series_date.sort((a:any, b:any) => {
@@ -108,7 +116,7 @@ export class BrokerageProfit implements OnInit {
       }
     });
     this.years = this.series_date.reduce((acc:any, date:any) => {
-      let [year] = date.split('-');
+      const [year] = date.split('-');
       if (!acc[year]) {
         acc[year] = [];
       }
@@ -118,60 +126,75 @@ export class BrokerageProfit implements OnInit {
     if (this.series_date.length == 0){
       this.toast.error({ detail: "ERROR", summary: 'Your Selected Brokerage, Don\'t Have a Data', duration: 5000, position: 'topRight' });
     }
-    if (this.series_date.length == 1){
-      this.selected_date.push(this.series_date[0]);
-      this.flag_date = true;
-      await this.do(this.selected_date);
-    }
-    if (this.series_date.length >= 2){
+    if (this.series_date.length >= 1){
       this.selected_date.push(this.series_date[this.series_date.length-1]);
-      this.selected_date.push(this.series_date[this.series_date.length-2]);
       this.flag_date = true;
       await this.do(this.selected_date);
     }
+    this.onShowAllBrokers(this.selected_date);
   }
 
-  async do(selected_date:[]){
+  async do(selected_date:string){
     this.flag_data = false;
     this.series_data = [];
-    selected_date = selected_date.sort((a:any, b:any) => {
-      let [yearA, monthA] = a.split('-').map(Number);
-      let [yearB, monthB] = b.split('-').map(Number);
-      if (yearA === yearB) {
-        return monthA - monthB;
-      } else {
-        return yearA - yearB;
-      }
-    });
-    for (let date of selected_date){
-      this.series_data.push(await this.getData.GetProfit(date).toPromise());
-      this.flag_data = true;
+    this.list = [];
+    this.series_data.push(await this.getData.GetProfit(selected_date).toPromise());
+    this.list.push(this.brokerage_name);
+    for (const item of this.comparison_list)
+    {
+      this.series_data.push(await this.getData.GetProfitById(item.id,selected_date).toPromise());
+      this.list.push(item.name);
     }
+    this.flag_data = true;
   }
 
   onCheckboxChange(event: any, item: any) {
     if (event.target.checked) {
-      if (this.getBroker() != 'Khobregan'){
-        if (this.selected_date.length > 4){
-          this.toast.warning({ detail: "Warning", summary: 'Cant Select More Than 5 Date!', duration: 1500, position: 'topRight' });
-          let index = this.selected_date.indexOf(item);
-          this.selected_date.splice(index, 1);
-        }
+      if (this.selected_date.length > 0){
+        const index = this.selected_date.indexOf(item);
+        this.selected_date.splice(index, 1);
       }
       if (!this.selected_date.includes(item)) {
         this.selected_date.push(item);
       }
     } else {
-      let index = this.selected_date.indexOf(item);
+      const index = this.selected_date.indexOf(item);
       if (index > -1) {
         this.selected_date.splice(index, 1);
       }
     }
+    this.onShowAllBrokers(this.selected_date[0]);
+    this.comparison_list = [];
   }
 
-  getBroker(){
-    return this.auth.getUserBroker();
+  async onShowAllBrokers(selected_date:string){
+    this.flag_all_brokers = false;
+    this.all_brokers = await this.getData.GetBrokersOnDate(selected_date).toPromise();
+    const self_broker = this.all_brokers.find(t => t.name === this.brokerage_name);
+    this.all_brokers = this.all_brokers.filter(t => t !== self_broker);
+    this.flag_all_brokers = true;
+  }
+
+  addToComparison(broker: any) {
+    if (this.comparison_list.length < 3) {
+      const index = this.all_brokers.indexOf(broker);
+      if (index !== -1) {
+        this.all_brokers.splice(index, 1);
+        this.comparison_list.push(broker);
+      }
+    } else {
+      this.toast.warning({ detail: "هشدار", summary: 'نمیتوانید بیشتر از سه کارگزاری را در لیست مقایسه اضافه کنید!', duration: 1500, position: 'topRight' });
+    }
+  }
+
+  removeFromComparison(broker: any) {
+    const index = this.comparison_list.indexOf(broker);
+    if (index !== -1) {
+      this.comparison_list.splice(index, 1);
+      this.all_brokers.push(broker);
+    }
   }
 
   protected readonly Object = Object;
+  protected readonly findIndex = findIndex;
 }

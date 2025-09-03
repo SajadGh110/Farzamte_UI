@@ -20,5 +20,9 @@ export class Notices implements OnInit {
       this.toast.error({detail: "ERROR", summary: "Access Denied!", duration: 5000, position: 'topRight'});
       await this.router.navigate(['profile']);
     }
+    if (this.auth.getUserName() == 'nouri.mobin'){
+      this.toast.error({ detail: "ERROR", summary: "Access Denied!", duration: 5000, position: 'topRight' });
+      await this.router.navigate(['profile']);
+    }
   }
 }

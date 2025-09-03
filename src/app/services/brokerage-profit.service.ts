@@ -18,4 +18,12 @@ export class BrokerageProfitService {
   GetProfit(month:string): Observable<any>{
     return this.http.get(`${this.appConfigService.getApiUrl()}BrokerageProfit/GetProfit?month=${month}`,{headers:this.header});
   }
+
+  GetProfitById(brokerageID:number, month:string): Observable<any>{
+    return this.http.get(`${this.appConfigService.getApiUrl()}BrokerageProfit/GetProfitById?brokerageID=${brokerageID}&month=${month}`,{headers:this.header});
+  }
+
+  GetBrokersOnDate(month:string): Observable<any>{
+    return this.http.get(`${this.appConfigService.getApiUrl()}BrokerageProfit/GetBrokersOnDate?month=${month}`,{headers:this.header});
+  }
 }

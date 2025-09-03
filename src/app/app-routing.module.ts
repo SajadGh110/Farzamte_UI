@@ -31,6 +31,9 @@ import {FarzamteFeatures} from "./components/farzamte-features/farzamte-features
 import {IncStatsComponent} from "./components/panel/incoming-call/inc-stats/inc-stats.component";
 import {IncUnitComponent} from "./components/panel/incoming-call/inc-unit/inc-unit.component";
 import {BrokerageProfit} from "./components/panel/brokerages/brokerage-profit/brokerage-profit";
+import {
+  BrokerageProfitCmpComponent
+} from "./components/panel/brokerage-cmp/brokerage-profit-cmp/brokerage-profit-cmp.component";
 
 const routes: Routes = [
   {path:'', component: Index,title:'FarzamTE'},
@@ -47,6 +50,7 @@ const routes: Routes = [
   {path:'brokerages', component: Brokerages,title:'Brokerages' ,canActivate:[authGuard]},
   {path:'brokerages/profit', component: BrokerageProfit,title:'Brokerages | Profit' ,canActivate:[authGuard]},
   {path:'brokerages_cmp', component: BrokerageCmp,title:'Brokerages Comparison' ,canActivate:[authGuard]},
+  {path:'brokerages_cmp/profit', component: BrokerageProfitCmpComponent,title:'Brokerages CMP | Profit' ,canActivate:[authGuard]},
   {path:'profile',component: Profile,title:'Profile' , canActivate:[authGuard]},
   {path:'view_360', component: View360,title:'360 Degrees' ,canActivate:[authGuard]},
   {path:'happy_call',component: HappyCall,title:'Happy Call' , canActivate:[authGuard]},
