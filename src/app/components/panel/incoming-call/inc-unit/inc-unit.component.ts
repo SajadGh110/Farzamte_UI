@@ -14,6 +14,7 @@ import {NgxEchartsDirective} from "ngx-echarts";
 import {MatSelectModule} from "@angular/material/select";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatInputModule} from "@angular/material/input";
+import {MatButton} from "@angular/material/button";
 
 @Component({
   selector: 'app-inc-unit',
@@ -31,6 +32,7 @@ import {MatInputModule} from "@angular/material/input";
     MatSelectModule,
     MatDatepickerModule,
     MatInputModule,
+    MatButton
   ],
   providers: [DatePipe],
   templateUrl: './inc-unit.component.html',
@@ -39,11 +41,13 @@ import {MatInputModule} from "@angular/material/input";
 export class IncUnitComponent implements OnInit {
   dateform! : FormGroup;
   Units: string[] = [];
+  Types: string[] = ['تجمیع','مشتریان','سایرین'];
+  Branchs: string[] = [];
   selectedUnit: string = '';
-  Type: string[] = ['مشتریان', 'سایرین', 'تجمیع'];
-  selectedType: string = this.Type[2];
-  protected flag_unit:boolean = false;
+  selectedType: string = this.Types[0];
+  selectedBranch: string = '';
   protected flag_time:boolean = false;
+  protected flag_filter:boolean = false;
   protected flag_count:boolean=false;
   protected flag_Ph_Reasons_Totals:boolean=false;
   protected flag_Reason_Detail_Totals:boolean=false;
@@ -179,18 +183,11 @@ export class IncUnitComponent implements OnInit {
       StartDate: [''],
       EndDate: ['']
     });
-    try {
-      this.Units = await this.getData.get_AllTypes().toPromise();
-      this.flag_unit = true;
-      if (this.Units.length > 0)
-        this.selectedUnit = this.Units[0];
-    } catch (error: any) {
-      this.toast.error({ detail: "ERROR", summary: error.message, duration: 5000, position: 'topRight' });
+    if (this.getBroker() == 'Mobin' || this.getBroker() == 'Pishro'){
+      await this.SetTime(30);
     }
-    if (this.getBroker() == 'Mobin' || this.getBroker() == 'Pishro')
-      this.SetTime(30);
   }
-  async GetData(stDate:string, enDate:string, selectedUnit:string) {
+  async GetData(stDate:string, enDate:string, selectedUnit:string, selectedType:string, selectedBranch:string):Promise<any> {
     this.flag_count = false;
     this.flag_Ph_Reasons_Totals = false;
     this.flag_Reason_Detail_Totals = false;
@@ -199,7 +196,7 @@ export class IncUnitComponent implements OnInit {
     this.total_Reason_Detail_Totals = 0;
     this.series_Phonecall_Reasons_Totals = [];
     try {
-      let res1 = await this.getData.get_Total_Count_Day(stDate, enDate, selectedUnit).toPromise();
+      let res1 = await this.getData.get_CountDay(stDate, enDate, selectedUnit, selectedType, selectedBranch).toPromise();
       let total_calls_date: any[] = [];
       let total_calls_count: any[] = [];
       for (let i = 0; i < res1.length; i++) {
@@ -214,11 +211,11 @@ export class IncUnitComponent implements OnInit {
       (this.series_calls_count_day.series as any)[0].data = total_calls_count;
       this.flag_count = true;
 
-      let res_top_reasons_Totals = await this.getData.get_Top_Reasons_Totals(stDate, enDate, selectedUnit).toPromise();
+      let res_top_reasons_Totals = await this.getData.get_TopReasons(stDate, enDate, selectedUnit, selectedType, selectedBranch).toPromise();
       (this.series_Top_Reasons_bar_Totals.dataset as any).source = res_top_reasons_Totals;
       this.flag_Top_Reasons = true;
 
-      let res2_Totals = await this.getData.get_Phonecall_Reasons_Totals(stDate, enDate, selectedUnit).toPromise();
+      let res2_Totals = await this.getData.get_PhonecallReasons(stDate, enDate, selectedUnit, selectedType, selectedBranch).toPromise();
       for (let i = 0; i < res2_Totals.length; i++){
         this.series_Phonecall_Reasons_Totals.push({ name: res2_Totals[i].reason, value: res2_Totals[i].count });
         this.total_Phonecall_Reasons_Totals += res2_Totals[i].count;
@@ -227,7 +224,7 @@ export class IncUnitComponent implements OnInit {
       (this.series_Phonecall_Reasons_tmp_Totals.series as any)[0].data = this.series_Phonecall_Reasons_Totals;
       this.flag_Ph_Reasons_Totals = true;
 
-      let res3_Totals = await this.getData.get_Reason_Detail_Totals(this.StartDate, this.EndDate, this.top_reason_Totals, selectedUnit).toPromise();
+      let res3_Totals = await this.getData.get_ReasonDetail(this.StartDate, this.EndDate, this.top_reason_Totals, selectedUnit, selectedType, selectedBranch).toPromise();
       let series_lbl_Totals: any[] = [];
       let series_count_Totals: any[] = [];
       for (let i = 0; i < res3_Totals.length; i++){
@@ -248,7 +245,7 @@ export class IncUnitComponent implements OnInit {
     if (event.name){
       this.flag_Reason_Detail_Totals = false;
       this.total_Reason_Detail_Totals = 0;
-      let res = await this.getData.get_Reason_Detail_Totals(this.StartDate, this.EndDate, event.name, this.selectedUnit).toPromise();
+      let res = await this.getData.get_ReasonDetail(this.StartDate, this.EndDate, event.name, this.selectedUnit, this.selectedType, this.selectedBranch).toPromise();
       let series_lbl: any[] = [];
       let series_count: any[] = [];
       for (let i = 0; i < res.length; i++){
@@ -265,7 +262,7 @@ export class IncUnitComponent implements OnInit {
 
   async Popup_List_Totals(event:any){
     this.flag_loading = true;
-    this.series_Popup_List = await this.getData.get_description_Totals(this.StartDate, this.EndDate, event.name, this.selectedUnit).toPromise();
+    this.series_Popup_List = await this.getData.get_Description(this.StartDate, this.EndDate, event.name, this.selectedUnit, this.selectedType, this.selectedBranch).toPromise();
     this.flag_loading = false;
     if (this.series_Popup_List.length > 0){
       this.flag_popup = true;
@@ -283,18 +280,35 @@ export class IncUnitComponent implements OnInit {
     this.dateform.controls['StartDate'].setValue(this.StartDate);
     this.dateform.controls['EndDate'].setValue(this.EndDate);
     this.flag_time = true;
-    await this.GetData(this.StartDate, this.EndDate, this.selectedUnit);
+    await this.do_fillter();
+    await this.GetData(this.StartDate, this.EndDate, this.selectedUnit, this.selectedType, this.selectedBranch);
   }
 
   async SetTime(days:number){
-    let res_date = await this.getData.get_LastDate().toPromise();
-    this.EndDate = res_date.endDate;
+    let res_endDate= await this.getData.get_LastDate().toPromise();
+    this.EndDate = res_endDate.endDate;
     this.StartDate = format(subDays(this.EndDate, days), 'yyyy-MM-dd');
     this.selected_days = this.TimeService.calc_Diff_Date(this.StartDate, this.EndDate);
     this.dateform.controls['StartDate'].setValue(this.StartDate);
     this.dateform.controls['EndDate'].setValue(this.EndDate);
     this.flag_time = true;
-    await this.GetData(this.StartDate,this.EndDate,this.selectedUnit);
+    await this.do_fillter();
+    await this.GetData(this.StartDate,this.EndDate,this.selectedUnit, this.selectedType, this.selectedBranch);
+  }
+
+  async do_fillter(){
+    this.Units = [];
+    this.Branchs = [];
+    this.selectedUnit = '';
+    this.selectedBranch = '';
+    this.flag_filter = false;
+    this.Units = await this.getData.get_AllUnits(this.StartDate, this.EndDate).toPromise();
+    if (this.Units.length > 0)
+      this.selectedUnit = this.Units[0];
+    this.Branchs = await this.getData.get_AllBranchs(this.StartDate, this.EndDate).toPromise();
+    if (this.Branchs.length > 0)
+      this.selectedBranch = this.Branchs[0];
+    this.flag_filter = true;
   }
 
   getBroker(){
@@ -310,10 +324,13 @@ export class IncUnitComponent implements OnInit {
     }
   }
 
-  async onUnitChange() {
-    this.GetData(this.StartDate,this.EndDate,this.selectedUnit);
-  }
   async onTypeChange() {
-    this.toast.warning({ detail: "بزودی این امکان فراهم میشود ...", summary: "درحال حاضر فقط داده های تجمیع قابل نمایش است!", duration: 5000, position: 'topRight' });
+  }
+  async onUnitChange() {
+  }
+  async onBranchChange() {
+  }
+  async onSearchClicked() {
+    await this.GetData(this.StartDate,this.EndDate,this.selectedUnit, this.selectedType, this.selectedBranch);
   }
 }

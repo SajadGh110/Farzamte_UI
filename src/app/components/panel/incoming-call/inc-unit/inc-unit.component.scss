@@ -3,3 +3,14 @@
   color: #f4d03f;
   font-weight: bold;
 }
+.mdc-button {
+  max-width: 150px;
+  color: #fff!important;
+  background: #1c1b3a;
+  font:18px Nazanin, Bahnschrift, serif;
+  font-weight: bold;
+  padding-bottom: 4px;
+}
+.mdc-button:hover {
+  background: #373660;
+}
