@@ -36,25 +36,30 @@
       <section class="loading-spinner" *ngIf="!flag_filter">
         <mat-spinner></mat-spinner>
       </section>
-      <mat-form-field appearance="outline" class="input-type mt-2" *ngIf="flag_filter">
+      <form class="filter-form" [formGroup]="filterForm">
+      <mat-slide-toggle formControlName="flag_filter_type" (click)="check_filter()">فیلتر بر اساس نوع</mat-slide-toggle>
+      <mat-slide-toggle formControlName="flag_filter_unit" (click)="check_filter()">فیلتر بر اساس تیم</mat-slide-toggle>
+      <mat-slide-toggle formControlName="flag_filter_branch" (click)="check_filter()">فیلتر بر اساس شعبه</mat-slide-toggle>
+      </form>
+      <mat-form-field appearance="outline" class="input-type mt-1" *ngIf="flag_filter_type">
         <mat-label>نوع :</mat-label>
-        <mat-select [(ngModel)]="selectedType" (selectionChange)="onTypeChange()">
+        <mat-select [(ngModel)]="selectedType">
           <mat-option *ngFor="let t of Types" [value]="t">{{t}}</mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field appearance="outline" class="input-type mt-1" *ngIf="flag_filter">
+      <mat-form-field appearance="outline" class="input-type mt-1" *ngIf="flag_filter_unit">
         <mat-label>تیم پاسخگویی :</mat-label>
-        <mat-select [(ngModel)]="selectedUnit" (selectionChange)="onUnitChange()">
+        <mat-select [(ngModel)]="selectedUnit">
           <mat-option *ngFor="let t of Units" [value]="t">{{t}}</mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field appearance="outline" class="input-type mt-1" *ngIf="flag_filter">
+      <mat-form-field appearance="outline" class="input-type mt-1" *ngIf="flag_filter_branch">
         <mat-label>شعبه :</mat-label>
-        <mat-select [(ngModel)]="selectedBranch" (selectionChange)="onBranchChange()">
+        <mat-select [(ngModel)]="selectedBranch">
           <mat-option *ngFor="let t of Branchs" [value]="t">{{t}}</mat-option>
         </mat-select>
       </mat-form-field>
-      <button mat-button="outlined" (click)="onSearchClicked()" *ngIf="flag_filter">جست و جو</button>
+      <button mat-button="filled" (click)="onSearchClicked()" *ngIf="flag_filter_type || flag_filter_unit || flag_filter_branch">جست و جو</button>
     </section>
     <section class="row">
       <section class="detail">
