@@ -395,5 +395,11 @@ export class IncUnitComponent implements OnInit {
 
   async check_filter(){
     this.flag_toggle_filter = !(!this.flag_filter_type && !this.flag_filter_unit && !this.flag_filter_branch);
+    if(!this.flag_filter_type)
+      this.selectedType = this.Types[0];
+    if(!this.flag_filter_unit)
+      this.selectedUnit = this.Units[0];
+    if(!this.flag_filter_branch)
+      this.selectedBranch = this.Branchs[0];
   }
 }
