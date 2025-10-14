@@ -3,15 +3,31 @@
   color: #f4d03f;
   font-weight: bold;
 }
-.row .detail h2.customers,
-.row .row-fix .quick-access-2 ol li.customers {
-  background-color: #117864;
+.mdc-button {
+  max-width: 150px;
+  color: #fff!important;
+  background: #1c1b3a;
+  font:18px Nazanin, Bahnschrift, serif;
+  font-weight: bold;
+  padding-bottom: 4px;
+  margin-top: 10px;
+  margin-left: 10px;
 }
-.row .detail h2.others,
-.row .row-fix .quick-access-2 ol li.others {
-  background-color: #943126;
+.mdc-button:hover {
+  background: #373660;
 }
-.row .detail h2.Totals,
-.row .row-fix .quick-access-2 ol li.Totals {
-  background-color: #0dc3ff;
+.filter-form {
+  margin-bottom: 20px;
+}
+.filter-form mat-slide-toggle {
+  margin: 15px 0;
+  display: block;
+}
+.filter-form {
+  --mat-sys-body-medium-font: Nazanin, Bahnschrift, serif;
+  --mat-sys-body-medium-size: 18px;
+  --mat-sys-body-medium-weight: bold;
+}
+[dir=rtl] .mat-internal-form-field>label{
+  padding-left: 10px;
 }
