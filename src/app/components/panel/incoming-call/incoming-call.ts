@@ -11,14 +11,15 @@ import {EChartsOption} from "echarts";
 import {IncomingCallService} from "../../../services/incoming-call.service";
 import {DashboardContactComponent} from "../../Template/dashboard-contact/dashboard-contact.component";
 import {AuthService} from "../../../services/auth.service";
-import {Router} from "@angular/router";
 import {format, subDays} from "date-fns";
 import {MatSelectModule} from "@angular/material/select";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatInputModule} from "@angular/material/input";
 import {MatButton} from "@angular/material/button";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
-import {IncUnitService} from "../../../services/inc-unit.service";
+import {MatTableDataSource, MatTableModule} from '@angular/material/table';
+import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
+import {IncExpertModel} from "../../../models/inc-expert.model";
 
 @Component({
   selector: 'app-incoming-call',
@@ -37,7 +38,9 @@ import {IncUnitService} from "../../../services/inc-unit.service";
     MatDatepickerModule,
     MatInputModule,
     MatButton,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatPaginatorModule,
+    MatTableModule
   ],
   providers: [DatePipe],
   templateUrl: './incoming-call.html',
@@ -46,7 +49,7 @@ import {IncUnitService} from "../../../services/inc-unit.service";
 export class IncomingCall implements OnInit {
   dateform! : FormGroup;
   Units: string[] = [];
-  Types: string[] = ['تجمیع','مشتریان','سایرین','هیچکدام'];
+  Types: string[] = ['همه','تجمیع','مشتریان','سایرین'];
   Branchs: string[] = [];
   selectedUnit: string = '';
   selectedType: string = this.Types[0];
@@ -69,7 +72,12 @@ export class IncomingCall implements OnInit {
   protected flag_popup_data:boolean=false;
   protected flag_loading:boolean=false;
   protected flag_Top_Reasons:boolean=false;
-  public constructor(private toast:NgToastService,private auth:AuthService, private fb:FormBuilder, private getData:IncUnitService, private TimeService:TimeService, private datePipe: DatePipe) {}
+  protected flag_experts:boolean=false;
+  displayedColumns: string[] = ['readableFullName', 'unit', 'branch'];
+  exports_data:IncExpertModel[] = [];
+  dataSource_experts:MatTableDataSource<IncExpertModel> = new MatTableDataSource<IncExpertModel>();
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  public constructor(private toast:NgToastService,private auth:AuthService, private fb:FormBuilder, private getData:IncomingCallService, private TimeService:TimeService, private datePipe: DatePipe) {}
   StartDate:string = "";
   EndDate:string = "";
   st_to_en:string = "";
@@ -199,6 +207,7 @@ export class IncomingCall implements OnInit {
     this.flag_Ph_Reasons_Totals = false;
     this.flag_Reason_Detail_Totals = false;
     this.flag_Top_Reasons = false;
+    this.flag_experts = false;
     this.total_Phonecall_Reasons_Totals = 0;
     this.total_Reason_Detail_Totals = 0;
     this.series_Phonecall_Reasons_Totals = [];
@@ -243,6 +252,14 @@ export class IncomingCall implements OnInit {
       (this.series_Reason_Detail_bar_Totals.yAxis as any)[0].data = series_lbl_Totals;
       (this.series_Reason_Detail_bar_Totals.series as any)[0].data = series_count_Totals;
       this.flag_Reason_Detail_Totals = true;
+
+      let res_experts = await this.getData.get_FilteredExpertsDetails(this.StartDate, this.EndDate, 'همه واحد ها', 'همه', 'همه شعب').toPromise();
+      this.dataSource_experts.data = res_experts;
+      if (this.paginator) {
+        this.dataSource_experts.paginator = this.paginator;
+        this.paginator.firstPage();
+      }
+      this.flag_experts = true;
     } catch (error:any) {
       this.toast.error({detail: "ERROR", summary: error.message, duration: 5000, position: 'topRight'});
     }
@@ -252,6 +269,7 @@ export class IncomingCall implements OnInit {
     this.flag_Ph_Reasons_Totals = false;
     this.flag_Reason_Detail_Totals = false;
     this.flag_Top_Reasons = false;
+    this.flag_experts = false;
     this.total_Phonecall_Reasons_Totals = 0;
     this.total_Reason_Detail_Totals = 0;
     this.series_Phonecall_Reasons_Totals = [];
@@ -296,8 +314,14 @@ export class IncomingCall implements OnInit {
       (this.series_Reason_Detail_bar_Totals.yAxis as any)[0].data = series_lbl_Totals;
       (this.series_Reason_Detail_bar_Totals.series as any)[0].data = series_count_Totals;
       this.flag_Reason_Detail_Totals = true;
+
+      let res_experts = await this.getData.get_FilteredExpertsDetails(this.StartDate, this.EndDate, selectedUnit, selectedType, selectedBranch).toPromise();
+      this.dataSource_experts.data = res_experts;
+      if (this.paginator) this.paginator.firstPage();
+      this.dataSource_experts.paginator = this.paginator;
+      this.flag_experts = true;
     } catch (error:any){
-      this.toast.error({ detail: "ERROR", summary: error.message, duration: 5000, position: 'topRight' });
+      this.toast.warning({detail:"warning!",summary:"داده ای یافت نشد!",duration:5000, position:'topRight'})
     }
   }
 
@@ -371,7 +395,7 @@ export class IncomingCall implements OnInit {
     this.Units = await this.getData.get_AllUnits(this.StartDate, this.EndDate).toPromise();
     if (this.Units.length > 0)
       this.selectedUnit = this.Units[0];
-    this.Branchs = await this.getData.get_AllBranchs(this.StartDate, this.EndDate).toPromise();
+    this.Branchs = await this.getData.get_AllBranches(this.StartDate, this.EndDate).toPromise();
     if (this.Branchs.length > 0)
       this.selectedBranch = this.Branchs[0];
     this.flag_filter = true;
@@ -392,6 +416,9 @@ export class IncomingCall implements OnInit {
   async onSearchClicked() {
     if(!this.flag_toggle_filter)
       this.flag_toggle_filter = true;
+    if (this.flag_filter_branch)
+      if (this.selectedUnit != "Paziresh")
+        this.toast.error({detail:"Error!",summary:"شعب زیرمجموعه تیم پذیرش است!",duration:5000, position:'topRight'})
     await this.GetData_F(this.StartDate,this.EndDate,this.selectedUnit, this.selectedType, this.selectedBranch);
   }
 
@@ -404,4 +431,24 @@ export class IncomingCall implements OnInit {
     if(!this.flag_filter_branch)
       this.selectedBranch = this.Branchs[0];
   }
+
+  async set_paziresh(){
+    if(!this.flag_filter_branch)
+      this.selectedUnit = this.Units[0];
+    else
+      this.selectedUnit = "Paziresh";
+  }
+
+  async set_unit(){
+    if (this.flag_filter_branch)
+      if(this.selectedBranch != "Paziresh")
+        this.filterForm.controls['flag_filter_branch'].setValue(false);
+  }
+
+  ngAfterViewInit() {
+    this.dataSource_experts = new MatTableDataSource<IncExpertModel>(this.exports_data);
+    this.dataSource_experts.paginator = this.paginator;
+  }
+
+
 }
