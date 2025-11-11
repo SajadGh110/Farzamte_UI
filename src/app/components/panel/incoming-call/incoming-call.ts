@@ -441,8 +441,11 @@ export class IncomingCall implements OnInit {
 
   async set_unit(){
     if (this.flag_filter_branch)
-      if(this.selectedBranch != "Paziresh")
+      if(this.selectedBranch != "Paziresh"){
         this.filterForm.controls['flag_filter_branch'].setValue(false);
+        this.selectedBranch = this.Branchs[0];
+      }
+
   }
 
   ngAfterViewInit() {
