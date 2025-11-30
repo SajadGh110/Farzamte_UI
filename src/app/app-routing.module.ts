@@ -1,11 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { Login } from './components/login/login';
-import { Register } from './components/register/register';
-import { Index } from './components/index';
 import {authGuard, loginCheck} from "./guards/auth.guard";
-import {Support} from "./components/support/support";
-import {About} from "./components/about/about";
 import {Brokerages} from './components/panel/brokerages/brokerages';
 import {View360} from "./components/panel/view-360/view-360";
 import {Profile} from "./components/panel/profile/profile";
@@ -22,12 +18,6 @@ import {AiAnalysis} from "./components/panel/ai-analysis/ai-analysis";
 import {BrokerageCmp} from "./components/panel/brokerage-cmp/brokerage-cmp";
 import {NoticeSms} from "./components/panel/notices/notice-sms/notice-sms";
 import {NoticeCall} from "./components/panel/notices/notice-call/notice-call";
-import {Crm} from "./components/crm/crm";
-import {CrmApproaches} from "./components/crm-approaches/crm-approaches";
-import {WhatCrmIsNot} from "./components/what-crm-is-not/what-crm-is-not";
-import {WhyNeedCrm} from "./components/why-need-crm/why-need-crm";
-import {SomeServices} from "./components/some-services/some-services";
-import {FarzamteFeatures} from "./components/farzamte-features/farzamte-features";
 import {IncStatsComponent} from "./components/panel/incoming-call/inc-stats/inc-stats.component";
 import {BrokerageProfit} from "./components/panel/brokerages/brokerage-profit/brokerage-profit";
 import {
@@ -35,17 +25,7 @@ import {
 } from "./components/panel/brokerage-cmp/brokerage-profit-cmp/brokerage-profit-cmp.component";
 
 const routes: Routes = [
-  {path:'', component: Index,title:'FarzamTE'},
-  {path:'login', component: Login,title:'Login' , canActivate:[loginCheck]},
-  {path:'register', component: Register,title:'Register' ,canActivate:[authGuard]},
-  {path:'support', component: Support,title:'Support'},
-  {path:'about', component: About,title:'About'},
-  {path:'crm',component: Crm,title:'مدیریت ارتباط با مشتریان'},
-  {path:'crm_approaches',component: CrmApproaches,title:'رویکرد های CRM'},
-  {path:'what_crm_is_not',component: WhatCrmIsNot,title:'سی‌آر‌ام چه چیزی نیست ؟'},
-  {path:'why_need_crm',component: WhyNeedCrm,title:'چرا به crm نیاز داریم ؟'},
-  {path:'some_services',component: SomeServices,title:'برخی از خدمات'},
-  {path:'farzamte_features',component: FarzamteFeatures,title:'ویژگی های Farzamte'},
+  {path:'', component: Login,title:'Login' , canActivate:[loginCheck]},
   {path:'brokerages', component: Brokerages,title:'Brokerages' ,canActivate:[authGuard]},
   {path:'brokerages/profit', component: BrokerageProfit,title:'Brokerages | Profit' ,canActivate:[authGuard]},
   {path:'brokerages_cmp', component: BrokerageCmp,title:'Brokerages Comparison' ,canActivate:[authGuard]},

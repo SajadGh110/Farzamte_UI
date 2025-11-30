@@ -1,6 +1,5 @@
 import {Component, ElementRef, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {DashboardSidebarComponent} from "../../Template/dashboard-sidebar/dashboard-sidebar.component";
-import {Menu1Component} from "../../Template/menu1/menu1.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {DashboardContactComponent} from "../../Template/dashboard-contact/dashboard-contact.component";
 import {NgToastService} from "ng-angular-popup";
@@ -21,7 +20,6 @@ import {GenerateRadarChart} from "../../Template/radar-chart/GenerateRadarChart"
     templateUrl: './brokerages.html',
   imports: [
     DashboardSidebarComponent,
-    Menu1Component,
     ReactiveFormsModule,
     DashboardContactComponent,
     NgForOf,
