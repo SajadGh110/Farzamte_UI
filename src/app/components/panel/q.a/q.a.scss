@@ -1,8 +1,256 @@
-.unit-radio-group {
+.dashboard-wrapper {
   display: flex;
-  flex-direction: column;
-  margin: 15px 0;
-  align-items: flex-start;
-}
-.charts-container {
+  height: 100vh;
+
+  .dashboard-main {
+    flex: 1;
+    padding: 20px;
+    direction: rtl;
+
+    .row {
+      margin-bottom: 30px;
+    }
+
+    .detail {
+      h2 {
+        font-family: 'Nazanin', sans-serif;
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+        padding-right: 10px;
+      }
+    }
+
+    .card-box {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .top-fix {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      gap: 30px;
+
+      .filter-group {
+        display: flex;
+        flex-direction: column;
+        
+        h3 {
+          margin-top: 0;
+          margin-bottom: 10px;
+          font-size: 1rem;
+          color: #555;
+          font-family: 'Nazanin', sans-serif;
+          font-weight: bold;
+        }
+      }
+
+      .unit-radio-group, .date-radio-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        
+        ::ng-deep .mat-mdc-radio-button .mdc-label {
+            font-family: 'Nazanin', sans-serif;
+            font-size: 14px;
+        }
+      }
+
+      .action-buttons {
+        display: flex;
+        align-items: flex-end;
+        height: 100%;
+        padding-bottom: 10px;
+        
+        button {
+          font-family: 'Nazanin', sans-serif;
+          font-weight: bold;
+          padding: 5px 25px;
+        }
+      }
+    }
+
+    .loading-spinner {
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    // استایل چارت‌ها
+    .charts-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); // رسپانسیو: حداقل عرض 500 پیکسل
+      gap: 20px;
+
+      .chart-item {
+        background: #fff;
+        border-radius: 15px;
+        padding: 15px;
+        // سایه نرم برای چارت
+        box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        transition: transform 0.3s ease;
+
+        &:hover {
+          transform: translateY(-5px);
+        }
+
+        .chart-wrapper {
+          width: 100%;
+          
+          .echart-instance {
+            width: 100%;
+            height: 450px; // ارتفاع ثابت و مناسب برای بار چارت
+          }
+        }
+      }
+    }
+
+    // استایل جدول گزارشات
+    .table-container {
+      overflow-x: auto;
+      padding: 0;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+
+      table.styled-table {
+        width: 100%;
+        border-collapse: collapse;
+
+        // ============================================
+        // 1. گروه آبی (BLUE) - اطلاعات عمومی
+        // ============================================
+
+        // --- هدرهای آبی (th) ---
+        th.mat-column-number,
+        th.mat-column-agent,
+        th.mat-column-portType,
+        th.mat-column-totalCalls,
+        th.mat-column-criticalErrors,
+        th.mat-column-averageScore {
+          background-color: #3f51b5; // آبی پررنگ
+          color: white;
+          font-family: 'Bahnschrift', sans-serif;
+          font-size: 14px;
+          padding: 15px;
+          text-align: center;
+          border-bottom: 1px solid #303f9f;
+          white-space: nowrap;
+        }
+
+        // --- سلول‌های آبی (td) ---
+        td.mat-column-number,
+        td.mat-column-agent,
+        td.mat-column-portType,
+        td.mat-column-totalCalls,
+        td.mat-column-criticalErrors,
+        td.mat-column-averageScore {
+          background-color: rgba(63, 81, 181, 0.05); // آبی خیلی ملایم
+          color: #2c3e50;
+          font-family: 'Bahnschrift', sans-serif;
+          font-size: 13px;
+          padding: 10px;
+          text-align: center;
+          border-bottom: 1px solid rgba(63, 81, 181, 0.1);
+        }
+
+        // ============================================
+        // 2. گروه قرمز (RED) - شاخص‌های i1 تا i6
+        // ============================================
+
+        // --- هدرهای قرمز (th) ---
+        th.mat-column-i1,
+        th.mat-column-i2,
+        th.mat-column-i3,
+        th.mat-column-i4,
+        th.mat-column-i5,
+        th.mat-column-i6 {
+          background-color: #e74c3c; // قرمز پررنگ
+          color: white;
+          font-family: 'Bahnschrift', sans-serif;
+          font-size: 14px;
+          padding: 15px;
+          text-align: center;
+          border-bottom: 1px solid #c0392b;
+        }
+
+        // --- سلول‌های قرمز (td) ---
+        td.mat-column-i1,
+        td.mat-column-i2,
+        td.mat-column-i3,
+        td.mat-column-i4,
+        td.mat-column-i5,
+        td.mat-column-i6 {
+          background-color: rgba(231, 76, 60, 0.08); // قرمز خیلی ملایم
+          color: #c0392b;
+          font-weight: bold;
+          font-family: 'Bahnschrift', sans-serif;
+          font-size: 13px;
+          padding: 10px;
+          text-align: center;
+          border-bottom: 1px solid rgba(231, 76, 60, 0.2);
+        }
+
+        // ============================================
+        // 3. گروه سبز (GREEN) - شاخص‌های i7 و i8
+        // ============================================
+
+        // --- هدرهای سبز (th) ---
+        th.mat-column-i7,
+        th.mat-column-i8 {
+          background-color: #27ae60; // سبز پررنگ
+          color: white;
+          font-family: 'Bahnschrift', sans-serif;
+          font-size: 14px;
+          padding: 15px;
+          text-align: center;
+          border-bottom: 1px solid #1e8449;
+        }
+
+        // --- سلول‌های سبز (td) ---
+        td.mat-column-i7,
+        td.mat-column-i8 {
+          background-color: rgba(39, 174, 96, 0.08); // سبز خیلی ملایم
+          color: #1e8449;
+          font-weight: bold;
+          font-family: 'Bahnschrift', sans-serif;
+          font-size: 13px;
+          padding: 10px;
+          text-align: center;
+          border-bottom: 1px solid rgba(39, 174, 96, 0.2);
+        }
+
+        // ============================================
+        // تنظیمات جزئی و خاص
+        // ============================================
+
+        // چپ‌چین کردن نام ایجنت
+        td.mat-column-agent {
+          text-align: left;
+          padding-left: 20px;
+          font-weight: bold;
+          color: #1a237e;
+        }
+
+        // رنگ‌بندی داینامیک نمره (داخل تگ span اعمال می‌شود)
+        td.mat-column-averageScore {
+          font-weight: bold;
+          .high-score { color: #27ae60; }
+          .low-score { color: #c0392b; }
+        }
+
+        // هاور افکت (برای کل ردیف)
+        tr.mat-row:hover {
+          td.mat-cell {
+            filter: brightness(0.95); // کمی تیره‌تر شدن هنگام هاور
+            transition: filter 0.2s ease;
+          }
+        }
+      }
+    }
+  }
 }

@@ -1,15 +1,17 @@
 <section class="dashboard-wrapper">
   <app-dashboard-sidebar></app-dashboard-sidebar>
   <section class="dashboard-main">
+    
     <section class="row">
       <section class="detail">
         <h2>جست و جو</h2>
       </section>
       <section class="top-fix">
         <section class="loading-spinner" *ngIf="!flag_acu">
-          <mat-spinner></mat-spinner>
+          <mat-spinner diameter="40"></mat-spinner>
         </section>
-        <section class="all-date" *ngIf="flag_acu">
+        
+        <section class="filter-group" *ngIf="flag_acu">
           <h3>تیم های قابل مشاهده</h3>
           <mat-radio-group
             aria-labelledby="unit-radio-group-label"
@@ -20,38 +22,43 @@
             }
           </mat-radio-group>
         </section>
+
         <section class="loading-spinner" *ngIf="!flag_avm">
-          <mat-spinner></mat-spinner>
+          <mat-spinner diameter="40"></mat-spinner>
         </section>
-        <section class="all-brokerage" *ngIf="flag_avm">
-          <section class="brokers-list">
+
+        <section class="filter-group" *ngIf="flag_avm">
             <h3>انتخاب تاریخ</h3>
-            <mat-radio-group aria-label="Select an option" [(ngModel)]="selected_date_type">
+            <mat-radio-group class="date-radio-group" [(ngModel)]="selected_date_type">
               <mat-radio-button [value]="0">ماه اخیر</mat-radio-button>
               <mat-radio-button [value]="1">سه ماهه اخیر</mat-radio-button>
               <mat-radio-button [value]="2">شش ماهه اخیر</mat-radio-button>
               <mat-radio-button [value]="3">از ابتدای 2025 تا اکنون</mat-radio-button>
             </mat-radio-group>
-          </section>
         </section>
-        <button mat-button="outlined" (click)="search()" *ngIf="flag_avm">جست و جو</button>
+        
+        <div class="action-buttons" *ngIf="flag_avm">
+           <button mat-raised-button color="primary" (click)="search()">جست و جو</button>
+        </div>
       </section>
     </section>
+
     <section class="row">
       <section class="detail">
-        <h2>گزارش عملکرد کارشناسان</h2>
+        <h2>گزارش عملکرد کارشناسان (نمودار)</h2>
       </section>
       <section class="loading-spinner" *ngIf="!flag_simple_data">
         <mat-spinner></mat-spinner>
       </section>
       <section class="charts-container" *ngIf="flag_simple_data">
-        <section *ngFor="let portType of portTypesWithCharts" class="chart-item">
+        <section *ngFor="let portType of portTypesWithCharts" class="chart-item card-box">
           <section class="chart-wrapper">
-            <section echarts [options]="getRadarChart(portType)" [merge]="getRadarChart(portType)" class="radar-chart"></section>
+            <section echarts [options]="getChartOption(portType)" class="echart-instance"></section>
           </section>
         </section>
       </section>
     </section>
+
     <section class="row">
       <section class="detail">
         <h2>گزارش جدول کارشناسان</h2>
@@ -59,66 +66,81 @@
       <section class="loading-spinner" *ngIf="!flag_detailed_data">
         <mat-spinner></mat-spinner>
       </section>
-      <table mat-table [dataSource]="dataSource_qa" class="mat-elevation-z8" dir="ltr" *ngIf="flag_detailed_data">
-        <ng-container matColumnDef="number">
-          <th mat-header-cell *matHeaderCellDef> No. </th>
-          <td mat-cell *matCellDef="let element; let i = index"> {{i + 1}} </td>
-        </ng-container>
-        <ng-container matColumnDef="agent">
-          <th mat-header-cell *matHeaderCellDef> Agent </th>
-          <td mat-cell *matCellDef="let element"> {{element.agent}} </td>
-        </ng-container>
-        <ng-container matColumnDef="portType">
-          <th mat-header-cell *matHeaderCellDef> Port Type </th>
-          <td mat-cell *matCellDef="let element"> {{element.portType}} </td>
-        </ng-container>
-        <ng-container matColumnDef="totalCalls">
-          <th mat-header-cell *matHeaderCellDef> Total Calls </th>
-          <td mat-cell *matCellDef="let element"> {{element.totalCalls}} </td>
-        </ng-container>
-        <ng-container matColumnDef="criticalErrors">
-          <th mat-header-cell *matHeaderCellDef> Critical Errors </th>
-          <td mat-cell *matCellDef="let element"> {{element.criticalErrors}} </td>
-        </ng-container>
-        <ng-container matColumnDef="averageScore">
-          <th mat-header-cell *matHeaderCellDef> Average Score </th>
-          <td mat-cell *matCellDef="let element"> {{element.averageScore}}% </td>
-        </ng-container>
-        <ng-container matColumnDef="i1">
-          <th mat-header-cell *matHeaderCellDef> i1 </th>
-          <td mat-cell *matCellDef="let element"> {{element.scores.i1}} </td>
-        </ng-container>
-        <ng-container matColumnDef="i2">
-          <th mat-header-cell *matHeaderCellDef> i2 </th>
-          <td mat-cell *matCellDef="let element"> {{element.scores.i2}} </td>
-        </ng-container>
-        <ng-container matColumnDef="i3">
-          <th mat-header-cell *matHeaderCellDef> i3 </th>
-          <td mat-cell *matCellDef="let element"> {{element.scores.i3}} </td>
-        </ng-container>
-        <ng-container matColumnDef="i4">
-          <th mat-header-cell *matHeaderCellDef> i4 </th>
-          <td mat-cell *matCellDef="let element"> {{element.scores.i4}} </td>
-        </ng-container>
-        <ng-container matColumnDef="i5">
-          <th mat-header-cell *matHeaderCellDef> i5 </th>
-          <td mat-cell *matCellDef="let element"> {{element.scores.i5}} </td>
-        </ng-container>
-        <ng-container matColumnDef="i6">
-          <th mat-header-cell *matHeaderCellDef> i6 </th>
-          <td mat-cell *matCellDef="let element"> {{element.scores.i6}} </td>
-        </ng-container>
-        <ng-container matColumnDef="i7">
-          <th mat-header-cell *matHeaderCellDef> i7 </th>
-          <td mat-cell *matCellDef="let element"> {{element.scores.i7}} </td>
-        </ng-container>
-        <ng-container matColumnDef="i8">
-          <th mat-header-cell *matHeaderCellDef> i8 </th>
-          <td mat-cell *matCellDef="let element"> {{element.scores.i8}} </td>
-        </ng-container>
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table>
+      
+      <section class="table-container card-box" *ngIf="flag_detailed_data">
+        <table mat-table [dataSource]="dataSource_qa" class="mat-elevation-z8 styled-table" dir="ltr">
+            
+            <ng-container matColumnDef="number">
+              <th mat-header-cell *matHeaderCellDef> No. </th>
+              <td mat-cell *matCellDef="let element; let i = index"> {{i + 1}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="agent">
+              <th mat-header-cell *matHeaderCellDef> Agent </th>
+              <td mat-cell *matCellDef="let element" class="agent-name"> {{element.agent}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="portType">
+              <th mat-header-cell *matHeaderCellDef> Port Type </th>
+              <td mat-cell *matCellDef="let element"> {{element.portType}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="totalCalls">
+              <th mat-header-cell *matHeaderCellDef> Total Calls </th>
+              <td mat-cell *matCellDef="let element"> {{element.totalCalls}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="criticalErrors">
+              <th mat-header-cell *matHeaderCellDef> Critical Errors </th>
+              <td mat-cell *matCellDef="let element" class="error-cell"> {{element.criticalErrors}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="averageScore">
+              <th mat-header-cell *matHeaderCellDef> Score </th>
+              <td mat-cell *matCellDef="let element" class="score-cell"> 
+                <span [class.high-score]="element.averageScore >= 80" [class.low-score]="element.averageScore < 50">
+                    {{element.averageScore}}%
+                </span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="i1">
+              <th mat-header-cell *matHeaderCellDef> i1 </th>
+              <td mat-cell *matCellDef="let element"> {{element.scores.i1}} </td>
+            </ng-container>
+             <ng-container matColumnDef="i2">
+              <th mat-header-cell *matHeaderCellDef> i2 </th>
+              <td mat-cell *matCellDef="let element"> {{element.scores.i2}} </td>
+            </ng-container>
+             <ng-container matColumnDef="i3">
+              <th mat-header-cell *matHeaderCellDef> i3 </th>
+              <td mat-cell *matCellDef="let element"> {{element.scores.i3}} </td>
+            </ng-container>
+             <ng-container matColumnDef="i4">
+              <th mat-header-cell *matHeaderCellDef> i4 </th>
+              <td mat-cell *matCellDef="let element"> {{element.scores.i4}} </td>
+            </ng-container>
+             <ng-container matColumnDef="i5">
+              <th mat-header-cell *matHeaderCellDef> i5 </th>
+              <td mat-cell *matCellDef="let element"> {{element.scores.i5}} </td>
+            </ng-container>
+             <ng-container matColumnDef="i6">
+              <th mat-header-cell *matHeaderCellDef> i6 </th>
+              <td mat-cell *matCellDef="let element"> {{element.scores.i6}} </td>
+            </ng-container>
+             <ng-container matColumnDef="i7">
+              <th mat-header-cell *matHeaderCellDef> i7 </th>
+              <td mat-cell *matCellDef="let element"> {{element.scores.i7}} </td>
+            </ng-container>
+             <ng-container matColumnDef="i8">
+              <th mat-header-cell *matHeaderCellDef> i8 </th>
+              <td mat-cell *matCellDef="let element"> {{element.scores.i8}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </section>
     </section>
   </section>
 </section>
