@@ -12,6 +12,7 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class Login implements OnInit {
   loginform!: FormGroup;
+  showForgotPasswordModal: boolean = false;
   
   constructor(
     private fb: FormBuilder, 
@@ -25,6 +26,14 @@ export class Login implements OnInit {
       username: ['', Validators.required],
       password: ['', Validators.required],
     });
+  }
+
+  openForgotPassword() {
+    this.showForgotPasswordModal = true;
+  }
+
+  closeForgotPassword() {
+    this.showForgotPasswordModal = false;
   }
 
   onLogin() {

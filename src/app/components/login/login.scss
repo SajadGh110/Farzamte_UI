@@ -63,8 +63,8 @@ $error-color: #ef4444;
 
 .login-card {
   position: absolute;
-  bottom: 60px;
-  right: 80px;
+  bottom: 10vh;
+  right: 7vw;
   z-index: 10;
   width: 400px;
   background: $glass-bg;
@@ -243,5 +243,98 @@ $error-color: #ef4444;
   
   .card-header h3 {
     font-size: 1.3rem;
+  }
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 23, 42, 0.8); // پس زمینه تاریک
+  backdrop-filter: blur(5px); // بلور کردن کل صفحه پشت مودال
+  z-index: 100; // بالاتر از همه چیز
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+  background: white;
+  width: 90%;
+  max-width: 350px;
+  padding: 30px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  animation: scaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: 'Vazirmatn', sans-serif;
+  
+  .modal-icon {
+    width: 60px;
+    height: 60px;
+    background: rgba($primary-color, 0.1);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 20px;
+    
+    svg {
+      width: 30px;
+      height: 30px;
+      color: $primary-color;
+    }
+  }
+
+  h4 {
+    margin: 0 0 10px;
+    color: $text-main;
+    font-size: 1.2rem;
+    font-weight: 700;
+  }
+
+  p {
+    color: $text-secondary;
+    margin-bottom: 25px;
+    line-height: 1.6;
+    font-size: 0.95rem;
+  }
+
+  .modal-close-btn {
+    width: 100%;
+    padding: 12px;
+    background: $primary-color;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-family: 'Vazirmatn', sans-serif;
+
+    &:hover {
+      background: $primary-hover;
+    }
+  }
+}
+
+// انیمیشن‌های مودال
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleUp {
+  from { 
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to { 
+    opacity: 1;
+    transform: scale(1);
   }
 }

@@ -40,7 +40,7 @@
       </div>
 
       <div class="form-actions">
-        <a class="forgot-pass">Forgot Password?</a>
+        <a class="forgot-pass" (click)="openForgotPassword()">Forgot Password?</a>
       </div>
 
       <button (click)="onLogin()" type="submit" class="submit-btn">
@@ -48,5 +48,19 @@
       </button>
 
     </form>
+  </div>
+
+  <div class="modal-backdrop" *ngIf="showForgotPasswordModal" (click)="closeForgotPassword()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
+      </div>
+      <h4>بازیابی رمز عبور</h4>
+      <p>لطفا جهت بازیابی رمز عبور با مدیریت سایت تماس بگیرید.</p>
+      <button class="modal-close-btn" (click)="closeForgotPassword()">متوجه شدم</button>
+    </div>
   </div>
 </section>
