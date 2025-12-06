@@ -16,7 +16,8 @@
           <mat-radio-group
             aria-labelledby="unit-radio-group-label"
             class="unit-radio-group"
-            [(ngModel)]="selected_unit">
+            [(ngModel)]="selected_unit"
+            (change)="get_dates(selected_unit)">
             @for (season of unit_list; track season) {
               <mat-radio-button class="unit-radio-button" [value]="season">{{season}}</mat-radio-button>
             }
@@ -28,117 +29,107 @@
         </section>
 
         <section class="filter-group" *ngIf="flag_avm">
-            <h3>انتخاب تاریخ</h3>
-            <mat-radio-group class="date-radio-group" [(ngModel)]="selected_date_type">
-              <mat-radio-button [value]="0">ماه اخیر</mat-radio-button>
-              <mat-radio-button [value]="1">سه ماهه اخیر</mat-radio-button>
-              <mat-radio-button [value]="2">شش ماهه اخیر</mat-radio-button>
-              <mat-radio-button [value]="3">از ابتدای 2025 تا اکنون</mat-radio-button>
-            </mat-radio-group>
+            <h3>انتخاب ماه (مقایسه)</h3>
+            <div class="checkbox-container">
+              <mat-checkbox *ngFor="let m of month_list" [(ngModel)]="m.selected" color="primary">
+                {{ m.value }}
+              </mat-checkbox>
+            </div>
         </section>
         
         <div class="action-buttons" *ngIf="flag_avm">
-           <button mat-raised-button color="primary" (click)="search()">جست و جو</button>
+           <button mat-raised-button color="primary" (click)="search()" [disabled]="flag_loading_data">
+             جست و جو
+           </button>
         </div>
       </section>
     </section>
 
-    <section class="row">
+    <section class="row" *ngIf="show_report || flag_loading_data">
       <section class="detail">
         <h2>گزارش عملکرد کارشناسان (نمودار)</h2>
       </section>
-      <section class="loading-spinner" *ngIf="!flag_simple_data">
+      
+      <section class="loading-spinner" *ngIf="flag_loading_data">
         <mat-spinner></mat-spinner>
       </section>
-      <section class="charts-container" *ngIf="flag_simple_data">
+      
+      <section class="charts-container" *ngIf="show_report && !flag_loading_data">
         <section *ngFor="let portType of portTypesWithCharts" class="chart-item card-box">
           <section class="chart-wrapper">
-            <section echarts [options]="getChartOption(portType)" class="echart-instance"></section>
+            <section echarts 
+                     [options]="barCharts[portType]" 
+                     [style.height]="chartHeights[portType]"
+                     class="echart-instance">
+            </section>
           </section>
         </section>
       </section>
     </section>
 
-    <section class="row">
+    <section class="row" *ngIf="show_report || flag_loading_data">
       <section class="detail">
         <h2>گزارش جدول کارشناسان</h2>
       </section>
-      <section class="loading-spinner" *ngIf="!flag_detailed_data">
+      
+      <section class="loading-spinner" *ngIf="flag_loading_data">
         <mat-spinner></mat-spinner>
       </section>
       
-      <section class="table-container card-box" *ngIf="flag_detailed_data">
-        <table mat-table [dataSource]="dataSource_qa" class="mat-elevation-z8 styled-table" dir="ltr">
-            
-            <ng-container matColumnDef="number">
-              <th mat-header-cell *matHeaderCellDef> No. </th>
-              <td mat-cell *matCellDef="let element; let i = index"> {{i + 1}} </td>
-            </ng-container>
+      <section class="table-container card-box" *ngIf="show_report && !flag_loading_data">
+        <table class="styled-table" dir="ltr">
+            <thead>
+                <tr>
+                    <th class="mat-column-number">No.</th>
+                    <th class="mat-column-agent">Agent</th>
+                    <th class="mat-column-month">Month</th>
+                    <th class="mat-column-portType">Port Type</th>
+                    <th class="mat-column-totalCalls">Total Calls</th>
+                    <th class="mat-column-faultyCalls">Faulty Calls</th>
+                    <th class="mat-column-criticalErrors">Critical Errors</th>
+                    <th class="mat-column-averageScore">Score</th>
+                    <th class="mat-column-i1">i1</th>
+                    <th class="mat-column-i2">i2</th>
+                    <th class="mat-column-i3">i3</th>
+                    <th class="mat-column-i4">i4</th>
+                    <th class="mat-column-i5">i5</th>
+                    <th class="mat-column-i6">i6</th>
+                    <th class="mat-column-i7">i7</th>
+                    <th class="mat-column-i8">i8</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let group of groupedDataSource; let i = index">
+                    <tr *ngFor="let record of group.records; let first = first" class="mat-row">
+                        
+                        <td *ngIf="first" [attr.rowspan]="group.records.length" class="mat-cell mat-column-number">{{ i + 1 }}</td>
+                        <td *ngIf="first" [attr.rowspan]="group.records.length" class="mat-cell mat-column-agent">{{ group.agent }}</td>
+                        
+                        <td class="mat-cell mat-column-month">{{ record.month }}</td>
+                        <td class="mat-cell mat-column-portType">{{ record.portType }}</td>
+                        <td class="mat-cell mat-column-totalCalls">{{ record.totalCalls }}</td>
+                        <td class="mat-cell mat-column-faultyCalls">{{ record.faultyCalls }}</td>
+                        <td class="mat-cell mat-column-criticalErrors">{{ record.criticalErrors }}</td>
+                        
+                        <td class="mat-cell mat-column-averageScore">
+                             <span [class.high-score]="record.averageScore >= 90" 
+                                   [class.low-score]="record.averageScore < 80"
+                                   [class.medium-score]="record.averageScore >= 80 && record.averageScore < 90">
+                                {{ record.averageScore }}%
+                            </span>
+                        </td>
 
-            <ng-container matColumnDef="agent">
-              <th mat-header-cell *matHeaderCellDef> Agent </th>
-              <td mat-cell *matCellDef="let element" class="agent-name"> {{element.agent}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="portType">
-              <th mat-header-cell *matHeaderCellDef> Port Type </th>
-              <td mat-cell *matCellDef="let element"> {{element.portType}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="totalCalls">
-              <th mat-header-cell *matHeaderCellDef> Total Calls </th>
-              <td mat-cell *matCellDef="let element"> {{element.totalCalls}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="criticalErrors">
-              <th mat-header-cell *matHeaderCellDef> Critical Errors </th>
-              <td mat-cell *matCellDef="let element" class="error-cell"> {{element.criticalErrors}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="averageScore">
-              <th mat-header-cell *matHeaderCellDef> Score </th>
-              <td mat-cell *matCellDef="let element" class="score-cell"> 
-                <span [class.high-score]="element.averageScore >= 80" [class.low-score]="element.averageScore < 50">
-                    {{element.averageScore}}%
-                </span>
-              </td>
-            </ng-container>
-
-            <ng-container matColumnDef="i1">
-              <th mat-header-cell *matHeaderCellDef> i1 </th>
-              <td mat-cell *matCellDef="let element"> {{element.scores.i1}} </td>
-            </ng-container>
-             <ng-container matColumnDef="i2">
-              <th mat-header-cell *matHeaderCellDef> i2 </th>
-              <td mat-cell *matCellDef="let element"> {{element.scores.i2}} </td>
-            </ng-container>
-             <ng-container matColumnDef="i3">
-              <th mat-header-cell *matHeaderCellDef> i3 </th>
-              <td mat-cell *matCellDef="let element"> {{element.scores.i3}} </td>
-            </ng-container>
-             <ng-container matColumnDef="i4">
-              <th mat-header-cell *matHeaderCellDef> i4 </th>
-              <td mat-cell *matCellDef="let element"> {{element.scores.i4}} </td>
-            </ng-container>
-             <ng-container matColumnDef="i5">
-              <th mat-header-cell *matHeaderCellDef> i5 </th>
-              <td mat-cell *matCellDef="let element"> {{element.scores.i5}} </td>
-            </ng-container>
-             <ng-container matColumnDef="i6">
-              <th mat-header-cell *matHeaderCellDef> i6 </th>
-              <td mat-cell *matCellDef="let element"> {{element.scores.i6}} </td>
-            </ng-container>
-             <ng-container matColumnDef="i7">
-              <th mat-header-cell *matHeaderCellDef> i7 </th>
-              <td mat-cell *matCellDef="let element"> {{element.scores.i7}} </td>
-            </ng-container>
-             <ng-container matColumnDef="i8">
-              <th mat-header-cell *matHeaderCellDef> i8 </th>
-              <td mat-cell *matCellDef="let element"> {{element.scores.i8}} </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        <td class="mat-cell mat-column-i1">{{ record.scores.i1 }}</td>
+                        <td class="mat-cell mat-column-i2">{{ record.scores.i2 }}</td>
+                        <td class="mat-cell mat-column-i3">{{ record.scores.i3 }}</td>
+                        <td class="mat-cell mat-column-i4">{{ record.scores.i4 }}</td>
+                        <td class="mat-cell mat-column-i5">{{ record.scores.i5 }}</td>
+                        <td class="mat-cell mat-column-i6">{{ record.scores.i6 }}</td>
+                        <td class="mat-cell mat-column-i7">{{ record.scores.i7 }}</td>
+                        <td class="mat-cell mat-column-i8">{{ record.scores.i8 }}</td>
+                    </tr>
+                </ng-container>
+            </tbody>
         </table>
       </section>
     </section>

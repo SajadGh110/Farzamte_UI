@@ -48,12 +48,24 @@
         }
       }
 
-      .unit-radio-group, .date-radio-group {
+      .unit-radio-group {
         display: flex;
         flex-direction: column;
         gap: 8px;
         
         ::ng-deep .mat-mdc-radio-button .mdc-label {
+            font-family: 'Nazanin', sans-serif;
+            font-size: 14px;
+        }
+      }
+
+      .checkbox-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        max-width: 600px;
+        
+        ::ng-deep .mat-mdc-checkbox .mdc-label {
             font-family: 'Nazanin', sans-serif;
             font-size: 14px;
         }
@@ -79,17 +91,15 @@
       padding: 20px;
     }
 
-    // استایل چارت‌ها
     .charts-container {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); // رسپانسیو: حداقل عرض 500 پیکسل
+      grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
       gap: 20px;
 
       .chart-item {
         background: #fff;
         border-radius: 15px;
         padding: 15px;
-        // سایه نرم برای چارت
         box-shadow: 0 5px 20px rgba(0,0,0,0.05);
         transition: transform 0.3s ease;
 
@@ -102,13 +112,11 @@
           
           .echart-instance {
             width: 100%;
-            height: 450px; // ارتفاع ثابت و مناسب برای بار چارت
           }
         }
       }
     }
 
-    // استایل جدول گزارشات
     .table-container {
       overflow-x: auto;
       padding: 0;
@@ -121,18 +129,19 @@
         width: 100%;
         border-collapse: collapse;
 
+        // تنظیم وسط‌چین عمودی برای سلول‌های ادغام شده
+        th, td {
+            vertical-align: middle;
+        }
+
         // ============================================
-        // 1. گروه آبی (BLUE) - اطلاعات عمومی
+        // 1. گروه آبی (BLUE)
         // ============================================
 
-        // --- هدرهای آبی (th) ---
-        th.mat-column-number,
-        th.mat-column-agent,
-        th.mat-column-portType,
-        th.mat-column-totalCalls,
-        th.mat-column-criticalErrors,
-        th.mat-column-averageScore {
-          background-color: #3f51b5; // آبی پررنگ
+        th.mat-column-number, th.mat-column-month, th.mat-column-agent,
+        th.mat-column-portType, th.mat-column-totalCalls, th.mat-column-faultyCalls, 
+        th.mat-column-criticalErrors, th.mat-column-averageScore {
+          background-color: #3f51b5;
           color: white;
           font-family: 'Bahnschrift', sans-serif;
           font-size: 14px;
@@ -142,14 +151,10 @@
           white-space: nowrap;
         }
 
-        // --- سلول‌های آبی (td) ---
-        td.mat-column-number,
-        td.mat-column-agent,
-        td.mat-column-portType,
-        td.mat-column-totalCalls,
-        td.mat-column-criticalErrors,
-        td.mat-column-averageScore {
-          background-color: rgba(63, 81, 181, 0.05); // آبی خیلی ملایم
+        td.mat-column-number, td.mat-column-month, td.mat-column-agent,
+        td.mat-column-portType, td.mat-column-totalCalls, td.mat-column-faultyCalls,
+        td.mat-column-criticalErrors, td.mat-column-averageScore {
+          background-color: rgba(63, 81, 181, 0.05);
           color: #2c3e50;
           font-family: 'Bahnschrift', sans-serif;
           font-size: 13px;
@@ -159,17 +164,12 @@
         }
 
         // ============================================
-        // 2. گروه قرمز (RED) - شاخص‌های i1 تا i6
+        // 2. گروه قرمز (RED)
         // ============================================
 
-        // --- هدرهای قرمز (th) ---
-        th.mat-column-i1,
-        th.mat-column-i2,
-        th.mat-column-i3,
-        th.mat-column-i4,
-        th.mat-column-i5,
-        th.mat-column-i6 {
-          background-color: #e74c3c; // قرمز پررنگ
+        th.mat-column-i1, th.mat-column-i2, th.mat-column-i3,
+        th.mat-column-i4, th.mat-column-i5, th.mat-column-i6 {
+          background-color: #e74c3c;
           color: white;
           font-family: 'Bahnschrift', sans-serif;
           font-size: 14px;
@@ -178,14 +178,9 @@
           border-bottom: 1px solid #c0392b;
         }
 
-        // --- سلول‌های قرمز (td) ---
-        td.mat-column-i1,
-        td.mat-column-i2,
-        td.mat-column-i3,
-        td.mat-column-i4,
-        td.mat-column-i5,
-        td.mat-column-i6 {
-          background-color: rgba(231, 76, 60, 0.08); // قرمز خیلی ملایم
+        td.mat-column-i1, td.mat-column-i2, td.mat-column-i3,
+        td.mat-column-i4, td.mat-column-i5, td.mat-column-i6 {
+          background-color: rgba(231, 76, 60, 0.08);
           color: #c0392b;
           font-weight: bold;
           font-family: 'Bahnschrift', sans-serif;
@@ -196,13 +191,11 @@
         }
 
         // ============================================
-        // 3. گروه سبز (GREEN) - شاخص‌های i7 و i8
+        // 3. گروه سبز (GREEN)
         // ============================================
 
-        // --- هدرهای سبز (th) ---
-        th.mat-column-i7,
-        th.mat-column-i8 {
-          background-color: #27ae60; // سبز پررنگ
+        th.mat-column-i7, th.mat-column-i8 {
+          background-color: #27ae60;
           color: white;
           font-family: 'Bahnschrift', sans-serif;
           font-size: 14px;
@@ -211,10 +204,8 @@
           border-bottom: 1px solid #1e8449;
         }
 
-        // --- سلول‌های سبز (td) ---
-        td.mat-column-i7,
-        td.mat-column-i8 {
-          background-color: rgba(39, 174, 96, 0.08); // سبز خیلی ملایم
+        td.mat-column-i7, td.mat-column-i8 {
+          background-color: rgba(39, 174, 96, 0.08);
           color: #1e8449;
           font-weight: bold;
           font-family: 'Bahnschrift', sans-serif;
@@ -225,10 +216,9 @@
         }
 
         // ============================================
-        // تنظیمات جزئی و خاص
+        // تنظیمات خاص ستون‌ها
         // ============================================
 
-        // چپ‌چین کردن نام ایجنت
         td.mat-column-agent {
           text-align: left;
           padding-left: 20px;
@@ -236,17 +226,26 @@
           color: #1a237e;
         }
 
-        // رنگ‌بندی داینامیک نمره (داخل تگ span اعمال می‌شود)
-        td.mat-column-averageScore {
-          font-weight: bold;
-          .high-score { color: #27ae60; }
-          .low-score { color: #c0392b; }
+        // استایل ستون‌های خطا (قرمز و بولد)
+        td.mat-column-faultyCalls, 
+        td.mat-column-criticalErrors {
+            font-weight: bold;
+            color: #d32f2f; // قرمز پررنگ برای خطاها
         }
 
-        // هاور افکت (برای کل ردیف)
-        tr.mat-row:hover {
-          td.mat-cell {
-            filter: brightness(0.95); // کمی تیره‌تر شدن هنگام هاور
+        // استایل ستون امتیاز
+        td.mat-column-averageScore {
+          font-weight: bold;
+          font-size: 14px;
+          
+          .high-score { color: #27ae60; } // سبز برای بالای 90
+          .low-score { color: #d32f2f; }  // قرمز برای زیر 80
+          .medium-score { color: #000; }  // مشکی برای 80 تا 90
+        }
+
+        tr:hover {
+          td {
+            filter: brightness(0.95);
             transition: filter 0.2s ease;
           }
         }

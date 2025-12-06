@@ -2,6 +2,7 @@ export interface QAModel {
   agent: string;
   averageScore: number;
   criticalErrors: number;
+  faultyCalls: number;
   portType: string;
   scores: {
     i1: number;

@@ -19,19 +19,15 @@ export class QaService {
     return this.http.get(`${this.appConfigService.getApiUrl()}QA/GetAvailableMonths?unit=${unit}`,{headers:this.header});
   }
 
-  GetPortTypes(unit:string, StartDate:string, EndDate:string):Observable<any>{
-    return this.http.get(`${this.appConfigService.getApiUrl()}QA/GetPortTypes?unit=${unit}&startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
+  GetPortTypes(unit: string, Date_Monthly: string): Observable<any> {
+    return this.http.get(`${this.appConfigService.getApiUrl()}QA/GetPortTypes?unit=${unit}&Date_Monthly=${Date_Monthly}`, { headers: this.header });
   }
 
-  GetAgentScoresSimple(StartDate:string, EndDate:string, unit:string, portType:string):Observable<any>{
-    return this.http.get(`${this.appConfigService.getApiUrl()}QA/GetAgentScoresSimple?startDate=${StartDate}&endDate=${EndDate}&unit=${unit}&portType=${portType}`,{headers:this.header});
+  GetAgentScoresSimple(Date_Monthly: string, unit: string, portType: string): Observable<any> {
+    return this.http.get(`${this.appConfigService.getApiUrl()}QA/GetAgentScoresSimple?Date_Monthly=${Date_Monthly}&unit=${unit}&portType=${portType}`, { headers: this.header });
   }
 
-  GetAgentScoresDetailed(StartDate:string, EndDate:string, unit:string, portType:string):Observable<any>{
-    return this.http.get(`${this.appConfigService.getApiUrl()}QA/GetAgentScoresDetailed?startDate=${StartDate}&endDate=${EndDate}&unit=${unit}&portType=${portType}`,{headers:this.header});
-  }
-
-  GetAgentDetail(StartDate:string, EndDate:string, unit:string, agent:string):Observable<any>{
-    return this.http.get(`${this.appConfigService.getApiUrl()}QA/GetAgentDetail?startDate=${StartDate}&endDate=${EndDate}&unit=${unit}&agent=${agent}`,{headers:this.header});
+  GetAgentScoresDetailed(Date_Monthly: string, unit: string, portType: string): Observable<any> {
+    return this.http.get(`${this.appConfigService.getApiUrl()}QA/GetAgentScoresDetailed?Date_Monthly=${Date_Monthly}&unit=${unit}&portType=${portType}`, { headers: this.header });
   }
 }
