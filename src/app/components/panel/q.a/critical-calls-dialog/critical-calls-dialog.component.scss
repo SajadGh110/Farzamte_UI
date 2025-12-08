@@ -1,0 +1,113 @@
+.dialog-container {
+  font-family: 'Nazanin', sans-serif;
+  padding: 0;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 0; // خود متریال گردی دارد
+  overflow: hidden;
+}
+
+.dialog-header {
+  background: linear-gradient(135deg, #1a237e 0%, #3f51b5 100%);
+  color: white;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+
+  .dialog-title {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+
+  .close-btn {
+    color: white;
+    transform: scale(0.9);
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    &:hover { background: rgba(255, 255, 255, 0.2); }
+  }
+}
+
+.dialog-content {
+  padding: 20px;
+  overflow-y: auto;
+  flex: 1;
+
+  .agent-info {
+    background-color: #f5f5f5;
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border-right: 4px solid #1a237e;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    
+    .label { font-weight: bold; color: #555; font-size: 14px; }
+    .value { color: #1a237e; font-weight: bold; font-family: 'Bahnschrift'; font-size: 15px; }
+    .separator { color: #ccc; margin: 0 10px; }
+  }
+}
+
+.table-wrapper {
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #e0e0e0;
+}
+
+.details-table {
+  width: 100%;
+  border-collapse: collapse;
+  
+  th {
+    background-color: #3f51b5;
+    color: white;
+    padding: 12px;
+    font-size: 13px;
+    font-weight: normal;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  td {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    font-size: 13px;
+    color: #333;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  tr:nth-child(even) { background-color: #fafafa; }
+  tr:hover { background-color: #f0f4ff; }
+
+  .name-cell { font-weight: bold; color: #000; }
+  .error-items { color: #d32f2f; font-weight: bold; font-family: 'Bahnschrift'; }
+  .desc-cell { 
+      text-align: right; 
+      max-width: 250px; 
+      min-width: 150px;
+      white-space: normal; 
+      line-height: 1.6; 
+  }
+  .date-cell { direction: ltr; font-family: 'Bahnschrift'; color: #555; white-space: nowrap; }
+  .no-data { padding: 20px; color: #999; font-style: italic; }
+}
+
+.dialog-actions {
+  padding: 15px 20px;
+  border-top: 1px solid #eee;
+  text-align: left;
+  background-color: #fff;
+  
+  button {
+    font-family: 'Nazanin', sans-serif;
+    font-weight: bold;
+    padding: 5px 25px;
+  }
+}

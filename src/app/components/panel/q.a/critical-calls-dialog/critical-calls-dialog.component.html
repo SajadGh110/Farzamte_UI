@@ -1,0 +1,50 @@
+<div class="dialog-container" dir="rtl">
+  <div class="dialog-header">
+    <h2 class="dialog-title">
+      جزئیات تماس‌های بحرانی
+    </h2>
+    <button mat-icon-button (click)="close()" class="close-btn">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="dialog-content">
+    <div class="agent-info">
+      <span class="label">کارشناس:</span> <span class="value">{{ data.agent }}</span>
+      <span class="separator">|</span>
+      <span class="label">تاریخ گزارش:</span> <span class="value">{{ data.month }}</span>
+    </div>
+
+    <div class="table-wrapper">
+      <table class="details-table">
+        <thead>
+          <tr>
+            <th>ردیف</th>
+            <th>نام مشتری</th>
+            <th>موارد خطا</th>
+            <th>توضیحات</th>
+            <th>توضیحات کارشناس</th>
+            <th>تاریخ تماس</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data.details; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td class="name-cell">{{ item.name || '---' }}</td>
+            <td class="error-items">{{ item.errorItems }}</td>
+            <td class="desc-cell">{{ item.description || '---' }}</td>
+            <td class="desc-cell">{{ item.expertDescription || '---' }}</td>
+            <td class="date-cell">{{ item.createdOn | date:'yyyy/MM/dd HH:mm' }}</td>
+          </tr>
+          <tr *ngIf="data.details.length === 0">
+            <td colspan="6" class="no-data">داده‌ای یافت نشد</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="dialog-actions">
+    <button mat-raised-button color="primary" (click)="close()">بستن</button>
+  </div>
+</div>
