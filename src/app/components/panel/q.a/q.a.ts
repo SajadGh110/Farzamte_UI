@@ -13,6 +13,9 @@ import { EChartsOption } from "echarts";
 import { NgxEchartsDirective } from "ngx-echarts";
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatDialog } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { CriticalCallsDialogComponent } from './critical-calls-dialog/critical-calls-dialog.component';
 
 interface GroupedAgentData {
   agent: string;
@@ -31,7 +34,8 @@ interface GroupedAgentData {
     MatTableModule,
     NgxEchartsDirective,
     MatCheckboxModule,
-    MatRadioModule
+    MatRadioModule,
+    MatIconModule
   ],
   templateUrl: './q.a.html',
   styleUrl: './q.a.scss'
@@ -53,7 +57,7 @@ export class QA implements OnInit {
   // متغیر جدید برای ذخیره ارتفاع داینامیک هر چارت
   chartHeights: { [portType: string]: string } = {};
 
-  public constructor(private toast: NgToastService, private auth: AuthService, private router: Router, private getData: QaService) {}
+  public constructor(private toast: NgToastService, private auth: AuthService, private router: Router, private getData: QaService, private dialog: MatDialog) {}
 
   async ngOnInit() {
     if (this.auth.getUserRole() !== "Owner" && this.auth.getUserRole() !== "Admin" && this.auth.getUserName() !== "momeni.mobin") {
@@ -244,5 +248,31 @@ export class QA implements OnInit {
 
   get portTypesWithCharts(): string[] {
     return Object.keys(this.barCharts);
+  }
+
+  async openCriticalDetails(record: any) {
+    if (!record.faultyCalls || record.faultyCalls === 0) {
+        this.toast.info({ detail: "اطلاعات", summary: "هیچ تماس بحرانی برای نمایش وجود ندارد", duration: 3000 });
+        return;
+    }    
+    try {
+      const details = await this.getData.GetCriticalCallDetails(record.month, this.selected_unit, record.agent).toPromise();
+
+      this.dialog.open(CriticalCallsDialogComponent, {
+        width: '900px',
+        maxWidth: '95vw',
+        direction: 'rtl',
+        panelClass: 'custom-dialog-container',
+        data: {
+          agent: record.agent,
+          month: record.month,
+          details: details
+        }
+      });
+
+    } catch (e) {
+      console.error(e);
+      this.toast.error({ detail: "خطا", summary: "در دریافت جزئیات مشکلی پیش آمد" });
+    }
   }
 }

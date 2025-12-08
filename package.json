@@ -28,6 +28,7 @@
     "exceljs": "^4.4.0",
     "file-saver": "^2.0.5",
     "jwt-decode": "^4.0.0",
+    "material-design-icons": "^3.0.1",
     "ng-angular-popup": "^0.4.7",
     "ngx-echarts": "^18.0.0",
     "rxjs": "~7.8.0",

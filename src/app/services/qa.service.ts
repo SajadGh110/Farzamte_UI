@@ -30,4 +30,8 @@ export class QaService {
   GetAgentScoresDetailed(Date_Monthly: string, unit: string, portType: string): Observable<any> {
     return this.http.get(`${this.appConfigService.getApiUrl()}QA/GetAgentScoresDetailed?Date_Monthly=${Date_Monthly}&unit=${unit}&portType=${portType}`, { headers: this.header });
   }
+
+  GetCriticalCallDetails(Date_Monthly: string, unit: string, agent: string): Observable<any> {
+    return this.http.get(`${this.appConfigService.getApiUrl()}QA/GetCriticalCallDetails?Date_Monthly=${Date_Monthly}&unit=${unit}&agent=${agent}`, { headers: this.header });
+  }
 }
