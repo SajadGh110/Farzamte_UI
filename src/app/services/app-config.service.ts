@@ -4,8 +4,8 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class AppConfigService {
-  private SiteUrl: string = "https://farzamte.com/";
-  private ApiUrl: string = "https://api.farzamte.com/";
+  private SiteUrl: string = "192.168.38.4";
+  private ApiUrl: string = "192.168.38.4:8081";
   private Token:string = "bearer " + localStorage.getItem('token');
   private ApiKey:string = "DWV1PdzszOW3BLen";
 
