@@ -50,3 +50,84 @@
 .svg_CMP{
   fill: #2F4F4F;
 }
+.search-box {
+  position: relative;
+  margin: 10px 0;
+  padding: 0 10px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 40px 10px 35px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+  direction: rtl;
+  background: #f8f9fa;
+}
+
+.search-icon {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #666;
+}
+
+.clear-btn {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #ccc;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  color: #fff;
+}
+
+.clear-btn:hover {
+  background: #999;
+}
+
+.brokers-list-container {
+  max-height: 300px;
+  overflow-y: auto;
+  margin-top: 10px;
+  border: 1px solid #eee;
+  border-radius: 5px;
+}
+
+.brokers-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.brokers-list li {
+  padding: 10px 15px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.brokers-list li:hover {
+  background: #f0f7ff;
+}
+
+.brokers-list li:last-child {
+  border-bottom: none;
+}
+
+.no-results {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+  font-style: italic;
+}

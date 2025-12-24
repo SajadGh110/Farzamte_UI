@@ -55,9 +55,33 @@
         <section class="all-brokerage" *ngIf="flag_all_brokers">
           <section class="brokers-list">
             <h3>لیست کارگزاری ها</h3>
-            <ul>
-              <li *ngFor="let broker of all_brokers" (click)="addToComparison(broker)">{{ broker.name }}</li>
-            </ul>
+            <div class="search-box">
+              <input 
+                type="text" 
+                [(ngModel)]="searchTerm"
+                (ngModelChange)="filterBrokers()"
+                placeholder="جستجوی کارگزاری..."
+                class="search-input"/>
+              <button 
+                *ngIf="searchTerm" 
+                (click)="clearSearch()" 
+                class="clear-btn"
+                type="button"
+              >
+                ×
+              </button>
+              <span class="search-icon">🔍</span>
+            </div>
+            <div class="brokers-list-container">
+              <ul>
+                <li *ngFor="let broker of filtered_brokers" (click)="addToComparison(broker)">
+                  {{ broker.name }}
+                </li>
+              </ul>
+              <div *ngIf="filtered_brokers.length === 0" class="no-results">
+                <p>کارگزاری یافت نشد</p>
+              </div>
+            </div>
           </section>
         </section>
         <section class="all-cmp" *ngIf="flag_all_brokers">

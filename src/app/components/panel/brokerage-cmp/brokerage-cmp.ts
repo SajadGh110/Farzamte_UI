@@ -10,6 +10,7 @@ import {BrokerageService} from "../../../services/brokerage.service";
 import {EChartsOption} from "echarts";
 import {Router} from "@angular/router";
 import {AuthService} from "../../../services/auth.service";
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-brokerage-cmp',
@@ -22,7 +23,8 @@ import {AuthService} from "../../../services/auth.service";
         NgForOf,
         NgIf,
         NgxEchartsDirective,
-        DecimalPipe
+        DecimalPipe,
+        FormsModule
     ],
     providers: [DatePipe],
     templateUrl: './brokerage-cmp.html',
@@ -36,6 +38,8 @@ export class BrokerageCmp implements OnInit {
   last6_date:any = [];
   last6_top:any = [];
   all_brokers:any[] = [];
+  filtered_brokers: any[] = [];
+  searchTerm: string = '';
   comparison_list:any[] = [];
   protected flag_date:boolean=false;
   protected flag_all_brokers:boolean=false;
@@ -847,7 +851,25 @@ export class BrokerageCmp implements OnInit {
     this.all_brokers = await this.getData.get_All_Brokers(selected_date).toPromise();
     const self_broker = this.all_brokers.find(t => t.name === this.brokerage_name);
     this.all_brokers = this.all_brokers.filter(t => t !== self_broker);
+    this.filtered_brokers = [...this.all_brokers];
     this.flag_all_brokers = true;
+  }
+
+  filterBrokers() {
+    if (!this.searchTerm) {
+      this.filtered_brokers = [...this.all_brokers];
+      return;
+    }
+    
+    const term = this.searchTerm.toLowerCase().trim();
+    this.filtered_brokers = this.all_brokers.filter(broker =>
+      broker.name.toLowerCase().includes(term)
+    );
+  }
+
+  clearSearch() {
+    this.searchTerm = '';
+    this.filtered_brokers = [...this.all_brokers];
   }
 
   addToComparison(broker: any) {
@@ -855,6 +877,7 @@ export class BrokerageCmp implements OnInit {
       const index = this.all_brokers.indexOf(broker);
       if (index !== -1) {
         this.all_brokers.splice(index, 1);
+        this.filterBrokers();
         this.comparison_list.push(broker);
       }
     } else {
@@ -867,6 +890,7 @@ export class BrokerageCmp implements OnInit {
     if (index !== -1) {
       this.comparison_list.splice(index, 1);
       this.all_brokers.push(broker);
+      this.filterBrokers();
     }
   }
 
