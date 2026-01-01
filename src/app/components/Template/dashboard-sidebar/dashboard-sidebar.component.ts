@@ -6,8 +6,7 @@ import {NgClass, NgIf} from "@angular/common";
 @Component({
     selector: 'app-dashboard-sidebar',
     imports: [
-        NgClass,
-        NgIf
+      NgIf
     ],
     templateUrl: './dashboard-sidebar.component.html',
     styleUrl: './dashboard-sidebar.component.scss'

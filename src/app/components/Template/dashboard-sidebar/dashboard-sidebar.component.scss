@@ -1,189 +1,165 @@
-nav .top-sidebar {
+@use '../../../../variables' as *;
+
+aside {
+  width: 230px; // عرض کمتر و ظریف‌تر
+  min-width: 230px;
+  // افزایش ارتفاع مفید با کاهش فاصله از بالا و پایین
+  margin-top: 1rem; // فاصله کمتر از بالا
+  margin-left: 1rem; // فاصله کمتر از چپ
   display: flex;
-  min-height: 105px;
-  justify-content: center;
-  align-items: flex-end;
-  margin-bottom: 1rem;
-}
-nav ul {
-  direction: ltr;
-}
-nav ul li {
-  display: flex;
-  flex-direction: row-reverse;
-  margin: 0 0 5px;
-  border-radius: 5px;
-  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.3);
-  transition: 0.4s margin-right cubic-bezier(0.16, 1, 0.3, 1) 0s;
-  outline: none;
-}
-nav ul li:hover,
-nav ul li:focus {
-  margin-right: -0.5rem;
-}
-li.menu_item_selected {
-  margin-right: -0.5rem!important;
-}
-aside nav ul li a {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  flex-direction: row-reverse;
-}
-aside nav ul li a {
-  padding: 5px 10px;
-}
-aside nav ul li a p {
-  width: 100%;
-  text-align: center;
-  font-family: Acumin_vc;
-  padding: 5px 0 0 0;
-  -moz-transform: matrix(1, 0, 0, 1.2, 0, 0);
-  -webkit-transform: matrix(1, 0, 0, 1.2, 0, 0);
-  -ms-transform: matrix(1, 0, 0, 1.2, 0, 0);
-  color: white;
-}
-aside nav ul li a p {
-  font-size: 14px;
-}
-#Brokerages ,
-.Brokerages {
-  background-color: #1c1b3a;
-}
-#Brokerages-cmp ,
-.Brokerages-cmp {
-  background-color: #2F4F4F;
-}
-#profile{
-  background-color: #1b9ac4;
-}
-#Degrees{
-  background-color: #c36577;
-}
-#HappyCall{
-  background-color: #92967f;
-}
-#Call-in ,
-.Call-in ,{
-  background-color: #42b3a1;
-}
-#Notices ,
-.Notices {
-  background-color: #965d63;
-}
-#Ticket{
-  background-color: #d7a22e;
-}
-#Marketing{
-  background-color: #004e75;
-}
-#Survey{
-  background-color: #66828e;
-}
-#QA{
-  background-color: #97885d;
-}
-#Other{
-  background-color: #6d6e71;
-}
-#Disorder{
-  background-color: #7f6487;
-}
-#Ai-Analysis{
-  background-color: #3ebeed;
-}
-#Logout{
-  background-color: #EC7063;
-}
-aside nav .datepicker-input {
-  display: flex;
-}
-.datepicker-input{
-  width: 100%;
-  margin-top: 1rem;
-  justify-content: center;
-}
-.datepicker-input form {
-  display: flex;
-  width: 100%;
   flex-direction: column;
-  align-items: center;
-}
-.datepicker-input form .row{
-  display: flex;
-  width: 100%;
-  flex-direction: row;
-  align-items: flex-end;
-  justify-content: space-between;
-  margin-bottom: 5px;
-}
-.datepicker-input form .row label {
-  color: #65828f;
-  font: 18px Acumin_vc;
-}
-.datepicker-input form .row input {
-  display: block;
-  width: 130px;
-}
-.datepicker-input form .row input[type=date]{
-  padding: 5px;
-  font: 18px Acumin_vc;
-  border-top: none;
-  border-right: none;
-  border-left: none;
-  border-bottom: 2px solid #65828f;
-  background-color: #f2f2f2;
-}
-.datepicker-input form .row input[type=date]:hover{
-  cursor: pointer;
+  
+  nav {
+    position: relative; 
+    width: 100%;
+    
+    @include glass-style;
+    padding: 15px 10px; // پدینگ داخلی کمتر
+    overflow-y: auto;
+    
+    &::-webkit-scrollbar {
+      width: 0; 
+      background: transparent;
+    }
+
+    ul.main-slider {
+      display: flex;
+      flex-direction: column;
+      gap: 4px; // فاصله بین آیتم‌ها را کم کردم (قبلا 6 بود)
+      padding: 0;
+      margin: 0;
+      min-height: 100%; 
+
+      > li {
+        list-style: none;
+        
+        .main-link {
+          display: flex;
+          align-items: center;
+          padding: 10px 12px; // ارتفاع هر دکمه را کمتر کردم
+          text-decoration: none;
+          border-radius: 10px; // گوشه‌ها کمی تیزتر
+          transition: all 0.2s ease;
+          cursor: pointer;
+          width: 100%;
+          box-sizing: border-box;
+
+          svg {
+            width: 20px; // آیکون کمی کوچکتر
+            height: 20px;
+            min-width: 20px;
+            fill: $text-secondary;
+            transition: fill 0.3s;
+            
+            .svg_menu_color {
+              fill: $text-secondary;
+              transition: fill 0.3s;
+            }
+          }
+
+          p {
+            margin: 0 0 0 10px; // فاصله متن و آیکون کمتر
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 0.85rem; // فونت کمی ریزتر و شیک‌تر
+            font-weight: 500;
+            color: $text-secondary;
+            transition: color 0.3s;
+            white-space: nowrap;
+          }
+        }
+
+        // حالت Active و Hover
+        &:hover > .main-link, &.active > .main-link {
+          background: rgba($primary-color, 0.08);
+          
+          svg, svg .svg_menu_color { 
+            fill: $primary-color !important;
+          }
+          p { 
+            color: $primary-color;
+            font-weight: 700;
+          }
+        }
+      }
+    }
+  }
 }
 
-.datepicker-input form .row input[type=submit]{
-  padding: 8px 8px 5px 8px;
-  width: 100%;
-  font: 18px Acumin_vc;
-  border: 2px solid #65828f;
-  border-radius: 5px;
-  color: #65828f;
-}
-.datepicker-input form .row input[type=submit]:hover,
-.datepicker-input form .row input[type=submit]:focus{
-  background-color: #65828f;
-  color: #ffffff;
-  cursor: pointer;
-}
-.datepicker-input form .row input[type=submit].auto {
-  margin: 0 5px;
-  padding: 6px 6px 3px 6px;
-  font-size: 15px;
-  border: none;
-  background-color: #004e75;
-  color: #ffffff;
-  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.3);
-}
-.datepicker-input form .row input[type=submit].auto:hover,
-.datepicker-input form .row input[type=submit].auto:focus {
-  margin-top: -4px;
-}
-.datepicker-input form .row input[type=submit].auto:first-child{
-  margin-left: 0;
-}
-.datepicker-input form .row input[type=submit].auto:last-child{
-  margin-right: 0;
-}
-.time_text p {
-  font: 16px Nazanin, Bahnschrift, serif;
-  font-weight: bold;
-}
+// استایل فشرده‌تر برای زیرمنوها
 .submenu {
   display: none;
+  flex-direction: column;
+  padding-left: 0;
+  margin-top: 2px;
   list-style: none;
-  padding-left: 1rem;
+  
+  &.show {
+    display: flex;
+    animation: slideDown 0.3s ease;
+  }
+
+  li {
+    margin-left: 18px; // تو رفتگی کمتر
+    padding-left: 10px;
+    border-left: 1px solid rgba($text-secondary, 0.15); // خط نازک‌تر
+    
+    a {
+      display: flex;
+      align-items: center;
+      padding: 6px 10px; // ارتفاع زیرمنو کمتر
+      text-decoration: none;
+      border-radius: 6px;
+      transition: all 0.2s;
+
+      .dot {
+        width: 5px;
+        height: 5px;
+        background-color: $text-secondary;
+        border-radius: 50%;
+        margin-right: 8px;
+        opacity: 0.5;
+        transition: all 0.2s;
+      }
+
+      p {
+        font-size: 0.8rem; // فونت ریزتر برای زیرمنو
+        color: $text-secondary;
+        margin: 0;
+        font-weight: 400;
+      }
+
+      &:hover {
+        background: rgba($text-secondary, 0.05);
+        .dot { background-color: $primary-color; opacity: 1; transform: scale(1.2); }
+        p { color: $text-main; }
+      }
+
+      &.active-sub {
+        background: rgba($primary-color, 0.1);
+        .dot {
+          background-color: $primary-color;
+          opacity: 1;
+        }
+        p {
+          color: $primary-color;
+          font-weight: 700;
+        }
+      }
+    }
+    
+    &:hover {
+      border-left-color: $primary-color;
+    }
+  }
 }
-.show-submenu {
-  display: block;
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
 }
-.submenu li a{
-  color: white;
-  justify-content: center;
+
+.logout-link:hover {
+  background: rgba($error-color, 0.1) !important;
+  p { color: $error-color !important; }
+  svg, svg .svg_menu_color { fill: $error-color !important; }
 }

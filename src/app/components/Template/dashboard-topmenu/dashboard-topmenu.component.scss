@@ -1,106 +1,120 @@
-nav {
-  padding: .8rem 1rem;
-}
-.dashboard-topmenu{
-  box-shadow: 0px 10px 25px 0px rgba(0,0,0,0.1);
-}
-/*  hamburger menu  */
-$bar-width: 32px;
-$bar-height: 6px;
-$hamburger-gap: 4px;
-$foreground: #c9c9ff;
-$background: #283046;
-$hamburger-margin: 8px;
-$animation-timing: 200ms ease-in-out;
-$hamburger-height: calc($bar-height * 3 + $hamburger-gap * 2);
+@use '../../../../variables' as *;
 
-.hamburger-menu {
-  display: flex;
-  flex-direction: column;
-  gap: $hamburger-gap;
-  width: $bar-width;
-  z-index: 11;
-  cursor: pointer;
-}
-
-.hamburger-menu:has(input:focus-visible)::before,
-.hamburger-menu:has(input:focus-visible)::after,
-.hamburger-menu input:focus-visible {
-  border: 1px solid $background;
-  box-shadow: 0 0 0 1px $foreground;
-}
-
-.hamburger-menu::before,
-.hamburger-menu::after,
-.hamburger-menu input {
-  content: "";
-  width: $bar-width;
-  height: $bar-height;
-  background-color: $foreground;
-  border-radius: 9999px;
-  transform-origin: left center;
-  transition: opacity $animation-timing, width $animation-timing,
-  rotate $animation-timing, translate $animation-timing,
-  background-color $animation-timing;
-}
-
-.hamburger-menu input {
-  appearance: none;
-  padding: 0;
-  margin: 0;
-  outline: none;
-  pointer-events: none;
-}
-
-.hamburger-menu:has(input:checked)::before {
-  rotate: 45deg;
-  width: 20px;
-  translate: 17px -2px;
-}
-
-.hamburger-menu:has(input:checked)::after {
-  rotate: -45deg;
-  width: 20px;
-  translate: 17px 2px;
-}
-
-.hamburger-menu input:checked {
-  width: $bar-width;
-}
-
-input[type="checkbox"]:hover , .hamburger-menu:hover::before , .hamburger-menu:hover::after{
-  background-color: #b8a9ff;
-}
 .dashboard-topmenu {
+  @include glass-style;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; // چیدمان سه بخشی (راست، وسط، چپ)
   align-items: center;
+  padding: 0 25px; // پدینگ کمتر
+  margin: 1rem 2rem 0 1rem; // کمی فاصله از بالا
+  height: 65px; // ارتفاع ظریف‌تر
+  position: relative;
+  z-index: 100;
 }
+
+// استایل پروفایل (سمت راست)
+.nav-right {
+  ul {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .profile-container {
+    position: relative;
+    cursor: pointer;
+
+    .account {
+      display: flex;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.4); // شفاف‌تر
+      padding: 4px 8px;
+      border-radius: 50px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      transition: all 0.3s;
+      
+      &:hover {
+        background: rgba(255, 255, 255, 0.7);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      }
+
+      img {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+      
+      p {
+        font-family: 'Vazirmatn', sans-serif;
+        color: $text-main;
+        margin: 0 8px;
+        font-weight: 600;
+        font-size: 0.85rem;
+      }
+    }
+
+    // دراپ‌داون (بدون تغییر عمده)
+    .profile-dropdown {
+      position: absolute;
+      top: 140%;
+      right: 0;
+      width: 160px;
+      @include glass-style;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      
+      &.show { opacity: 1; visibility: visible; transform: translateY(0); }
+
+      li {
+        list-style: none;
+        a {
+          display: flex; align-items: center; padding: 8px 10px;
+          text-decoration: none; color: $text-secondary; font-size: 0.85rem; border-radius: 6px;
+          svg { width: 16px; height: 16px; margin-right: 8px; }
+        }
+        &:hover a { background: rgba($primary-color, 0.08); color: $primary-color; }
+        &.logout-item:hover a { background: rgba($error-color, 0.08); color: $error-color; }
+      }
+    }
+  }
+}
+
+// +++++ استایل جدید متن وسط (Motto) +++++
+.motto-container {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%); // دقیقاً وسط چین
+  white-space: nowrap; // جلوگیری از شکستن متن
+  
+  .motto-text {
+    font-family: 'Vazirmatn', sans-serif; // یا فونت نستعلیق اگر دارید
+    font-weight: 500;
+    font-size: 1rem;
+    color: $text-main;
+    margin: 0;
+    opacity: 0.8;
+    text-shadow: 0 2px 10px rgba(255,255,255,0.5);
+    background: linear-gradient(90deg, $text-secondary, $primary-color);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; // افکت گرادینت روی متن
+  }
+}
+
+// استایل سمت چپ (عنوان)
 .nav-left ul {
-  display: flex;
-  align-items: center;
-}
-.nav-right ul {
-  display: flex;
-  align-items: center;
-}
-.nav-right ul li a.account {
-  display: flex;
-  align-items: center;
-}
-.nav-left ul li a.title {
-  font: 18px Myriad Pro, Bahnschrift;
-  color: #c9c9ff;
-}
-.nav-right ul li a.account img {
-  width: 40px;
-  border-radius: 50%;
-}
-li:not(:first-child) {
-  margin-left: 1rem;
-}
-.nav-right ul li a.account p {
-  font: 14px Myriad Pro, Bahnschrift;
-  color: #c9c9ff;
-  margin-left: 0.5rem;
+  display: flex; align-items: center; list-style: none; margin: 0; padding: 0;
+  li a.title {
+    font-family: 'Vazirmatn', sans-serif; font-size: 1.1rem; font-weight: 800;
+    color: $text-main; text-decoration: none; letter-spacing: 0.5px;
+  }
 }

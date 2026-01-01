@@ -1,16 +1,10 @@
-/* Main Variables */
-$Background : #f2f2f2;
-$Foreground : #544f53;
-$Font-Size : 14px;
-$Font-Family-En : Myriad Pro, Bahnschrift;
-$Font-Family-Fa : Cinema, Bahnschrift;
-/* brokerages Variables */
-$Dash-Background : #161d31;
-$Dash-Background-Secondary : #283046;
-$Dash-Foreground : 0;
-$table_one: #a8bdff;
-$table_two: #7995eb;
+@use 'variables' as *;
 
+/* Fonts */
+@font-face {
+  font-family: 'Vazirmatn';
+  src: url('/assets/fonts/Vazirmatn-Regular.woff2') format('woff2');
+}
 @font-face {
   font-family: Acumin_vc;
   src: url('/assets/fonts/Acumin-Variable-Concept.ttf');
@@ -67,18 +61,17 @@ a:active {
   color: #000;
 }
 ::-webkit-scrollbar {
-  width: 15px;
+  width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background-color: #004e75;
-  border-radius: 8px;
-  border: 2px solid #f1f1f1;
+  background-color: #cbd5e1;
+  border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #003b59;
+  background-color: $primary-color;
 }
 ul,p{
   padding: 0;
@@ -89,8 +82,13 @@ ul,p{
 }
 body {
   background-color: $Background;
+  font-family: 'Vazirmatn', sans-serif;
   direction: ltr;
-  font: $Font-Size $Font-Family-En;
+  margin: 0;
+  color: $text-main;
+}
+.glass-panel {
+  @include glass-style;
 }
 .container {
   display: flex;
@@ -181,18 +179,18 @@ app-menu {
 }
 .dashboard-wrapper {
   display: flex;
-  direction: ltr;
-  flex-direction: row-reverse;
-  background-color: #f2f2f2;
-  transition: 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);
+  direction: ltr; 
+  flex-direction: row;
+  background-color: $Background;
+  min-height: 100vh;
 }
 .dashboard-main {
+  flex-grow: 1;
   display: flex;
   direction: rtl;
   flex-direction: column;
-  width: calc(100% - 18rem);
-  min-height: calc(100vh - 4rem);
-  margin: 2rem 1rem 0 2rem;
+  margin: 2rem;
+  width: calc(100% - 16rem);
 }
 .dashboard-main-small {
   width: calc(100% - 17rem - 19rem);
@@ -1166,9 +1164,6 @@ text.value-text {
   background-repeat: no-repeat;
   background-position: center;
 }
-.catalog-header {
-
-}
 .catalog-main {
   height: inherit;
   display: flex;
@@ -1187,9 +1182,6 @@ text.value-text {
   position: relative;
   font: 22px Nazanin, Bahnschrift, serif;
   margin: 0 auto;
-}
-.catalog-footer {
-
 }
 /* Adaptive Codes */
 @media screen and (max-width:1200px){

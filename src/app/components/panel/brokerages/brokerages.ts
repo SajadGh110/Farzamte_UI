@@ -1,5 +1,6 @@
 import {Component, ElementRef, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {DashboardSidebarComponent} from "../../Template/dashboard-sidebar/dashboard-sidebar.component";
+import { DashboardTopmenuComponent } from '../../Template/dashboard-topmenu/dashboard-topmenu.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {DashboardContactComponent} from "../../Template/dashboard-contact/dashboard-contact.component";
 import {NgToastService} from "ng-angular-popup";
@@ -20,15 +21,14 @@ import {GenerateRadarChart} from "../../Template/radar-chart/GenerateRadarChart"
     templateUrl: './brokerages.html',
   imports: [
     DashboardSidebarComponent,
+    DashboardTopmenuComponent,
     ReactiveFormsModule,
-    DashboardContactComponent,
     NgForOf,
     FormsModule,
     NgxEchartsDirective,
     MatProgressSpinner,
     NgIf,
-    MatTabsModule,
-    NgStyle
+    MatTabsModule
   ],
     styleUrls: ['./brokerages.scss']
 })
