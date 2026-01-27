@@ -1,12 +1,11 @@
 import {Component, ElementRef, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {DashboardSidebarComponent} from "../../Template/dashboard-sidebar/dashboard-sidebar.component";
-import { DashboardTopmenuComponent } from '../../Template/dashboard-topmenu/dashboard-topmenu.component';
+import {DashboardTopmenuComponent} from '../../Template/dashboard-topmenu/dashboard-topmenu.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {DashboardContactComponent} from "../../Template/dashboard-contact/dashboard-contact.component";
 import {NgToastService} from "ng-angular-popup";
 import {NgForOf, NgIf, NgStyle} from "@angular/common";
 import {BrokerageService} from "../../../services/brokerage.service";
-import {EChartsOption} from "echarts";
+import {EChartsOption, number} from "echarts";
 import {NgxEchartsDirective} from "ngx-echarts";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatTabsModule} from '@angular/material/tabs';
@@ -239,13 +238,9 @@ export class Brokerages implements OnInit {
     ]
   };
   async ngOnInit(){
-    if(this.auth.getUserRole() !== "Owner" && this.auth.getUserRole() !== "Admin" && this.auth.getUserName() !== "nouri.mobin"){
-      this.toast.error({ detail: "ERROR", summary: "Access Denied!", duration: 5000, position: 'topRight' });
-      await this.router.navigate(['profile']);
-    }
     let res_brokerage_name = await this.getData.Get_Brokerage_Name().toPromise();
-    this.brokerage_name = "کارگزاری " + res_brokerage_name[0].name;
-    this.brokerage_logo = "assets/images/brokers/" + res_brokerage_name[0].logo;
+    this.brokerage_name = "کارگزاری " + res_brokerage_name.name;
+    this.brokerage_logo = "assets/images/brokers/" + res_brokerage_name.logo;
     this.series_date = await this.getData.get_AllDate().toPromise();
     this.series_date = this.series_date.sort((a:any, b:any) => {
       let [yearA, monthA] = a.split('-').map(Number);
@@ -406,29 +401,29 @@ export class Brokerages implements OnInit {
       for (let date of selected_date){
         let res = await this.getData.get_Chart1(date).toPromise();
         let rank = [
-          res.bobT_Brokerage_Rank,
-          res.fI_Brokerage_Rank,
-          res.bobT_AND_FI_Brokerage_Rank,
-          res.bkI_Brokerage_Rank,
-          res.beI_Brokerage_Rank,
-          res.all_Brokerage_Rank
+          res.bobt?.rank ?? 0,
+          res.fi?.rank ?? 0,
+          res.bobT_AND_FI?.rank ?? 0,
+          res.bki?.rank ?? 0,
+          res.bei?.rank ?? 0,
+          res.all?.rank ?? 0
         ];
         Brokerage_Radar_Max_List.push(Math.max(...rank));
         let brokerage_value = [
-          res.bobT_Brokerage_Value,
-          res.fI_Brokerage_Value,
-          res.bobT_AND_FI_Brokerage_Value,
-          res.bkI_Brokerage_Value,
-          res.beI_Brokerage_Value,
-          res.all_Brokerage_Value
+          res.bobt?.value ?? 0,
+          res.fi?.value ?? 0,
+          res.bobT_AND_FI?.value ?? 0,
+          res.bki?.value ?? 0,
+          res.bei?.value ?? 0,
+          res.all?.value ?? 0
         ];
         let total_value = [
-          res.bobT_Total_Value,
-          res.fI_Total_Value,
-          res.bobT_AND_FI_Total_Value,
-          res.bkI_Total_Value,
-          res.beI_Total_Value,
-          res.all_Total_Value
+          res.bobt?.total ?? 0,
+          res.fi?.total ?? 0,
+          res.bobT_AND_FI?.total ?? 0,
+          res.bki?.total ?? 0,
+          res.bei?.total ?? 0,
+          res.all?.total ?? 0
         ];
         Brokerage_Radar_Data.push({name:date, value:rank});
         Brokerage_Radar_LegendData.push(date);
@@ -456,26 +451,26 @@ export class Brokerages implements OnInit {
       for (let date of selected_date) {
         let res = await this.getData.get_Chart2(date).toPromise();
         let rank = [
-          res.bobT_Oragh_Bedehi_Rank,
-          res.bobT_Moshtaghe_Rank,
-          res.bobT_Sarmaye_Herfei_Rank,
-          res.bobT_saham_Rank,
-          res.bobT_Brokerage_Rank
+          res.bobT_Oragh_Bedehi?.rank ?? 0,
+          res.bobT_Moshtaghe?.rank ?? 0,
+          res.bobT_Sarmaye_Herfei?.rank ?? 0,
+          res.bobT_Saham?.rank ?? 0,
+          res.bobT_Total?.rank ?? 0
         ];
         BOBT_Radar_Max_List.push(Math.max(...rank));
         let brokerage_value = [
-          res.bobT_Oragh_Bedehi,
-          res.bobT_Moshtaghe,
-          res.bobT_Sarmaye_Herfei,
-          res.bobT_saham,
-          res.bobT_Brokerage_Value
+          res.bobT_Oragh_Bedehi?.value ?? 0,
+          res.bobT_Moshtaghe?.value ?? 0,
+          res.bobT_Sarmaye_Herfei?.value ?? 0,
+          res.bobT_Saham?.value ?? 0,
+          res.bobT_Total?.value ?? 0
         ];
         let total_value = [
-          res.bobT_Oragh_Bedehi_Total,
-          res.bobT_Moshtaghe_Total,
-          res.bobT_Sarmaye_Herfei_Total,
-          res.bobT_saham_Total,
-          res.bobT_Total_Value
+          res.bobT_Oragh_Bedehi?.total ?? 0,
+          res.bobT_Moshtaghe?.total ?? 0,
+          res.bobT_Sarmaye_Herfei?.total ?? 0,
+          res.bobT_Saham?.total ?? 0,
+          res.bobT_Total?.total ?? 0
         ];
         BOBT_Radar_Data.push({name:date, value:rank});
         BOBT_Radar_LegendData.push(date);
@@ -500,26 +495,26 @@ export class Brokerages implements OnInit {
       for (let date of selected_date) {
         let res = await this.getData.get_Chart3(date).toPromise();
         let rank = [
-          res.fI_Brokerage_Station_Rank,
-          res.fI_Online_Normal_Rank,
-          res.fI_Online_Group_Rank,
-          res.fI_Online_Other_Rank,
-          res.fI_Brokerage_Value_Rank
+          res.fI_Brokerage_Station?.rank ?? 0,
+          res.fI_Online_Normal?.rank ?? 0,
+          res.fI_Online_Group?.rank ?? 0,
+          res.fI_Online_Other?.rank ?? 0,
+          res.fI_Total?.rank ?? 0
         ];
         FI_Radar_Max_List.push(Math.max(...rank));
         let brokerage_value = [
-          res.fI_Brokerage_Station,
-          res.fI_Online_Normal,
-          res.fI_Online_Group,
-          res.fI_Online_Other,
-          res.fI_Brokerage_Value
+          res.fI_Brokerage_Station?.value ?? 0,
+          res.fI_Online_Normal?.value ?? 0,
+          res.fI_Online_Group?.value ?? 0,
+          res.fI_Online_Other?.value ?? 0,
+          res.fI_Total?.value ?? 0
         ];
         let total_value = [
-          res.fI_Brokerage_Station_Total,
-          res.fI_Online_Normal_Total,
-          res.fI_Online_Group_Total,
-          res.fI_Online_Other_Total,
-          res.fI_Total_Value
+          res.fI_Brokerage_Station?.total ?? 0,
+          res.fI_Online_Normal?.total ?? 0,
+          res.fI_Online_Group?.total ?? 0,
+          res.fI_Online_Other?.total ?? 0,
+          res.fI_Total?.total ?? 0
         ];
         FI_Radar_Data.push({name:date, value:rank});
         FI_Radar_LegendData.push(date);
@@ -544,26 +539,26 @@ export class Brokerages implements OnInit {
       for (let date of selected_date) {
         let res = await this.getData.get_Chart4(date).toPromise();
         let rank = [
-          res.bkI_Physical_Rank,
-          res.bkI_Self_Rank,
-          res.bkI_Ati_Rank,
-          res.bkI_Ekhtiar_Rank,
-          res.bkI_Brokerage_Value_Rank
+          res.bkI_Physical?.rank ?? 0,
+          res.bkI_Self?.rank ?? 0,
+          res.bkI_Ati?.rank ?? 0,
+          res.bkI_Ekhtiar?.rank ?? 0,
+          res.bkI_Total?.rank ?? 0
         ];
         BKI_Radar_Max_List.push(Math.max(...rank));
         let brokerage_value = [
-          res.bkI_Physical,
-          res.bkI_Self,
-          res.bkI_Ati,
-          res.bkI_Ekhtiar,
-          res.bkI_Brokerage_Value
+          res.bkI_Physical?.value ?? 0,
+          res.bkI_Self?.value ?? 0,
+          res.bkI_Ati?.value ?? 0,
+          res.bkI_Ekhtiar?.value ?? 0,
+          res.bkI_Total?.value ?? 0
         ];
         let total_value = [
-          res.bkI_Physical_Total,
-          res.bkI_Self_Total,
-          res.bkI_Ati_Total,
-          res.bkI_Ekhtiar_Total,
-          res.bkI_Total_Value
+          res.bkI_Physical?.total ?? 0,
+          res.bkI_Self?.total ?? 0,
+          res.bkI_Ati?.total ?? 0,
+          res.bkI_Ekhtiar?.total ?? 0,
+          res.bkI_Total?.total ?? 0
         ];
         BKI_Radar_Data.push({name:date, value:rank});
         BKI_Radar_LegendData.push(date);
@@ -588,23 +583,23 @@ export class Brokerages implements OnInit {
       for (let date of selected_date) {
         let res = await this.getData.get_Chart5(date).toPromise();
         let rank = [
-          res.beI_Physical_Rank,
-          res.beI_Moshtaghe_Rank,
-          res.beI_Other_Rank,
-          res.beI_Brokerage_Value_Rank
+          res.beI_Physical?.rank ?? 0,
+          res.beI_Moshtaghe?.rank ?? 0,
+          res.beI_Other?.rank ?? 0,
+          res.beI_Total?.rank ?? 0
         ]
         BEI_Radar_Max_List.push(Math.max(...rank));
         let brokerage_value = [
-          res.beI_Physical,
-          res.beI_Moshtaghe,
-          res.beI_Other,
-          res.beI_Brokerage_Value
+          res.beI_Physical?.value ?? 0,
+          res.beI_Moshtaghe?.value ?? 0,
+          res.beI_Other?.value ?? 0,
+          res.beI_Total?.value ?? 0
         ];
         let total_value = [
-          res.beI_Physical_Total,
-          res.beI_Moshtaghe_Total,
-          res.beI_Other_Total,
-          res.beI_Total_Value
+          res.beI_Physical?.total ?? 0,
+          res.beI_Moshtaghe?.total ?? 0,
+          res.beI_Other?.total ?? 0,
+          res.beI_Total?.total ?? 0
         ];
         BEI_Radar_Data.push({ name: date, value: rank });
         BEI_Radar_LegendData.push(date);
@@ -701,12 +696,10 @@ export class Brokerages implements OnInit {
 
   onCheckboxChange(event: any, item: any) {
     if (event.target.checked) {
-      if (this.getBroker() != 'Khobregan'){
-        if (this.selected_date.length > 4){
-          this.toast.warning({ detail: "Warning", summary: 'Cant Select More Than 5 Date!', duration: 1500, position: 'topRight' });
-          let index = this.selected_date.indexOf(item);
-          this.selected_date.splice(index, 1);
-        }
+      if (this.selected_date.length > 4){
+        this.toast.warning({ detail: "Warning", summary: 'Cant Select More Than 5 Date!', duration: 1500, position: 'topRight' });
+        let index = this.selected_date.indexOf(item);
+        this.selected_date.splice(index, 1);
       }
       if (!this.selected_date.includes(item)) {
         this.selected_date.push(item);
@@ -730,6 +723,10 @@ export class Brokerages implements OnInit {
     if (section) {
       section.nativeElement.scrollIntoView({ behavior: 'smooth' });
     }
+  }
+
+  round2(value: number): number {
+    return Math.round((value + Number.EPSILON) * 100) / 100;
   }
 
   protected readonly Object = Object;

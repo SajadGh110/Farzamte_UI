@@ -54,17 +54,11 @@ export class QA implements OnInit {
   groupedDataSource: GroupedAgentData[] = [];
   barCharts: { [portType: string]: EChartsOption } = {};
   
-  // متغیر جدید برای ذخیره ارتفاع داینامیک هر چارت
   chartHeights: { [portType: string]: string } = {};
 
   public constructor(private toast: NgToastService, private auth: AuthService, private router: Router, private getData: QaService, private dialog: MatDialog) {}
 
   async ngOnInit() {
-    if (this.auth.getUserRole() !== "Owner" && this.auth.getUserRole() !== "Admin" && this.auth.getUserName() !== "momeni.mobin") {
-        this.toast.error({detail: "ERROR", summary: "Access Denied!", duration: 5000, position: 'topRight'});
-        await this.router.navigate(['profile']);
-    }
-
     await this.get_units();
     if (this.unit_list.length == 0) {
       this.toast.warning({ detail: "سطح دسترسی!", summary: "متاسفانه شما به این بخش دسترسی ندارید!", duration: 5000, position: 'topRight' });
@@ -161,10 +155,6 @@ export class QA implements OnInit {
             });
         }
         
-        // --- محاسبه ارتفاع داینامیک ---
-        // ارتفاع پایه: 150 پیکسل برای هدر و لجند
-        // فضای هر ایجنت: تعداد ماه‌ها * (پهنای بار + فاصله) + پدینگ
-        // حداقل ارتفاع: 400 پیکسل
         const barsPerAgent = selectedMonths.length;
         const heightPerAgent = (barsPerAgent * 15) + 30; // 15px برای هر میله + 30px فاصله
         const calculatedHeight = Math.max(400, (chartYAxisData.length * heightPerAgent) + 150);

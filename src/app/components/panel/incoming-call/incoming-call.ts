@@ -199,8 +199,7 @@ export class IncomingCall implements OnInit {
       StartDate: [''],
       EndDate: ['']
     });
-    if (this.getBroker() == 'Mobin' || this.getBroker() == 'Pishro' || this.getBroker() == 'Pouyan' || this.getBroker() == 'Khobregan' || this.getBroker() == 'demo')
-      await this.SetTime(30);
+    await this.SetTime(30);
   }
   async GetData(stDate:string, enDate:string):Promise<any> {
     this.flag_count = false;

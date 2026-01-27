@@ -15,13 +15,6 @@ import {Router} from "@angular/router";
 export class Disorder implements OnInit {
   public constructor(private auth:AuthService, private router:Router, private toast:NgToastService) {}
   async ngOnInit() {
-    if (this.auth.getUserRole() !== "Owner" && this.auth.getUserRole() !== "Admin") {
-      this.toast.error({detail: "ERROR", summary: "Access Denied!", duration: 5000, position: 'topRight'});
-      await this.router.navigate(['profile']);
-    }
-    if (this.auth.getUserName() == 'nouri.mobin'){
-      this.toast.error({ detail: "ERROR", summary: "Access Denied!", duration: 5000, position: 'topRight' });
-      await this.router.navigate(['profile']);
-    }
+    
   }
 }

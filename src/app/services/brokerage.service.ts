@@ -76,10 +76,10 @@ export class BrokerageService {
   }
 
   GetBrokerageMoshtaghe(Date_Monthly:string):Observable<any>{
-    return this.http.get(`${this.appConfigService.getApiUrl()}Brokerage/GetBrokerageMoshtaghe?Date_Monthly=${Date_Monthly}`,{headers:this.header});
+    return this.http.get(`${this.appConfigService.getApiUrl()}Brokerage/Moshtaghe?Date_Monthly=${Date_Monthly}`,{headers:this.header});
   }
 
   GetBrokerageOnline(Date_Monthly:string):Observable<any>{
-    return this.http.get(`${this.appConfigService.getApiUrl()}Brokerage/GetBrokerageOnline?Date_Monthly=${Date_Monthly}`,{headers:this.header});
+    return this.http.get(`${this.appConfigService.getApiUrl()}Brokerage/Online?Date_Monthly=${Date_Monthly}`,{headers:this.header});
   }
 }

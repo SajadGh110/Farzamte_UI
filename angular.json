@@ -37,7 +37,9 @@
             ],
             "scripts": [],
             "allowedCommonJsDependencies": [
-              "rfdc"
+              "rfdc",
+              "exceljs",
+              "file-saver"
             ],
             "browser": "src/main.ts"
           },
@@ -46,13 +48,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "5mb"
+                  "maximumWarning": "4mb",
+                  "maximumError": "6mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "8kb",
-                  "maximumError": "9kb"
+                  "maximumWarning": "12kb",
+                  "maximumError": "14kb"
                 }
               ],
               "outputHashing": "all"

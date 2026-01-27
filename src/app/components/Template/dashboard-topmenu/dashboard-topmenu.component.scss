@@ -31,14 +31,8 @@
       align-items: center;
       background: rgba(255, 255, 255, 0.4); // شفاف‌تر
       padding: 4px 8px;
-      border-radius: 50px;
       border: 1px solid rgba(255, 255, 255, 0.3);
       transition: all 0.3s;
-      
-      &:hover {
-        background: rgba(255, 255, 255, 0.7);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-      }
 
       img {
         width: 32px;
@@ -76,6 +70,8 @@
       &.show { opacity: 1; visibility: visible; transform: translateY(0); }
 
       li {
+        width: 100%;
+        direction: ltr;
         list-style: none;
         a {
           display: flex; align-items: center; padding: 8px 10px;

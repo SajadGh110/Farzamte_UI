@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {DashboardSidebarComponent} from "../../Template/dashboard-sidebar/dashboard-sidebar.component";
+import { DashboardTopmenuComponent } from '../../Template/dashboard-topmenu/dashboard-topmenu.component';
 import {AuthService} from "../../../services/auth.service";
 import {ProfileService} from "../../../services/profile.service";
 import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
-import {NgForOf, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault} from "@angular/common";
+import { NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault} from "@angular/common";
 import {NgToastService} from "ng-angular-popup";
 import {Router} from "@angular/router";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
@@ -12,15 +13,15 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
     selector: 'app-profile',
     imports: [
         DashboardSidebarComponent,
+        DashboardTopmenuComponent,
         FormsModule,
         NgIf,
         ReactiveFormsModule,
         NgSwitch,
         NgSwitchCase,
         NgSwitchDefault,
-        MatProgressSpinner,
-        NgForOf
-    ],
+        MatProgressSpinner
+      ],
     templateUrl: './profile.html',
     styleUrl: './profile.scss'
 })

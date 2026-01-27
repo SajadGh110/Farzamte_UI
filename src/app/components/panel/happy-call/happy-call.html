@@ -1,7 +1,7 @@
 <section class="dashboard-wrapper">
   <app-dashboard-sidebar></app-dashboard-sidebar>
   <section class="dashboard-main">
-    <app-dashboard-contact class="row top-contact"></app-dashboard-contact>
+    <app-dashboard-topmenu></app-dashboard-topmenu>
     <section class="row">
       <section class="detail">
         <h2>انتخاب تاریخ گزارش</h2>
@@ -109,10 +109,10 @@
       <section class="detail">
         <h2>گزارش ارتباطات</h2>
       </section>
-      <section class="loading-spinner" *ngIf="!flag_g4">
+      <section class="loading-spinner" *ngIf="!flag_g1">
         <mat-spinner></mat-spinner>
       </section>
-      <section class="data-g4" *ngIf="flag_g4">
+      <section class="data-g4" *ngIf="flag_g1">
         <section class="table-g4">
           <section class="table-header-g4">
             <section class="table-header-none-g4"></section>

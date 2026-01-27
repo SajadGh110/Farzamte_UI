@@ -1,6 +1,7 @@
 <section class="dashboard-wrapper">
   <app-dashboard-sidebar></app-dashboard-sidebar>
   <section class="dashboard-main">
+    <app-dashboard-topmenu></app-dashboard-topmenu>
     <section class="row">
       <section class="detail">
         <h2>پروفایل</h2>
@@ -51,20 +52,7 @@
                   <input class="role" type="text" *ngSwitchCase="'Owner'" value="توسعه دهنده" disabled>
                   <input class="role" type="text" *ngSwitchDefault value="نقش شناخته شده نیست" disabled>
                 </section>
-              </section>
-              <section class="item">
-                <label for="brokerSelect">کارگزاری: </label>
-                <section [ngSwitch]="formData.role">
-                  <input class="broker" type="text" *ngSwitchCase="'Admin'" [value]="formData.broker" disabled>
-                  <input class="broker" type="text" *ngSwitchCase="'Normal'" [value]="formData.broker" disabled>
-                  <section *ngSwitchCase="'Owner'">
-                    <select class="brokerSelect" id="brokerSelect" formControlName="broker">
-                      <option *ngFor="let broker of brokers" [value]="broker">{{ broker }}</option>
-                    </select>
-                  </section>
-                  <input class="role" type="text" *ngSwitchDefault value="کارگزاری مشخص نیست" disabled>
-                </section>
-              </section>
+              </section>  
               <section class="item">
                 <label>نام کاربری : </label>
                 <input class="username" type="text" value="{{formData.userName}}" disabled>

@@ -9,7 +9,7 @@ import {HappycallService} from "../../../services/happycall.service";
 import {TimeService} from "../../../services/time.service";
 import {EChartsOption} from "echarts";
 import {NgxEchartsDirective} from "ngx-echarts";
-import {DashboardContactComponent} from "../../Template/dashboard-contact/dashboard-contact.component";
+import { DashboardTopmenuComponent } from '../../Template/dashboard-topmenu/dashboard-topmenu.component';
 import {AuthService} from "../../../services/auth.service";
 import {Router} from "@angular/router";
 import {format, subDays} from "date-fns";
@@ -23,7 +23,7 @@ import {format, subDays} from "date-fns";
         NgIf,
         NgForOf,
         NgxEchartsDirective,
-        DashboardContactComponent
+        DashboardTopmenuComponent
     ],
     providers: [DatePipe],
     templateUrl: './happy-call.html',
@@ -34,7 +34,6 @@ export class HappyCall implements OnInit {
   protected flag_time:boolean = false;
   protected flag_count:boolean=false;
   protected flag_g1:boolean=false;
-  protected flag_g4:boolean=false;
   protected flag_Introduction:boolean=false;
   protected flag_ChoosingBrokerage:boolean=false;
   protected flag_popup:boolean=false;
@@ -45,6 +44,7 @@ export class HappyCall implements OnInit {
   st_to_en:string = "";
   selected_days:number = 0;
   available_days:number = 0;
+  CustomersStat: any[] = [];
   total_ActiveChoosingBrokerage: number = 0;
   series_ActiveChoosingBrokerage: any[] = [];
   total_InactiveChoosingBrokerage: number = 0;
@@ -200,25 +200,16 @@ export class HappyCall implements OnInit {
   };
 
   async ngOnInit(){
-    if(this.auth.getUserRole() !== "Owner" && this.auth.getUserRole() !== "Admin"){
-      this.toast.error({ detail: "ERROR", summary: "Access Denied!", duration: 5000, position: 'topRight' });
-      await this.router.navigate(['profile']);
-    }
-    if (this.auth.getUserName() == 'nouri.mobin'){
-      this.toast.error({ detail: "ERROR", summary: "Access Denied!", duration: 5000, position: 'topRight' });
-      await this.router.navigate(['profile']);
-    }
     this.dateform = this.fb.group({
       StartDate: [''],
       EndDate: ['']
     });
-    this.DefaultTime();
+    this.SetTime(30);
   }
 
   async do(stDate:string,enDate:string){
     this.flag_count = false;
     this.flag_g1 = false;
-    this.flag_g4 = false;
     this.flag_Introduction = false;
     this.flag_ChoosingBrokerage = false;
     this.available_days = 0;
@@ -257,21 +248,26 @@ export class HappyCall implements OnInit {
       (this.series_calls_count_day.series as any)[2].data = unsuccess_calls_count;
       this.flag_count = true;
       // ------------------------------------
-      this.Customers_Count = await this.getData.get_Customers_Count(stDate,enDate).toPromise();
-      this.Active_Customers_Count = await this.getData.get_Active_Customers_Count(stDate,enDate).toPromise();
-      this.Inactive_Customers_Count = await this.getData.get_Inactive_Customers_Count(stDate,enDate).toPromise();
-      this.SuccessfulCalls_Count = await this.getData.get_SuccessfulCalls_Count(stDate,enDate).toPromise();
-      this.ActiveAfterCalls_Count = await this.getData.get_ActiveAfterCalls_Count(stDate,enDate).toPromise();
-      this.ActiveInOtherBrokers_Count = await this.getData.get_ActiveInOtherBrokers_Count(stDate,enDate).toPromise();
-      this.ExplanationClub_Count = await this.getData.get_ExplanationClub_Count(stDate,enDate).toPromise();
+      let CustomersStat = await this.getData.get_Customers_Stats(stDate,enDate).toPromise();
+      this.Customers_Count = CustomersStat.customersCount;
+      this.Active_Customers_Count = CustomersStat.activeCustomersCount;
+      this.Inactive_Customers_Count = CustomersStat.inactiveCustomersCount;
+      this.SuccessfulCalls_Count = CustomersStat.successfulCallsCount;
+      this.ActiveAfterCalls_Count = CustomersStat.activeAfterCallsCount;
+      this.ActiveInOtherBrokers_Count = CustomersStat.activeInOtherBrokersCount;
+      this.ExplanationClub_Count = CustomersStat.explanationClubCount;
+      this.ActiveSuccessfulCalls_Count = CustomersStat.activeSuccessfulCallsCount;
+      this.AllCalls_Count = CustomersStat.allCallsCount;
+      this.InactiveSuccessfulCalls_Count = CustomersStat.inactiveSuccessfulCallsCount;
+      this.ReCalls_Count = CustomersStat.reCallsCount;
+      this.UnsuccessfulCalls_Count = CustomersStat.unsuccessfulCallsCount;
       this.flag_g1 = true;
-
       let res_ActiveIntroduction = await this.getData.get_ActiveIntroduction(stDate,enDate).toPromise();
       for (let i = 0; i < res_ActiveIntroduction.length; i++)
-        this.series_ActiveIntroduction.push({ name: res_ActiveIntroduction[i].introduction, value: res_ActiveIntroduction[i].count });
+        this.series_ActiveIntroduction.push({ name: res_ActiveIntroduction[i].title, value: res_ActiveIntroduction[i].count });
       let res_InactiveIntroduction = await this.getData.get_InactiveIntroduction(stDate,enDate).toPromise();
       for (let i = 0; i < res_InactiveIntroduction.length; i++)
-        this.series_InactiveIntroduction.push({ name: res_InactiveIntroduction[i].introduction, value: res_InactiveIntroduction[i].count });
+        this.series_InactiveIntroduction.push({ name: res_InactiveIntroduction[i].title, value: res_InactiveIntroduction[i].count });
       (this.series_Introduction.title as any)[3].subtext = this.st_to_en;
       (this.series_Introduction.series as any)[0].data = this.series_ActiveIntroduction;
       (this.series_Introduction.series as any)[1].data = this.series_InactiveIntroduction;
@@ -279,25 +275,17 @@ export class HappyCall implements OnInit {
 
       let res_ActiveChoosingBrokerage = await this.getData.get_ActiveChoosingBrokerage(stDate,enDate).toPromise();
       for (let i = 0; i < res_ActiveChoosingBrokerage.length; i++){
-        this.series_ActiveChoosingBrokerage.push({ name: res_ActiveChoosingBrokerage[i].choosingBrokerage, value: res_ActiveChoosingBrokerage[i].count });
+        this.series_ActiveChoosingBrokerage.push({ name: res_ActiveChoosingBrokerage[i].title, value: res_ActiveChoosingBrokerage[i].count });
         this.total_ActiveChoosingBrokerage += res_ActiveChoosingBrokerage[i].count;
       }
       let res_InactiveChoosingBrokerage = await this.getData.get_InactiveChoosingBrokerage(stDate,enDate).toPromise();
       for (let i = 0; i < res_InactiveChoosingBrokerage.length; i++){
-        this.series_InactiveChoosingBrokerage.push({ name: res_InactiveChoosingBrokerage[i].choosingBrokerage, value: res_InactiveChoosingBrokerage[i].count });
+        this.series_InactiveChoosingBrokerage.push({ name: res_InactiveChoosingBrokerage[i].title, value: res_InactiveChoosingBrokerage[i].count });
         this.total_InactiveChoosingBrokerage += res_InactiveChoosingBrokerage[i].count;
       }
       (this.series_ChoosingBrokerage_Active_tmp.series as any)[0].data = this.series_ActiveChoosingBrokerage;
       (this.series_ChoosingBrokerage_Inactive_tmp.series as any)[0].data = this.series_InactiveChoosingBrokerage;
       this.flag_ChoosingBrokerage = true;
-
-      this.AllCalls_Count = await this.getData.get_AllCalls_Count(stDate,enDate).toPromise();
-      this.ActiveSuccessfulCalls_Count = await this.getData.get_ActiveSuccessfulCalls_Count(stDate,enDate).toPromise();
-      this.InactiveSuccessfulCalls_Count = await this.getData.get_InactiveSuccessfulCalls_Count(stDate,enDate).toPromise();
-      this.UnsuccessfulCalls_Count = await this.getData.get_UnsuccessfulCalls_Count(stDate,enDate).toPromise();
-      this.ReCalls_Count = await this.getData.get_ReCalls_Count(stDate,enDate).toPromise();
-      this.flag_g4 = true;
-
     }catch (error:any){
       this.toast.error({ detail: "ERROR", summary: error.message, duration: 5000, position: 'topRight' });
     }
@@ -352,17 +340,6 @@ export class HappyCall implements OnInit {
     let res_date = await this.getData.get_LastDate().toPromise();
     this.EndDate = res_date.lastDate;
     this.StartDate = format(subDays(this.EndDate, days), 'yyyy-MM-dd');
-    this.selected_days = this.TimeService.calc_Diff_Date(this.StartDate, this.EndDate);
-    this.dateform.controls['StartDate'].setValue(this.StartDate);
-    this.dateform.controls['EndDate'].setValue(this.EndDate);
-    this.flag_time = true;
-    await this.do(this.StartDate,this.EndDate);
-  }
-
-  async DefaultTime(){
-    let res_date = await this.getData.get_LastDate().toPromise();
-    this.EndDate = res_date.lastDate;
-    this.StartDate = res_date.startDate;
     this.selected_days = this.TimeService.calc_Diff_Date(this.StartDate, this.EndDate);
     this.dateform.controls['StartDate'].setValue(this.StartDate);
     this.dateform.controls['EndDate'].setValue(this.EndDate);

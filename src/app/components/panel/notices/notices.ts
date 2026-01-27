@@ -16,13 +16,5 @@ import {FormBuilder} from "@angular/forms";
 export class Notices implements OnInit {
   public constructor(private toast:NgToastService, private auth:AuthService, private router:Router, private fb:FormBuilder) {}
   async ngOnInit() {
-    if (this.auth.getUserRole() !== "Owner" && this.auth.getUserRole() !== "Admin") {
-      this.toast.error({detail: "ERROR", summary: "Access Denied!", duration: 5000, position: 'topRight'});
-      await this.router.navigate(['profile']);
-    }
-    if (this.auth.getUserName() == 'nouri.mobin'){
-      this.toast.error({ detail: "ERROR", summary: "Access Denied!", duration: 5000, position: 'topRight' });
-      await this.router.navigate(['profile']);
-    }
   }
 }

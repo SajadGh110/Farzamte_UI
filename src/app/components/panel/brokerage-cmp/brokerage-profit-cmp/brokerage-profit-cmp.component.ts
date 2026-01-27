@@ -94,17 +94,9 @@ export class BrokerageProfitCmpComponent implements OnInit {
 
 
   async ngOnInit(){
-    if (this.auth.getUserRole() !== "Owner" && this.auth.getUserName() !== 'Mobin.CEO' && this.auth.getUserName() !== 'Pishro.CEO' && this.auth.getUserName() !== 'Khobregan.CEO' && this.auth.getUserName() !== 'Pouyan.CEO' && this.auth.getUserName() !== 'Hosseinpoor.Pishro' && this.auth.getUserName() !== 'Zafarani.pishro') {
-      this.toast.error({detail: "ERROR", summary: "Access Denied!", duration: 5000, position: 'topRight'});
-      await this.router.navigate(['profile']);
-    }
-    if (this.auth.getUserName() == 'nouri.mobin'){
-      this.toast.error({ detail: "ERROR", summary: "Access Denied!", duration: 5000, position: 'topRight' });
-      await this.router.navigate(['profile']);
-    }
     let res_brokerage_name = await this.getDataBrokerage.Get_Brokerage_Name().toPromise();
-    this.brokerage_name = res_brokerage_name[0].name;
-    this.brokerage_logo = "assets/images/brokers/" + res_brokerage_name[0].logo;
+    this.brokerage_name = res_brokerage_name.name;
+    this.brokerage_logo = "assets/images/brokers/" + res_brokerage_name.logo;
     this.series_date = await this.getData.GetDateList().toPromise();
     this.series_date = this.series_date.sort((a:any, b:any) => {
       let [yearA, monthA] = a.split('-').map(Number);
