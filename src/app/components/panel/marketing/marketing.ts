@@ -322,8 +322,4 @@ export class Marketing implements OnInit {
       FileSaver.saveAs(blob, 'Marketing_export_' + new Date().getTime() + this.EXCEL_EXTENSION);
     });
   }
-
-  getBroker(){
-    return this.auth.getUserBroker();
-  }
 }

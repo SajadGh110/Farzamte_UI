@@ -253,8 +253,4 @@ export class NoticeCall implements OnInit {
     this.flag_time = true;
     await this.do(this.StartDate,this.EndDate);
   }
-
-  getBroker(){
-    return this.auth.getUserBroker();
-  }
 }

@@ -400,10 +400,6 @@ export class IncomingCall implements OnInit {
     this.flag_filter = true;
   }
 
-  getBroker(){
-    return this.auth.getUserBroker();
-  }
-
   @ViewChildren('Quick, Target_Totals, Totals') sections!: QueryList<ElementRef>;
 
   ScrollTo(sectionName: string) {

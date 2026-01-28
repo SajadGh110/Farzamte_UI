@@ -128,8 +128,4 @@ export class IncStatsComponent implements OnInit {
     };
     return map[type] ?? type;
   }
-
-  getBroker() {
-    return this.auth.getUserBroker();
-  }
 }

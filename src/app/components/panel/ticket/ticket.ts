@@ -341,9 +341,5 @@ export class Ticket implements OnInit {
     });
   }
 
-  getBroker(){
-    return this.auth.getUserBroker();
-  }
-
   scroll(){ this.target.nativeElement.scrollIntoView({ behavior: 'smooth' }); }
 }

@@ -51,7 +51,7 @@ export class Profile implements OnInit{
   }
 
   ngOnInit() {
-    let id : number = this.auth.getUserID();
+    let id : number | null = this.auth.getUserId();
     this.profile.getinfo().subscribe(response => {
       this.formData.firstName = response.firstName;
       this.formData.lastName = response.lastName;

@@ -1,0 +1,300 @@
+<div class="container-fluid">
+  <!-- هدر صفحه -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">
+            <i class="fas fa-users me-2"></i>مدیریت کاربران
+          </h5>
+        </div>
+        <div class="card-body">
+          <!-- پیام‌های موفقیت/خطا -->
+          <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ successMessage }}
+            <button type="button" class="btn-close" (click)="successMessage = ''"></button>
+          </div>
+          
+          <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ errorMessage }}
+            <button type="button" class="btn-close" (click)="errorMessage = ''"></button>
+          </div>
+          
+          <!-- نوار ابزار -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <form [formGroup]="searchForm" (ngSubmit)="searchUsers()" class="d-flex">
+                <div class="input-group">
+                  <input type="text" 
+                         formControlName="searchTerm" 
+                         class="form-control" 
+                         placeholder="جستجوی کاربر...">
+                  <button class="btn btn-outline-secondary" type="submit">
+                    <i class="fas fa-search"></i>
+                  </button>
+                  <button *ngIf="searchForm.get('searchTerm')?.value" 
+                          class="btn btn-outline-danger" 
+                          type="button" 
+                          (click)="resetSearch()">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </form>
+            </div>
+            <div class="col-md-6 text-end">
+              <button class="btn btn-primary" (click)="openAddModal()">
+                <i class="fas fa-plus me-1"></i>کاربر جدید
+              </button>
+              <button class="btn btn-outline-secondary ms-2" (click)="loadUsers()">
+                <i class="fas fa-sync-alt"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- جدول کاربران -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <!-- Loading State -->
+          <div *ngIf="loading" class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">در حال بارگذاری...</span>
+            </div>
+            <p class="mt-2">در حال بارگذاری کاربران...</p>
+          </div>
+          
+          <!-- Empty State -->
+          <div *ngIf="!loading && users.length === 0" class="text-center py-5">
+            <i class="fas fa-users fa-3x text-muted mb-3"></i>
+            <h5>کاربری یافت نشد</h5>
+            <p class="text-muted">هیچ کاربری در سیستم ثبت نشده است.</p>
+            <button class="btn btn-primary" (click)="openAddModal()">
+              ایجاد اولین کاربر
+            </button>
+          </div>
+          
+          <!-- Users Table -->
+          <div *ngIf="!loading && users.length > 0" class="table-responsive">
+            <table class="table table-hover table-striped">
+              <thead class="table-dark">
+                <tr>
+                  <th width="50">#</th>
+                  <th>نام کاربری</th>
+                  <th>نام و نام خانوادگی</th>
+                  <th>ایمیل</th>
+                  <th>تلفن</th>
+                  <th>وضعیت</th>
+                  <th>تاریخ ایجاد</th>
+                  <th>آخرین ورود</th>
+                  <th width="150" class="text-center">عملیات</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let user of paginatedUsers; let i = index">
+                  <td>{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
+                  <td>
+                    <strong>{{ user.userName }}</strong>
+                  </td>
+                  <td>
+                    <span *ngIf="user.firstName || user.lastName">
+                      {{ user.firstName }} {{ user.lastName }}
+                    </span>
+                    <span *ngIf="!user.firstName && !user.lastName" class="text-muted">
+                      وارد نشده
+                    </span>
+                  </td>
+                  <td>
+                    <span *ngIf="user.email">{{ user.email }}</span>
+                    <span *ngIf="!user.email" class="text-muted">-</span>
+                  </td>
+                  <td>
+                    <span *ngIf="user.phoneNumber">{{ user.phoneNumber }}</span>
+                    <span *ngIf="!user.phoneNumber" class="text-muted">-</span>
+                  </td>
+                  <td>
+                    <span [class]="'badge ' + getStatusClass(user.isActive)">
+                      {{ getStatusDisplay(user.isActive) }}
+                    </span>
+                  </td>
+                  <td>{{ formatDate(user.createdAt) }}</td>
+                  <td>{{ formatDate(user.lastLogin) }}</td>
+                  <td class="text-center">
+                    <div class="btn-group btn-group-sm" role="group">
+                      <button class="btn btn-outline-primary" 
+                              [title]="'ویرایش ' + user.userName"
+                              (click)="openEditModal(user)">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button [class]="user.isActive ? 'btn btn-outline-warning' : 'btn btn-outline-success'"
+                              [title]="user.isActive ? 'غیرفعال کردن' : 'فعال کردن'"
+                              (click)="toggleUserStatus(user)">
+                        <i [class]="user.isActive ? 'fas fa-ban' : 'fas fa-check'"></i>
+                      </button>
+                      <button class="btn btn-outline-danger" 
+                              [title]="'حذف ' + user.userName"
+                              (click)="deleteUser(user.id)">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <!-- Pagination -->
+            <div *ngIf="totalPages > 1" class="d-flex justify-content-between align-items-center mt-3">
+              <div class="text-muted">
+                نمایش {{ ((currentPage - 1) * itemsPerPage) + 1 }} تا 
+                {{ Math.min(currentPage * itemsPerPage, totalItems) }} از {{ totalItems }} کاربر
+              </div>
+              <nav>
+                <ul class="pagination mb-0">
+                  <li class="page-item" [class.disabled]="currentPage === 1">
+                    <a class="page-link" (click)="changePage(currentPage - 1)">
+                      <i class="fas fa-chevron-right"></i>
+                    </a>
+                  </li>
+                  
+                  <li *ngFor="let page of [].constructor(totalPages); let i = index" 
+                      class="page-item" 
+                      [class.active]="currentPage === i + 1">
+                    <a class="page-link" (click)="changePage(i + 1)">{{ i + 1 }}</a>
+                  </li>
+                  
+                  <li class="page-item" [class.disabled]="currentPage === totalPages">
+                    <a class="page-link" (click)="changePage(currentPage + 1)">
+                      <i class="fas fa-chevron-left"></i>
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- مودال افزودن/ویرایش کاربر -->
+<div class="modal fade" [class.show]="isAddMode || isEditMode" [style.display]="(isAddMode || isEditMode) ? 'block' : 'none'">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <i class="fas fa-user me-2"></i>
+          {{ isAddMode ? 'افزودن کاربر جدید' : 'ویرایش کاربر' }}
+        </h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="userForm" (ngSubmit)="submitForm()">
+          <div class="row">
+            <!-- نام کاربری -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label">نام کاربری *</label>
+              <input type="text" 
+                     class="form-control" 
+                     formControlName="userName"
+                     (blur)="checkUserNameExists()"
+                     [class.is-invalid]="userForm.get('userName')?.invalid && userForm.get('userName')?.touched">
+              <div class="invalid-feedback">
+                <div *ngIf="userForm.get('userName')?.errors?.['required']">
+                  نام کاربری الزامی است
+                </div>
+                <div *ngif="userForm.get('userName')?.errors?.['minlength']">
+                  نام کاربری باید حداقل ۳ کاراکتر باشد
+                </div>
+                <div *ngIf="userForm.get('userName')?.errors?.['userNameExists']">
+                  این نام کاربری قبلاً ثبت شده است
+                </div>
+              </div>
+            </div>
+            
+            <!-- رمز عبور -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label">
+                رمز عبور {{ isAddMode ? '*' : '' }}
+              </label>
+              <input type="password" 
+                     class="form-control" 
+                     formControlName="password"
+                     [class.is-invalid]="userForm.get('password')?.invalid && userForm.get('password')?.touched">
+              <div class="invalid-feedback">
+                <div *ngIf="userForm.get('password')?.errors?.['required'] && isAddMode">
+                  رمز عبور الزامی است
+                </div>
+                <div *ngIf="userForm.get('password')?.errors?.['minlength']">
+                  رمز عبور باید حداقل ۶ کاراکتر باشد
+                </div>
+              </div>
+              <small *ngIf="!isAddMode" class="text-muted">
+                در صورت عدم تغییر رمز عبور، این فیلد را خالی بگذارید
+              </small>
+            </div>
+            
+            <!-- نام -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label">نام</label>
+              <input type="text" 
+                     class="form-control" 
+                     formControlName="firstName">
+            </div>
+            
+            <!-- نام خانوادگی -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label">نام خانوادگی</label>
+              <input type="text" 
+                     class="form-control" 
+                     formControlName="lastName">
+            </div>
+            
+            <!-- ایمیل -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label">ایمیل</label>
+              <input type="email" 
+                     class="form-control" 
+                     formControlName="email"
+                     (blur)="checkEmailExists()"
+                     [class.is-invalid]="userForm.get('email')?.invalid && userForm.get('email')?.touched">
+              <div class="invalid-feedback">
+                <div *ngIf="userForm.get('email')?.errors?.['email']">
+                  فرمت ایمیل نامعتبر است
+                </div>
+                <div *ngIf="userForm.get('email')?.errors?.['emailExists']">
+                  این ایمیل قبلاً ثبت شده است
+                </div>
+              </div>
+            </div>
+            
+            <!-- شماره تلفن -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label">شماره تلفن</label>
+              <input type="tel" 
+                     class="form-control" 
+                     formControlName="phoneNumber">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeModal()">انصراف</button>
+        <button type="button" 
+                class="btn btn-primary" 
+                (click)="submitForm()"
+                [disabled]="loading || userForm.invalid">
+          <span *ngIf="loading" class="spinner-border spinner-border-sm me-1"></span>
+          {{ isAddMode ? 'ایجاد کاربر' : 'ذخیره تغییرات' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- overlay برای مودال -->
+<div *ngIf="isAddMode || isEditMode" class="modal-backdrop fade show"></div>

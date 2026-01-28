@@ -9,56 +9,148 @@ import {AppConfigService} from "./app-config.service";
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(private http : HttpClient, private router : Router, private jwt : JwtHelperService, private appConfigService: AppConfigService) { }
-  header = new HttpHeaders().append("api-key",this.appConfigService.getApiKey());
+  private tokenKey = 'auth_token';
+  private userKey = 'current_user';
 
-  register(userObj:any){
-    return this.http.post<any>(`${this.appConfigService.getApiUrl()}Users/Register`,userObj,{headers:this.header});
+  constructor(private http: HttpClient, private router: Router, private jwtHelper: JwtHelperService, private appConfigService: AppConfigService) { }
+  
+  private getHeaders(): HttpHeaders {
+    let headers = new HttpHeaders();
+    
+    if (this.appConfigService.getApiKey()) {
+      headers = headers.append("api-key", this.appConfigService.getApiKey());
+    }
+    
+    const token = this.getToken();
+    if (token) {
+      headers = headers.append("Authorization", `Bearer ${token}`);
+    }
+    
+    return headers;
   }
 
-  login(userObj:any){
-    return this.http.post<any>(`${this.appConfigService.getApiUrl()}Users/Login`,userObj,{headers:this.header});
+  get(url: string) {
+    return this.http.get(url, { headers: this.getHeaders() });
   }
 
-  logout(){
-    localStorage.clear();
+  post(url: string, data: any) {
+    return this.http.post(url, data, { headers: this.getHeaders() });
+  }
+  
+  put(url: string, data: any) {
+    return this.http.put(url, data, { headers: this.getHeaders() });
+  }
+  
+  delete(url: string) {
+    return this.http.delete(url, { headers: this.getHeaders() });
+  }
+
+  login(userObj: any) {
+    const url = `${this.appConfigService.getApiUrl()}Users/Login`;
+    return this.http.post<any>(url, userObj, { 
+      headers: new HttpHeaders().append("api-key", this.appConfigService.getApiKey()) 
+    });
+  }
+
+  logout() {
+    localStorage.removeItem(this.tokenKey);
+    localStorage.removeItem(this.userKey);
     this.router.navigate(['login']);
   }
 
-  storeToken(TokenValue:string){
-    localStorage.setItem('token',TokenValue);
+  storeToken(tokenValue: string) {
+    localStorage.setItem(this.tokenKey, tokenValue);
+    this.decodeAndStoreUserInfo(tokenValue);
   }
 
-  getToken():string{
-    return jwtDecode(localStorage.getItem('token')+"");
-  }
-
-  getUserID():number{
-    var tokken_string = JSON.stringify(this.getToken());
-    return parseInt(tokken_string.split(',')[2].split('"')[3]);
-  }
-
-  getUserName():string{
-    var tokken_string = JSON.stringify(this.getToken());
-    return tokken_string.split(',')[1].split('"')[3];
-  }
-
-  getUserRole():string{
-    var tokken_string = JSON.stringify(this.getToken());
-    return tokken_string.split(',')[0].split('"')[3];
-  }
-
-  getUserBroker():string{
-    var tokken_string = JSON.stringify(this.getToken());
-    return tokken_string.split(',')[3].split('"')[3];
-  }
-
-  isLoggedIn():boolean{
-    if (localStorage.getItem('token')){
-      let token: string = localStorage.getItem('token') + "";
-      return !this.jwt.tokenExpired(token);
+  private decodeAndStoreUserInfo(token: string): void {
+    try {
+      const decodedToken: any = jwtDecode(token);
+      
+      const userInfo = {
+        id: decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'],
+        userName: decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'],
+        firstName: decodedToken['FirstName'] || '',
+        lastName: decodedToken['LastName'] || ''
+      };
+      
+      localStorage.setItem(this.userKey, JSON.stringify(userInfo));
+    } catch (error) {
+      console.error('Error decoding token:', error);
     }
-    else
-      return false;
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem(this.tokenKey);
+  }
+
+  getTokenDecoded(): any {
+    const token = this.getToken();
+    if (!token) return null;
+    
+    try {
+      return jwtDecode(token);
+    } catch (error) {
+      console.error('Error decoding token:', error);
+      return null;
+    }
+  }
+
+  getUserId(): number | null {
+    const token = this.getTokenDecoded();
+    if (!token) return null;
+    return parseInt(token['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier']) || null;
+  }
+
+  getUserName(): string | null {
+    const token = this.getTokenDecoded();
+    if (!token) return null;
+    return token['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'] || null;
+  }
+
+  getUserFirstName(): string {
+    const userStr = localStorage.getItem(this.userKey);
+    if (userStr) {
+      const user = JSON.parse(userStr);
+      return user.firstName || '';
+    }
+    return '';
+  }
+
+  getUserLastName(): string {
+    const userStr = localStorage.getItem(this.userKey);
+    if (userStr) {
+      const user = JSON.parse(userStr);
+      return user.lastName || '';
+    }
+    return '';
+  }
+
+  getFullName(): string {
+    const firstName = this.getUserFirstName();
+    const lastName = this.getUserLastName();
+    if (firstName && lastName) {
+      return `${firstName} ${lastName}`;
+    } else if (firstName) {
+      return firstName;
+    } else if (lastName) {
+      return lastName;
+    } else {
+      return this.getUserName() || '';
+    }
+  }
+
+  isLoggedIn(): boolean {
+    const token = this.getToken();
+    if (!token) return false;
+    return !this.jwtHelper.tokenExpired(token);
+  }
+
+  addAuthHeader(headers: HttpHeaders): HttpHeaders {
+    const token = this.getToken();
+    if (token) {
+      return headers.append('Authorization', `Bearer ${token}`);
+    }
+    return headers;
   }
 }

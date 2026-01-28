@@ -21,14 +21,8 @@ export class DashboardSidebarComponent implements OnInit {
   logout(){
     this.auth.logout();
   }
-  getRole():string{
-    return this.auth.getUserRole();
-  }
-  getUserName():string{
+  getUserName():string | null{
     return this.auth.getUserName();
-  }
-  getBroker():string{
-    return this.auth.getUserBroker();
   }
 
   toggleSubmenu(submenu: string) { this.openSubmenu = this.openSubmenu === submenu ? null : submenu; }

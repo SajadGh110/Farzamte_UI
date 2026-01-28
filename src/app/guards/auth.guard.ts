@@ -1,37 +1,33 @@
-import {CanActivateFn, Router} from '@angular/router';
-import {inject, Injectable} from "@angular/core";
-import {AuthService} from "../services/auth.service";
-import {NgToastService} from "ng-angular-popup";
+import { CanActivateFn, Router } from '@angular/router';
+import { inject } from '@angular/core';
+import { AuthService } from '../services/auth.service';
+import { NgToastService } from 'ng-angular-popup';
 
-
-@Injectable({
-  providedIn: 'root'
-})
-class AuthGuard{
-  constructor(private auth : AuthService, private router : Router, private toast : NgToastService) {}
-  canActivate(): boolean {
-    if (this.auth.isLoggedIn()){
-      return true;
-    } else {
-      this.toast.error({detail:"ERROR" , summary:"Please Login First!"});
-      this.router.navigate(['login']);
-      return false;
-    }
+// Functional Guard برای صفحاتی که نیاز به لاگین دارند
+export const authGuard: CanActivateFn = (): boolean => {
+  const auth = inject(AuthService);
+  const router = inject(Router);
+  const toast = inject(NgToastService);
+  
+  if (auth.isLoggedIn()) {
+    return true;
+  } else {
+    toast.error({ detail: "ERROR", summary: "لطفاً ابتدا وارد شوید!", duration: 3000 });
+    router.navigate(['login']);
+    return false;
   }
-  IsSignedIn(): boolean {
-    if (this.auth.isLoggedIn()){
-      this.toast.info({detail:"Redirect" , summary:"You Are Signed In Currently , Go to Your Panel!"});
-      this.router.navigate(['brokerages']);
-      return false;
-    } else {
-      return true;
-    }
-  }
-}
-
-export const authGuard: CanActivateFn = ():boolean => {
-  return inject(AuthGuard).canActivate();
 };
-export const loginCheck: CanActivateFn = ():boolean => {
-  return inject(AuthGuard).IsSignedIn();
+
+// Functional Guard برای صفحه لاگین (اگر کاربر لاگین کرده، نرود به لاگین)
+export const loginGuard: CanActivateFn = (): boolean => {
+  const auth = inject(AuthService);
+  const router = inject(Router);
+  const toast = inject(NgToastService);
+  
+  if (auth.isLoggedIn()) {
+    toast.info({ detail: "Redirect", summary: "شما قبلاً وارد شده‌اید!", duration: 3000 });
+    router.navigate(['brokerages']);
+    return false;
+  }
+  return true;
 };

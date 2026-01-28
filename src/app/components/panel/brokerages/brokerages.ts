@@ -712,10 +712,6 @@ export class Brokerages implements OnInit {
     }
   }
 
-  getBroker(){
-    return this.auth.getUserBroker();
-  }
-
   @ViewChildren('select_date, view, totals, bob, fi, bki, bei, moshtaghe, online') sections!: QueryList<ElementRef>;
 
   ScrollTo(sectionName: string) {
