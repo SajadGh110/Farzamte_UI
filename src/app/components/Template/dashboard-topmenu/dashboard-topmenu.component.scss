@@ -3,11 +3,11 @@
 .dashboard-topmenu {
   @include glass-style;
   display: flex;
-  justify-content: space-between; // چیدمان سه بخشی (راست، وسط، چپ)
+  justify-content: space-between;
   align-items: center;
-  padding: 0 25px; // پدینگ کمتر
-  margin: 1rem 2rem 0 1rem; // کمی فاصله از بالا
-  height: 65px; // ارتفاع ظریف‌تر
+  padding: 0 25px;
+  margin: 1rem 1rem 0 1rem;
+  height: 65px;
   position: relative;
   z-index: 100;
 }
@@ -40,7 +40,7 @@
         border-radius: 50%;
         object-fit: cover;
       }
-      
+
       p {
         font-family: 'Vazirmatn', sans-serif;
         color: $text-main;
@@ -66,7 +66,7 @@
       visibility: hidden;
       transform: translateY(-10px);
       transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      
+
       &.show { opacity: 1; visibility: visible; transform: translateY(0); }
 
       li {
@@ -91,7 +91,7 @@
   left: 50%;
   transform: translateX(-50%); // دقیقاً وسط چین
   white-space: nowrap; // جلوگیری از شکستن متن
-  
+
   .motto-text {
     font-family: 'Vazirmatn', sans-serif; // یا فونت نستعلیق اگر دارید
     font-weight: 500;

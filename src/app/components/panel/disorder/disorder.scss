@@ -1,0 +1,78 @@
+@use '../../../../variables' as *;
+
+.coming-soon-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+  text-align: center;
+  padding: 40px;
+  @include glass-style;
+  margin: 20px;
+  border: 2px dashed rgba($primary-color, 0.3); // خط‌چین آبی برای حس ساخت و ساز
+
+  .icon-wrapper {
+    background: rgba($primary-color, 0.1);
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 25px;
+    position: relative;
+
+    i {
+      font-size: 50px;
+      color: $primary-color;
+    }
+
+    // یک افکت انیمیشن کوچک برای آیکون
+    &::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 2px solid $primary-color;
+      animation: pulse 2s infinite;
+    }
+  }
+
+  h3 {
+    font-family: $Font-Family-Fa;
+    color: $text-main;
+    font-size: 24px;
+    margin-bottom: 15px;
+    font-weight: bold;
+  }
+
+  p {
+    font-family: $Font-Family-Fa;
+    color: $text-secondary;
+    font-size: 16px;
+    max-width: 450px;
+    line-height: 1.8;
+  }
+
+  .progress-mini {
+    margin-top: 30px;
+    width: 200px;
+    height: 6px;
+    background: rgba(0,0,0,0.05);
+    border-radius: 10px;
+    overflow: hidden;
+    .progress-bar {
+      width: 60%; // درصد فرضی پیشرفت
+      height: 100%;
+      background: $primary-color;
+      border-radius: 10px;
+    }
+  }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 0.5; }
+  100% { transform: scale(1.4); opacity: 0; }
+}
