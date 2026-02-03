@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { JwtHelperService } from './jwt-helper.service';
+import { OutcallService } from './outcall-service';
 
-describe('JwtHelperService', () => {
-  let service: JwtHelperService;
+describe('OutcallService', () => {
+  let service: OutcallService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(JwtHelperService);
+    service = TestBed.inject(OutcallService);
   });
 
   it('should be created', () => {

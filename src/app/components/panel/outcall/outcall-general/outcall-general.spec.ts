@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Notices } from './notices';
+import { OutcallGeneral } from './outcall-general';
 
-describe('NoticesComponent', () => {
-  let component: Notices;
-  let fixture: ComponentFixture<Notices>;
+describe('OutcallGeneral', () => {
+  let component: OutcallGeneral;
+  let fixture: ComponentFixture<OutcallGeneral>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Notices]
+      imports: [OutcallGeneral]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(Notices);
+    fixture = TestBed.createComponent(OutcallGeneral);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
