@@ -38,7 +38,7 @@ export class HappyCall implements OnInit {
   protected flag_ChoosingBrokerage:boolean=false;
   protected flag_popup:boolean=false;
   protected flag_popup_data:boolean=false;
-  public constructor(private toast:NgToastService, private auth:AuthService, private router:Router, private fb:FormBuilder, private getData:HappycallService, private TimeService:TimeService, private datePipe: DatePipe) {}
+  public constructor(private toast:NgToastService, protected auth:AuthService, private router:Router, private fb:FormBuilder, private getData:HappycallService, private TimeService:TimeService, private datePipe: DatePipe) {}
   StartDate:string = "";
   EndDate:string = "";
   st_to_en:string = "";
@@ -200,6 +200,10 @@ export class HappyCall implements OnInit {
   };
 
   async ngOnInit(){
+    if (!this.auth.hasPermission('happyCall.view')) {
+      console.warn('دسترسی محدود: ریکوئستی ارسال نشد.');
+      return;
+    }
     this.dateform = this.fb.group({
       StartDate: [''],
       EndDate: ['']

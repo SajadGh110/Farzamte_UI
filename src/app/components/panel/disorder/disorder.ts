@@ -3,18 +3,20 @@ import {DashboardSidebarComponent} from "../../Template/dashboard-sidebar/dashbo
 import {AuthService} from "../../../services/auth.service";
 import { NgToastService } from 'ng-angular-popup';
 import {Router} from "@angular/router";
+import {DashboardTopmenuComponent} from "../../Template/dashboard-topmenu/dashboard-topmenu.component";
 
 @Component({
     selector: 'app-disorder',
-    imports: [
-        DashboardSidebarComponent
-    ],
+  imports: [
+    DashboardSidebarComponent,
+    DashboardTopmenuComponent
+  ],
     templateUrl: './disorder.html',
     styleUrl: './disorder.scss'
 })
 export class Disorder implements OnInit {
   public constructor(private auth:AuthService, private router:Router, private toast:NgToastService) {}
   async ngOnInit() {
-    
+
   }
 }

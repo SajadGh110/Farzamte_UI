@@ -179,7 +179,7 @@ app-menu {
 }
 .dashboard-wrapper {
   display: flex;
-  direction: ltr; 
+  direction: ltr;
   flex-direction: row;
   background-color: $Background;
   min-height: 100vh;
@@ -1232,5 +1232,48 @@ text.value-text {
   app-note1 {
     width: 200px;
     margin: auto 0 4rem;
+  }
+}
+.access-denied-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+  text-align: center;
+  padding: 40px;
+  @include glass-style; // استفاده از میکسین شیشه‌ای خودت
+  margin: 20px;
+  border: 2px dashed rgba($error-color, 0.3);
+
+  .icon-wrapper {
+    background: rgba($error-color, 0.1);
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+
+    i {
+      font-size: 50px;
+      color: $error-color;
+    }
+  }
+
+  h3 {
+    font-family: $Font-Family-Fa;
+    color: $text-main;
+    font-size: 22px;
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-family: $Font-Family-Fa;
+    color: $text-secondary;
+    font-size: 16px;
+    max-width: 400px;
+    line-height: 1.6;
   }
 }

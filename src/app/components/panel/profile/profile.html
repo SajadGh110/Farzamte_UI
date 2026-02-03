@@ -1,104 +1,86 @@
 <section class="dashboard-wrapper">
   <app-dashboard-sidebar></app-dashboard-sidebar>
+
   <section class="dashboard-main">
     <app-dashboard-topmenu></app-dashboard-topmenu>
-    <section class="row">
-      <section class="detail">
-        <h2>پروفایل</h2>
-      </section>
-      <section class="profile">
-        <section class="information">
-          <form [formGroup]="profileform" class="main-form">
-            <section class="header">
-              <h3>اطلاعات حساب کاربری</h3>
-            </section>
-            <section class="loading-spinner" *ngIf="!flag_profile">
-              <mat-spinner></mat-spinner>
-            </section>
-            <section class="form" *ngIf="flag_profile">
-              <section class="item">
-                <label for="firstName">نام : </label>
-                <input class="firstName" type="text" formControlName="firstName" id="firstName" placeholder="نام" value="{{formData.firstName}}">
-              </section>
-              <section class="item">
-                <label for="lastName">نام خانوادگی : </label>
-                <input class="lastName" type="text" formControlName="lastName" id="lastName" placeholder="نام خانوادگی" value="{{formData.lastName}}">
-              </section>
-              <section class="item">
-                <label for="email">ایمیل : </label>
-                <input class="email" type="text" formControlName="email" id="email" placeholder="ایمیل" value="{{formData.email}}">
-              </section>
-              <section class="item">
-                <label for="phoneNumber">تلفن همراه : </label>
-                <input class="phoneNumber" type="text" formControlName="phoneNumber" id="phoneNumber" placeholder="تلفن تماس" value="{{formData.phoneNumber}}">
-              </section>
-              <section class="item">
-                <label for="city">شهر : </label>
-                <input class="city" type="text" formControlName="city" id="city" placeholder="شهر" value="{{formData.city}}">
-              </section>
-              <section class="item">
-                <label for="address">آدرس : </label>
-                <input class="address" type="text" formControlName="address" id="address" placeholder="آدرس" value="{{formData.address}}">
-              </section>
-              <section class="item">
-                <label for="postalCode">کدپستی : </label>
-                <input class="postalCode" type="text" formControlName="postalCode" id="postalCode" placeholder="کدپستی" value="{{formData.postalCode}}">
-              </section>
-              <section class="item">
-                <label>سطح کاربری : </label>
-                <section ngSwitch="{{formData.role}}">
-                  <input class="role" type="text" *ngSwitchCase="'Normal'" value="عادی" disabled>
-                  <input class="role" type="text" *ngSwitchCase="'Admin'" value="ادمین کارگزاری" disabled>
-                  <input class="role" type="text" *ngSwitchCase="'Owner'" value="توسعه دهنده" disabled>
-                  <input class="role" type="text" *ngSwitchDefault value="نقش شناخته شده نیست" disabled>
-                </section>
-              </section>  
-              <section class="item">
-                <label>نام کاربری : </label>
-                <input class="username" type="text" value="{{formData.userName}}" disabled>
-              </section>
-              <section class="item">
-                <label for="password">گذرواژه : </label>
-                <input class="password" type="password" formControlName="password" id="password" [class.is-invalid]="profileform.controls['password'].dirty && profileform.hasError('required','password')" placeholder="گذرواژه">
-                <small *ngIf="profileform.controls['password'].dirty && profileform.hasError('required','password')" class="text-error">وارد کردن گذرواژه الزامیست!</small>
-              </section>
-              <section class="item">
-                <input (click)="onUpdate()" type="submit" class="submit" value="ویرایش اطلاعات">
-              </section>
-            </section>
+
+    <div class="content-scrollable">
+      <div class="profile-grid">
+        <section class="glass-card main-info">
+          <div class="card-header">
+            <h3>اطلاعات حساب کاربری</h3>
+          </div>
+
+          <section class="loading-spinner" *ngIf="!flag_profile">
+            <mat-spinner diameter="50"></mat-spinner>
+          </section>
+
+          <form [formGroup]="profileform" (ngSubmit)="onUpdate()" *ngIf="flag_profile" class="modern-form">
+            <div class="form-grid">
+              <div class="form-group">
+                <label>نام</label>
+                <input type="text" formControlName="firstName" placeholder="نام">
+              </div>
+              <div class="form-group">
+                <label>نام خانوادگی</label>
+                <input type="text" formControlName="lastName" placeholder="نام خانوادگی">
+              </div>
+              <div class="form-group">
+                <label>ایمیل</label>
+                <input type="email" formControlName="email" placeholder="email@example.com">
+              </div>
+              <div class="form-group">
+                <label>تلفن همراه</label>
+                <input type="text" formControlName="phoneNumber" placeholder="0912...">
+              </div>
+              <div class="form-group">
+                <label>شهر</label>
+                <input type="text" formControlName="city" placeholder="نام شهر">
+              </div>
+              <div class="form-group">
+                <label>کد پستی</label>
+                <input type="text" formControlName="postalCode" placeholder="10 رقم">
+              </div>
+              <div class="form-group full-width">
+                <label>آدرس</label>
+                <textarea formControlName="address" rows="2" placeholder="آدرس دقیق..."></textarea>
+              </div>
+              <div class="form-group full-width">
+                <label>نام کاربری (غیرقابل تغییر)</label>
+                <input type="text" [value]="formData.userName" disabled class="disabled-input">
+              </div>
+              <div class="form-group full-width">
+                <label>تایید هویت (رمز عبور فعلی)</label>
+                <input type="password" formControlName="password" placeholder="برای ثبت تغییرات رمز خود را وارد کنید">
+                <small *ngIf="profileform.get('password')?.touched && profileform.get('password')?.errors?.['required']" class="error-text">وارد کردن گذرواژه الزامی است!</small>
+              </div>
+            </div>
+            <button type="submit" class="btn-submit" [disabled]="profileform.invalid">ویرایش اطلاعات</button>
           </form>
         </section>
-        <section class="change-password">
-          <form [formGroup]="changepass_form">
-            <section class="header">
-              <h3>ویرایش گذرواژه</h3>
-            </section>
-            <section class="loading-spinner" *ngIf="!flag_profile">
-              <mat-spinner></mat-spinner>
-            </section>
-            <section class="form" *ngIf="flag_profile">
-              <section class="item">
-                <label for="chp_password">گذرواژه : </label>
-                <input class="password" type="password" formControlName="password" id="chp_password" [class.is-invalid]="changepass_form.controls['password'].dirty && changepass_form.hasError('required','password')" placeholder="گذرواژه">
-                <small *ngIf="changepass_form.controls['password'].dirty && changepass_form.hasError('required','password')" class="text-error">وارد کردن گذرواژه الزامیست!</small>
-              </section>
-              <section class="item">
-                <label for="chp_new_password">گذرواژه جدید : </label>
-                <input class="password" type="password" formControlName="new_password" id="chp_new_password" [class.is-invalid]="changepass_form.controls['new_password'].dirty && changepass_form.hasError('required','new_password')" placeholder="گذرواژه جدید">
-                <small *ngIf="changepass_form.controls['new_password'].dirty && changepass_form.hasError('required','new_password')" class="text-error">وارد کردن گذرواژه جدید الزامیست!</small>
-              </section>
-              <section class="item">
-                <label for="chp_re_password">تکرار گذرواژه : </label>
-                <input class="password" type="password" formControlName="re_password" id="chp_re_password" [class.is-invalid]="changepass_form.controls['re_password'].dirty && changepass_form.hasError('required','re_password')" placeholder="تکرار گذرواژه">
-                <small *ngIf="changepass_form.controls['re_password'].dirty && changepass_form.hasError('required','re_password')" class="text-error">وارد کردن تکرار گذرواژه الزامیست!</small>
-              </section>
-              <section class="item">
-                <input (click)="onChangePassword()" type="submit" class="submit" value="ویرایش گذرواژه">
-              </section>
-            </section>
+
+        <section class="glass-card password-card">
+          <div class="card-header">
+            <h3>تغییر رمز عبور</h3>
+          </div>
+
+          <form [formGroup]="changepass_form" (ngSubmit)="onChangePassword()" *ngIf="flag_profile" class="modern-form">
+            <div class="form-group">
+              <label>رمز عبور فعلی</label>
+              <input type="password" formControlName="password" placeholder="Current Password">
+            </div>
+            <div class="form-group">
+              <label>رمز عبور جدید</label>
+              <input type="password" formControlName="new_password" placeholder="New Password">
+            </div>
+            <div class="form-group">
+              <label>تکرار رمز عبور جدید</label>
+              <input type="password" formControlName="re_password" placeholder="Repeat New Password">
+            </div>
+            <button type="submit" class="btn-submit secondary" [disabled]="changepass_form.invalid">بروزرسانی رمز عبور</button>
           </form>
         </section>
-      </section>
-    </section>
+      </div>
+    </div>
   </section>
 </section>

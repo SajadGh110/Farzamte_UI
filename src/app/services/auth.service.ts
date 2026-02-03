@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http'
 import {Router} from "@angular/router";
 import {jwtDecode} from "jwt-decode";
-import {JwtHelperService} from "./jwt-helper.service";
 import {AppConfigService} from "./app-config.service";
 
 @Injectable({
@@ -11,21 +10,15 @@ import {AppConfigService} from "./app-config.service";
 export class AuthService {
   private tokenKey = 'auth_token';
   private userKey = 'current_user';
+  private permissionsKey = 'user_permissions';
 
-  constructor(private http: HttpClient, private router: Router, private jwtHelper: JwtHelperService, private appConfigService: AppConfigService) { }
-  
+  constructor(private http: HttpClient, private router: Router, private appConfigService: AppConfigService) { }
+
   private getHeaders(): HttpHeaders {
     let headers = new HttpHeaders();
-    
-    if (this.appConfigService.getApiKey()) {
-      headers = headers.append("api-key", this.appConfigService.getApiKey());
-    }
-    
     const token = this.getToken();
-    if (token) {
+    if (token)
       headers = headers.append("Authorization", `Bearer ${token}`);
-    }
-    
     return headers;
   }
 
@@ -36,25 +29,44 @@ export class AuthService {
   post(url: string, data: any) {
     return this.http.post(url, data, { headers: this.getHeaders() });
   }
-  
+
   put(url: string, data: any) {
     return this.http.put(url, data, { headers: this.getHeaders() });
   }
-  
+
   delete(url: string) {
     return this.http.delete(url, { headers: this.getHeaders() });
   }
 
   login(userObj: any) {
     const url = `${this.appConfigService.getApiUrl()}Users/Login`;
-    return this.http.post<any>(url, userObj, { 
-      headers: new HttpHeaders().append("api-key", this.appConfigService.getApiKey()) 
-    });
+    return this.http.post<any>(url, userObj);
+  }
+
+  storePermissions(response: any) {
+    const permissionsNames = response.data.map((p: any) => p.name);
+    localStorage.setItem(this.permissionsKey, JSON.stringify(permissionsNames));
+  }
+
+  getPermissions(): string[] {
+    const perms = localStorage.getItem(this.permissionsKey);
+    return perms ? JSON.parse(perms) : [];
+  }
+
+  hasPermission(permissionName: string): boolean {
+    const permissions = this.getPermissions();
+    return permissions.includes(permissionName);
+  }
+
+  hasAnyPermission(permissionNames: string[]): boolean {
+    const userPermissions = this.getPermissions();
+    return permissionNames.some(p => userPermissions.includes(p));
   }
 
   logout() {
     localStorage.removeItem(this.tokenKey);
     localStorage.removeItem(this.userKey);
+    localStorage.removeItem(this.permissionsKey);
     this.router.navigate(['login']);
   }
 
@@ -66,14 +78,14 @@ export class AuthService {
   private decodeAndStoreUserInfo(token: string): void {
     try {
       const decodedToken: any = jwtDecode(token);
-      
+
       const userInfo = {
-        id: decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'],
-        userName: decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'],
+        id: decodedToken['nameid'],
+        userName: decodedToken['unique_name'],
         firstName: decodedToken['FirstName'] || '',
         lastName: decodedToken['LastName'] || ''
       };
-      
+
       localStorage.setItem(this.userKey, JSON.stringify(userInfo));
     } catch (error) {
       console.error('Error decoding token:', error);
@@ -87,7 +99,6 @@ export class AuthService {
   getTokenDecoded(): any {
     const token = this.getToken();
     if (!token) return null;
-    
     try {
       return jwtDecode(token);
     } catch (error) {
@@ -99,13 +110,13 @@ export class AuthService {
   getUserId(): number | null {
     const token = this.getTokenDecoded();
     if (!token) return null;
-    return parseInt(token['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier']) || null;
+    return parseInt(token['nameid']) || null;
   }
 
   getUserName(): string | null {
     const token = this.getTokenDecoded();
     if (!token) return null;
-    return token['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'] || null;
+    return token['unique_name'] || null;
   }
 
   getUserFirstName(): string {
@@ -143,14 +154,21 @@ export class AuthService {
   isLoggedIn(): boolean {
     const token = this.getToken();
     if (!token) return false;
-    return !this.jwtHelper.tokenExpired(token);
+    return !this.tokenExpired(token);
   }
 
-  addAuthHeader(headers: HttpHeaders): HttpHeaders {
-    const token = this.getToken();
-    if (token) {
-      return headers.append('Authorization', `Bearer ${token}`);
+  tokenExpired(token: string): boolean {
+    if (!token) return true;
+
+    try {
+      const decoded: any = jwtDecode(token);
+      const expirationDate = new Date(0);
+      expirationDate.setUTCSeconds(decoded.exp);
+
+      return expirationDate < new Date();
+    } catch (error) {
+      console.error('Error checking token expiration:', error);
+      return true;
     }
-    return headers;
   }
 }

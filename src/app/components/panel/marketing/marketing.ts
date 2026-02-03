@@ -4,7 +4,6 @@ import {NgToastService} from "ng-angular-popup";
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {DatePipe, NgIf} from '@angular/common';
 import {TimeService} from "../../../services/time.service";
-import {DashboardContactComponent} from "../../Template/dashboard-contact/dashboard-contact.component";
 import {EChartsOption} from "echarts";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {NgxEchartsDirective} from "ngx-echarts";
@@ -15,19 +14,20 @@ import {Router} from "@angular/router";
 import {format, subDays} from "date-fns";
 import * as ExcelJS from 'exceljs';
 import * as FileSaver from 'file-saver';
+import {DashboardTopmenuComponent} from "../../Template/dashboard-topmenu/dashboard-topmenu.component";
 
 @Component({
     selector: 'app-marketing',
-    imports: [
-        DashboardSidebarComponent,
-        DashboardContactComponent,
-        MatProgressSpinner,
-        NgIf,
-        NgxEchartsDirective,
-        ListTable,
-        FormsModule,
-        ReactiveFormsModule
-    ],
+  imports: [
+    DashboardSidebarComponent,
+    MatProgressSpinner,
+    NgIf,
+    NgxEchartsDirective,
+    ListTable,
+    FormsModule,
+    ReactiveFormsModule,
+    DashboardTopmenuComponent
+  ],
     providers: [DatePipe],
     templateUrl: './marketing.html',
     styleUrl: './marketing.scss'
@@ -42,7 +42,7 @@ export class Marketing implements OnInit {
   protected flag_avg_satisfaction_s:boolean=false;
   protected flag_avg_satisfaction_t:boolean=false;
   protected flag_table:boolean=false;
-  public constructor(private toast:NgToastService, private auth:AuthService, private router:Router, private fb:FormBuilder, private getData:TransportToSmartService, private TimeService:TimeService, private datePipe: DatePipe) {}
+  public constructor(private toast:NgToastService, protected auth:AuthService, private router:Router, private fb:FormBuilder, private getData:TransportToSmartService, private TimeService:TimeService, private datePipe: DatePipe) {}
   StartDate:string = "";
   EndDate:string = "";
   st_to_en:string = "";
@@ -160,6 +160,10 @@ export class Marketing implements OnInit {
   };
 
   async ngOnInit(){
+    if (!this.auth.hasPermission('marketing.view')) {
+      console.warn('دسترسی محدود: ریکوئستی ارسال نشد.');
+      return;
+    }
     this.dateform = this.fb.group({
       StartDate: [''],
       EndDate: ['']

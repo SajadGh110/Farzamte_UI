@@ -4,18 +4,20 @@ import {NgToastService} from "ng-angular-popup";
 import {AuthService} from "../../../services/auth.service";
 import {Router} from "@angular/router";
 import {FormBuilder} from "@angular/forms";
+import {DashboardTopmenuComponent} from "../../Template/dashboard-topmenu/dashboard-topmenu.component";
 
 @Component({
     selector: 'app-survey',
-    imports: [
-        DashboardSidebarComponent,
-    ],
+  imports: [
+    DashboardSidebarComponent,
+    DashboardTopmenuComponent,
+  ],
     templateUrl: './survey.html',
     styleUrl: './survey.scss'
 })
 export class Survey implements OnInit {
   public constructor(private toast:NgToastService, private auth:AuthService, private router:Router, private fb:FormBuilder) {}
   async ngOnInit() {
-    
+
   }
 }

@@ -2,7 +2,6 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {DashboardSidebarComponent} from '../../../Template/dashboard-sidebar/dashboard-sidebar.component';
 import {CommonModule, NgIf} from '@angular/common';
 import {AuthService} from '../../../../services/auth.service';
-import {DashboardContactComponent} from '../../../Template/dashboard-contact/dashboard-contact.component';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import {MatSelectModule} from '@angular/material/select';
@@ -14,6 +13,7 @@ import {IncStatService} from "../../../../services/inc-stat.service";
 import {NgToastService} from "ng-angular-popup";
 import {IncStatsChartComponent} from "./inc-stats-chart/inc-stats-chart.component";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
+import {DashboardTopmenuComponent} from "../../../Template/dashboard-topmenu/dashboard-topmenu.component";
 
 @Component({
   selector: 'app-inc-stats',
@@ -22,7 +22,6 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
     DashboardSidebarComponent,
     NgIf,
     CommonModule,
-    DashboardContactComponent,
     MatTableModule,
     MatPaginatorModule,
     MatSelectModule,
@@ -31,6 +30,7 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
     MatInputModule,
     IncStatsChartComponent,
     MatProgressSpinner,
+    DashboardTopmenuComponent,
   ],
   templateUrl: './inc-stats.component.html',
   styleUrls: ['./inc-stats.component.scss']
@@ -41,7 +41,7 @@ export class IncStatsComponent implements OnInit {
   allData: IncStatRow[] = [];
 
   constructor(
-    private auth: AuthService,
+    protected auth: AuthService,
     private Service: IncStatService,
     private toast: NgToastService
   ) {}
@@ -56,6 +56,10 @@ export class IncStatsComponent implements OnInit {
   displayedColumns: string[] = ['type', 'date', 'answered', 'avgWait', 'avgTalk'];
 
   async ngOnInit() {
+    if (!this.auth.hasPermission('incomingCall.view')) {
+      console.warn('دسترسی محدود: ریکوئستی ارسال نشد.');
+      return;
+    }
     try {
       this.types = await this.Service.get_AllTypes().toPromise();
       if (this.types.length > 0)

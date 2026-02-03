@@ -1,156 +1,134 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import {FormBuilder, FormGroup, Validators, FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { AuthService } from "../../../services/auth.service";
+import { UserService } from "../../../services/user.service";
+import { NgToastService } from "ng-angular-popup";
+import { Router } from "@angular/router";
 import {DashboardSidebarComponent} from "../../Template/dashboard-sidebar/dashboard-sidebar.component";
-import { DashboardTopmenuComponent } from '../../Template/dashboard-topmenu/dashboard-topmenu.component';
-import {AuthService} from "../../../services/auth.service";
-import {ProfileService} from "../../../services/profile.service";
-import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
-import { NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault} from "@angular/common";
-import {NgToastService} from "ng-angular-popup";
-import {Router} from "@angular/router";
+import {DashboardTopmenuComponent} from "../../Template/dashboard-topmenu/dashboard-topmenu.component";
+import {NgIf} from "@angular/common";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 
 @Component({
-    selector: 'app-profile',
-    imports: [
-        DashboardSidebarComponent,
-        DashboardTopmenuComponent,
-        FormsModule,
-        NgIf,
-        ReactiveFormsModule,
-        NgSwitch,
-        NgSwitchCase,
-        NgSwitchDefault,
-        MatProgressSpinner
-      ],
-    templateUrl: './profile.html',
-    styleUrl: './profile.scss'
+  selector: 'app-profile',
+  templateUrl: './profile.html',
+  styleUrl: './profile.scss',
+  standalone: true,
+  imports: [ DashboardSidebarComponent,
+    DashboardTopmenuComponent,
+    FormsModule,
+    NgIf,
+    ReactiveFormsModule,
+    MatProgressSpinner ]
 })
-export class Profile implements OnInit{
-  profileform! : FormGroup;
-  formData = {
-    firstName: "",
-    lastName: "",
-    userName: "",
-    email: "",
-    broker: "",
-    phoneNumber: "",
-    city: "",
-    address: "",
-    postalCode: "",
-    role: ""
-  };
+export class Profile implements OnInit {
+  profileform!: FormGroup;
   changepass_form!: FormGroup;
-  chp_form = {
-    password: "",
-    new_password: "",
-    re_password: ""
+  flag_profile: boolean = false;
+  formData: any = {};
+
+  constructor(
+    private auth: AuthService,
+    private userService: UserService,
+    private fb: FormBuilder,
+    private toast: NgToastService,
+    private router: Router
+  ) {
+    this.initForms();
   }
-  protected flag_profile: boolean = false;
-  brokers = ['Mobin', 'Pishro', 'Pouyan', 'Khobregan'];
-  public constructor(private auth:AuthService, private profile:ProfileService, private fb:FormBuilder, private toast:NgToastService, private router:Router) {
+
+  private initForms() {
+    this.profileform = this.fb.group({
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      phoneNumber: [''],
+      city: [''],
+      address: [''],
+      postalCode: [''],
+      password: ['', Validators.required]
+    });
+
+    this.changepass_form = this.fb.group({
+      password: ['', Validators.required],
+      new_password: ['', [Validators.required, Validators.minLength(6)]],
+      re_password: ['', Validators.required]
+    });
   }
 
   ngOnInit() {
-    let id : number | null = this.auth.getUserId();
-    this.profile.getinfo().subscribe(response => {
-      this.formData.firstName = response.firstName;
-      this.formData.lastName = response.lastName;
-      this.formData.userName = response.userName;
-      this.formData.email = response.email;
-      this.formData.broker = response.broker;
-      this.formData.phoneNumber = response.phoneNumber;
-      this.formData.city = response.city;
-      this.formData.address = response.address;
-      this.formData.postalCode = response.postalCode;
-      this.formData.role = response.role;
+    this.loadProfile();
+  }
 
-      this.profileform.controls['firstName'].setValue(response.firstName);
-      this.profileform.controls['lastName'].setValue(response.lastName);
-      this.profileform.controls['userName'].setValue(response.userName);
-      this.profileform.controls['email'].setValue(response.email);
-      this.profileform.controls['broker'].setValue(response.broker);
-      this.profileform.controls['phoneNumber'].setValue(response.phoneNumber);
-      this.profileform.controls['city'].setValue(response.city);
-      this.profileform.controls['address'].setValue(response.address);
-      this.profileform.controls['postalCode'].setValue(response.postalCode);
-      this.profileform.controls['role'].setValue(response.role);
-      this.flag_profile = true;
-    },error => {
-      this.toast.error({detail:"ERROR",summary:"Can't Connect to the Server!",duration:5000, position:'topRight'})
+  loadProfile() {
+    this.userService.getProfile().subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.formData = response.data;
+          this.profileform.patchValue(response.data);
+          this.flag_profile = true;
+        } else {
+          this.toast.error({ detail: "خطا", summary: response.message || "اطلاعات دریافت نشد" });
+        }
+      },
+      error: (err) => {
+        this.toast.error({ detail: "ERROR", summary: "خطا در برقراری ارتباط با سرور" });
+        console.error(err);
+      }
     });
-
-    this.profileform = this.fb.group({
-      firstName : ['', Validators.required],
-      lastName : ['', Validators.required],
-      userName : ['', Validators.required],
-      email : ['', Validators.required],
-      broker: ['', Validators.required],
-      phoneNumber : [''],
-      city : [''],
-      address : [''],
-      postalCode : [''],
-      role : [''],
-      password : ['', Validators.required],
-    })
-    this.changepass_form = this.fb.group({
-      password: ['', Validators.required],
-      new_password: ['', Validators.required],
-      re_password: ['', Validators.required]
-    })
   }
 
-  onUpdate(){
-    if (this.profileform.valid){
-      this.profile.useredit(this.profileform.value).subscribe({
-        error:(res=>{
-          if (res.status == 200){
-            this.toast.success({detail:"SUCCESS",summary:res.error.text,duration:5000, position:'topRight'});
-            this.router.navigate(['brokerages']);
+  onUpdate() {
+    if (this.profileform.valid) {
+      this.userService.updateProfile(this.profileform.value).subscribe({
+        next: (response: any) => {
+          if (response.success) {
+            this.toast.success({ detail: "موفقیت", summary: response.message, duration: 3000 });
+            if(response.data) this.profileform.patchValue(response.data);
+          } else {
+            this.toast.error({ detail: "خطا", summary: response.message });
           }
-          else
-            this.toast.error({detail:"ERROR",summary:res.error,duration:5000, position:'topRight'});
-        })
+        },
+        error: (err) => {
+          const errorMsg = err.error?.message || "خطا در به‌روزرسانی";
+          this.toast.error({ detail: "ERROR", summary: errorMsg });
+        }
       });
-    }
-    else {
-      this.ValidateAllFormFields(this.profileform);
-      this.toast.error({detail:"ERROR",summary:"Your Form Is Not Valid!",duration:5000, position:'topRight'});
-    }
-
-  }
-
-  onChangePassword(){
-    if (this.changepass_form.valid){
-      if (this.changepass_form.controls['new_password'].value == this.changepass_form.controls['re_password'].value){
-        this.profile.change_password(this.changepass_form.value).subscribe({
-          error:(res=>{
-            if (res.status == 200){
-              this.toast.success({detail:"SUCCESS",summary:res.error.text,duration:5000, position:'topRight'});
-              this.router.navigate(['brokerages']);
-            }
-            else
-              this.toast.error({detail:"ERROR",summary:res.error,duration:5000, position:'topRight'});
-          })
-        });
-      }
-      else {
-        this.toast.error({detail:"ERROR",summary:"The new password and re-password are not the same!",duration:5000, position:'topRight'});
-      }
-    }
-    else {
-      this.ValidateAllFormFields(this.changepass_form);
-      this.toast.error({detail:"ERROR",summary:"Your Form Is Not Valid!",duration:5000, position:'topRight'});
+    } else {
+      this.validateAllFormFields(this.profileform);
     }
   }
 
-  private ValidateAllFormFields(formgroup: FormGroup){
-    Object.keys(formgroup.controls).forEach(field => {
-      const control = formgroup.get(field);
-      if(control instanceof FormControl){
-        control.markAsDirty({ onlySelf: true });
-      } else if(control instanceof FormGroup){
-        this.ValidateAllFormFields(control);
+  onChangePassword() {
+    if (this.changepass_form.invalid) {
+      this.validateAllFormFields(this.changepass_form);
+      return;
+    }
+    const { new_password, re_password } = this.changepass_form.value;
+    if (new_password !== re_password) {
+      this.toast.error({ detail: "خطا", summary: "رمز عبور جدید و تکرار آن یکسان نیستند" });
+      return;
+    }
+    this.userService.changePassword(this.changepass_form.value).subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.toast.success({ detail: "موفقیت", summary: response.message });
+          this.changepass_form.reset(); // پاک کردن فرم پس از موفقیت
+        } else {
+          this.toast.error({ detail: "خطا", summary: response.message });
+        }
+      },
+      error: (err) => {
+        this.toast.error({ detail: "ERROR", summary: err.error?.message || "تغییر رمز انجام نشد" });
       }
-    })
+    });
+  }
+
+  private validateAllFormFields(formGroup: FormGroup) {
+    Object.keys(formGroup.controls).forEach(field => {
+      const control = formGroup.get(field);
+      control?.markAsDirty({ onlySelf: true });
+      control?.markAsTouched({ onlySelf: true });
+    });
   }
 }

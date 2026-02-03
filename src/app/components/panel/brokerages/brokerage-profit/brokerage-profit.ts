@@ -8,6 +8,7 @@ import {DecimalPipe, NgForOf, NgIf} from "@angular/common";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatTab, MatTabGroup} from "@angular/material/tabs";
 import {BrokerageService} from "../../../../services/brokerage.service";
+import {DashboardTopmenuComponent} from "../../../Template/dashboard-topmenu/dashboard-topmenu.component";
 
 @Component({
   selector: 'app-brokerage-profit',
@@ -18,13 +19,14 @@ import {BrokerageService} from "../../../../services/brokerage.service";
     NgIf,
     DecimalPipe,
     MatTab,
-    MatTabGroup
+    MatTabGroup,
+    DashboardTopmenuComponent
   ],
   templateUrl: './brokerage-profit.html',
   styleUrl: './brokerage-profit.scss'
 })
 export class BrokerageProfit implements OnInit {
-  public constructor(private auth:AuthService, private getData:BrokerageProfitService, private getDataBrokerage:BrokerageService, private router:Router, private toast:NgToastService) {}
+  public constructor(protected auth:AuthService, private getData:BrokerageProfitService, private getDataBrokerage:BrokerageService, private router:Router, private toast:NgToastService) {}
   protected flag_date:boolean=false;
   protected flag_data:boolean=false;
   series_date:any = [];
@@ -86,6 +88,10 @@ export class BrokerageProfit implements OnInit {
   columnTitles_t: { [key: string]: string } = {t: "کل معاملات در بورس‌ها و فرابورس"}
 
   async ngOnInit() {
+    if (!this.auth.hasPermission('brokerageProfit.view')) {
+      console.warn('دسترسی محدود: ریکوئستی ارسال نشد.');
+      return;
+    }
     let res_brokerage_name = await this.getDataBrokerage.Get_Brokerage_Name().toPromise();
     this.brokerage_name = "کارگزاری " + res_brokerage_name.name;
     this.brokerage_logo = "assets/images/brokers/" + res_brokerage_name.logo;

@@ -1,37 +1,36 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {AppConfigService} from "./app-config.service";
 import {Observable} from "rxjs";
+import {AuthService} from "./auth.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class QaService {
-
-  constructor(private http : HttpClient, private appConfigService: AppConfigService) { }
-  header = new HttpHeaders().append("api-key",this.appConfigService.getApiKey()).append("Authorization",this.appConfigService.getToken());
+  constructor(private authService: AuthService, private appConfigService: AppConfigService) { }
+  private apiUrl = `${this.appConfigService.getApiUrl()}QA/`;
 
   GetAccessibleUnits():Observable<any>{
-    return this.http.get(`${this.appConfigService.getApiUrl()}QA/GetAccessibleUnits`,{headers:this.header});
+    return this.authService.get(`${this.apiUrl}GetAccessibleUnits`);
   }
 
   GetAvailableMonths(unit:string):Observable<any>{
-    return this.http.get(`${this.appConfigService.getApiUrl()}QA/GetAvailableMonths?unit=${unit}`,{headers:this.header});
+    return this.authService.get(`${this.apiUrl}GetAvailableMonths/${unit}`);
   }
 
   GetPortTypes(unit: string, Date_Monthly: string): Observable<any> {
-    return this.http.get(`${this.appConfigService.getApiUrl()}QA/GetPortTypes?unit=${unit}&Date_Monthly=${Date_Monthly}`, { headers: this.header });
+    return this.authService.get(`${this.apiUrl}GetPortTypes/${unit}/${Date_Monthly}`);
   }
 
   GetAgentScoresSimple(Date_Monthly: string, unit: string, portType: string): Observable<any> {
-    return this.http.get(`${this.appConfigService.getApiUrl()}QA/GetAgentScoresSimple?Date_Monthly=${Date_Monthly}&unit=${unit}&portType=${portType}`, { headers: this.header });
+    return this.authService.get(`${this.apiUrl}GetAgentScoresSimple/${Date_Monthly}/${unit}/${portType}`);
   }
 
   GetAgentScoresDetailed(Date_Monthly: string, unit: string, portType: string): Observable<any> {
-    return this.http.get(`${this.appConfigService.getApiUrl()}QA/GetAgentScoresDetailed?Date_Monthly=${Date_Monthly}&unit=${unit}&portType=${portType}`, { headers: this.header });
+    return this.authService.get(`${this.apiUrl}GetAgentScoresDetailed/${Date_Monthly}/${unit}/${portType}`);
   }
 
   GetCriticalCallDetails(Date_Monthly: string, unit: string, agent: string): Observable<any> {
-    return this.http.get(`${this.appConfigService.getApiUrl()}QA/GetCriticalCallDetails?Date_Monthly=${Date_Monthly}&unit=${unit}&agent=${agent}`, { headers: this.header });
+    return this.authService.get(`${this.apiUrl}GetCriticalCallDetails/${Date_Monthly}/${unit}/${agent}`);
   }
 }

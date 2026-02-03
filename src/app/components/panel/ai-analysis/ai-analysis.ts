@@ -3,18 +3,20 @@ import {DashboardSidebarComponent} from "../../Template/dashboard-sidebar/dashbo
 import {AuthService} from "../../../services/auth.service";
 import {Router} from "@angular/router";
 import {NgToastService} from "ng-angular-popup";
+import {DashboardTopmenuComponent} from "../../Template/dashboard-topmenu/dashboard-topmenu.component";
 
 @Component({
     selector: 'app-ai-analysis',
-    imports: [
-        DashboardSidebarComponent,
-    ],
+  imports: [
+    DashboardSidebarComponent,
+    DashboardTopmenuComponent,
+  ],
     templateUrl: './ai-analysis.html',
     styleUrl: './ai-analysis.scss'
 })
 export class AiAnalysis implements OnInit {
   public constructor(private auth:AuthService, private router:Router, private toast:NgToastService) {}
   async ngOnInit() {
-    
+
   }
 }

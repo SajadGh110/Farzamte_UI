@@ -1,147 +1,160 @@
 <section class="dashboard-wrapper">
   <app-dashboard-sidebar></app-dashboard-sidebar>
   <section class="dashboard-main">
-    
-    <section class="row">
-      <section class="detail">
-        <h2>جست و جو</h2>
-      </section>
-      <section class="top-fix">
-        <section class="loading-spinner" *ngIf="!flag_acu">
-          <mat-spinner diameter="40"></mat-spinner>
+    <app-dashboard-topmenu></app-dashboard-topmenu>
+    <ng-container *ngIf="auth.hasAnyPermission(qaPermissions); else deniedTemplate">
+      <section class="row">
+        <section class="detail">
+          <h2>جست و جو</h2>
         </section>
-        
-        <section class="filter-group" *ngIf="flag_acu">
-          <h3>تیم های قابل مشاهده</h3>
-          <mat-radio-group
-            aria-labelledby="unit-radio-group-label"
-            class="unit-radio-group"
-            [(ngModel)]="selected_unit"
-            (change)="get_dates(selected_unit)">
-            @for (season of unit_list; track season) {
-              <mat-radio-button class="unit-radio-button" [value]="season">{{season}}</mat-radio-button>
-            }
-          </mat-radio-group>
+        <section class="top-fix">
+          <section class="loading-spinner" *ngIf="!flag_acu">
+            <mat-spinner diameter="40"></mat-spinner>
+          </section>
+
+          <section class="filter-group" *ngIf="flag_acu">
+            <h3>تیم های قابل مشاهده</h3>
+            <mat-radio-group
+              aria-labelledby="unit-radio-group-label"
+              class="unit-radio-group"
+              [(ngModel)]="selected_unit"
+              (change)="get_dates(selected_unit)">
+              @for (season of unit_list; track season) {
+                <mat-radio-button class="unit-radio-button" [value]="season">{{season}}</mat-radio-button>
+              }
+            </mat-radio-group>
+          </section>
+
+          <section class="loading-spinner" *ngIf="!flag_avm">
+            <mat-spinner diameter="40"></mat-spinner>
+          </section>
+
+          <section class="filter-group" *ngIf="flag_avm">
+              <h3>انتخاب ماه (مقایسه)</h3>
+              <div class="checkbox-container">
+                <mat-checkbox *ngFor="let m of month_list" [(ngModel)]="m.selected" color="primary">
+                  {{ m.value }}
+                </mat-checkbox>
+              </div>
+          </section>
+
+          <div class="action-buttons" *ngIf="flag_avm">
+             <button mat-raised-button color="primary" (click)="search()" [disabled]="flag_loading_data">
+               جست و جو
+             </button>
+          </div>
+        </section>
+      </section>
+      <section class="row" *ngIf="show_report || flag_loading_data">
+        <section class="detail">
+          <h2>گزارش عملکرد کارشناسان (نمودار)</h2>
         </section>
 
-        <section class="loading-spinner" *ngIf="!flag_avm">
-          <mat-spinner diameter="40"></mat-spinner>
+        <section class="loading-spinner" *ngIf="flag_loading_data">
+          <mat-spinner></mat-spinner>
         </section>
 
-        <section class="filter-group" *ngIf="flag_avm">
-            <h3>انتخاب ماه (مقایسه)</h3>
-            <div class="checkbox-container">
-              <mat-checkbox *ngFor="let m of month_list" [(ngModel)]="m.selected" color="primary">
-                {{ m.value }}
-              </mat-checkbox>
-            </div>
-        </section>
-        
-        <div class="action-buttons" *ngIf="flag_avm">
-           <button mat-raised-button color="primary" (click)="search()" [disabled]="flag_loading_data">
-             جست و جو
-           </button>
-        </div>
-      </section>
-    </section>
-
-    <section class="row" *ngIf="show_report || flag_loading_data">
-      <section class="detail">
-        <h2>گزارش عملکرد کارشناسان (نمودار)</h2>
-      </section>
-      
-      <section class="loading-spinner" *ngIf="flag_loading_data">
-        <mat-spinner></mat-spinner>
-      </section>
-      
-      <section class="charts-container" *ngIf="show_report && !flag_loading_data">
-        <section *ngFor="let portType of portTypesWithCharts" class="chart-item card-box">
-          <section class="chart-wrapper">
-            <section echarts 
-                     [options]="barCharts[portType]" 
-                     [style.height]="chartHeights[portType]"
-                     class="echart-instance">
+        <section class="charts-container" *ngIf="show_report && !flag_loading_data">
+          <section *ngFor="let portType of portTypesWithCharts" class="chart-item card-box">
+            <section class="chart-wrapper">
+              <section echarts
+                       [options]="barCharts[portType]"
+                       [style.height]="chartHeights[portType]"
+                       class="echart-instance">
+              </section>
             </section>
           </section>
         </section>
       </section>
-    </section>
+      <section class="row" *ngIf="show_report || flag_loading_data">
+        <section class="detail">
+          <h2>گزارش جدول کارشناسان</h2>
+        </section>
 
-    <section class="row" *ngIf="show_report || flag_loading_data">
-      <section class="detail">
-        <h2>گزارش جدول کارشناسان</h2>
-      </section>
-      
-      <section class="loading-spinner" *ngIf="flag_loading_data">
-        <mat-spinner></mat-spinner>
-      </section>
-      
-      <section class="table-container card-box" *ngIf="show_report && !flag_loading_data">
-        <table class="styled-table" dir="ltr">
-            <thead>
-                <tr>
-                    <th class="mat-column-number">No.</th>
-                    <th class="mat-column-agent">Agent</th>
-                    <th class="mat-column-month">Month</th>
-                    <th class="mat-column-portType">Port Type</th>
-                    <th class="mat-column-totalCalls">Total Calls</th>
-                    <th class="mat-column-faultyCalls">Faulty Calls</th>
-                    <th class="mat-column-criticalErrors">Critical Errors</th>
-                    <th class="mat-column-averageScore">Score</th>
-                    <th class="mat-column-i1">i1</th>
-                    <th class="mat-column-i2">i2</th>
-                    <th class="mat-column-i3">i3</th>
-                    <th class="mat-column-i4">i4</th>
-                    <th class="mat-column-i5">i5</th>
-                    <th class="mat-column-i6">i6</th>
-                    <th class="mat-column-i7">i7</th>
-                    <th class="mat-column-i8">i8</th>
-                </tr>
-            </thead>
-            <tbody>
-                <ng-container *ngFor="let group of groupedDataSource; let i = index">
-                    <tr *ngFor="let record of group.records; let first = first" class="mat-row">
-                        
-                        <td *ngIf="first" [attr.rowspan]="group.records.length" class="mat-cell mat-column-number">{{ i + 1 }}</td>
-                        <td *ngIf="first" [attr.rowspan]="group.records.length" class="mat-cell mat-column-agent">{{ group.agent }}</td>
-                        
-                        <td class="mat-cell mat-column-month">{{ record.month }}</td>
-                        <td class="mat-cell mat-column-portType">{{ record.portType }}</td>
-                        <td class="mat-cell mat-column-totalCalls">{{ record.totalCalls }}</td>
-                        <td class="mat-cell mat-column-faultyCalls">
-                          <div style="display: flex; align-items: center; justify-content: center; gap: 5px;">
-                              <span style="font-weight: bold; color: #d32f2f;">{{ record.faultyCalls }}</span>
-                              <mat-icon *ngIf="record.faultyCalls > 0" 
-                                        style="cursor: pointer; font-size: 18px; width: 18px; height: 18px; color: #1a237e;" 
-                                        title="مشاهده جزئیات"
-                                        (click)="openCriticalDetails(record)">
-                                  visibility
-                              </mat-icon>
-                          </div>
-                        </td>
-                        <td class="mat-cell mat-column-criticalErrors">{{ record.criticalErrors }}</td>
-                        
-                        <td class="mat-cell mat-column-averageScore">
-                             <span [class.high-score]="record.averageScore >= 90" 
-                                   [class.low-score]="record.averageScore < 80"
-                                   [class.medium-score]="record.averageScore >= 80 && record.averageScore < 90">
-                                {{ record.averageScore }}%
-                            </span>
-                        </td>
+        <section class="loading-spinner" *ngIf="flag_loading_data">
+          <mat-spinner></mat-spinner>
+        </section>
 
-                        <td class="mat-cell mat-column-i1">{{ record.scores.i1 }}</td>
-                        <td class="mat-cell mat-column-i2">{{ record.scores.i2 }}</td>
-                        <td class="mat-cell mat-column-i3">{{ record.scores.i3 }}</td>
-                        <td class="mat-cell mat-column-i4">{{ record.scores.i4 }}</td>
-                        <td class="mat-cell mat-column-i5">{{ record.scores.i5 }}</td>
-                        <td class="mat-cell mat-column-i6">{{ record.scores.i6 }}</td>
-                        <td class="mat-cell mat-column-i7">{{ record.scores.i7 }}</td>
-                        <td class="mat-cell mat-column-i8">{{ record.scores.i8 }}</td>
-                    </tr>
-                </ng-container>
-            </tbody>
-        </table>
+        <section class="table-container card-box" *ngIf="show_report && !flag_loading_data">
+          <table class="styled-table" dir="ltr">
+              <thead>
+                  <tr>
+                      <th class="mat-column-number">No.</th>
+                      <th class="mat-column-agent">Agent</th>
+                      <th class="mat-column-month">Month</th>
+                      <th class="mat-column-portType">Port Type</th>
+                      <th class="mat-column-totalCalls">Total Calls</th>
+                      <th class="mat-column-faultyCalls">Faulty Calls</th>
+                      <th class="mat-column-criticalErrors">Critical Errors</th>
+                      <th class="mat-column-averageScore">Score</th>
+                      <th class="mat-column-i1">i1</th>
+                      <th class="mat-column-i2">i2</th>
+                      <th class="mat-column-i3">i3</th>
+                      <th class="mat-column-i4">i4</th>
+                      <th class="mat-column-i5">i5</th>
+                      <th class="mat-column-i6">i6</th>
+                      <th class="mat-column-i7">i7</th>
+                      <th class="mat-column-i8">i8</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <ng-container *ngFor="let group of groupedDataSource; let i = index">
+                      <tr *ngFor="let record of group.records; let first = first" class="mat-row">
+
+                          <td *ngIf="first" [attr.rowspan]="group.records.length" class="mat-cell mat-column-number">{{ i + 1 }}</td>
+                          <td *ngIf="first" [attr.rowspan]="group.records.length" class="mat-cell mat-column-agent">{{ group.agent }}</td>
+
+                          <td class="mat-cell mat-column-month">{{ record.month }}</td>
+                          <td class="mat-cell mat-column-portType">{{ record.portType }}</td>
+                          <td class="mat-cell mat-column-totalCalls">{{ record.totalCalls }}</td>
+                          <td class="mat-cell mat-column-faultyCalls">
+                            <div style="display: flex; align-items: center; justify-content: center; gap: 5px;">
+                                <span style="font-weight: bold; color: #d32f2f;">{{ record.faultyCalls }}</span>
+                                <mat-icon *ngIf="record.faultyCalls > 0"
+                                          style="cursor: pointer; font-size: 18px; width: 18px; height: 18px; color: #1a237e;"
+                                          title="مشاهده جزئیات"
+                                          (click)="openCriticalDetails(record)">
+                                    visibility
+                                </mat-icon>
+                            </div>
+                          </td>
+                          <td class="mat-cell mat-column-criticalErrors">{{ record.criticalErrors }}</td>
+
+                          <td class="mat-cell mat-column-averageScore">
+                               <span [class.high-score]="record.averageScore >= 90"
+                                     [class.low-score]="record.averageScore < 80"
+                                     [class.medium-score]="record.averageScore >= 80 && record.averageScore < 90">
+                                  {{ record.averageScore }}%
+                              </span>
+                          </td>
+
+                          <td class="mat-cell mat-column-i1">{{ record.scores.i1 }}</td>
+                          <td class="mat-cell mat-column-i2">{{ record.scores.i2 }}</td>
+                          <td class="mat-cell mat-column-i3">{{ record.scores.i3 }}</td>
+                          <td class="mat-cell mat-column-i4">{{ record.scores.i4 }}</td>
+                          <td class="mat-cell mat-column-i5">{{ record.scores.i5 }}</td>
+                          <td class="mat-cell mat-column-i6">{{ record.scores.i6 }}</td>
+                          <td class="mat-cell mat-column-i7">{{ record.scores.i7 }}</td>
+                          <td class="mat-cell mat-column-i8">{{ record.scores.i8 }}</td>
+                      </tr>
+                  </ng-container>
+              </tbody>
+          </table>
+        </section>
       </section>
-    </section>
+    </ng-container>
+    <ng-template #deniedTemplate>
+      <div class="access-denied-container shadow-sm">
+        <div class="icon-wrapper">
+          <i class="material-icons">lock_person</i>
+        </div>
+        <h3>عدم دسترسی</h3>
+        <p>
+          متأسفانه اکانت شما مجوز دسترسی به این قسمت را ندارد!
+          <br>
+          در صورت نیاز، لطفاً با مدیر سیستم تماس بگیرید.
+        </p>
+      </div>
+    </ng-template>
   </section>
 </section>

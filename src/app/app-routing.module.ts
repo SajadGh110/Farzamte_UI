@@ -7,7 +7,6 @@ import { View360 } from "./components/panel/view-360/view-360";
 import { Profile } from "./components/panel/profile/profile";
 import { HappyCall } from "./components/panel/happy-call/happy-call";
 import { IncomingCall } from "./components/panel/incoming-call/incoming-call";
-import { Notices } from "./components/panel/notices/notices";
 import { Ticket } from "./components/panel/ticket/ticket";
 import { Marketing } from "./components/panel/marketing/marketing";
 import { Survey } from "./components/panel/survey/survey";
@@ -22,6 +21,9 @@ import { IncStatsComponent } from "./components/panel/incoming-call/inc-stats/in
 import { BrokerageProfit } from "./components/panel/brokerages/brokerage-profit/brokerage-profit";
 import { BrokerageProfitCmpComponent } from "./components/panel/brokerage-cmp/brokerage-profit-cmp/brokerage-profit-cmp.component";
 import { UsersComponent } from './components/panel/users/users';
+import { Permissions } from "./components/panel/permissions/permissions";
+import { OutcallGeneral } from "./components/panel/outcall/outcall-general/outcall-general";
+import { OutcallFollowUp } from "./components/panel/outcall/outcall-follow-up/outcall-follow-up";
 
 const routes: Routes = [
   { path: '', redirectTo: '/brokerages', pathMatch: 'full' },
@@ -30,13 +32,13 @@ const routes: Routes = [
   { path: 'brokerages/profit', component: BrokerageProfit, title: 'Brokerages | Profit', canActivate: [authGuard] },
   { path: 'brokerages_cmp', component: BrokerageCmp, title: 'Brokerages Comparison', canActivate: [authGuard] },
   { path: 'brokerages_cmp/profit', component: BrokerageProfitCmpComponent, title: 'Brokerages CMP | Profit', canActivate: [authGuard] },
-  { path: 'users', component: UsersComponent, title: 'مدیریت کاربران', canActivate: [authGuard] },
+  { path: 'users', component: UsersComponent, title: 'Users', canActivate: [authGuard] },
+  { path: 'permissions', component: Permissions, title: 'Permissions', canActivate: [authGuard] },
   { path: 'profile', component: Profile, title: 'Profile', canActivate: [authGuard] },
   { path: 'view_360', component: View360, title: '360 Degrees', canActivate: [authGuard] },
   { path: 'happy_call', component: HappyCall, title: 'Happy Call', canActivate: [authGuard] },
   { path: 'call_in', component: IncomingCall, title: 'Incoming Call', canActivate: [authGuard] },
   { path: 'call_in_stats', component: IncStatsComponent, title: 'Incoming Call | Stats', canActivate: [authGuard] },
-  { path: 'notices', component: Notices, title: 'Notices', canActivate: [authGuard] },
   { path: 'notices/sms', component: NoticeSms, title: 'Notices | Message', canActivate: [authGuard] },
   { path: 'notices/call', component: NoticeCall, title: 'Notices | Call', canActivate: [authGuard] },
   { path: 'ticket', component: Ticket, title: 'Ticket', canActivate: [authGuard] },
@@ -46,6 +48,8 @@ const routes: Routes = [
   { path: 'other', component: Other, title: 'Other', canActivate: [authGuard] },
   { path: 'disorder', component: Disorder, title: 'Disorder', canActivate: [authGuard] },
   { path: 'ai_analysis', component: AiAnalysis, title: 'Ai Analysis', canActivate: [authGuard] },
+  { path: 'call_out/general', component: OutcallGeneral, title: 'Call Out | General', canActivate: [authGuard] },
+  { path: 'call_out/followup', component: OutcallFollowUp, title: 'Call Out | FollowUp', canActivate: [authGuard] }
 ];
 
 @NgModule({

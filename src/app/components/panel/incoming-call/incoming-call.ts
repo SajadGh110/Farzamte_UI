@@ -9,7 +9,6 @@ import {NgToastService} from "ng-angular-popup";
 import {TimeService} from "../../../services/time.service";
 import {EChartsOption} from "echarts";
 import {IncomingCallService} from "../../../services/incoming-call.service";
-import {DashboardContactComponent} from "../../Template/dashboard-contact/dashboard-contact.component";
 import {AuthService} from "../../../services/auth.service";
 import {format, subDays} from "date-fns";
 import {MatSelectModule} from "@angular/material/select";
@@ -20,12 +19,12 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import {IncExpertModel} from "../../../models/inc-expert.model";
+import {DashboardTopmenuComponent} from "../../Template/dashboard-topmenu/dashboard-topmenu.component";
 
 @Component({
   selector: 'app-incoming-call',
   standalone: true,
   imports: [
-    DashboardContactComponent,
     DashboardSidebarComponent,
     FormsModule,
     MatProgressSpinner,
@@ -40,7 +39,8 @@ import {IncExpertModel} from "../../../models/inc-expert.model";
     MatButton,
     MatSlideToggleModule,
     MatPaginatorModule,
-    MatTableModule
+    MatTableModule,
+    DashboardTopmenuComponent
   ],
   providers: [DatePipe],
   templateUrl: './incoming-call.html',
@@ -77,7 +77,7 @@ export class IncomingCall implements OnInit {
   exports_data:IncExpertModel[] = [];
   dataSource_experts:MatTableDataSource<IncExpertModel> = new MatTableDataSource<IncExpertModel>();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  public constructor(private toast:NgToastService,private auth:AuthService, private fb:FormBuilder, private getData:IncomingCallService, private TimeService:TimeService, private datePipe: DatePipe) {}
+  public constructor(private toast:NgToastService,protected auth:AuthService, private fb:FormBuilder, private getData:IncomingCallService, private TimeService:TimeService, private datePipe: DatePipe) {}
   StartDate:string = "";
   EndDate:string = "";
   st_to_en:string = "";
@@ -195,6 +195,10 @@ export class IncomingCall implements OnInit {
       }]
   };
   async ngOnInit(){
+    if (!this.auth.hasPermission('incomingCall.view')) {
+      console.warn('دسترسی محدود: ریکوئستی ارسال نشد.');
+      return;
+    }
     this.dateform = this.fb.group({
       StartDate: [''],
       EndDate: ['']

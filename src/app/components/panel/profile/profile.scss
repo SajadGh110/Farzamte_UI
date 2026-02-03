@@ -1,120 +1,138 @@
-.dashboard-main .row{
-  display: flex;
-  height: calc(100vh - 4rem);
-  flex-direction: column;
+@use '../../../../variables' as *;
+
+:host {
+  display: block;
+  height: 100vh;
+  background-color: $Background;
 }
-.dashboard-main .row .profile {
-  display: flex;
-  height: calc(100% - 4rem);
-  flex-direction: column;
-  justify-content: space-around;
-}
-.dashboard-main .row .information{
-  display: flex;
-  height: 57%;
-  flex-direction: column;
-  margin: 1rem;
-}
-.dashboard-main .row .information form,
-.dashboard-main .row .change-password form{
-  display: flex;
+
+.dashboard-main {
   height: 100%;
-  flex-direction: column;
-  align-items: flex-start;
-}
-.dashboard-main .row .information form .form,
-.dashboard-main .row .change-password form .form{
   display: flex;
-  height: calc(100% - 3rem);
   flex-direction: column;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-}
-.dashboard-main .row .change-password form .form {
-  flex-wrap: nowrap;
 }
 
-.dashboard-main .row .change-password{
-  display: flex;
-  height: 35%;
-  flex-direction: column;
-  margin: 1rem;
+.content-scrollable {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 1rem 2rem 2rem 2rem; // کمی فاصله از بالا
 }
 
-.dashboard-main .row form .item {
-  height: 35px;
-  display: flex;
-  align-items: center;
-  margin-bottom: 1rem;
-  margin-left: 3rem;
-}
-.dashboard-main .row form .item:last-child {
-  margin-bottom: 0;
-}
-.dashboard-main .row form .item label {
-  width: 120px;
-  color: black;
-  font: 18px Yekan, Bahnschrift, serif;
+.profile-grid {
+  display: grid;
+  grid-template-columns: 1.8fr 1.2fr;
+  gap: 25px;
+  align-items: start;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
+  }
 }
 
-.dashboard-main .row form .item input[type=text] ,
-.dashboard-main .row form .item input[type=password] {
-  outline: none;
-  color: black;
-  border-top: none;
-  border-left: none;
-  border-right: none;
-  border-bottom: solid 2px #65828f;
-  padding: 5px;
-  font: 16px Bahnschrift, Yekan, serif;
+.glass-card {
+  @include glass-style;
+  padding: 25px;
+
+  .card-header {
+    border-bottom: 1px solid rgba($text-secondary, 0.1);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    h3 {
+      font-size: 1rem;
+      color: $primary-color;
+      margin: 0;
+      font-weight: 700;
+    }
+  }
 }
-.dashboard-main .row form select.brokerSelect {
+
+.modern-form {
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 15px;
+
+    &.full-width { grid-column: span 2; }
+
+    label {
+      font-size: 0.85rem;
+      color: $text-secondary;
+      font-weight: 600;
+    }
+
+    input, textarea {
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid rgba($text-secondary, 0.2);
+      background: rgba(255, 255, 255, 0.5);
+      font-family: 'Vazirmatn', sans-serif;
+      font-size: 0.9rem;
+      transition: all 0.3s;
+
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+        background: white;
+        box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+      }
+
+      &.disabled-input {
+        background: rgba(0, 0, 0, 0.04);
+        cursor: not-allowed;
+        color: $text-secondary;
+      }
+    }
+  }
+
+  .btn-submit {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background: $primary-color;
+    color: white;
+    font-family: 'Vazirmatn', sans-serif; // اعمال فونت وزیر
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 10px;
+    box-shadow: 0 4px 12px rgba($primary-color, 0.2);
+
+    &:hover:not(:disabled) {
+      background: $primary-hover;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba($primary-color, 0.3);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    &.secondary {
+      background: #475569;
+      box-shadow: 0 4px 12px rgba(71, 85, 105, 0.2);
+      &:hover:not(:disabled) { background: #334155; }
+    }
+  }
+
+  .error-text {
+    color: $error-color;
+    font-size: 0.75rem;
+    margin-top: 4px;
+  }
+}
+
+.loading-spinner {
   display: flex;
-  width: 203px;
-  font: 16px Bahnschrift, serif;
-  padding: 4px;
-  outline: none;
-  border-top: none;
-  border-left: none;
-  border-right: none;
-  border-bottom: solid 2px #65828f;
-  text-align: center;
-}
-.dashboard-main .row form .item input[type=text]:focus ,
-.dashboard-main .row form .item input[type=password]:focus ,
-.dashboard-main .row form .item select.brokerSelect:focus {
-  border-bottom: solid 2px #d9a22e;
-}
-.dashboard-main .row form .item input[type=submit] {
-  outline: none;
-  padding: 5px 15px;
-  color: white;
-  background: #1b9ac4;
-  border: solid 2px #65828f;
-  border-radius: 5px;
-  font: 18px Bahnschrift, Yekan, serif;
-  cursor: pointer;
-}
-.dashboard-main .row form .item input[type=submit]:hover,
-.dashboard-main .row form .item input[type=submit]:focus{
-  background: #65828f;
-  border-color: #1b9ac4;
-}
-.dashboard-main .row form .item input,
-.dashboard-main .row form .item input::placeholder {
-  text-align: center;
-}
-#email{
-  direction: ltr;
-}
-.password{
-  direction: ltr;
-}
-input:disabled{
-  background-color: white;
-}
-.dashboard-main .row h3 {
-  font: 22px Yekan, Bahnschrift, serif;
-  margin-bottom: 1rem;
-  font-weight: bold;
+  justify-content: center;
+  padding: 50px;
 }

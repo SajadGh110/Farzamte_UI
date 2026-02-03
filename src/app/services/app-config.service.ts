@@ -8,7 +8,6 @@ export class AppConfigService {
   private ApiUrl: string = "https://localhost:7108/";
   //private ApiUrl: string = "http://192.168.38.4:8081/";
   private Token:string = "bearer " + localStorage.getItem('token');
-  private ApiKey:string = "DWV1PdzszOW3BLen";
 
   constructor() { }
 
@@ -22,9 +21,5 @@ export class AppConfigService {
 
   getToken():string {
     return this.Token;
-  }
-
-  getApiKey():string {
-    return this.ApiKey;
   }
 }

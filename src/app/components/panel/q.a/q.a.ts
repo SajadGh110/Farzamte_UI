@@ -16,6 +16,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { CriticalCallsDialogComponent } from './critical-calls-dialog/critical-calls-dialog.component';
+import {DashboardTopmenuComponent} from "../../Template/dashboard-topmenu/dashboard-topmenu.component";
 
 interface GroupedAgentData {
   agent: string;
@@ -35,7 +36,8 @@ interface GroupedAgentData {
     NgxEchartsDirective,
     MatCheckboxModule,
     MatRadioModule,
-    MatIconModule
+    MatIconModule,
+    DashboardTopmenuComponent
   ],
   templateUrl: './q.a.html',
   styleUrl: './q.a.scss'
@@ -46,6 +48,15 @@ export class QA implements OnInit {
   protected flag_loading_data: boolean = false;
   protected show_report: boolean = false;
 
+  protected qaPermissions:string[] = [
+    'qa.crm.view',
+    'qa.etebar.view',
+    'qa.online.view',
+    'qa.paziresh.view',
+    'qa.qa.view',
+    'qa.toseebazar.view'
+  ];
+
   unit_list: any = [];
   month_list: { value: string, selected: boolean }[] = [];
   portType_list: any = [];
@@ -53,12 +64,16 @@ export class QA implements OnInit {
 
   groupedDataSource: GroupedAgentData[] = [];
   barCharts: { [portType: string]: EChartsOption } = {};
-  
+
   chartHeights: { [portType: string]: string } = {};
 
-  public constructor(private toast: NgToastService, private auth: AuthService, private router: Router, private getData: QaService, private dialog: MatDialog) {}
+  public constructor(private toast: NgToastService, protected auth: AuthService, private router: Router, private getData: QaService, private dialog: MatDialog) {}
 
   async ngOnInit() {
+    if (!this.auth.hasAnyPermission(this.qaPermissions)) {
+      console.warn('دسترسی محدود: ریکوئستی ارسال نشد.');
+      return;
+    }
     await this.get_units();
     if (this.unit_list.length == 0) {
       this.toast.warning({ detail: "سطح دسترسی!", summary: "متاسفانه شما به این بخش دسترسی ندارید!", duration: 5000, position: 'topRight' });
@@ -106,7 +121,7 @@ export class QA implements OnInit {
       }
       this.portType_list = Array.from(allPortTypes);
 
-      let rawTableData: any[] = []; 
+      let rawTableData: any[] = [];
 
       for (const portType of this.portType_list) {
         let chartDataSeries: any[] = [];
@@ -116,23 +131,23 @@ export class QA implements OnInit {
         for (const month of selectedMonths) {
             const simpleData = await this.getData.GetAgentScoresSimple(month, this.selected_unit, portType).toPromise();
             const detailedData = await this.getData.GetAgentScoresDetailed(month, this.selected_unit, portType).toPromise();
-            
+
             monthDataMap.set(month, simpleData);
-            
+
             if (detailedData) {
                 detailedData.forEach((d: any) => {
                     allAgents.add(d.agent);
-                    d.month = month; 
+                    d.month = month;
                     rawTableData.push(d);
                 });
             }
         }
 
-        const chartYAxisData = Array.from(allAgents).sort(); 
+        const chartYAxisData = Array.from(allAgents).sort();
 
         for (const month of selectedMonths) {
             const dataForMonth = monthDataMap.get(month) || [];
-            
+
             const seriesData = chartYAxisData.map(agent => {
                 const record = dataForMonth.find((d: any) => d.agent === agent);
                 return record ? record.averageScore : null;
@@ -142,23 +157,23 @@ export class QA implements OnInit {
                 name: month,
                 type: 'bar',
                 data: seriesData,
-                label: { 
-                    show: true, 
-                    position: 'right', 
+                label: {
+                    show: true,
+                    position: 'right',
                     formatter: '{c}%',
                     fontFamily: 'Bahnschrift',
                     fontWeight: 'bold',
                     fontSize: 12
                 },
-                barWidth: 10, 
+                barWidth: 10,
                 emphasis: { focus: 'series' }
             });
         }
-        
+
         const barsPerAgent = selectedMonths.length;
         const heightPerAgent = (barsPerAgent * 15) + 30; // 15px برای هر میله + 30px فاصله
         const calculatedHeight = Math.max(400, (chartYAxisData.length * heightPerAgent) + 150);
-        
+
         this.chartHeights[portType] = `${calculatedHeight}px`;
 
         this.createChart(portType, chartYAxisData, chartDataSeries);
@@ -216,8 +231,8 @@ export class QA implements OnInit {
         type: 'value',
         max: 100,
         boundaryGap: [0, 0.01],
-        axisLabel: { 
-            formatter: '{value}%', 
+        axisLabel: {
+            formatter: '{value}%',
             fontFamily: 'Bahnschrift',
             fontWeight: 'bold'
         }
@@ -225,7 +240,7 @@ export class QA implements OnInit {
       yAxis: {
         type: 'category',
         data: agents,
-        axisLabel: { 
+        axisLabel: {
             fontFamily: 'Bahnschrift',
             fontWeight: 'bold',
             fontSize: 13,
@@ -244,7 +259,7 @@ export class QA implements OnInit {
     if (!record.faultyCalls || record.faultyCalls === 0) {
         this.toast.info({ detail: "اطلاعات", summary: "هیچ تماس بحرانی برای نمایش وجود ندارد", duration: 3000 });
         return;
-    }    
+    }
     try {
       const details = await this.getData.GetCriticalCallDetails(record.month, this.selected_unit, record.agent).toPromise();
 

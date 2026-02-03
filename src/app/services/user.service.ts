@@ -49,56 +49,53 @@ export interface ApiResponse<T> {
 })
 export class UserService {
   constructor(private authService: AuthService, private appConfigService: AppConfigService) { }
-  private apiUrl = `${this.appConfigService.getApiUrl()}/users`;
+  private apiUrl = `${this.appConfigService.getApiUrl()}Users/`;
 
   login(credentials: { userName: string, password: string }): Observable<any> {
     return this.authService.login(credentials);
   }
 
-  // Private endpoints (نیاز به توکن)
   getProfile(): Observable<any> {
-    return this.authService.get(`${this.apiUrl}/profile`);
+    return this.authService.get(`${this.apiUrl}GetProfile`);
   }
 
   updateProfile(updateData: UpdateUser): Observable<any> {
-    return this.authService.put(`${this.apiUrl}/profile`, updateData);
+    return this.authService.put(`${this.apiUrl}UpdateProfile`, updateData);
   }
 
   changePassword(passwordData: ChangePassword): Observable<any> {
-    return this.authService.put(`${this.apiUrl}/change-password`, passwordData);
+    return this.authService.put(`${this.apiUrl}ChangePassword`, passwordData);
   }
 
-  // Admin endpoints
   getAllUsers(): Observable<any> {
-    return this.authService.get(this.apiUrl);
+    return this.authService.get(`${this.apiUrl}GetAllUsers`);
   }
 
   getUserById(id: number): Observable<any> {
-    return this.authService.get(`${this.apiUrl}/${id}`);
+    return this.authService.get(`${this.apiUrl}GetUserById/${id}`);
   }
 
   createUser(userData: any): Observable<any> {
-    return this.authService.post(`${this.apiUrl}/create`, userData);
+    return this.authService.post(`${this.apiUrl}CreateUser`, userData);
   }
 
   updateUser(id: number, updateData: any): Observable<any> {
-    return this.authService.put(`${this.apiUrl}/${id}`, updateData);
+    return this.authService.put(`${this.apiUrl}UpdateUser/${id}`, updateData);
   }
 
   deleteUser(id: number): Observable<any> {
-    return this.authService.delete(`${this.apiUrl}/${id}`);
+    return this.authService.delete(`${this.apiUrl}DeleteUser/${id}`);
   }
 
   toggleUserStatus(id: number, isActive: boolean): Observable<any> {
-    return this.authService.put(`${this.apiUrl}/${id}/toggle-status`, isActive);
+    return this.authService.put(`${this.apiUrl}ToggleUserStatus/${id}`, isActive);
   }
 
-  // Utility
   checkUserNameExists(userName: string): Observable<any> {
-    return this.authService.get(`${this.apiUrl}/check-username/${userName}`);
+    return this.authService.get(`${this.apiUrl}CheckUserNameExists/${userName}`);
   }
 
   checkEmailExists(email: string): Observable<any> {
-    return this.authService.get(`${this.apiUrl}/check-email/${email}`);
+    return this.authService.get(`${this.apiUrl}CheckEmailExists/${email}`);
   }
 }

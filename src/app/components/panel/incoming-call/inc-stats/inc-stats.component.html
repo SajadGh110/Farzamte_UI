@@ -1,8 +1,9 @@
 <section class="dashboard-wrapper">
   <app-dashboard-sidebar></app-dashboard-sidebar>
   <section class="dashboard-main">
-    <app-dashboard-contact class="row top-contact"></app-dashboard-contact>
-    <section class="row inc-stats-header" dir="rtl">
+    <app-dashboard-topmenu></app-dashboard-topmenu>
+    <ng-container *ngIf="auth.hasPermission('incomingCall.view'); else deniedTemplate">
+      <section class="row inc-stats-header" dir="rtl">
       <section class="detail">
         <h2>گزارشات صف های پاسخگویی تماس ورودی</h2>
       </section>
@@ -44,5 +45,19 @@
         <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 15, 25]" showFirstLastButtons></mat-paginator>
       </section>
     </section>
+    </ng-container>
+    <ng-template #deniedTemplate>
+      <div class="access-denied-container shadow-sm">
+        <div class="icon-wrapper">
+          <i class="material-icons">lock_person</i>
+        </div>
+        <h3>عدم دسترسی</h3>
+        <p>
+          متأسفانه اکانت شما مجوز دسترسی به این قسمت را ندارد!
+          <br>
+          در صورت نیاز، لطفاً با مدیر سیستم تماس بگیرید.
+        </p>
+      </div>
+    </ng-template>
   </section>
 </section>

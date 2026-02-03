@@ -1,0 +1,332 @@
+@use '../../../../variables' as *;
+
+// --- 1. ساختار پایه (Layout) مطابق پروفایل ---
+:host {
+  display: block;
+  height: 100vh;
+  background-color: $Background;
+}
+
+.dashboard-wrapper {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+}
+
+.dashboard-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.content-scrollable {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 1rem 2rem 2rem 2rem;
+}
+
+// --- 2. کارت‌های شیشه‌ای (Glass Cards) ---
+.glass-card {
+  @include glass-style;
+  padding: 25px;
+  width: 100%;
+  box-sizing: border-box;
+
+  &.mb-4 {
+    margin-bottom: 1.5rem;
+  }
+
+  .card-header {
+    border-bottom: 1px solid rgba($text-secondary, 0.1);
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h3 {
+      font-size: 1rem;
+      color: $primary-color;
+      margin: 0;
+      font-weight: 700;
+    }
+  }
+}
+
+// --- 3. تولبار (Search & Add) ---
+.toolbar-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  flex: 0 1 500px;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba($text-secondary, 0.2);
+  border-radius: 10px;
+  padding: 0 12px;
+  transition: all 0.3s;
+
+  &:focus-within {
+    border-color: $primary-color;
+    background: white;
+    box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+  }
+
+  input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 12px 10px;
+    font-family: 'Vazirmatn', sans-serif;
+    font-size: 0.9rem;
+    &:focus { outline: none; }
+  }
+
+  .btn-search {
+    background: none; border: none; color: $primary-color;
+    cursor: pointer; display: flex; align-items: center;
+    i { font-size: 22px; }
+  }
+
+  .btn-clear {
+    background: none; border: none; color: $text-secondary;
+    cursor: pointer; display: flex; align-items: center;
+    &:hover { color: $error-color; }
+    i { font-size: 18px; }
+  }
+}
+
+.btn-add {
+  background: $primary-color;
+  color: white;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 10px;
+  font-family: 'Vazirmatn', sans-serif;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+  &:hover {
+    background: $primary-hover;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba($primary-color, 0.25);
+  }
+}
+
+// --- 4. جدول مدیریت کاربران ---
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.modern-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th {
+    text-align: right;
+    padding: 15px;
+    color: $text-secondary;
+    font-size: 0.85rem;
+    font-weight: 700;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.05);
+  }
+
+  td {
+    padding: 15px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+    font-size: 0.9rem;
+    vertical-align: middle;
+  }
+
+  .username-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .avatar-small {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, $primary-color, $primary-hover);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+    .full-name { font-weight: 700; color: #1e293b; }
+    .user-id { font-size: 0.75rem; color: $text-secondary; }
+  }
+}
+
+.status-badge {
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &.active { background: #dcfce7; color: #16a34a; }
+  &:not(.active) { background: #fee2e2; color: $error-color; }
+
+  &:hover { opacity: 0.8; transform: scale(1.05); }
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+
+  .btn-icon {
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    border-radius: 10px;
+    border: 1px solid rgba($text-secondary, 0.1);
+    background: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: all 0.2s;
+
+    i {
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+      line-height: 24px;
+      display: block;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    &.edit {
+      color: #64748b;
+      &:hover { color: $primary-color; border-color: $primary-color; }
+    }
+
+    &.delete {
+      color: #ef4444;
+      border-color: rgba(#ef4444, 0.1);
+      &:hover { background: #ef4444; color: white; }
+    }
+  }
+}
+
+.glass-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal-content {
+  max-width: 650px;
+  animation: modalFadeIn 0.3s ease-out;
+
+  .btn-close-modal {
+    background: rgba($text-secondary, 0.1);
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $text-secondary;
+    &:hover { background: $error-color; color: white; }
+  }
+}
+
+.modern-form {
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 15px;
+
+    label {
+      font-size: 0.85rem;
+      color: $text-secondary;
+      font-weight: 600;
+    }
+
+    input {
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid rgba($text-secondary, 0.2);
+      background: rgba(255, 255, 255, 0.5);
+      font-family: 'Vazirmatn', sans-serif;
+      font-size: 0.9rem;
+      transition: all 0.3s;
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+        background: white;
+        box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+      }
+      &.disabled-input { background: rgba(0, 0, 0, 0.04); cursor: not-allowed; color: $text-secondary; }
+    }
+  }
+
+  .btn-submit {
+    padding: 12px 25px;
+    border-radius: 10px;
+    border: none;
+    background: $primary-color;
+    color: white;
+    font-family: 'Vazirmatn', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 12px rgba($primary-color, 0.2);
+
+    &:hover:not(:disabled) {
+      background: $primary-hover;
+      transform: translateY(-2px);
+    }
+
+    &.secondary {
+      background: #475569;
+      &:hover { background: #334155; }
+    }
+
+    &:disabled { opacity: 0.5; cursor: not-allowed; }
+  }
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+}

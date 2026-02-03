@@ -5,7 +5,6 @@ import {NgToastService} from "ng-angular-popup";
 import {TimeService} from "../../../services/time.service";
 import {DatePipe, NgForOf, NgIf} from "@angular/common";
 import {TicketService} from "../../../services/ticket.service";
-import {DashboardContactComponent} from "../../Template/dashboard-contact/dashboard-contact.component";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {NgxEchartsDirective} from "ngx-echarts";
 import {EChartsOption} from "echarts";
@@ -15,21 +14,21 @@ import {Router} from "@angular/router";
 import {format, subDays} from "date-fns";
 import * as ExcelJS from 'exceljs';
 import * as FileSaver from 'file-saver';
+import {DashboardTopmenuComponent} from "../../Template/dashboard-topmenu/dashboard-topmenu.component";
 
 
 @Component({
     selector: 'app-ticket',
-    imports: [DashboardSidebarComponent,
-      DashboardContactComponent,
-      MatProgressSpinner,
-      NgIf,
-      NgxEchartsDirective,
-      AllTicketsTable,
-      NgForOf,
-      DatePipe,
-      FormsModule,
-      ReactiveFormsModule
-    ],
+  imports: [DashboardSidebarComponent,
+    MatProgressSpinner,
+    NgIf,
+    NgxEchartsDirective,
+    AllTicketsTable,
+    NgForOf,
+    DatePipe,
+    FormsModule,
+    ReactiveFormsModule, DashboardTopmenuComponent
+  ],
     templateUrl: './ticket.html',
     styleUrl: './ticket.scss'
 })
@@ -43,7 +42,7 @@ export class Ticket implements OnInit {
   protected flag_CaseType_Popup:boolean=false;
   protected flag_TK_Status:boolean=false;
   protected flag_table:boolean=false;
-  public constructor(private toast:NgToastService, private auth:AuthService, private router:Router, private fb:FormBuilder, private getData:TicketService, private TimeService:TimeService) {}
+  public constructor(private toast:NgToastService, protected auth:AuthService, private router:Router, private fb:FormBuilder, private getData:TicketService, private TimeService:TimeService) {}
   StartDate:string = "";
   EndDate:string = "";
   selected_days:number = 0;
@@ -170,6 +169,10 @@ export class Ticket implements OnInit {
   };
 
   async ngOnInit(){
+    if (!this.auth.hasPermission('ticket.view')) {
+      console.warn('دسترسی محدود: ریکوئستی ارسال نشد.');
+      return;
+    }
     this.dateform = this.fb.group({
       StartDate: [''],
       EndDate: ['']

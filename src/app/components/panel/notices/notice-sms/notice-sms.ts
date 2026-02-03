@@ -3,7 +3,6 @@ import {DashboardSidebarComponent} from "../../../Template/dashboard-sidebar/das
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {DatePipe, NgForOf, NgIf} from "@angular/common";
 import {NgxEchartsDirective} from "ngx-echarts";
-import {DashboardContactComponent} from "../../../Template/dashboard-contact/dashboard-contact.component";
 import {FormBuilder, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {TimeService} from "../../../../services/time.service";
 import {NgToastService} from "ng-angular-popup";
@@ -12,18 +11,19 @@ import {Router} from "@angular/router";
 import {NoticeService} from "../../../../services/notice.service";
 import {EChartsOption} from "echarts";
 import {format, subDays} from "date-fns";
+import {DashboardTopmenuComponent} from "../../../Template/dashboard-topmenu/dashboard-topmenu.component";
 
 @Component({
     selector: 'app-notice-sms',
-    imports: [
-        DashboardSidebarComponent,
-        MatProgressSpinner,
-        NgIf,
-        NgxEchartsDirective,
-        DashboardContactComponent,
-        NgForOf,
-        ReactiveFormsModule
-    ],
+  imports: [
+    DashboardSidebarComponent,
+    MatProgressSpinner,
+    NgIf,
+    NgxEchartsDirective,
+    NgForOf,
+    ReactiveFormsModule,
+    DashboardTopmenuComponent
+  ],
     providers: [DatePipe],
     templateUrl: './notice-sms.html',
     styleUrl: './notice-sms.scss'
@@ -35,7 +35,7 @@ export class NoticeSms implements OnInit {
   protected flag_noticetype:boolean=false;
   protected flag_capitalincrease:boolean=false;
   protected flag_symbol:boolean=false;
-  public constructor(private toast:NgToastService, private auth:AuthService, private router:Router, private fb:FormBuilder, private getData:NoticeService, private datePipe: DatePipe, private TimeService:TimeService) {}
+  public constructor(private toast:NgToastService, protected auth:AuthService, private router:Router, private fb:FormBuilder, private getData:NoticeService, private datePipe: DatePipe, private TimeService:TimeService) {}
   StartDate:string = "";
   EndDate:string = "";
   selected_days:number = 0;
@@ -165,6 +165,10 @@ export class NoticeSms implements OnInit {
   };
 
   async ngOnInit(){
+    if (!this.auth.hasPermission('notices.sms.view')) {
+      console.warn('دسترسی محدود: ریکوئستی ارسال نشد.');
+      return;
+    }
     this.dateform = this.fb.group({
       StartDate: [''],
       EndDate: ['']

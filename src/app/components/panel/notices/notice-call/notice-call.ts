@@ -3,7 +3,6 @@ import {DashboardSidebarComponent} from "../../../Template/dashboard-sidebar/das
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {DatePipe, NgForOf, NgIf} from "@angular/common";
 import {NgxEchartsDirective} from "ngx-echarts";
-import {DashboardContactComponent} from "../../../Template/dashboard-contact/dashboard-contact.component";
 import {FormBuilder, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {NgToastService} from "ng-angular-popup";
 import {EChartsOption} from "echarts";
@@ -12,18 +11,19 @@ import {format, subDays} from "date-fns";
 import {TimeService} from "../../../../services/time.service";
 import {AuthService} from "../../../../services/auth.service";
 import {Router} from "@angular/router";
+import {DashboardTopmenuComponent} from "../../../Template/dashboard-topmenu/dashboard-topmenu.component";
 
 @Component({
     selector: 'app-notice-call',
-    imports: [
-        DashboardSidebarComponent,
-        MatProgressSpinner,
-        NgIf,
-        NgxEchartsDirective,
-        DashboardContactComponent,
-        ReactiveFormsModule,
-        NgForOf
-    ],
+  imports: [
+    DashboardSidebarComponent,
+    MatProgressSpinner,
+    NgIf,
+    NgxEchartsDirective,
+    ReactiveFormsModule,
+    NgForOf,
+    DashboardTopmenuComponent
+  ],
     providers: [DatePipe],
     templateUrl: './notice-call.html',
     styleUrl: './notice-call.scss'
@@ -35,7 +35,7 @@ export class NoticeCall implements OnInit {
   protected flag_noticetype:boolean=false;
   protected flag_capitalincrease:boolean=false;
   protected flag_symbol:boolean=false;
-  public constructor(private toast:NgToastService, private auth:AuthService, private router:Router, private fb:FormBuilder, private getData:NoticeService, private datePipe: DatePipe, private TimeService:TimeService) {}
+  public constructor(private toast:NgToastService, protected auth:AuthService, private router:Router, private fb:FormBuilder, private getData:NoticeService, private datePipe: DatePipe, private TimeService:TimeService) {}
   StartDate:string = "";
   EndDate:string = "";
   selected_days:number = 0;
@@ -154,6 +154,10 @@ export class NoticeCall implements OnInit {
   };
 
   async ngOnInit(){
+    if (!this.auth.hasPermission('notices.call.view')) {
+      console.warn('دسترسی محدود: ریکوئستی ارسال نشد.');
+      return;
+    }
     this.dateform = this.fb.group({
       StartDate: [''],
       EndDate: ['']

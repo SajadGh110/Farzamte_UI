@@ -1,69 +1,68 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from "@angular/common/http";
 import {AppConfigService} from "./app-config.service";
 import {Observable} from "rxjs";
+import {AuthService} from "./auth.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class IncomingCallService {
-
-  constructor(private http : HttpClient, private appConfigService: AppConfigService) { }
-  header = new HttpHeaders().append("api-key",this.appConfigService.getApiKey()).append("Authorization",this.appConfigService.getToken());
+  constructor(private authService: AuthService, private appConfigService: AppConfigService) { }
+  private apiUrl = `${this.appConfigService.getApiUrl()}InComingCall/`;
 
   get_LastDate():Observable<any>{
-    return this.http.get(`${this.appConfigService.getApiUrl()}InComingCall/LastDate`,{headers:this.header});
+    return this.authService.get(`${this.apiUrl}LastDate`);
   }
 
   get_AllUnits(StartDate:string, EndDate:string):Observable<any>{
-    return this.http.get(`${this.appConfigService.getApiUrl()}InComingCall/GetAllUnits?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
+    return this.authService.get(`${this.apiUrl}GetAllUnits/${StartDate}_${EndDate}`);
   }
 
   get_AllBranches(StartDate:string, EndDate:string):Observable<any>{
-    return this.http.get(`${this.appConfigService.getApiUrl()}InComingCall/GetAllBranches?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
+    return this.authService.get(`${this.apiUrl}GetAllBranches/${StartDate}_${EndDate}`);
   }
 
   get_CountDay(StartDate:string, EndDate:string):Observable<any>{
-    return this.http.get(`${this.appConfigService.getApiUrl()}InComingCall/GetCountDay?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
+    return this.authService.get(`${this.apiUrl}GetCountDay/${StartDate}_${EndDate}`);
   }
 
   get_TopReasons(StartDate:string, EndDate:string):Observable<any>{
-    return this.http.get(`${this.appConfigService.getApiUrl()}InComingCall/GetTopReasons?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
+    return this.authService.get(`${this.apiUrl}GetTopReasons/${StartDate}_${EndDate}`);
   }
 
   get_PhonecallReasons(StartDate:string, EndDate:string):Observable<any>{
-    return this.http.get(`${this.appConfigService.getApiUrl()}InComingCall/GetPhonecallReasons?startDate=${StartDate}&endDate=${EndDate}`,{headers:this.header});
+    return this.authService.get(`${this.apiUrl}GetPhonecallReasons/${StartDate}_${EndDate}`);
   }
 
   get_ReasonDetail(StartDate:string, EndDate:string, Reason:string):Observable<any>{
-    return this.http.get(`${this.appConfigService.getApiUrl()}InComingCall/GetReasonDetail?startDate=${StartDate}&endDate=${EndDate}&Reason=${Reason}`,{headers:this.header});
+    return this.authService.get(`${this.apiUrl}GetReasonDetail/${StartDate}_${EndDate}?reason=${Reason}`);
   }
 
   get_Description(StartDate:string, EndDate:string, Detail:string):Observable<any>{
-    return this.http.get(`${this.appConfigService.getApiUrl()}InComingCall/GetDescription?startDate=${StartDate}&endDate=${EndDate}&Detail=${Detail}`,{headers:this.header});
+    return this.authService.get(`${this.apiUrl}GetDescription/${StartDate}_${EndDate}/${Detail}`);
   }
 
   get_CountDay_F(StartDate:string, EndDate:string, Unit:string, Type:string, Branch:string):Observable<any>{
-    return this.http.get(`${this.appConfigService.getApiUrl()}InComingCall/GetCountDay_F?startDate=${StartDate}&endDate=${EndDate}&unit=${Unit}&type=${Type}&branch=${Branch}`,{headers:this.header});
+    return this.authService.get(`${this.apiUrl}GetCountDay_F/${StartDate}_${EndDate}/${Unit}/${Type}/${Branch}`);
   }
 
   get_TopReasons_F(StartDate:string, EndDate:string, Unit:string, Type:string, Branch:string):Observable<any>{
-    return this.http.get(`${this.appConfigService.getApiUrl()}InComingCall/GetTopReasons_F?startDate=${StartDate}&endDate=${EndDate}&unit=${Unit}&type=${Type}&branch=${Branch}`,{headers:this.header});
+    return this.authService.get(`${this.apiUrl}GetTopReasons_F/${StartDate}_${EndDate}/${Unit}/${Type}/${Branch}`);
   }
 
   get_PhonecallReasons_F(StartDate:string, EndDate:string, Unit:string, Type:string, Branch:string):Observable<any>{
-    return this.http.get(`${this.appConfigService.getApiUrl()}InComingCall/GetPhonecallReasons_F?startDate=${StartDate}&endDate=${EndDate}&unit=${Unit}&type=${Type}&branch=${Branch}`,{headers:this.header});
+    return this.authService.get(`${this.apiUrl}GetPhonecallReasons_F/${StartDate}_${EndDate}/${Unit}/${Type}/${Branch}`);
   }
 
   get_ReasonDetail_F(StartDate:string, EndDate:string, Reason:string, Unit:string, Type:string, Branch:string):Observable<any>{
-    return this.http.get(`${this.appConfigService.getApiUrl()}InComingCall/GetReasonDetail_F?startDate=${StartDate}&endDate=${EndDate}&Reason=${Reason}&unit=${Unit}&type=${Type}&branch=${Branch}`,{headers:this.header});
+    return this.authService.get(`${this.apiUrl}GetReasonDetail_F/${StartDate}_${EndDate}/${Reason}/${Unit}/${Type}/${Branch}`);
   }
 
   get_Description_F(StartDate:string, EndDate:string, Detail:string, Unit:string, Type:string, Branch:string):Observable<any>{
-    return this.http.get(`${this.appConfigService.getApiUrl()}InComingCall/GetDescription_F?startDate=${StartDate}&endDate=${EndDate}&Detail=${Detail}&unit=${Unit}&type=${Type}&branch=${Branch}`,{headers:this.header});
+    return this.authService.get(`${this.apiUrl}GetDescription_F/${StartDate}_${EndDate}/${Detail}/${Unit}/${Type}/${Branch}`);
   }
 
   get_FilteredExpertsDetails(StartDate:string, EndDate:string, Unit:string, Type:string, Branch:string):Observable<any>{
-    return this.http.get(`${this.appConfigService.getApiUrl()}InComingCall/GetFilteredExpertsDetails?startDate=${StartDate}&endDate=${EndDate}&unit=${Unit}&type=${Type}&branch=${Branch}`,{headers:this.header});
+    return this.authService.get(`${this.apiUrl}GetFilteredExpertsDetails/${StartDate}_${EndDate}/${Unit}/${Type}/${Branch}`);
   }
 }

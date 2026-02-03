@@ -32,7 +32,7 @@ import {GenerateRadarChart} from "../../Template/radar-chart/GenerateRadarChart"
     styleUrls: ['./brokerages.scss']
 })
 export class Brokerages implements OnInit {
-  public constructor(private router:Router,private toast:NgToastService, private getData:BrokerageService, private auth:AuthService) {}
+  public constructor(private router:Router,private toast:NgToastService, private getData:BrokerageService, protected auth:AuthService) {}
   series_date:any = [];
   years:any = [];
   selected_date:any = [];
@@ -238,6 +238,10 @@ export class Brokerages implements OnInit {
     ]
   };
   async ngOnInit(){
+    if (!this.auth.hasPermission('brokerage.view')) {
+      console.warn('دسترسی محدود: ریکوئستی ارسال نشد.');
+      return;
+    }
     let res_brokerage_name = await this.getData.Get_Brokerage_Name().toPromise();
     this.brokerage_name = "کارگزاری " + res_brokerage_name.name;
     this.brokerage_logo = "assets/images/brokers/" + res_brokerage_name.logo;

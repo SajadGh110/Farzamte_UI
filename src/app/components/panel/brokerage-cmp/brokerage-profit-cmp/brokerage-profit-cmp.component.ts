@@ -9,6 +9,7 @@ import {NgToastService} from "ng-angular-popup";
 import {BrokerageService} from "../../../../services/brokerage.service";
 import {BrokerageProfitService} from "../../../../services/brokerage-profit.service";
 import {findIndex} from "rxjs";
+import {DashboardTopmenuComponent} from "../../../Template/dashboard-topmenu/dashboard-topmenu.component";
 
 @Component({
   selector: 'app-brokerage-profit-cmp',
@@ -19,14 +20,15 @@ import {findIndex} from "rxjs";
     MatTabGroup,
     NgForOf,
     NgIf,
-    DecimalPipe
+    DecimalPipe,
+    DashboardTopmenuComponent
   ],
   providers: [DatePipe],
   templateUrl: './brokerage-profit-cmp.component.html',
   styleUrl: './brokerage-profit-cmp.component.scss'
 })
 export class BrokerageProfitCmpComponent implements OnInit {
-  public constructor(private auth:AuthService, private getData:BrokerageProfitService, private getDataBrokerage:BrokerageService, private router:Router, private toast:NgToastService) {}
+  public constructor(protected auth:AuthService, private getData:BrokerageProfitService, private getDataBrokerage:BrokerageService, private router:Router, private toast:NgToastService) {}
   series_date:any = [];
   selected_date:any = [];
   series_data:any = [];
@@ -94,6 +96,10 @@ export class BrokerageProfitCmpComponent implements OnInit {
 
 
   async ngOnInit(){
+    if (!this.auth.hasPermission('brokerageProfit.view')) {
+      console.warn('دسترسی محدود: ریکوئستی ارسال نشد.');
+      return;
+    }
     let res_brokerage_name = await this.getDataBrokerage.Get_Brokerage_Name().toPromise();
     this.brokerage_name = res_brokerage_name.name;
     this.brokerage_logo = "assets/images/brokers/" + res_brokerage_name.logo;
