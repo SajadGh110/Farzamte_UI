@@ -1,0 +1,100 @@
+.dialog-container {
+  font-family: 'Vazirmatn', sans-serif; // استفاده از فونت اصلی پروژه شما
+  padding: 0;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+
+  .dialog-header {
+    background: linear-gradient(135deg, #1a237e 0%, #3f51b5 100%);
+    color: white;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .dialog-title {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
+
+    .close-btn {
+      color: white;
+      background: rgba(255, 255, 255, 0.1);
+      &:hover { background: rgba(255, 255, 255, 0.2); }
+    }
+  }
+
+  .dialog-content {
+    padding: 20px;
+    overflow-y: auto;
+
+    .info-bar {
+      background-color: #f1f3f9;
+      padding: 8px 15px;
+      border-radius: 6px;
+      margin-bottom: 15px;
+      border-right: 4px solid #3f51b5;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .label { font-size: 13px; color: #666; font-weight: bold; }
+      .value { font-size: 14px; color: #1a237e; font-weight: bold; }
+      .separator { color: #ccc; margin: 0 5px; }
+    }
+  }
+}
+
+.table-wrapper {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.details-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th {
+    background-color: #f5f5f5;
+    color: #333;
+    padding: 12px;
+    font-size: 13px;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  td {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    font-size: 13px;
+    color: #444;
+    text-align: center;
+  }
+
+  tr:hover { background-color: #f8faff; }
+
+  .from-cell { font-weight: bold; color: #000; }
+  .phone-cell {
+    font-family: 'Bahnschrift', sans-serif;
+    direction: ltr;
+    color: #3f51b5;
+    font-weight: bold;
+  }
+  .desc-cell {
+    text-align: right;
+    max-width: 300px;
+    line-height: 1.5;
+  }
+  .no-data { padding: 20px; color: #999; }
+}
+
+.dialog-actions {
+  padding: 15px 20px;
+  border-top: 1px solid #eee;
+  display: flex;
+  justify-content: flex-end;
+}

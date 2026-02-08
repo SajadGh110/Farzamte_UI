@@ -1,68 +1,13 @@
 @use '../../../../../variables' as *;
 
-.content-scrollable {
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 25px; // فاصله استاندارد بین باکس‌های اصلی (Container)
-}
-
-.glass-card {
-  @include glass-style;
-  padding: 20px;
-  position: relative;
-
-  .card-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 20px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-
-    i { color: $primary-color; font-size: 24px; }
-    h2 {
-      font-family: $Font-Family-Fa;
-      font-size: 18px;
-      margin: 0;
-      color: $text-main;
-      font-weight: 600;
-    }
-  }
-}
-
-// استایل تولبار
 .toolbar-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
   gap: 20px;
-
-  .date-inputs {
-    display: flex;
-    gap: 15px;
-    align-items: center;
-
-    .input-group {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      label { font-family: $Font-Family-Fa; color: $text-secondary; font-size: 13px; }
-      input {
-        padding: 8px 12px;
-        border-radius: 8px;
-        border: 1px solid rgba(0,0,0,0.1);
-        font-family: $Font-Family-En;
-        font-size: 13px;
-        background: white;
-        &:focus { border-color: $primary-color; outline: none; }
-      }
-    }
-  }
 }
 
-// --- استایل جدید و بهینه برای موضوعات تماس (باکس سوم) ---
 .subjects-report-wrapper {
   display: flex;
   flex-direction: column;
@@ -123,35 +68,4 @@
       }
     }
   }
-}
-
-// نمودار
-.chart-container {
-  height: 400px;
-  width: 100%;
-}
-
-.btn-refresh {
-  background: $primary-color;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-family: $Font-Family-Fa;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: background 0.2s;
-  &:hover { background: $primary-hover; }
-}
-
-.badge {
-  background: white;
-  padding: 6px 14px;
-  border-radius: 20px;
-  font-family: $Font-Family-En;
-  font-size: 12px;
-  color: $text-secondary;
-  border: 1px solid rgba(0,0,0,0.05);
 }

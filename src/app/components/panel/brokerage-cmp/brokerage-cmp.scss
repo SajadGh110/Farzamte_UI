@@ -1,86 +1,5 @@
-// brokerage-cmp.component.scss
 @use '../../../../variables' as *;
 
-:host {
-  display: block;
-  height: 100vh;
-  overflow: hidden;
-  background-color: $Background;
-}
-
-.dashboard-wrapper {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  padding: 0;
-  gap: 0;
-}
-
-app-dashboard-sidebar {
-  flex-shrink: 0;
-  z-index: 50;
-}
-
-.dashboard-main {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  overflow: hidden;
-  position: relative;
-  
-  app-dashboard-topmenu {
-    flex-shrink: 0;
-    z-index: 40;
-    margin-bottom: 15px;
-  }
-
-  .content-scrollable {
-    flex-grow: 1;
-    overflow-y: auto;
-    overflow-x: auto;
-    padding: 0 2rem 2rem 2rem;
-    scroll-behavior: smooth;
-    
-    &::-webkit-scrollbar {
-      width: 6px;
-    }
-    &::-webkit-scrollbar-thumb {
-      background-color: rgba($primary-color, 0.3);
-      border-radius: 4px;
-    }
-  }
-}
-
-.glass-card {
-  @include glass-style;
-  background: rgba(255, 255, 255, 0.65);
-  padding: 25px;
-  margin-bottom: 30px;
-  display: flex;
-  flex-direction: column;
-  transition: transform 0.3s;
-
-  .card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    border-bottom: 1px solid rgba($text-secondary, 0.1);
-    padding-bottom: 10px;
-
-    h2 {
-      margin: 0;
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: $text-main;
-      border-right: 4px solid $primary-color;
-      padding-right: 12px;
-    }
-  }
-}
-
-// استایل‌های خاص صفحه مقایسه
 .selection-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -93,7 +12,7 @@ app-dashboard-sidebar {
   border-radius: 15px;
   padding: 20px;
   border: 1px solid rgba(255, 255, 255, 0.7);
-  
+
   h3 {
     margin-top: 0;
     margin-bottom: 15px;
@@ -112,25 +31,25 @@ app-dashboard-sidebar {
   border: 1px solid rgba($text-secondary, 0.1);
   border-radius: 10px;
   margin-top: 10px;
-  
+
   ul {
     list-style: none;
     padding: 0;
     margin: 0;
   }
-  
+
   .broker-item {
     padding: 10px 15px;
     border-bottom: 1px solid rgba($text-secondary, 0.05);
     cursor: pointer;
     transition: all 0.2s;
     font-size: 0.9rem;
-    
+
     &:hover {
       background: rgba($primary-color, 0.08);
       padding-right: 20px;
     }
-    
+
     &:last-child {
       border-bottom: none;
     }
@@ -144,7 +63,7 @@ app-dashboard-sidebar {
     overflow-y: auto;
     margin-bottom: 15px;
   }
-  
+
   .selected-item {
     display: flex;
     justify-content: space-between;
@@ -154,11 +73,11 @@ app-dashboard-sidebar {
     border-radius: 8px;
     margin-bottom: 8px;
     border: 1px solid rgba($primary-color, 0.1);
-    
+
     &.primary {
       background: rgba(#4CAF50, 0.1);
       border-color: rgba(#4CAF50, 0.2);
-      
+
       .badge {
         background: #4CAF50;
         color: white;
@@ -167,25 +86,25 @@ app-dashboard-sidebar {
         border-radius: 10px;
       }
     }
-    
+
     .remove-btn {
       color: #ff4444;
       cursor: pointer;
       font-size: 1.2rem;
       padding: 0 5px;
-      
+
       &:hover {
         color: #cc0000;
       }
     }
   }
-  
+
   .actions {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-top: 15px;
-    
+
     .count {
       font-size: 0.85rem;
       color: $text-secondary;
@@ -206,12 +125,12 @@ app-dashboard-sidebar {
   font-size: 0.9rem;
   box-shadow: 0 3px 8px rgba($primary-color, 0.2);
   transition: all 0.2s;
-  
+
   &:hover:not(:disabled) {
     background: $primary-hover;
     transform: translateY(-2px);
   }
-  
+
   &:disabled {
     background: rgba($text-secondary, 0.3);
     cursor: not-allowed;
@@ -223,32 +142,33 @@ app-dashboard-sidebar {
 .search-box {
   position: relative;
   margin-bottom: 15px;
-  
+
   .search-input {
     width: 100%;
     padding: 10px 40px 10px 35px;
     border: 1px solid rgba($text-secondary, 0.2);
     border-radius: 8px;
     font-size: 0.9rem;
+    font-family: Vazirmatn, sans-serif;
     direction: rtl;
     background: rgba(255, 255, 255, 0.7);
     transition: all 0.2s;
-    
+
     &:focus {
       outline: none;
       border-color: $primary-color;
       box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
     }
   }
-  
+
   .search-icon {
     position: absolute;
     left: 15px;
     top: 50%;
     transform: translateY(-50%);
-    color: rgba($text-secondary, 0.5);
+    color: #3b82f6;
   }
-  
+
   .clear-btn {
     position: absolute;
     right: 15px;
@@ -266,7 +186,7 @@ app-dashboard-sidebar {
     font-size: 16px;
     color: white;
     transition: all 0.2s;
-    
+
     &:hover {
       background: rgba($text-secondary, 0.5);
     }
@@ -280,124 +200,18 @@ app-dashboard-sidebar {
   font-style: italic;
 }
 
-// استایل جدول سفارشی شیشه‌ای مدرن
-.table-container {
-  overflow-x: auto;
-  padding: 0;
-  border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  border: 1px solid #1a237e;
-  
-  // اسکرول افقی همیشه فعال
-  -webkit-overflow-scrolling: touch; // برای اسکرول نرم در موبایل
-  
-  // استایل اسکرول بار
-  &::-webkit-scrollbar {
-    height: 8px; // ارتفاع اسکرول بار افقی
-  }
-  
-  &::-webkit-scrollbar-track {
-    background: rgba(63, 81, 181, 0.05);
-    border-radius: 4px;
-  }
-  
-  &::-webkit-scrollbar-thumb {
-    background: rgba(63, 81, 181, 0.3);
-    border-radius: 4px;
-    
-    &:hover {
-      background: rgba(63, 81, 181, 0.5);
-    }
-  }
-}
-
-.custom-table {
-  width: auto; // تغییر از 100% به auto
-  min-width: 100%; // حداقل عرض 100%
-  font-family: 'Vazirmatn', sans-serif;
-
-  // برای مطمئن شدن از عرض کافی
-  .table-head {
-    display: flex;
-    min-width: 1000px; // حداقل عرض برای هدر
-    background: linear-gradient(135deg, #3f51b5 0%, #5c6bc0 100%);
-    
-    .cell {
-      min-width: 100px; // حداقل عرض هر ستون
-      flex: 1;
-      text-align: center;
-      font-family: 'Vazirmatn', sans-serif;
-      font-size: 14px;
-      padding: 16px;
-      color: white;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-      border-bottom: 1px solid #303f9f;
-      
-      &:first-child {
-        min-width: 100px; // ستون تاریخ کوچکتر
-        background-color: #3f51b5;
-      }
-    }
-  }
-
+.custom-flex-table {
   .table-body {
     .table-row {
-      display: flex;
-      min-width: 1000px; // حداقل عرض برای هر ردیف
-      padding: 0;
-      border-bottom: 1px solid rgba(63, 81, 181, 0.1);
-      background: rgba(255, 255, 255, 0.95);
-      transition: all 0.2s ease;
-      
-      &:nth-child(even) {
-        background: rgba(63, 81, 181, 0.03);
-      }
-      
-      &:last-child { 
-        border-bottom: none;
-      }
-      
-      &:hover { 
-        background: rgba(63, 81, 181, 0.08);
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-      }
-
       .cell {
-        min-width: 100px; // حداقل عرض هر ستون
-        display: flex;
         flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: 10px;
-        flex: 1;
-        text-align: center;
-        font-family: 'Vazirmatn', sans-serif;
-        font-size: 13px;
-        padding: 14px;
-        color: #1a237e;
-        font-weight: bold;
-        border: none;
-
-        &:first-child {
-          min-width: 100px; // ستون تاریخ کوچکتر
-          color: #026824;
-          background: rgba(63, 81, 181, 0.05);
-          border-right: 2px solid rgba(63, 81, 181, 0.2);
-        }
-
         .cell-name {
           font-family: 'Vazirmatn', sans-serif;
           margin: 0 0 5px 0;
           font-size: 14px;
-          color: #1a237e;
           font-weight: 500;
           line-height: 1.3;
         }
-
         .cell-value {
           font-family: 'Vazirmatn', sans-serif;
           margin: 0;
@@ -411,116 +225,6 @@ app-dashboard-sidebar {
           direction: ltr;
         }
       }
-    }
-  }
-}
-
-// لودینگ
-.loading-spinner {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 40px;
-}
-
-
-// دکمه شناور دسترسی سریع
-.quick-access-fab {
-  position: fixed;
-  bottom: 35px;
-  right: 35px;
-  z-index: 100;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-
-  .fab-button {
-    width: 60px;
-    height: 60px;
-    background: $primary-color;
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 20px rgba($primary-color, 0.4);
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    
-    svg {
-      stroke: white;
-      fill: white;
-      width: 28px;
-      height: 28px;
-      transition: all 0.3s ease;
-    }
-  }
-
-  .fab-menu {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 10px;
-    margin-bottom: 15px;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(20px);
-    transition: all 0.3s ease;
-
-    a {
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-      text-decoration: none;
-      
-      .label {
-        background: rgba(255, 255, 255, 0.95);
-        padding: 5px 15px;
-        border-radius: 20px;
-        font-size: 0.8rem;
-        color: $text-secondary;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        margin-right: 12px;
-        transition: all 0.2s;
-        font-weight: 500;
-      }
-      
-      .dot {
-        width: 10px;
-        height: 10px;
-        background: rgba($text-secondary, 0.5);
-        border-radius: 50%;
-        transition: all 0.2s;
-        box-shadow: 0 0 0 2px rgba(255,255,255,0.5);
-      }
-
-      &:hover {
-        .label {
-          color: $primary-color;
-          transform: translateX(-5px);
-        }
-        .dot {
-          background: $primary-color;
-          transform: scale(1.3);
-        }
-      }
-    }
-  }
-
-  &:hover {
-    .fab-button {
-      transform: scale(1.1); // فقط بزرگ شدن بدون چرخش
-      box-shadow: 0 6px 25px rgba($primary-color, 0.5);
-      
-      svg {
-        transform: translateY(-2px); // حرکت کوچک آیکون
-      }
-    }
-    
-    .fab-menu {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0);
     }
   }
 }
@@ -553,5 +257,63 @@ app-dashboard-sidebar {
   &:hover {
     background: rgba($primary-color, 0.05);
     border-color: rgba($primary-color, 0.3);
+  }
+}
+
+.charts-column-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+
+  .chart-box-full {
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 15px;
+    padding: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    width: 100%;
+
+    .echart {
+      width: 100%;
+      height: 400px;
+    }
+  }
+  .toggle-container {
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+  }
+}
+.toggle-group {
+  display: flex;
+  background: rgba(63, 81, 181, 0.05);
+  border: 1px solid rgba(63, 81, 181, 0.2);
+  border-radius: 30px;
+  padding: 4px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+
+  button {
+    background: transparent;
+    border: none;
+    padding: 8px 24px;
+    border-radius: 25px;
+    font-family: 'Vazirmatn', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: #555;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &.active {
+      background: $primary-color;
+      color: #fff;
+      box-shadow: 0 4px 12px rgba($primary-color, 0.3);
+      transform: scale(1.05);
+    }
+
+    &:hover:not(.active) {
+      background: rgba(63, 81, 181, 0.1);
+    }
   }
 }

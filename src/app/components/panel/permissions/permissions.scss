@@ -1,50 +1,11 @@
 @use '../../../../variables' as *;
 
-// تنظیمات فونت و بدنه
-:host {
-  font-family: 'Vazirmatn', sans-serif;
-}
-
-.dashboard-wrapper {
-  display: flex;
-  height: 100vh;
-  width: 100%;
-  background: #f1f5f9;
-}
-
-.dashboard-main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.content-scrollable {
-  flex-grow: 1;
-  overflow-y: auto;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 25px; // ایجاد فاصله واقعی بین باکس‌ها به جای مارجین
-}
-
-// استایل باکس‌های شیشه‌ای
-.glass-card {
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  padding: 25px;
-  border-radius: 20px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03);
-}
-
-// استایل عنوان باکس‌ها (سمت راست و آبی مشابه پروفایل)
 .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 25px;
-  border-right: 4px solid $primary-color; // خط آبی سمت راست
+  border-right: 4px solid $primary-color;
   padding-right: 15px;
 
   h3 {
@@ -53,7 +14,7 @@
     gap: 10px;
     font-size: 1.15rem;
     font-weight: 800;
-    color: $primary-color; // رنگ آبی برای عنوان
+    color: $primary-color;
     margin: 0;
   }
 }

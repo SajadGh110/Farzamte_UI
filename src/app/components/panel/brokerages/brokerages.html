@@ -1,207 +1,212 @@
 <section class="dashboard-wrapper">
-
   <app-dashboard-sidebar></app-dashboard-sidebar>
-
   <section class="dashboard-main">
-
     <app-dashboard-topmenu></app-dashboard-topmenu>
-
     <div class="content-scrollable">
       <ng-container *ngIf="auth.hasPermission('brokerage.view'); else deniedTemplate">
         <section class="glass-card" id="select_date" #select_date>
           <section class="card-header">
             <h2>انتخاب تاریخ گزارش</h2>
             <div class="brokerage-info" *ngIf="flag_date">
-               <span class="broker-name">{{brokerage_name}}</span>
-               <img [src]="brokerage_logo" alt="logo" class="broker-logo">
+              <span class="broker-name">{{brokerage_name}}</span>
+              <img [src]="brokerage_logo" alt="logo" class="broker-logo">
             </div>
           </section>
-
-          <section class="loading-spinner" *ngIf="!flag_date">
-            <mat-spinner diameter="40"></mat-spinner>
-          </section>
-
+          <section class="loading-spinner" *ngIf="!flag_date"><mat-spinner diameter="40"></mat-spinner></section>
           <section class="date-selector" *ngIf="flag_date">
-             <mat-tab-group animationDuration="0ms" dir="ltr">
-               <mat-tab *ngFor="let item of Object.keys(years)" label="{{item}}">
-                 <div class="month-grid">
-                    <section class="month-item" *ngFor="let item2 of years[item]">
-                      <input id="{{item2}}" type="checkbox" value="{{item2}}" [checked]="selected_date.includes(item2)" (change)="onCheckboxChange($event, item2)" [disabled]="item2 == '1402-04'">
-                      <label for="{{item2}}">{{item2}}</label>
-                    </section>
-                 </div>
-               </mat-tab>
-             </mat-tab-group>
-             <button class="btn-submit" type="button" (click)="do(selected_date)">نمایش گزارش</button>
+            <mat-tab-group animationDuration="0ms" dir="ltr">
+              <mat-tab *ngFor="let item of Object.keys(years)" label="{{item}}">
+                <div class="month-grid">
+                  <section class="month-item" *ngFor="let item2 of years[item]">
+                    <input id="{{item2}}" type="checkbox" value="{{item2}}" [checked]="selected_date.includes(item2)" (change)="onCheckboxChange($event, item2)">
+                    <label for="{{item2}}">{{item2}}</label>
+                  </section>
+                </div>
+              </mat-tab>
+            </mat-tab-group>
+            <button class="btn-submit" (click)="do(selected_date)">نمایش گزارش</button>
           </section>
         </section>
+
         <section class="glass-card" id="view" #view>
-          <section class="card-header">
-            <h2>نگاه کلی</h2>
-          </section>
-
-          <section class="loading-spinner" *ngIf="!Flag_Brokerage">
-            <mat-spinner diameter="40"></mat-spinner>
-          </section>
-
-          <div class="charts-grid" *ngIf="Flag_Brokerage">
-             <div class="chart-box"><div echarts [options]="Series_Brokerage_Radar" class="echart"></div></div>
-             <div class="chart-box"><div echarts [options]="Series_Brokerage_Bar" class="echart"></div></div>
-             <div class="chart-box"><div echarts [options]="Series_Brokerage_Total_Bar" class="echart"></div></div>
-             <div class="chart-box"><div echarts [options]="series_Chart1_line" class="echart"></div></div>
+          <section class="card-header"><h2>نگاه کلی</h2></section>
+          <section class="loading-spinner" *ngIf="!Flag_Brokerage"><mat-spinner diameter="40"></mat-spinner></section>
+          <div class="charts-column-layout" *ngIf="Flag_Brokerage">
+            <div class="chart-box-full"><div echarts [options]="Series_Brokerage_Radar" class="echart"></div></div>
+            <div class="toggle-container">
+              <div class="toggle-group">
+                <button [class.active]="currentMode_Brokerage === 'brokerage'" (click)="toggleSectionMode('brokerage', 'brokerage')">ارزش کارگزاری</button>
+                <button [class.active]="currentMode_Brokerage === 'total'" (click)="toggleSectionMode('brokerage', 'total')">ارزش کل بازار</button>
+              </div>
+            </div>
+            <div class="chart-box-full"><div echarts [options]="activeSeries_Brokerage" class="echart"></div></div>
+            <div class="market-share-analysis">
+              <div class="analysis-header"><span>سهم از بازار</span></div>
+              <div echarts [options]="Series_Brokerage_Share" style="height: 400px;"></div>
+            </div>
           </div>
         </section>
-        <section class="glass-card" id="totals" #totals>
-          <section class="card-header">
-            <h2>سهم از بازار</h2>
-          </section>
 
-          <section class="loading-spinner" *ngIf="!flag_totals">
-            <mat-spinner diameter="40"></mat-spinner>
-          </section>
-
-          <div class="table-container" *ngIf="flag_totals">
-             <section class="custom-table">
-                <div class="table-head">
-                   <div class="cell">تاریخ</div>
-                   <div class="cell">بورس</div>
-                   <div class="cell">فرابورس</div>
-                   <div class="cell">مجموع</div>
-                   <div class="cell">کالا</div>
-                   <div class="cell">انرژی</div>
-                   <div class="cell">کل</div>
-                </div>
-                <div class="table-body">
-                  <div class="table-row" *ngFor="let item of series_totals">
-                     <div class="cell">{{item.date}}</div>
-                     <div class="cell">{{item.bobt_share}}%</div>
-                     <div class="cell">{{item.fi_share}}%</div>
-                     <div class="cell">{{item.bobt_fi_share}}%</div>
-                     <div class="cell">{{item.bki_share}}%</div>
-                     <div class="cell">{{item.bei_share}}%</div>
-                     <div class="cell">{{item.all_share}}%</div>
-                  </div>
-                </div>
-             </section>
-          </div>
-        </section>
         <section class="glass-card" id="bob" #bob>
           <section class="card-header"><h2>بورس اوراق بهادار</h2></section>
           <section class="loading-spinner" *ngIf="!flag_BOBT"><mat-spinner diameter="40"></mat-spinner></section>
-          <div class="charts-grid" *ngIf="flag_BOBT">
-             <div class="chart-box"><div echarts [options]="Series_BOBT_Radar" class="echart"></div></div>
-             <div class="chart-box"><div echarts [options]="Series_BOBT_Bar" class="echart"></div></div>
-             <div class="chart-box"><div echarts [options]="Series_BOBT_Total_Bar" class="echart"></div></div>
-             <div class="chart-box"><div echarts [options]="series_Chart2_line" class="echart"></div></div>
+          <div class="charts-column-layout" *ngIf="flag_BOBT">
+            <div class="chart-box-full"><div echarts [options]="Series_BOBT_Radar" class="echart"></div></div>
+            <div class="toggle-container">
+              <div class="toggle-group">
+                <button [class.active]="currentMode_BOBT === 'brokerage'" (click)="toggleSectionMode('bobt', 'brokerage')">ارزش کارگزاری</button>
+                <button [class.active]="currentMode_BOBT === 'total'" (click)="toggleSectionMode('bobt', 'total')">ارزش کل بازار</button>
+              </div>
+            </div>
+            <div class="chart-box-full"><div echarts [options]="activeSeries_BOBT" class="echart"></div></div>
+            <div class="market-share-analysis">
+              <div class="analysis-header"><span>سهم از بازار</span></div>
+              <div echarts [options]="Series_BOBT_Share" style="height: 400px;"></div>
+            </div>
           </div>
         </section>
+
         <section class="glass-card" id="fi" #fi>
           <section class="card-header"><h2>فرابورس</h2></section>
           <section class="loading-spinner" *ngIf="!flag_FI"><mat-spinner diameter="40"></mat-spinner></section>
-          <div class="charts-grid" *ngIf="flag_FI">
-             <div class="chart-box"><div echarts [options]="Series_FI_Radar" class="echart"></div></div>
-             <div class="chart-box"><div echarts [options]="Series_FI_Bar" class="echart"></div></div>
-             <div class="chart-box"><div echarts [options]="Series_FI_Total_Bar" class="echart"></div></div>
-             <div class="chart-box"><div echarts [options]="series_Chart3_line" class="echart"></div></div>
+          <div class="charts-column-layout" *ngIf="flag_FI">
+            <div class="chart-box-full"><div echarts [options]="Series_FI_Radar" class="echart"></div></div>
+            <div class="toggle-container">
+              <div class="toggle-group">
+                <button [class.active]="currentMode_FI === 'brokerage'" (click)="toggleSectionMode('fi', 'brokerage')">ارزش کارگزاری</button>
+                <button [class.active]="currentMode_FI === 'total'" (click)="toggleSectionMode('fi', 'total')">ارزش کل بازار</button>
+              </div>
+            </div>
+            <div class="chart-box-full"><div echarts [options]="activeSeries_FI" class="echart"></div></div>
+            <div class="market-share-analysis">
+              <div class="analysis-header"><span>سهم از بازار</span></div>
+              <div echarts [options]="Series_FI_Share" style="height: 400px;"></div>
+            </div>
           </div>
         </section>
+
         <section class="glass-card" id="bki" #bki>
           <section class="card-header"><h2>بورس کالا</h2></section>
           <section class="loading-spinner" *ngIf="!flag_BKI"><mat-spinner diameter="40"></mat-spinner></section>
-          <div class="charts-grid" *ngIf="flag_BKI">
-             <div class="chart-box"><div echarts [options]="Series_BKI_Radar" class="echart"></div></div>
-             <div class="chart-box"><div echarts [options]="Series_BKI_Bar" class="echart"></div></div>
-             <div class="chart-box"><div echarts [options]="Series_BKI_Total_Bar" class="echart"></div></div>
-             <div class="chart-box"><div echarts [options]="series_Chart4_line" class="echart"></div></div>
+          <div class="charts-column-layout" *ngIf="flag_BKI">
+            <div class="chart-box-full"><div echarts [options]="Series_BKI_Radar" class="echart"></div></div>
+            <div class="toggle-container">
+              <div class="toggle-group">
+                <button [class.active]="currentMode_BKI === 'brokerage'" (click)="toggleSectionMode('bki', 'brokerage')">ارزش کارگزاری</button>
+                <button [class.active]="currentMode_BKI === 'total'" (click)="toggleSectionMode('bki', 'total')">ارزش کل بازار</button>
+              </div>
+            </div>
+            <div class="chart-box-full"><div echarts [options]="activeSeries_BKI" class="echart"></div></div>
+            <div class="market-share-analysis">
+              <div class="analysis-header"><span>سهم از بازار</span></div>
+              <div echarts [options]="Series_BKI_Share" style="height: 400px;"></div>
+            </div>
           </div>
         </section>
+
         <section class="glass-card" id="bei" #bei>
           <section class="card-header"><h2>بورس انرژی</h2></section>
           <section class="loading-spinner" *ngIf="!Flag_BEI"><mat-spinner diameter="40"></mat-spinner></section>
-          <div class="charts-grid" *ngIf="Flag_BEI">
-             <div class="chart-box"><div echarts [options]="Series_BEI_Radar" class="echart"></div></div>
-             <div class="chart-box"><div echarts [options]="Series_BEI_Bar" class="echart"></div></div>
-             <div class="chart-box"><div echarts [options]="Series_BEI_Total_Bar" class="echart"></div></div>
-             <div class="chart-box"><div echarts [options]="series_Chart5_line" class="echart"></div></div>
+          <div class="charts-column-layout" *ngIf="Flag_BEI">
+            <div class="chart-box-full"><div echarts [options]="Series_BEI_Radar" class="echart"></div></div>
+            <div class="toggle-container">
+              <div class="toggle-group">
+                <button [class.active]="currentMode_BEI === 'brokerage'" (click)="toggleSectionMode('bei', 'brokerage')">ارزش کارگزاری</button>
+                <button [class.active]="currentMode_BEI === 'total'" (click)="toggleSectionMode('bei', 'total')">ارزش کل بازار</button>
+              </div>
+            </div>
+            <div class="chart-box-full"><div echarts [options]="activeSeries_BEI" class="echart"></div></div>
+            <div class="market-share-analysis">
+              <div class="analysis-header"><span>سهم از بازار</span></div>
+              <div echarts [options]="Series_BEI_Share" style="height: 400px;"></div>
+            </div>
           </div>
         </section>
+
         <section class="glass-card" id="moshtaghe" #moshtaghe>
           <section class="card-header"><h2>رتبه بندی معاملات مشتقه</h2></section>
           <section class="loading-spinner" *ngIf="!Flag_Moshtaghe"><mat-spinner diameter="40"></mat-spinner></section>
-
           <div *ngIf="Flag_Moshtaghe">
-            <div class="table-container">
-               <section class="custom-table">
-                  <div class="table-head">
-                     <div class="cell">تاریخ</div>
-                     <div class="cell">معاملات کارگزاری</div>
-                     <div class="cell">کل معاملات</div>
-                     <div class="cell">رتبه</div>
-                     <div class="cell">سهم بازار</div>
+            <div class="table-outer-wrapper" *ngIf="Moshtaghe_Table_Data.length > 0">
+              <div class="custom-flex-table">
+                <div class="table-head">
+                  <div class="cell fixed-sm">تاریخ</div>
+                  <div class="cell">مشتقه کارگزاری</div>
+                  <div class="cell">کل معاملات</div>
+                  <div class="cell">رتبه کارگزاری</div>
+                  <div class="cell">سهم بازار</div>
+                </div>
+                <div class="table-body">
+                  <div class="table-row" *ngFor="let item of Moshtaghe_Table_Data">
+                    <div class="cell fixed-sm">{{item.date}}</div>
+                    <div class="cell">{{item.brokerage_TotalMoshtaghe }}</div>
+                    <div class="cell">{{item.totalMoshtaghe}}</div>
+                    <div class="cell highlight">{{item.brokerage_Rank_TotalMoshtaghe}}</div>
+                    <div class="cell highlight">{{item.percent_Moshtaghe}}%</div>
                   </div>
-                  <div class="table-body">
-                    <div class="table-row" *ngFor="let item of Moshtaghe_Table_Data">
-                       <div class="cell">{{item.date}}</div>
-                       <div class="cell">{{item.brokerage_TotalMoshtaghe}}</div>
-                       <div class="cell">{{item.totalMoshtaghe}}</div>
-                       <div class="cell">{{item.brokerage_Rank_TotalMoshtaghe}}</div>
-                       <div class="cell">{{item.percent_Moshtaghe}}%</div>
-                    </div>
-                  </div>
-               </section>
+                </div>
+              </div>
             </div>
-
-            <div class="charts-grid" style="margin-top: 20px;">
-               <div class="chart-box"><div echarts [options]="Series_Moshtaghe_Bar" class="echart"></div></div>
-               <div class="chart-box"><div echarts [options]="Series_Moshtaghe_Total_Bar" class="echart"></div></div>
+            <div class="charts-column-layout">
+              <div class="toggle-container">
+                <div class="toggle-group">
+                  <button [class.active]="currentMode_Moshtaghe === 'brokerage'" (click)="toggleSectionMode('moshtaghe', 'brokerage')">ارزش کارگزاری</button>
+                  <button [class.active]="currentMode_Moshtaghe === 'total'" (click)="toggleSectionMode('moshtaghe', 'total')">ارزش کل بازار</button>
+                </div>
+              </div>
+              <div class="chart-box-full"><div echarts [options]="activeSeries_Moshtaghe" class="echart"></div></div>
+            </div>
+            <div class="market-share-analysis">
+              <div class="analysis-header"><span>سهم از بازار</span></div>
+              <div echarts [options]="Series_Moshtaghe_Share" style="height: 400px;"></div>
             </div>
           </div>
         </section>
+
         <section class="glass-card" id="online" #online>
           <section class="card-header"><h2>رتبه بندی معاملات آنلاین</h2></section>
           <section class="loading-spinner" *ngIf="!Flag_Online"><mat-spinner diameter="40"></mat-spinner></section>
-
           <div *ngIf="Flag_Online">
-            <div class="table-container">
-               <section class="custom-table">
-                  <div class="table-head">
-                     <div class="cell">تاریخ</div>
-                     <div class="cell">معاملات آنلاین کارگزاری</div>
-                     <div class="cell">کل معاملات</div>
-                     <div class="cell">رتبه</div>
-                     <div class="cell">سهم بازار</div>
+            <div class="table-outer-wrapper" *ngIf="Online_Table_Data.length > 0">
+              <div class="custom-flex-table">
+                <div class="table-head">
+                  <div class="cell fixed-sm">تاریخ</div>
+                  <div class="cell">آنلاین کارگزاری</div>
+                  <div class="cell">کل معاملات</div>
+                  <div class="cell">رتبه کارگزاری</div>
+                  <div class="cell">سهم بازار</div>
+                </div>
+                <div class="table-body">
+                  <div class="table-row" *ngFor="let item of Online_Table_Data">
+                    <div class="cell fixed-sm">{{item.date}}</div>
+                    <div class="cell">{{item.brokerage_TotalOnline}}</div>
+                    <div class="cell">{{item.totalOnline}}</div>
+                    <div class="cell highlight">{{item.brokerage_Rank_TotalOnline}}</div>
+                    <div class="cell highlight">{{item.percent_Online}}%</div>
                   </div>
-                  <div class="table-body">
-                    <div class="table-row" *ngFor="let item of Online_Table_Data">
-                       <div class="cell">{{item.date}}</div>
-                       <div class="cell">{{item.brokerage_TotalOnline}}</div>
-                       <div class="cell">{{item.totalOnline}}</div>
-                       <div class="cell">{{item.brokerage_Rank_TotalOnline}}</div>
-                       <div class="cell">{{item.percent_Online}}%</div>
-                    </div>
-                  </div>
-               </section>
+                </div>
+              </div>
             </div>
-
-            <div class="charts-grid" style="margin-top: 20px;">
-               <div class="chart-box"><div echarts [options]="Series_Online_Bar" class="echart"></div></div>
-               <div class="chart-box"><div echarts [options]="Series_Online_Total_Bar" class="echart"></div></div>
+            <div class="charts-column-layout">
+              <div class="toggle-container">
+                <div class="toggle-group">
+                  <button [class.active]="currentMode_Online === 'brokerage'" (click)="toggleSectionMode('online', 'brokerage')">ارزش کارگزاری</button>
+                  <button [class.active]="currentMode_Online === 'total'" (click)="toggleSectionMode('online', 'total')">ارزش کل بازار</button>
+                </div>
+              </div>
+              <div class="chart-box-full"><div echarts [options]="activeSeries_Online" class="echart"></div></div>
+            </div>
+            <div class="market-share-analysis">
+              <div class="analysis-header"><span>سهم از بازار</span></div>
+              <div echarts [options]="Series_Online_Share" style="height: 600px;"></div>
             </div>
           </div>
         </section>
+
       </ng-container>
+
       <ng-template #deniedTemplate>
-        <div class="access-denied-container shadow-sm">
-          <div class="icon-wrapper">
-            <i class="material-icons">lock_person</i>
-          </div>
-          <h3>عدم دسترسی</h3>
-          <p>
-            متأسفانه اکانت شما مجوز دسترسی به این قسمت را ندارد!
-            <br>
-            در صورت نیاز، لطفاً با مدیر سیستم تماس بگیرید.
-          </p>
-        </div>
+        <div class="access-denied-container"><h3>عدم دسترسی</h3></div>
       </ng-template>
     </div>
   </section>
@@ -210,7 +215,6 @@
     <div class="fab-menu">
       <a (click)="ScrollTo('select_date')"><span class="label">تاریخ</span><span class="dot"></span></a>
       <a (click)="ScrollTo('view')"><span class="label">نگاه کلی</span><span class="dot"></span></a>
-      <a (click)="ScrollTo('totals')"><span class="label">سهم بازار</span><span class="dot"></span></a>
       <a (click)="ScrollTo('bob')"><span class="label">بورس</span><span class="dot"></span></a>
       <a (click)="ScrollTo('fi')"><span class="label">فرابورس</span><span class="dot"></span></a>
       <a (click)="ScrollTo('bki')"><span class="label">کالا</span><span class="dot"></span></a>
@@ -218,13 +222,6 @@
       <a (click)="ScrollTo('moshtaghe')"><span class="label">مشتقه</span><span class="dot"></span></a>
       <a (click)="ScrollTo('online')"><span class="label">آنلاین</span><span class="dot"></span></a>
     </div>
-    <div class="fab-button">
-      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="10"></circle>
-        <polyline points="16 12 12 8 8 12"></polyline>
-        <line x1="12" y1="16" x2="12" y2="8"></line>
-      </svg>
-    </div>
+    <div class="fab-button"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="16 12 12 8 8 12"></polyline><line x1="12" y1="16" x2="12" y2="8"></line></svg></div>
   </div>
-
 </section>

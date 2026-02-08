@@ -3,16 +3,16 @@ import { DashboardSidebarComponent } from "../../Template/dashboard-sidebar/dash
 import { DashboardTopmenuComponent } from '../../Template/dashboard-topmenu/dashboard-topmenu.component';
 import { MatProgressSpinner } from "@angular/material/progress-spinner";
 import { MatTab, MatTabGroup } from "@angular/material/tabs";
-import { DecimalPipe, NgForOf, NgIf } from "@angular/common";
+import { NgForOf, NgIf } from "@angular/common";
 import { NgxEchartsDirective } from "ngx-echarts";
 import { NgToastService } from "ng-angular-popup";
 import { BrokerageService } from "../../../services/brokerage.service";
 import { EChartsOption } from "echarts";
-import { Router } from "@angular/router";
 import { AuthService } from "../../../services/auth.service";
 import { FormsModule } from '@angular/forms';
 import { GenerateBarChart } from "../../Template/bar-chart/GenerateBarChart";
 import { GenerateRadarChart } from "../../Template/radar-chart/GenerateRadarChart";
+import { GenerateStackedBarChart } from "../../Template/bar-stacked-chart/GenerateStackedBarChart";
 
 @Component({
   selector: 'app-brokerage-cmp',
@@ -26,186 +26,86 @@ import { GenerateRadarChart } from "../../Template/radar-chart/GenerateRadarChar
     NgForOf,
     NgIf,
     NgxEchartsDirective,
-    DecimalPipe,
     FormsModule
   ],
   styleUrl: './brokerage-cmp.scss'
 })
 export class BrokerageCmp implements OnInit {
 
-  constructor(
-    protected auth: AuthService,
-    private router: Router,
-    private toast: NgToastService,
-    private getData: BrokerageService
-  ) {}
+  constructor(protected auth: AuthService, private toast: NgToastService, private getData: BrokerageService) {}
 
   series_date: string[] = [];
   years: any = {};
   selected_date: string[] = [];
   all_brokers: any[] = [];
+  brokers_list: any[] = [];
   filtered_brokers: any[] = [];
   searchTerm: string = '';
   comparison_list: any[] = [];
-
-  protected flag_top6: boolean = false;
-  protected flag_chart1: boolean = false;
-  protected flag_chart2: boolean = false;
-  protected flag_chart3: boolean = false;
-  protected flag_chart4: boolean = false;
-  protected flag_chart5: boolean = false;
-  protected flag_date: boolean = false;
-  protected flag_all_brokers: boolean = false;
-  protected flag_totals: boolean = false;
-  protected Flag_Brokerage: boolean = false;
-  protected flag_BOBT: boolean = false;
-  protected flag_FI: boolean = false;
-  protected flag_BKI: boolean = false;
-  protected Flag_BEI: boolean = false;
-
   brokerage_name: string = '';
   brokerage_logo: string = '';
-  series_totals: any[] = [];
-
   last6_date: string[] = [];
   last6_top: any[] = [];
 
-  series_Chart1_radar: EChartsOption = {};
-  series_Chart1_bar: EChartsOption = {};
-  series_Chart1_bar_total: EChartsOption = {};
-
-  series_Chart2_radar: EChartsOption = {};
-  series_Chart2_bar: EChartsOption = {};
-  series_Chart2_bar_total: EChartsOption = {};
-
-  series_Chart3_radar: EChartsOption = {};
-  series_Chart3_bar: EChartsOption = {};
-  series_Chart3_bar_total: EChartsOption = {};
-
-  series_Chart4_radar: EChartsOption = {};
-  series_Chart4_bar: EChartsOption = {};
-  series_Chart4_bar_total: EChartsOption = {};
-
-  series_Chart5_radar: EChartsOption = {};
-  series_Chart5_bar: EChartsOption = {};
-  series_Chart5_bar_total: EChartsOption = {};
-
-  TitleTextStyle: any = {
-    fontFamily: 'Nazanin', fontSize: '20px',
+  label: any = { show: true, fontSize: 14, fontWeight: 'bold', fontFamily: 'Nazanin', position: 'top',
+    formatter: (params: any) => {return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');}
   };
 
-  tooltipTextStyle: any = {
-    fontFamily: 'Nazanin', fontWeight: 'bold'
-  }
+  currentMode_Brokerage: 'brokerage' | 'total' = 'brokerage';
+  currentMode_BOBT: 'brokerage' | 'total' = 'brokerage';
+  currentMode_FI: 'brokerage' | 'total' = 'brokerage';
+  currentMode_BKI: 'brokerage' | 'total' = 'brokerage';
+  currentMode_BEI: 'brokerage' | 'total' = 'brokerage';
+  currentMode_Moshtaghe: 'brokerage' | 'total' = 'brokerage';
+  currentMode_Online: 'brokerage' | 'total' = 'brokerage';
 
-  legendTextStyle: any = {
-    fontFamily: 'Nazanin', fontWeight: 'bold', fontSize: '14px'
-  }
+  protected flag_top6: boolean = false;
+  protected flag_date: boolean = false;
+  protected flag_all_brokers: boolean = false;
+  protected Flag_Brokerage: boolean = false;
+  protected Flag_Moshtaghe: boolean = false;
+  protected Flag_Online: boolean = false;
 
-  label: any = {
-    show: true,
-    fontSize: 14,
-    fontWeight: 'bold',
-    fontFamily: 'Nazanin',
-    position: 'top',
-    formatter: (params: any) => {
-      return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    }
-  };
-
-  colors: string[] = ['#3ebeed', '#EC7063', '#42b3a1', '#7f6487', '#004e75'];
-
-  // Chart 1 - Brokerage Overview
-  Brokerage_Radar_Title: string = 'رتبه کارگزاری';
-  Brokerage_Bar_Title: string = 'ارزش معاملات کارگزاری';
-  Brokerage_Total_Bar_Title: string = 'ارزش کل معاملات';
-  Brokerage_Radar_Indicator: any = [
-    { name: 'بورس اوراق بهادار', min: 1 },
-    { name: 'فرابورس', min: 1 },
-    { name: 'تجمیع بورس اوراق بهادار و فرابورس', min: 1 },
-    { name: 'بورس کالا', min: 1 },
-    { name: 'بورس انرژی', min: 1 },
-    { name: 'ارزش کل معاملات (بورس و فرابورس)', min: 1 }
-  ];
-
-  get Brokerage_Bar_Categories(): string[] {
-    return this.Brokerage_Radar_Indicator.map((ind: any) => ind.name);
-  }
-
+  // Brokerage
+  Brokerage_Radar_Indicator: any = [{ name: 'بورس اوراق بهادار', min: 1 }, { name: 'فرابورس', min: 1 }, { name: 'تجمیع بورس اوراق بهادار و فرابورس', min: 1 }, { name: 'بورس کالا', min: 1 }, { name: 'بورس انرژی', min: 1 }, { name: 'ارزش کل معاملات (بورس و فرابورس)', min: 1 }];
+  get Brokerage_Bar_Categories(): string[] { return this.Brokerage_Radar_Indicator.map((ind: any) => ind.name) };
   Series_Brokerage_Radar: EChartsOption = {};
   Series_Brokerage_Bar: EChartsOption = {};
   Series_Brokerage_Total_Bar: EChartsOption = {};
-
-  // Chart 2 - BOBT
-  BOBT_Radar_Title: string = 'رتبه بورس اوراق بهادار';
-  BOBT_Radar_Indicator: any = [
-    { name: 'بازار اوراق بدهی', min: 1 },
-    { name: 'بازار اوراق مشتقه', min: 1 },
-    { name: 'بازار سرمایه‌گذار حرفه‌ای', min: 1 },
-    { name: 'بازار سهام', min: 1 },
-    { name: 'کل بورس اوراق بهادار', min: 1 }
-  ];
-
-  get BOBT_Bar_Categories(): string[] {
-    return this.BOBT_Radar_Indicator.map((ind: any) => ind.name);
-  }
-
+  activeSeries_Brokerage: EChartsOption = {};
+  Series_Brokerage_Share: EChartsOption = {};
+  // BOBT
+  BOBT_Radar_Indicator: any = [{ name: 'بازار اوراق بدهی', min: 1 }, { name: 'بازار اوراق مشتقه', min: 1 }, { name: 'بازار سرمایه‌گذار حرفه‌ای', min: 1 }, { name: 'بازار سهام', min: 1 }, { name: 'کل بورس اوراق بهادار', min: 1 }];
+  get BOBT_Bar_Categories(): string[] {return this.BOBT_Radar_Indicator.map((ind: any) => ind.name);}
   Series_BOBT_Radar: EChartsOption = {};
   Series_BOBT_Bar: EChartsOption = {};
   Series_BOBT_Total_Bar: EChartsOption = {};
-
-  // Chart 3 - FI
-  FI_Radar_Title: string = 'رتبه فرابورس';
-  FI_Radar_Indicator: any = [
-    { name: 'معاملات ایستگاه کارگزاری', min: 1 },
-    { name: 'معاملات برخط عادی', min: 1 },
-    { name: 'معاملات برخط گروهی', min: 1 },
-    { name: 'معاملات سایر برخط', min: 1 },
-    { name: 'کل فرابورس', min: 1 }
-  ];
-
-  get FI_Bar_Categories(): string[] {
-    return this.FI_Radar_Indicator.map((ind: any) => ind.name);
-  }
-
+  activeSeries_BOBT: EChartsOption = {};
+  Series_BOBT_Share: EChartsOption = {};
+  // FI
+  FI_Radar_Indicator: any = [{ name: 'معاملات ایستگاه کارگزاری', min: 1 }, { name: 'معاملات برخط عادی', min: 1 }, { name: 'معاملات برخط گروهی', min: 1 }, { name: 'معاملات سایر برخط', min: 1 }, { name: 'کل فرابورس', min: 1 }];
+  get FI_Bar_Categories(): string[] {return this.FI_Radar_Indicator.map((ind: any) => ind.name);}
   Series_FI_Radar: EChartsOption = {};
   Series_FI_Bar: EChartsOption = {};
   Series_FI_Total_Bar: EChartsOption = {};
-
-  // Chart 4 - BKI
-  BKI_Radar_Title: string = 'رتبه بورس کالا';
-  BKI_Radar_Indicator: any = [
-    { name: 'معاملات فیزیکی', min: 1 },
-    { name: 'معاملات سلف موازی', min: 1 },
-    { name: 'معاملات آتی', min: 1 },
-    { name: 'معاملات اختیار معامله', min: 1 },
-    { name: 'کل بورس کالا', min: 1 }
-  ];
-
-  get BKI_Bar_Categories(): string[] {
-    return this.BKI_Radar_Indicator.map((ind: any) => ind.name);
-  }
-
+  activeSeries_FI: EChartsOption = {};
+  Series_FI_Share: EChartsOption = {};
+  // BKI
+  BKI_Radar_Indicator: any = [{ name: 'معاملات فیزیکی', min: 1 }, { name: 'معاملات سلف موازی', min: 1 }, { name: 'معاملات آتی', min: 1 }, { name: 'معاملات اختیار معامله', min: 1 }, { name: 'کل بورس کالا', min: 1 }];
+  get BKI_Bar_Categories(): string[] {return this.BKI_Radar_Indicator.map((ind: any) => ind.name);}
   Series_BKI_Radar: EChartsOption = {};
   Series_BKI_Bar: EChartsOption = {};
   Series_BKI_Total_Bar: EChartsOption = {};
-
-  // Chart 5 - BEI
-  BEI_Radar_Title: string = 'رتبه بورس انرژی';
-  BEI_Radar_Indicator: any = [
-    { name: 'بازار فیزیکی', min: 1 },
-    { name: 'بازار مشتقه', min: 1 },
-    { name: 'بازار سایر اوراق بهادار', min: 1 },
-    { name: 'کل بورس انرژی', min: 1 }
-  ];
-
-  get BEI_Bar_Categories(): string[] {
-    return this.BEI_Radar_Indicator.map((ind: any) => ind.name);
-  }
-
+  activeSeries_BKI: EChartsOption = {};
+  Series_BKI_Share: EChartsOption = {};
+  // BEI
+  BEI_Radar_Indicator: any = [{ name: 'بازار فیزیکی', min: 1 }, { name: 'بازار مشتقه', min: 1 }, { name: 'بازار سایر اوراق بهادار', min: 1 }, { name: 'کل بورس انرژی', min: 1 }];
+  get BEI_Bar_Categories(): string[] {return this.BEI_Radar_Indicator.map((ind: any) => ind.name);}
   Series_BEI_Radar: EChartsOption = {};
   Series_BEI_Bar: EChartsOption = {};
   Series_BEI_Total_Bar: EChartsOption = {};
+  activeSeries_BEI: EChartsOption = {};
+  Series_BEI_Share: EChartsOption = {};
 
   async ngOnInit() {
     if (!this.auth.hasPermission('brokerageCMP.view')) {
@@ -216,7 +116,6 @@ export class BrokerageCmp implements OnInit {
       let res_brokerage_name = await this.getData.Get_Brokerage_Name().toPromise();
       this.brokerage_name = "کارگزاری " + res_brokerage_name.name;
       this.brokerage_logo = "assets/images/brokers/" + res_brokerage_name.logo;
-
       this.series_date = await this.getData.get_AllDate().toPromise();
       this.series_date = this.series_date.sort((a: string, b: string) => {
         let [yearA, monthA] = a.split('-').map(Number);
@@ -264,675 +163,210 @@ export class BrokerageCmp implements OnInit {
       this.toast.warning({ detail: "هشدار", summary: 'لطفا یک تاریخ انتخاب کنید', duration: 3000, position: 'topRight' });
       return;
     }
-
-    this.flag_totals = false;
-    this.Flag_Brokerage = false;
-    this.flag_BOBT = false;
-    this.flag_FI = false;
-    this.flag_BKI = false;
-    this.Flag_BEI = false;
-    this.flag_chart1 = false;
-    this.flag_chart2 = false;
-    this.flag_chart3 = false;
-    this.flag_chart4 = false;
-    this.flag_chart5 = false;
-
-    this.series_totals = [];
-
-    this.series_Chart1_radar = {};
-    this.series_Chart1_bar = {};
-    this.series_Chart1_bar_total = {};
-    this.series_Chart2_radar = {};
-    this.series_Chart2_bar = {};
-    this.series_Chart2_bar_total = {};
-    this.series_Chart3_radar = {};
-    this.series_Chart3_bar = {};
-    this.series_Chart3_bar_total = {};
-    this.series_Chart4_radar = {};
-    this.series_Chart4_bar = {};
-    this.series_Chart4_bar_total = {};
-    this.series_Chart5_radar = {};
-    this.series_Chart5_bar = {};
-    this.series_Chart5_bar_total = {};
-
-    this.Series_Brokerage_Bar = {};
-    this.Series_Brokerage_Total_Bar = {};
-    this.Series_BOBT_Bar = {};
-    this.Series_BOBT_Total_Bar = {};
-    this.Series_FI_Bar = {};
-    this.Series_FI_Total_Bar = {};
-    this.Series_BKI_Bar = {};
-    this.Series_BKI_Total_Bar = {};
-    this.Series_BEI_Bar = {};
-    this.Series_BEI_Total_Bar = {};
-
     try {
+      this.Flag_Brokerage = false;
+      this.brokers_list = [this.brokerage_name.replace('کارگزاری ', '')];
+
+      this.Series_Brokerage_Radar = {};
+      this.Series_Brokerage_Bar = {};
+      this.Series_Brokerage_Total_Bar = {};
+      this.Series_Brokerage_Share = {};
+      this.Series_BOBT_Radar = {};
+      this.Series_BOBT_Bar = {};
+      this.Series_BOBT_Total_Bar = {};
+      this.Series_FI_Radar = {};
+      this.Series_FI_Bar = {};
+      this.Series_FI_Total_Bar = {};
+      this.Series_BKI_Radar = {};
+      this.Series_BKI_Bar = {};
+      this.Series_BKI_Total_Bar = {};
+      this.Series_BEI_Radar = {};
+      this.Series_BEI_Bar = {};
+      this.Series_BEI_Total_Bar = {};
+
       const current_date = this.selected_date[0];
+      const [
+        resB, resBOBT, resFI, resBKI, resBEI, resTotals,
+        cmpB, cmpBOBT, cmpFI, cmpBKI, cmpBEI, cmpTotals
+      ] = await Promise.all([
+        // Primary
+        this.getData.get_Chart1(current_date).toPromise(),
+        this.getData.get_Chart2(current_date).toPromise(),
+        this.getData.get_Chart3(current_date).toPromise(),
+        this.getData.get_Chart4(current_date).toPromise(),
+        this.getData.get_Chart5(current_date).toPromise(),
+        this.getData.get_totals(current_date).toPromise(),
+        // Comparison
+        this.fetchComparisonData(current_date, this.comparison_list, (d, id) => this.getData.get_Chart1_CMP(d, id)),
+        this.fetchComparisonData(current_date, this.comparison_list, (d, id) => this.getData.get_Chart2_CMP(d, id)),
+        this.fetchComparisonData(current_date, this.comparison_list, (d, id) => this.getData.get_Chart3_CMP(d, id)),
+        this.fetchComparisonData(current_date, this.comparison_list, (d, id) => this.getData.get_Chart4_CMP(d, id)),
+        this.fetchComparisonData(current_date, this.comparison_list, (d, id) => this.getData.get_Chart5_CMP(d, id)),
+        this.fetchComparisonData(current_date, this.comparison_list, (d, id) => this.getData.get_totals_CMP(d, id))
+      ]);
 
-      // Brokerage Vars
-      let Brokerage_Radar_Data: any = [];
-      let Brokerage_Radar_LegendData: any = [];
-      let Brokerage_Radar_Max_Rank: number = 1;
-      let Brokerage_Radar_Max_List: number[] = [];
-      let Brokerage_Bar_Data: any = [];
-      let Brokerage_Bar_Legend: any = [];
-      let Brokerage_Total_Bar_Data: any = [];
-      let Brokerage_Total_Bar_Legend: any = [];
+      if (this.comparison_list.length >= 1)
+        for (let i = 0; i < this.comparison_list.length; i++)
+          this.brokers_list.push(this.comparison_list[i].name);
 
-      // BOBT Vars
-      let BOBT_Radar_Data: any = [];
-      let BOBT_Radar_LegendData: any = [];
-      let BOBT_Radar_Max_Rank: number = 1;
-      let BOBT_Radar_Max_List: number[] = [];
-      let BOBT_Bar_Data: any = [];
-      let BOBT_Bar_Legend: any = [];
-      let BOBT_Total_Bar_Data: any = [];
-      let BOBT_Total_Bar_Legend: any = [];
-
-      // FI Vars
-      let FI_Radar_Data: any = [];
-      let FI_Radar_LegendData: any = [];
-      let FI_Radar_Max_Rank: number = 1;
-      let FI_Radar_Max_List: number[] = [];
-      let FI_Bar_Data: any = [];
-      let FI_Bar_Legend: any = [];
-      let FI_Total_Bar_Data: any = [];
-      let FI_Total_Bar_Legend: any = [];
-
-      // BKI Vars
-      let BKI_Radar_Data: any = [];
-      let BKI_Radar_LegendData: any = [];
-      let BKI_Radar_Max_Rank: number = 1;
-      let BKI_Radar_Max_List: number[] = [];
-      let BKI_Bar_Data: any = [];
-      let BKI_Bar_Legend: any = [];
-      let BKI_Total_Bar_Data: any = [];
-      let BKI_Total_Bar_Legend: any = [];
-
-      // BEI Vars
-      let BEI_Radar_Data: any = [];
-      let BEI_Radar_LegendData: any = [];
-      let BEI_Radar_Max_Rank: number = 1;
-      let BEI_Radar_Max_List: number[] = [];
-      let BEI_Bar_Data: any = [];
-      let BEI_Bar_Legend: any = [];
-      let BEI_Total_Bar_Data: any = [];
-      let BEI_Total_Bar_Legend: any = [];
-
-      // برای کارگزاری اصلی - Chart 1
-      let primary_res = await this.getData.get_Chart1(current_date).toPromise();
-      let primary_rank = [
-        primary_res.bobt?.rank ?? 0,
-        primary_res.fi?.rank ?? 0,
-        primary_res.bobT_AND_FI?.rank ?? 0,
-        primary_res.bki?.rank ?? 0,
-        primary_res.bei?.rank ?? 0,
-        primary_res.all?.rank ?? 0
-      ];
-
-      Brokerage_Radar_Max_List.push(Math.max(...primary_rank));
-
-      let primary_brokerage_value = [
-        primary_res.bobt?.value ?? 0,
-        primary_res.fi?.value ?? 0,
-        primary_res.bobT_AND_FI?.value ?? 0,
-        primary_res.bki?.value ?? 0,
-        primary_res.bei?.value ?? 0,
-        primary_res.all?.value ?? 0
-      ];
-
-      let primary_total_value = [
-        primary_res.bobt?.total ?? 0,
-        primary_res.fi?.total ?? 0,
-        primary_res.bobT_AND_FI?.total ?? 0,
-        primary_res.bki?.total ?? 0,
-        primary_res.bei?.total ?? 0,
-        primary_res.all?.total ?? 0
-      ];
-
-      Brokerage_Radar_Data.push({ name: this.brokerage_name, value: primary_rank });
-      Brokerage_Radar_LegendData.push(this.brokerage_name);
-
-      Brokerage_Bar_Data.push({
-        name: this.brokerage_name,
-        type: 'bar',
-        data: primary_brokerage_value,
-        label: this.label,
-        itemStyle: { color: this.colors[0] }
+      // Brokerage
+      let B_Radar_Data = [], B_Radar_Max_List = [], B_Bar_Data = [], B_Bar_Legend = [], B_SBar_Data = [], B_SBar_Total_Data= [];
+      const RankB = [resB.bobt?.rank || 0, resB.fi?.rank || 0, resB.bobT_AND_FI?.rank || 0, resB.bki?.rank || 0, resB.bei?.rank || 0, resB.all?.rank || 0];
+      const ValueB = [resB.bobt?.value || 0, resB.fi?.value || 0, resB.bobT_AND_FI?.value || 0, resB.bki?.value || 0, resB.bei?.value || 0, resB.all?.value || 0];
+      const TotalB = [resB.bobt?.total || 0, resB.fi?.total || 0, resB.bobT_AND_FI?.total || 0, resB.bki?.total || 0, resB.bei?.total || 0, resB.all?.total || 0];
+      B_Radar_Data.push({ name: this.brokerage_name, value: RankB });
+      B_Radar_Max_List.push(Math.max(...RankB));
+      B_Bar_Data.push({ name: this.brokerage_name, type: 'bar', data: ValueB, label: this.label });
+      B_Bar_Legend.push(this.brokerage_name);
+      B_SBar_Data.push(ValueB);
+      B_SBar_Total_Data.push(TotalB);
+      cmpB.forEach((res, i) => {
+        const cRank = [res.bobt?.rank || 0, res.fi?.rank || 0, res.bobT_AND_FI?.rank || 0, res.bki?.rank || 0, res.bei?.rank || 0, res.all?.rank || 0];
+        B_Radar_Data.push({ name: this.comparison_list[i].name, value: cRank });
+        B_Radar_Max_List.push(Math.max(...cRank));
+        B_Bar_Data.push({ name: this.comparison_list[i].name, type: 'bar', data: [res.bobt?.value || 0, res.fi?.value || 0, res.bobT_AND_FI?.value || 0, res.bki?.value || 0, res.bei?.value || 0, res.all?.value || 0], label: this.label });
+        B_SBar_Data.push([res.bobt?.value || 0, res.fi?.value || 0, res.bobT_AND_FI?.value || 0, res.bki?.value || 0, res.bei?.value || 0, res.all?.value || 0]);
+        B_SBar_Total_Data.push([res.bobt?.total || 0, res.fi?.total || 0, res.bobT_AND_FI?.total || 0, res.bki?.total || 0, res.bei?.total || 0, res.all?.total || 0]);
+        B_Bar_Legend.push(this.comparison_list[i].name);
       });
-      Brokerage_Bar_Legend.push(this.brokerage_name);
-
-      Brokerage_Total_Bar_Data.push({
-        name: current_date,
-        type: 'bar',
-        data: primary_total_value,
-        label: this.label,
-        itemStyle: { color: this.colors[4] }
-      });
-      Brokerage_Total_Bar_Legend.push(current_date);
-
-      // برای کارگزاری‌های مقایسه‌ای - Chart 1
-      for (let i = 0; i < this.comparison_list.length; i++) {
-        let broker = this.comparison_list[i];
-        let cmp_res = await this.getData.get_Chart1_CMP(current_date, broker.id).toPromise();
-
-        let cmp_rank = [
-          cmp_res.bobt?.rank ?? 0,
-          cmp_res.fi?.rank ?? 0,
-          cmp_res.bobT_AND_FI?.rank ?? 0,
-          cmp_res.bki?.rank ?? 0,
-          cmp_res.bei?.rank ?? 0,
-          cmp_res.all?.rank ?? 0
-        ];
-
-        Brokerage_Radar_Max_List.push(Math.max(...cmp_rank));
-
-        let cmp_brokerage_value = [
-          cmp_res.bobt?.value ?? 0,
-          cmp_res.fi?.value ?? 0,
-          cmp_res.bobT_AND_FI?.value ?? 0,
-          cmp_res.bki?.value ?? 0,
-          cmp_res.bei?.value ?? 0,
-          cmp_res.all?.value ?? 0
-        ];
-
-        Brokerage_Radar_Data.push({ name: broker.name, value: cmp_rank });
-        Brokerage_Radar_LegendData.push(broker.name);
-
-        Brokerage_Bar_Data.push({
-          name: broker.name,
-          type: 'bar',
-          data: cmp_brokerage_value,
-          label: this.label,
-          itemStyle: { color: this.colors[(i + 1) % this.colors.length] }
-        });
-        Brokerage_Bar_Legend.push(broker.name);
-      }
-
-      Brokerage_Radar_Max_Rank = Math.max(...Brokerage_Radar_Max_List) + 5;
-      this.Brokerage_Radar_Indicator.forEach((ind: any) => ind.max = Brokerage_Radar_Max_Rank);
-
-      this.series_Chart1_radar = GenerateRadarChart(
-        this.Brokerage_Radar_Title,
-        this.Brokerage_Radar_Indicator,
-        Brokerage_Radar_Data,
-        Brokerage_Radar_LegendData
-      );
-
-      this.series_Chart1_bar = GenerateBarChart(
-        this.Brokerage_Bar_Title,
-        Brokerage_Bar_Legend,
-        this.Brokerage_Bar_Categories,
-        Brokerage_Bar_Data
-      );
-
-      this.series_Chart1_bar_total = GenerateBarChart(
-        this.Brokerage_Total_Bar_Title,
-        Brokerage_Total_Bar_Legend,
-        this.Brokerage_Bar_Categories,
-        Brokerage_Total_Bar_Data
-      );
-      this.flag_chart1 = true;
+      this.Brokerage_Radar_Indicator.forEach((ind: any) => ind.max = Math.max(...B_Radar_Max_List) + 5);
+      this.Series_Brokerage_Radar = GenerateRadarChart('رتبه کارگزاری', this.Brokerage_Radar_Indicator, B_Radar_Data, B_Bar_Legend);
+      this.Series_Brokerage_Bar = GenerateBarChart('ارزش کارگزاری', B_Bar_Legend, this.Brokerage_Bar_Categories, B_Bar_Data);
+      this.Series_Brokerage_Total_Bar = GenerateBarChart('ارزش کل', [current_date], this.Brokerage_Bar_Categories, [{name: current_date, type: 'bar', data: TotalB, label: this.label}]);
+      this.Series_Brokerage_Share = GenerateStackedBarChart('سهم از بازار: نگاه کلی', ['بورس','فرابورس','بورس و فرابورس','کالا','انرژی','کل'], this.brokers_list, B_SBar_Data, B_SBar_Total_Data);
+      this.activeSeries_Brokerage = this.Series_Brokerage_Bar;
       this.Flag_Brokerage = true;
-
-      // BOBT Service - Chart 2
-      let primary_bobt = await this.getData.get_Chart2(current_date).toPromise();
-      let primary_bobt_rank = [
-        primary_bobt.bobT_Oragh_Bedehi?.rank ?? 0,
-        primary_bobt.bobT_Moshtaghe?.rank ?? 0,
-        primary_bobt.bobT_Sarmaye_Herfei?.rank ?? 0,
-        primary_bobt.bobT_Saham?.rank ?? 0,
-        primary_bobt.bobT_Total?.rank ?? 0
-      ];
-
-      BOBT_Radar_Max_List.push(Math.max(...primary_bobt_rank));
-
-      let primary_bobt_value = [
-        primary_bobt.bobT_Oragh_Bedehi?.value ?? 0,
-        primary_bobt.bobT_Moshtaghe?.value ?? 0,
-        primary_bobt.bobT_Sarmaye_Herfei?.value ?? 0,
-        primary_bobt.bobT_Saham?.value ?? 0,
-        primary_bobt.bobT_Total?.value ?? 0
-      ];
-
-      let primary_bobt_total = [
-        primary_bobt.bobT_Oragh_Bedehi?.total ?? 0,
-        primary_bobt.bobT_Moshtaghe?.total ?? 0,
-        primary_bobt.bobT_Sarmaye_Herfei?.total ?? 0,
-        primary_bobt.bobT_Saham?.total ?? 0,
-        primary_bobt.bobT_Total?.total ?? 0
-      ];
-
-      BOBT_Radar_Data.push({ name: this.brokerage_name, value: primary_bobt_rank });
-      BOBT_Radar_LegendData.push(this.brokerage_name);
-
-      BOBT_Bar_Data.push({
-        name: this.brokerage_name,
-        type: 'bar',
-        data: primary_bobt_value,
-        label: this.label,
-        itemStyle: { color: this.colors[0] }
-      });
+      // BOBT
+      let BOBT_Radar_Data = [], BOBT_Radar_Max_List = [], BOBT_Bar_Data = [], BOBT_Bar_Legend = [], BOBT_SBar_Data = [], BOBT_SBar_Total_Data = [];
+      const RankBOBT = [resBOBT.bobT_Oragh_Bedehi?.rank || 0, resBOBT.bobT_Moshtaghe?.rank || 0, resBOBT.bobT_Sarmaye_Herfei?.rank || 0, resBOBT.bobT_Saham?.rank || 0, resBOBT.bobT_Total?.rank || 0];
+      const ValueBOBT = [resBOBT.bobT_Oragh_Bedehi?.value || 0, resBOBT.bobT_Moshtaghe?.value || 0, resBOBT.bobT_Sarmaye_Herfei?.value || 0, resBOBT.bobT_Saham?.value || 0, resBOBT.bobT_Total?.value || 0];
+      const TotalBOBT = [resBOBT.bobT_Oragh_Bedehi?.total || 0, resBOBT.bobT_Moshtaghe?.total || 0, resBOBT.bobT_Sarmaye_Herfei?.total || 0, resBOBT.bobT_Saham?.total || 0, resBOBT.bobT_Total?.total || 0];
+      BOBT_Radar_Data.push({ name: this.brokerage_name, value: RankBOBT });
+      BOBT_Radar_Max_List.push(Math.max(...RankBOBT));
+      BOBT_Bar_Data.push({ name: this.brokerage_name, type: 'bar', data: ValueBOBT, label: this.label });
       BOBT_Bar_Legend.push(this.brokerage_name);
-
-      BOBT_Total_Bar_Data.push({
-        name: current_date,
-        type: 'bar',
-        data: primary_bobt_total,
-        label: this.label,
-        itemStyle: { color: this.colors[4] }
+      BOBT_SBar_Data.push(ValueBOBT);
+      BOBT_SBar_Total_Data.push(TotalBOBT);
+      cmpBOBT.forEach((res, i) => {
+        const cRank = [res.bobT_Oragh_Bedehi?.rank || 0, res.bobT_Moshtaghe?.rank || 0, res.bobT_Sarmaye_Herfei?.rank || 0, res.bobT_Saham?.rank || 0, res.bobT_Total?.rank || 0];
+        const cVal = [res.bobT_Oragh_Bedehi?.value || 0, res.bobT_Moshtaghe?.value || 0, res.bobT_Sarmaye_Herfei?.value || 0, res.bobT_Saham?.value || 0, res.bobT_Total?.value || 0];
+        const cTot = [res.bobT_Oragh_Bedehi?.total || 0, res.bobT_Moshtaghe?.total || 0, res.bobT_Sarmaye_Herfei?.total || 0, res.bobT_Saham?.total || 0, res.bobT_Total?.total || 0];
+        BOBT_Radar_Data.push({ name: this.comparison_list[i].name, value: cRank });
+        BOBT_Radar_Max_List.push(Math.max(...cRank));
+        BOBT_Bar_Data.push({ name: this.comparison_list[i].name, type: 'bar', data: cVal, label: this.label });
+        BOBT_Bar_Legend.push(this.comparison_list[i].name);
+        BOBT_SBar_Data.push(cVal);
+        BOBT_SBar_Total_Data.push(cTot);
       });
-      BOBT_Total_Bar_Legend.push(current_date);
-
-      // BOBT مقایسه‌ای
-      for (let i = 0; i < this.comparison_list.length; i++) {
-        let broker = this.comparison_list[i];
-        let cmp_bobt = await this.getData.get_Chart2_CMP(current_date, broker.id).toPromise();
-
-        let cmp_bobt_rank = [
-          cmp_bobt.bobT_Oragh_Bedehi?.rank ?? 0,
-          cmp_bobt.bobT_Moshtaghe?.rank ?? 0,
-          cmp_bobt.bobT_Sarmaye_Herfei?.rank ?? 0,
-          cmp_bobt.bobT_Saham?.rank ?? 0,
-          cmp_bobt.bobT_Total?.rank ?? 0
-        ];
-
-        BOBT_Radar_Max_List.push(Math.max(...cmp_bobt_rank));
-
-        let cmp_bobt_value = [
-          cmp_bobt.bobT_Oragh_Bedehi?.value ?? 0,
-          cmp_bobt.bobT_Moshtaghe?.value ?? 0,
-          cmp_bobt.bobT_Sarmaye_Herfei?.value ?? 0,
-          cmp_bobt.bobT_Saham?.value ?? 0,
-          cmp_bobt.bobT_Total?.value ?? 0
-        ];
-
-        BOBT_Radar_Data.push({ name: broker.name, value: cmp_bobt_rank });
-        BOBT_Radar_LegendData.push(broker.name);
-
-        BOBT_Bar_Data.push({
-          name: broker.name,
-          type: 'bar',
-          data: cmp_bobt_value,
-          label: this.label,
-          itemStyle: { color: this.colors[(i + 1) % this.colors.length] }
-        });
-        BOBT_Bar_Legend.push(broker.name);
-      }
-
-      BOBT_Radar_Max_Rank = Math.max(...BOBT_Radar_Max_List) + 5;
-      this.BOBT_Radar_Indicator.forEach((ind: any) => ind.max = BOBT_Radar_Max_Rank);
-
-      this.series_Chart2_radar = GenerateRadarChart(
-        this.BOBT_Radar_Title,
-        this.BOBT_Radar_Indicator,
-        BOBT_Radar_Data,
-        BOBT_Radar_LegendData
-      );
-
-      this.series_Chart2_bar = GenerateBarChart(
-        this.Brokerage_Bar_Title,
-        BOBT_Bar_Legend,
-        this.BOBT_Bar_Categories,
-        BOBT_Bar_Data
-      );
-
-      this.series_Chart2_bar_total = GenerateBarChart(
-        this.Brokerage_Total_Bar_Title,
-        BOBT_Total_Bar_Legend,
-        this.BOBT_Bar_Categories,
-        BOBT_Total_Bar_Data
-      );
-      this.flag_chart2 = true;
-      this.flag_BOBT = true;
-
-      // FI (فرابورس) - Chart 3
-      let primary_fi = await this.getData.get_Chart3(current_date).toPromise();
-      let primary_fi_rank = [
-        primary_fi.fI_Brokerage_Station?.rank ?? 0,
-        primary_fi.fI_Online_Normal?.rank ?? 0,
-        primary_fi.fI_Online_Group?.rank ?? 0,
-        primary_fi.fI_Online_Other?.rank ?? 0,
-        primary_fi.fI_Total?.rank ?? 0
-      ];
-
-      FI_Radar_Max_List.push(Math.max(...primary_fi_rank));
-
-      let primary_fi_value = [
-        primary_fi.fI_Brokerage_Station?.value ?? 0,
-        primary_fi.fI_Online_Normal?.value ?? 0,
-        primary_fi.fI_Online_Group?.value ?? 0,
-        primary_fi.fI_Online_Other?.value ?? 0,
-        primary_fi.fI_Total?.value ?? 0
-      ];
-
-      let primary_fi_total = [
-        primary_fi.fI_Brokerage_Station?.total ?? 0,
-        primary_fi.fI_Online_Normal?.total ?? 0,
-        primary_fi.fI_Online_Group?.total ?? 0,
-        primary_fi.fI_Online_Other?.total ?? 0,
-        primary_fi.fI_Total?.total ?? 0
-      ];
-
-      FI_Radar_Data.push({ name: this.brokerage_name, value: primary_fi_rank });
-      FI_Radar_LegendData.push(this.brokerage_name);
-
-      FI_Bar_Data.push({
-        name: this.brokerage_name,
-        type: 'bar',
-        data: primary_fi_value,
-        label: this.label,
-        itemStyle: { color: this.colors[0] }
-      });
+      this.BOBT_Radar_Indicator.forEach((ind: any) => ind.max = Math.max(...BOBT_Radar_Max_List) + 5);
+      this.Series_BOBT_Radar = GenerateRadarChart('رتبه بورس اوراق', this.BOBT_Radar_Indicator, BOBT_Radar_Data, BOBT_Bar_Legend);
+      this.Series_BOBT_Bar = GenerateBarChart('ارزش بورس اوراق', BOBT_Bar_Legend, this.BOBT_Bar_Categories, BOBT_Bar_Data);
+      this.Series_BOBT_Total_Bar = GenerateBarChart('ارزش کل بورس اوراق', [current_date], this.BOBT_Bar_Categories, [{name: current_date, type: 'bar', data: TotalBOBT, label: this.label}]);
+      this.Series_BOBT_Share = GenerateStackedBarChart('سهم از بازار: بورس اوراق', this.BOBT_Bar_Categories, BOBT_Bar_Legend, BOBT_SBar_Data, BOBT_SBar_Total_Data);
+      this.activeSeries_BOBT = this.Series_BOBT_Bar;
+      // FI
+      let FI_Radar_Data = [], FI_Radar_Max_List = [], FI_Bar_Data = [], FI_Bar_Legend = [], FI_SBar_Data = [], FI_SBar_Total_Data = [];
+      const RankFI = [resFI.fI_Brokerage_Station?.rank || 0, resFI.fI_Online_Normal?.rank || 0, resFI.fI_Online_Group?.rank || 0, resFI.fI_Online_Other?.rank || 0, resFI.fI_Total?.rank || 0];
+      const ValueFI = [resFI.fI_Brokerage_Station?.value || 0, resFI.fI_Online_Normal?.value || 0, resFI.fI_Online_Group?.value || 0, resFI.fI_Online_Other?.value || 0, resFI.fI_Total?.value || 0];
+      const TotalFI = [resFI.fI_Brokerage_Station?.total || 0, resFI.fI_Online_Normal?.total || 0, resFI.fI_Online_Group?.total || 0, resFI.fI_Online_Other?.total || 0, resFI.fI_Total?.total || 0];
+      FI_Radar_Data.push({ name: this.brokerage_name, value: RankFI });
+      FI_Radar_Max_List.push(Math.max(...RankFI));
+      FI_Bar_Data.push({ name: this.brokerage_name, type: 'bar', data: ValueFI, label: this.label });
       FI_Bar_Legend.push(this.brokerage_name);
-
-      FI_Total_Bar_Data.push({
-        name: current_date,
-        type: 'bar',
-        data: primary_fi_total,
-        label: this.label,
-        itemStyle: { color: this.colors[4] }
+      FI_SBar_Data.push(ValueFI);
+      FI_SBar_Total_Data.push(TotalFI);
+      cmpFI.forEach((res, i) => {
+        const cRank = [res.fI_Brokerage_Station?.rank || 0, res.fI_Online_Normal?.rank || 0, res.fI_Online_Group?.rank || 0, res.fI_Online_Other?.rank || 0, res.fI_Total?.rank || 0];
+        const cVal = [res.fI_Brokerage_Station?.value || 0, res.fI_Online_Normal?.value || 0, res.fI_Online_Group?.value || 0, res.fI_Online_Other?.value || 0, res.fI_Total?.value || 0];
+        const cTot = [res.fI_Brokerage_Station?.total || 0, res.fI_Online_Normal?.total || 0, res.fI_Online_Group?.total || 0, res.fI_Online_Other?.total || 0, res.fI_Total?.total || 0];
+        FI_Radar_Data.push({ name: this.comparison_list[i].name, value: cRank });
+        FI_Radar_Max_List.push(Math.max(...cRank));
+        FI_Bar_Data.push({ name: this.comparison_list[i].name, type: 'bar', data: cVal, label: this.label });
+        FI_Bar_Legend.push(this.comparison_list[i].name);
+        FI_SBar_Data.push(cVal);
+        FI_SBar_Total_Data.push(cTot);
       });
-      FI_Total_Bar_Legend.push(current_date);
-
-      // FI مقایسه‌ای
-      for (let i = 0; i < this.comparison_list.length; i++) {
-        let broker = this.comparison_list[i];
-        let cmp_fi = await this.getData.get_Chart3_CMP(current_date, broker.id).toPromise();
-
-        let cmp_fi_rank = [
-          cmp_fi.fI_Brokerage_Station?.rank ?? 0,
-          cmp_fi.fI_Online_Normal?.rank ?? 0,
-          cmp_fi.fI_Online_Group?.rank ?? 0,
-          cmp_fi.fI_Online_Other?.rank ?? 0,
-          cmp_fi.fI_Total?.rank ?? 0
-        ];
-
-        FI_Radar_Max_List.push(Math.max(...cmp_fi_rank));
-
-        let cmp_fi_value = [
-          cmp_fi.fI_Brokerage_Station?.value ?? 0,
-          cmp_fi.fI_Online_Normal?.value ?? 0,
-          cmp_fi.fI_Online_Group?.value ?? 0,
-          cmp_fi.fI_Online_Other?.value ?? 0,
-          cmp_fi.fI_Total?.value ?? 0
-        ];
-
-        FI_Radar_Data.push({ name: broker.name, value: cmp_fi_rank });
-        FI_Radar_LegendData.push(broker.name);
-
-        FI_Bar_Data.push({
-          name: broker.name,
-          type: 'bar',
-          data: cmp_fi_value,
-          label: this.label,
-          itemStyle: { color: this.colors[(i + 1) % this.colors.length] }
-        });
-        FI_Bar_Legend.push(broker.name);
-      }
-
-      FI_Radar_Max_Rank = Math.max(...FI_Radar_Max_List) + 5;
-      this.FI_Radar_Indicator.forEach((ind: any) => ind.max = FI_Radar_Max_Rank);
-
-      this.series_Chart3_radar = GenerateRadarChart(
-        this.FI_Radar_Title,
-        this.FI_Radar_Indicator,
-        FI_Radar_Data,
-        FI_Radar_LegendData
-      );
-
-      this.series_Chart3_bar = GenerateBarChart(
-        this.Brokerage_Bar_Title,
-        FI_Bar_Legend,
-        this.FI_Bar_Categories,
-        FI_Bar_Data
-      );
-
-      this.series_Chart3_bar_total = GenerateBarChart(
-        this.Brokerage_Total_Bar_Title,
-        FI_Total_Bar_Legend,
-        this.FI_Bar_Categories,
-        FI_Total_Bar_Data
-      );
-      this.flag_chart3 = true;
-      this.flag_FI = true;
-
-      // BKI (بورس کالا) - Chart 4
-      let primary_bki = await this.getData.get_Chart4(current_date).toPromise();
-      let primary_bki_rank = [
-        primary_bki.bkI_Physical?.rank ?? 0,
-        primary_bki.bkI_Self?.rank ?? 0,
-        primary_bki.bkI_Ati?.rank ?? 0,
-        primary_bki.bkI_Ekhtiar?.rank ?? 0,
-        primary_bki.bkI_Total?.rank ?? 0
-      ];
-
-      BKI_Radar_Max_List.push(Math.max(...primary_bki_rank));
-
-      let primary_bki_value = [
-        primary_bki.bkI_Physical?.value ?? 0,
-        primary_bki.bkI_Self?.value ?? 0,
-        primary_bki.bkI_Ati?.value ?? 0,
-        primary_bki.bkI_Ekhtiar?.value ?? 0,
-        primary_bki.bkI_Total?.value ?? 0
-      ];
-
-      let primary_bki_total = [
-        primary_bki.bkI_Physical?.total ?? 0,
-        primary_bki.bkI_Self?.total ?? 0,
-        primary_bki.bkI_Ati?.total ?? 0,
-        primary_bki.bkI_Ekhtiar?.total ?? 0,
-        primary_bki.bkI_Total?.total ?? 0
-      ];
-
-      BKI_Radar_Data.push({ name: this.brokerage_name, value: primary_bki_rank });
-      BKI_Radar_LegendData.push(this.brokerage_name);
-
-      BKI_Bar_Data.push({
-        name: this.brokerage_name,
-        type: 'bar',
-        data: primary_bki_value,
-        label: this.label,
-        itemStyle: { color: this.colors[0] }
-      });
+      this.FI_Radar_Indicator.forEach((ind: any) => ind.max = Math.max(...FI_Radar_Max_List) + 5);
+      this.Series_FI_Radar = GenerateRadarChart('رتبه فرابورس', this.FI_Radar_Indicator, FI_Radar_Data, FI_Bar_Legend);
+      this.Series_FI_Bar = GenerateBarChart('ارزش فرابورس', FI_Bar_Legend, this.FI_Bar_Categories, FI_Bar_Data);
+      this.Series_FI_Total_Bar = GenerateBarChart('ارزش کل فرابورس', [current_date], this.FI_Bar_Categories, [{name: current_date, type: 'bar', data: TotalFI, label: this.label}]);
+      this.Series_FI_Share = GenerateStackedBarChart('سهم از بازار: فرابورس', this.FI_Bar_Categories, FI_Bar_Legend, FI_SBar_Data, FI_SBar_Total_Data);
+      this.activeSeries_FI = this.Series_FI_Bar;
+      // BKI
+      let BKI_Radar_Data = [], BKI_Radar_Max_List = [], BKI_Bar_Data = [], BKI_Bar_Legend = [], BKI_SBar_Data = [], BKI_SBar_Total_Data = [];
+      const RankBKI = [resBKI.bkI_Physical?.rank || 0, resBKI.bkI_Self?.rank || 0, resBKI.bkI_Ati?.rank || 0, resBKI.bkI_Ekhtiar?.rank || 0, resBKI.bkI_Total?.rank || 0];
+      const ValueBKI = [resBKI.bkI_Physical?.value || 0, resBKI.bkI_Self?.value || 0, resBKI.bkI_Ati?.value || 0, resBKI.bkI_Ekhtiar?.value || 0, resBKI.bkI_Total?.value || 0];
+      const TotalBKI = [resBKI.bkI_Physical?.total || 0, resBKI.bkI_Self?.total || 0, resBKI.bkI_Ati?.total || 0, resBKI.bkI_Ekhtiar?.total || 0, resBKI.bkI_Total?.total || 0];
+      BKI_Radar_Data.push({ name: this.brokerage_name, value: RankBKI });
+      BKI_Radar_Max_List.push(Math.max(...RankBKI));
+      BKI_Bar_Data.push({ name: this.brokerage_name, type: 'bar', data: ValueBKI, label: this.label });
       BKI_Bar_Legend.push(this.brokerage_name);
-
-      BKI_Total_Bar_Data.push({
-        name: current_date,
-        type: 'bar',
-        data: primary_bki_total,
-        label: this.label,
-        itemStyle: { color: this.colors[4] }
+      BKI_SBar_Data.push(ValueBKI);
+      BKI_SBar_Total_Data.push(TotalBKI);
+      cmpBKI.forEach((res, i) => {
+        const cRank = [res.bkI_Physical?.rank || 0, res.bkI_Self?.rank || 0, res.bkI_Ati?.rank || 0, res.bkI_Ekhtiar?.rank || 0, res.bkI_Total?.rank || 0];
+        const cVal = [res.bkI_Physical?.value || 0, res.bkI_Self?.value || 0, res.bkI_Ati?.value || 0, res.bkI_Ekhtiar?.value || 0, res.bkI_Total?.value || 0];
+        const cTot = [res.bkI_Physical?.total || 0, res.bkI_Self?.total || 0, res.bkI_Ati?.total || 0, res.bkI_Ekhtiar?.total || 0, res.bkI_Total?.total || 0];
+        BKI_Radar_Data.push({ name: this.comparison_list[i].name, value: cRank });
+        BKI_Radar_Max_List.push(Math.max(...cRank));
+        BKI_Bar_Data.push({ name: this.comparison_list[i].name, type: 'bar', data: cVal, label: this.label });
+        BKI_Bar_Legend.push(this.comparison_list[i].name);
+        BKI_SBar_Data.push(cVal);
+        BKI_SBar_Total_Data.push(cTot);
       });
-      BKI_Total_Bar_Legend.push(current_date);
-
-      // BKI مقایسه‌ای
-      for (let i = 0; i < this.comparison_list.length; i++) {
-        let broker = this.comparison_list[i];
-        let cmp_bki = await this.getData.get_Chart4_CMP(current_date, broker.id).toPromise();
-
-        let cmp_bki_rank = [
-          cmp_bki.bkI_Physical?.rank ?? 0,
-          cmp_bki.bkI_Self?.rank ?? 0,
-          cmp_bki.bkI_Ati?.rank ?? 0,
-          cmp_bki.bkI_Ekhtiar?.rank ?? 0,
-          cmp_bki.bkI_Total?.rank ?? 0
-        ];
-
-        BKI_Radar_Max_List.push(Math.max(...cmp_bki_rank));
-
-        let cmp_bki_value = [
-          cmp_bki.bkI_Physical?.value ?? 0,
-          cmp_bki.bkI_Self?.value ?? 0,
-          cmp_bki.bkI_Ati?.value ?? 0,
-          cmp_bki.bkI_Ekhtiar?.value ?? 0,
-          cmp_bki.bkI_Total?.value ?? 0
-        ];
-
-        BKI_Radar_Data.push({ name: broker.name, value: cmp_bki_rank });
-        BKI_Radar_LegendData.push(broker.name);
-
-        BKI_Bar_Data.push({
-          name: broker.name,
-          type: 'bar',
-          data: cmp_bki_value,
-          label: this.label,
-          itemStyle: { color: this.colors[(i + 1) % this.colors.length] }
-        });
-        BKI_Bar_Legend.push(broker.name);
-      }
-
-      BKI_Radar_Max_Rank = Math.max(...BKI_Radar_Max_List) + 5;
-      this.BKI_Radar_Indicator.forEach((ind: any) => ind.max = BKI_Radar_Max_Rank);
-
-      this.series_Chart4_radar = GenerateRadarChart(
-        this.BKI_Radar_Title,
-        this.BKI_Radar_Indicator,
-        BKI_Radar_Data,
-        BKI_Radar_LegendData
-      );
-
-      this.series_Chart4_bar = GenerateBarChart(
-        this.Brokerage_Bar_Title,
-        BKI_Bar_Legend,
-        this.BKI_Bar_Categories,
-        BKI_Bar_Data
-      );
-
-      this.series_Chart4_bar_total = GenerateBarChart(
-        this.Brokerage_Total_Bar_Title,
-        BKI_Total_Bar_Legend,
-        this.BKI_Bar_Categories,
-        BKI_Total_Bar_Data
-      );
-      this.flag_chart4 = true;
-      this.flag_BKI = true;
-
-      // BEI (بورس انرژی) - Chart 5
-      let primary_bei = await this.getData.get_Chart5(current_date).toPromise();
-      let primary_bei_rank = [
-        primary_bei.beI_Physical?.rank ?? 0,
-        primary_bei.beI_Moshtaghe?.rank ?? 0,
-        primary_bei.beI_Other?.rank ?? 0,
-        primary_bei.beI_Total?.rank ?? 0
-      ];
-
-      BEI_Radar_Max_List.push(Math.max(...primary_bei_rank));
-
-      let primary_bei_value = [
-        primary_bei.beI_Physical?.value ?? 0,
-        primary_bei.beI_Moshtaghe?.value ?? 0,
-        primary_bei.beI_Other?.value ?? 0,
-        primary_bei.beI_Total?.value ?? 0
-      ];
-
-      let primary_bei_total = [
-        primary_bei.beI_Physical?.total ?? 0,
-        primary_bei.beI_Moshtaghe?.total ?? 0,
-        primary_bei.beI_Other?.total ?? 0,
-        primary_bei.beI_Total?.total ?? 0
-      ];
-
-      BEI_Radar_Data.push({ name: this.brokerage_name, value: primary_bei_rank });
-      BEI_Radar_LegendData.push(this.brokerage_name);
-
-      BEI_Bar_Data.push({
-        name: this.brokerage_name,
-        type: 'bar',
-        data: primary_bei_value,
-        label: this.label,
-        itemStyle: { color: this.colors[0] }
-      });
+      this.BKI_Radar_Indicator.forEach((ind: any) => ind.max = Math.max(...BKI_Radar_Max_List) + 5);
+      this.Series_BKI_Radar = GenerateRadarChart('رتبه بورس کالا', this.BKI_Radar_Indicator, BKI_Radar_Data, BKI_Bar_Legend);
+      this.Series_BKI_Bar = GenerateBarChart('ارزش بورس کالا', BKI_Bar_Legend, this.BKI_Bar_Categories, BKI_Bar_Data);
+      this.Series_BKI_Total_Bar = GenerateBarChart('ارزش کل بورس کالا', [current_date], this.BKI_Bar_Categories, [{name: current_date, type: 'bar', data: TotalBKI, label: this.label}]);
+      this.Series_BKI_Share = GenerateStackedBarChart('سهم از بازار: بورس کالا', this.BKI_Bar_Categories, BKI_Bar_Legend, BKI_SBar_Data, BKI_SBar_Total_Data);
+      this.activeSeries_BKI = this.Series_BKI_Bar;
+      // BEI
+      let BEI_Radar_Data = [], BEI_Radar_Max_List = [], BEI_Bar_Data = [], BEI_Bar_Legend = [], BEI_SBar_Data = [], BEI_SBar_Total_Data = [];
+      const RankBEI = [resBEI.beI_Physical?.rank || 0, resBEI.beI_Moshtaghe?.rank || 0, resBEI.beI_Other?.rank || 0, resBEI.beI_Total?.rank || 0];
+      const ValueBEI = [resBEI.beI_Physical?.value || 0, resBEI.beI_Moshtaghe?.value || 0, resBEI.beI_Other?.value || 0, resBEI.beI_Total?.value || 0];
+      const TotalBEI = [resBEI.beI_Physical?.total || 0, resBEI.beI_Moshtaghe?.total || 0, resBEI.beI_Other?.total || 0, resBEI.beI_Total?.total || 0];
+      BEI_Radar_Data.push({ name: this.brokerage_name, value: RankBEI });
+      BEI_Radar_Max_List.push(Math.max(...RankBEI));
+      BEI_Bar_Data.push({ name: this.brokerage_name, type: 'bar', data: ValueBEI, label: this.label });
       BEI_Bar_Legend.push(this.brokerage_name);
-
-      BEI_Total_Bar_Data.push({
-        name: current_date,
-        type: 'bar',
-        data: primary_bei_total,
-        label: this.label,
-        itemStyle: { color: this.colors[4] }
+      BEI_SBar_Data.push(ValueBEI);
+      BEI_SBar_Total_Data.push(TotalBEI);
+      cmpBEI.forEach((res, i) => {
+        const cRank = [res.beI_Physical?.rank || 0, res.beI_Moshtaghe?.rank || 0, res.beI_Other?.rank || 0, res.beI_Total?.rank || 0];
+        const cVal = [res.beI_Physical?.value || 0, res.beI_Moshtaghe?.value || 0, res.beI_Other?.value || 0, res.beI_Total?.value || 0];
+        const cTot = [res.beI_Physical?.total || 0, res.beI_Moshtaghe?.total || 0, res.beI_Other?.total || 0, res.beI_Total?.total || 0];
+        BEI_Radar_Data.push({ name: this.comparison_list[i].name, value: cRank });
+        BEI_Radar_Max_List.push(Math.max(...cRank));
+        BEI_Bar_Data.push({ name: this.comparison_list[i].name, type: 'bar', data: cVal, label: this.label });
+        BEI_Bar_Legend.push(this.comparison_list[i].name);
+        BEI_SBar_Data.push(cVal);
+        BEI_SBar_Total_Data.push(cTot);
       });
-      BEI_Total_Bar_Legend.push(current_date);
-
-      // BEI مقایسه‌ای
-      for (let i = 0; i < this.comparison_list.length; i++) {
-        let broker = this.comparison_list[i];
-        let cmp_bei = await this.getData.get_Chart5_CMP(current_date, broker.id).toPromise();
-
-        let cmp_bei_rank = [
-          cmp_bei.beI_Physical?.rank ?? 0,
-          cmp_bei.beI_Moshtaghe?.rank ?? 0,
-          cmp_bei.beI_Other?.rank ?? 0,
-          cmp_bei.beI_Total?.rank ?? 0
-        ];
-
-        BEI_Radar_Max_List.push(Math.max(...cmp_bei_rank));
-
-        let cmp_bei_value = [
-          cmp_bei.beI_Physical?.value ?? 0,
-          cmp_bei.beI_Moshtaghe?.value ?? 0,
-          cmp_bei.beI_Other?.value ?? 0,
-          cmp_bei.beI_Total?.value ?? 0
-        ];
-
-        BEI_Radar_Data.push({ name: broker.name, value: cmp_bei_rank });
-        BEI_Radar_LegendData.push(broker.name);
-
-        BEI_Bar_Data.push({
-          name: broker.name,
-          type: 'bar',
-          data: cmp_bei_value,
-          label: this.label,
-          itemStyle: { color: this.colors[(i + 1) % this.colors.length] }
-        });
-        BEI_Bar_Legend.push(broker.name);
-      }
-
-      BEI_Radar_Max_Rank = Math.max(...BEI_Radar_Max_List) + 5;
-      this.BEI_Radar_Indicator.forEach((ind: any) => ind.max = BEI_Radar_Max_Rank);
-
-      this.series_Chart5_radar = GenerateRadarChart(
-        this.BEI_Radar_Title,
-        this.BEI_Radar_Indicator,
-        BEI_Radar_Data,
-        BEI_Radar_LegendData
-      );
-
-      this.series_Chart5_bar = GenerateBarChart(
-        this.Brokerage_Bar_Title,
-        BEI_Bar_Legend,
-        this.BEI_Bar_Categories,
-        BEI_Bar_Data
-      );
-
-      this.series_Chart5_bar_total = GenerateBarChart(
-        this.Brokerage_Total_Bar_Title,
-        BEI_Total_Bar_Legend,
-        this.BEI_Bar_Categories,
-        BEI_Total_Bar_Data
-      );
-      this.flag_chart5 = true;
-      this.Flag_BEI = true;
-
-      // Load totals data
-      // Primary totals
-      let primary_totals = await this.getData.get_totals(current_date).toPromise();
-      primary_totals.name = this.brokerage_name;
-      primary_totals.isPrimary = true;
-      this.series_totals.push(primary_totals);
-
-      // Comparison totals
-      for (let broker of this.comparison_list) {
-        let cmp_totals = await this.getData.get_totals_CMP(current_date, broker.id).toPromise();
-        cmp_totals.name = broker.name;
-        cmp_totals.isPrimary = false;
-        this.series_totals.push(cmp_totals);
-      }
-
-      this.flag_totals = true;
-
+      this.BEI_Radar_Indicator.forEach((ind: any) => ind.max = Math.max(...BEI_Radar_Max_List) + 5);
+      this.Series_BEI_Radar = GenerateRadarChart('رتبه بورس انرژی', this.BEI_Radar_Indicator, BEI_Radar_Data, BEI_Bar_Legend);
+      this.Series_BEI_Bar = GenerateBarChart('ارزش بورس انرژی', BEI_Bar_Legend, this.BEI_Bar_Categories, BEI_Bar_Data);
+      this.Series_BEI_Total_Bar = GenerateBarChart('ارزش کل بورس انرژی', [current_date], this.BEI_Bar_Categories, [{name: current_date, type: 'bar', data: TotalBEI, label: this.label}]);
+      this.Series_BEI_Share = GenerateStackedBarChart('سهم از بازار: بورس انرژی', this.BEI_Bar_Categories, BEI_Bar_Legend, BEI_SBar_Data, BEI_SBar_Total_Data);
+      this.activeSeries_BEI = this.Series_BEI_Bar;
     } catch (error: any) {
       this.toast.error({ detail: "ERROR", summary: error.message, duration: 5000, position: 'topRight' });
+    }
+  }
+
+  async fetchComparisonData(date: string, list: any[], apiFunc: (d: string, id: number) => any) {
+    const promises = list.map(broker => apiFunc(date, broker.id).toPromise());
+    return await Promise.all(promises);
+  }
+
+  toggleSectionMode(section: string, mode: 'brokerage' | 'total') {
+    switch (section) {
+      case 'brokerage': this.currentMode_Brokerage = mode; this.activeSeries_Brokerage = (mode === 'brokerage' ? this.Series_Brokerage_Bar : this.Series_Brokerage_Total_Bar); break;
+      case 'bobt': this.currentMode_BOBT = mode; this.activeSeries_BOBT = (mode === 'brokerage' ? this.Series_BOBT_Bar : this.Series_BOBT_Total_Bar); break;
+      case 'fi': this.currentMode_FI = mode; this.activeSeries_FI = (mode === 'brokerage' ? this.Series_FI_Bar : this.Series_FI_Total_Bar); break;
+      case 'bki': this.currentMode_BKI = mode; this.activeSeries_BKI = (mode === 'brokerage' ? this.Series_BKI_Bar : this.Series_BKI_Total_Bar); break;
+      case 'bei': this.currentMode_BEI = mode; this.activeSeries_BEI = (mode === 'brokerage' ? this.Series_BEI_Bar : this.Series_BEI_Total_Bar); break;
+      //case 'moshtaghe': this.currentMode_Moshtaghe = mode; this.activeSeries_Moshtaghe = (mode === 'brokerage' ? this.Series_Moshtaghe_Bar : this.Series_Moshtaghe_Total_Bar); break;
+      //case 'online': this.currentMode_Online = mode; this.activeSeries_Online = (mode === 'brokerage' ? this.Series_Online_Bar : this.Series_Online_Total_Bar); break;
     }
   }
 
@@ -960,7 +394,6 @@ export class BrokerageCmp implements OnInit {
 
   onCheckboxChange(event: any, item: string) {
     if (event.target.checked) {
-      // فقط یک تاریخ قابل انتخاب است
       this.selected_date = [item];
       this.flag_date = true;
       this.loadAllBrokers();
@@ -1012,7 +445,7 @@ export class BrokerageCmp implements OnInit {
     }
   }
 
-  @ViewChildren('top, select_date, view, totals, bob, fi, bki, bei') sections!: QueryList<ElementRef>;
+  @ViewChildren('top, select_date, view, bob, fi, bki, bei') sections!: QueryList<ElementRef>;
 
   ScrollTo(sectionName: string) {
     let section: any = this.sections.find(sec => sec.nativeElement.id == sectionName);
@@ -1021,9 +454,6 @@ export class BrokerageCmp implements OnInit {
     }
   }
 
-  round2(value: number): number {
-    return Math.round((value + Number.EPSILON) * 100) / 100;
-  }
-
   protected readonly Object = Object;
+  protected readonly Math = Math;
 }

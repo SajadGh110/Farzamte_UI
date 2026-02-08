@@ -8,7 +8,6 @@
       <ng-container *ngIf="auth.hasPermission('outCallT2.view'); else deniedTemplate">
         <section class="glass-card mb-4">
           <div class="card-header">
-            <i class="material-icons">event</i>
             <h2>تنظیمات بازه زمانی گزارش</h2>
           </div>
           <form [formGroup]="dateform" (ngSubmit)="onUpdateDate()" class="toolbar-content">
@@ -33,7 +32,6 @@
         </section>
         <section class="glass-card mb-4">
           <div class="card-header">
-            <i class="material-icons">show_chart</i>
             <h2>روند تماس‌های خروجی روزانه</h2>
           </div>
           <div class="chart-box">
@@ -45,7 +43,6 @@
         </section>
         <section class="glass-card mb-4">
           <div class="card-header">
-            <i class="material-icons">assignment</i>
             <h2>توزیع موضوعات تماس</h2>
           </div>
 

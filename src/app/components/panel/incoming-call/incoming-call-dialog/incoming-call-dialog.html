@@ -1,0 +1,48 @@
+<div class="dialog-container" dir="rtl">
+  <div class="dialog-header">
+    <h2 class="dialog-title">
+      جزئیات تماس‌های ورودی
+    </h2>
+    <button mat-icon-button (click)="close()" class="close-btn">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="dialog-content">
+    <div class="info-bar">
+      <span class="label">دسته تماس:</span>
+      <span class="value">{{ data.title }}</span>
+      <span class="separator">|</span>
+      <span class="label">تعداد موارد:</span>
+      <span class="value">{{ data.details.length }}</span>
+    </div>
+
+    <div class="table-wrapper">
+      <table class="details-table">
+        <thead>
+        <tr>
+          <th>ردیف</th>
+          <th>مبداء (From)</th>
+          <th>شماره تماس</th>
+          <th>توضیحات</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of data.details; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td class="from-cell">{{ item.from || '---' }}</td>
+          <td class="phone-cell">{{ item.phoneNumber || '---' }}</td>
+          <td class="desc-cell">{{ item.description || 'بدون توضیحات' }}</td>
+        </tr>
+        <tr *ngIf="data.details.length === 0">
+          <td colspan="4" class="no-data">داده‌ای یافت نشد</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="dialog-actions">
+    <button mat-raised-button color="primary" (click)="close()">بستن</button>
+  </div>
+</div>

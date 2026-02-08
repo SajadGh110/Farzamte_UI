@@ -1,23 +1,5 @@
 @use '../../../../variables' as *;
 
-:host {
-  display: block;
-  height: 100vh;
-  background-color: $Background;
-}
-
-.dashboard-main {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-.content-scrollable {
-  flex-grow: 1;
-  overflow-y: auto;
-  padding: 1rem 2rem 2rem 2rem; // کمی فاصله از بالا
-}
-
 .profile-grid {
   display: grid;
   grid-template-columns: 1.8fr 1.2fr;
@@ -26,23 +8,6 @@
 
   @media (max-width: 1024px) {
     grid-template-columns: 1fr;
-  }
-}
-
-.glass-card {
-  @include glass-style;
-  padding: 25px;
-
-  .card-header {
-    border-bottom: 1px solid rgba($text-secondary, 0.1);
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    h3 {
-      font-size: 1rem;
-      color: $primary-color;
-      margin: 0;
-      font-weight: 700;
-    }
   }
 }
 
@@ -129,10 +94,4 @@
     font-size: 0.75rem;
     margin-top: 4px;
   }
-}
-
-.loading-spinner {
-  display: flex;
-  justify-content: center;
-  padding: 50px;
 }

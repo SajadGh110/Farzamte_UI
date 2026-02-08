@@ -11,6 +11,7 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { DashboardSidebarComponent } from "../../../Template/dashboard-sidebar/dashboard-sidebar.component";
 import { DashboardTopmenuComponent } from "../../../Template/dashboard-topmenu/dashboard-topmenu.component";
 import {AuthService} from "../../../../services/auth.service";
+import * as echarts from "echarts";
 
 @Component({
   selector: 'app-outcall-follow-up',
@@ -42,7 +43,19 @@ export class OutcallFollowUp implements OnInit {
     title: {
       text: 'روند تماس‌های ثبت شده',
       left: 'center',
-      textStyle: { fontFamily: 'Vazirmatn', fontSize: 18 }
+      textStyle: {
+        fontFamily: 'Vazirmatn',
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#333'
+      }
+    },
+    grid: {
+      left: '3%',
+      right: '6%',
+      bottom: '15%',
+      top: '15%',
+      containLabel: true
     },
     toolbox: {
       show: true,
@@ -50,23 +63,65 @@ export class OutcallFollowUp implements OnInit {
       left: 'right',
       top: 'center',
       feature: {
-        mark: { show: true },
         dataView: { show: true, readOnly: false },
         magicType: { show: true, type: ['line', 'bar'] },
         restore: { show: true },
         saveAsImage: { show: true }
       }
     },
-    tooltip: { trigger: 'axis', textStyle: { fontFamily: 'Vazirmatn' } },
-    xAxis: { type: 'category', data: [], axisLabel: { rotate: 45 } },
-    yAxis: { type: 'value' },
+    tooltip: {
+      trigger: 'axis',
+      backgroundColor: 'rgba(255, 255, 255, 0.95)',
+      borderWidth: 1,
+      borderColor: '#3b82f6',
+      textStyle: { fontFamily: 'Vazirmatn', color: '#000' },
+      formatter: (params: any) => {
+        return `<div style="direction: rtl; text-align: right;">
+                <span style="color: #666;">تاریخ:</span> <b>${params[0].name}</b><br/>
+                <span style="color: #3b82f6;">●</span> تعداد تماس: <b>${params[0].value}</b>
+              </div>`;
+      }
+    },
+    xAxis: {
+      type: 'category',
+      data: [],
+      boundaryGap: true,
+      axisLabel: {
+        rotate: 45,
+        fontFamily: 'Vazirmatn',
+        fontSize: 11,
+        interval: 0
+      },
+      axisLine: { lineStyle: { color: '#ccc' } }
+    },
+    yAxis: {
+      type: 'value',
+      splitLine: {
+        lineStyle: {
+          type: 'dashed',
+          opacity: 0.4
+        }
+      }
+    },
     series: [{
       data: [],
       type: 'line',
       smooth: true,
       color: '#3b82f6',
-      areaStyle: { opacity: 0.1 },
-      symbolSize: 8
+      areaStyle: {
+        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+          { offset: 0, color: 'rgba(59, 130, 246, 0.4)' },
+          { offset: 1, color: 'rgba(59, 130, 246, 0)' }
+        ])
+      },
+      symbol: 'circle',
+      symbolSize: 10,
+      itemStyle: {
+        borderWidth: 3,
+        borderColor: '#fff',
+        shadowColor: 'rgba(0, 0, 0, 0.2)',
+        shadowBlur: 5
+      }
     }]
   };
 

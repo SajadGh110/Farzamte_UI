@@ -1,21 +1,20 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  selector: 'app-critical-calls-dialog',
+  selector: 'app-incoming-call-details-dialog',
   standalone: true,
   imports: [CommonModule, MatDialogModule, MatButtonModule, MatIconModule],
-  providers: [DatePipe],
-  templateUrl: './critical-calls-dialog.component.html',
-  styleUrl: './critical-calls-dialog.component.scss'
+  templateUrl: './incoming-call-dialog.html',
+  styleUrl: './incoming-call-dialog.scss',
 })
-export class CriticalCallsDialogComponent {
+export class IncomingCallDialog {
   constructor(
-    public dialogRef: MatDialogRef<CriticalCallsDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { agent: string, month: string, details: any[] }
+    public dialogRef: MatDialogRef<IncomingCallDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: { title: string, details: any[] }
   ) {}
 
   close(): void {

@@ -1,33 +1,235 @@
-.row .detail h2 p {
-  display: inline-block;
-  color: #f4d03f;
+@use '../../../../variables' as *;
+
+// متغیرهای رنگی برای یکپارچگی
+$primary-blue: #3b82f6;
+$text-slate: #475569;
+$border-color: rgba(0, 0, 0, 0.08);
+
+// --- اصلاح تراز "از" و "تا" و ورودی‌ها ---
+.filter-container-simple {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; // تراز عمودی کل ردیف
+  flex-wrap: wrap;
+  gap: 20px;
+
+  .date-inputs {
+    display: flex;
+    gap: 20px;
+    align-items: center; // تراز کردن لیبل‌ها با ورودی‌ها در یک خط افقی
+
+    .input-group {
+      display: flex;
+      align-items: center; // تراز افقی داخلی
+      gap: 10px;
+
+      label {
+        font-size: 14px;
+        font-weight: bold;
+        color: $text-slate;
+        white-space: nowrap;
+      }
+
+      input[type="date"] {
+        background: #ffffff;
+        border: 1px solid $border-color;
+        padding: 10px 12px;
+        border-radius: 12px;
+        font-family: 'Bahnschrift', sans-serif;
+        font-size: 14px;
+        color: #1e293b;
+        outline: none;
+        transition: all 0.2s;
+
+        &:focus {
+          border-color: $primary-blue;
+          box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+      }
+    }
+  }
+}
+
+// --- استایل دکمه بروزرسانی داده‌ها ---
+.btn-primary {
+  background: $primary-blue;
+  color: white;
+  border: none;
+  padding: 0 25px;
+  border-radius: 12px;
+  height: 45px;
   font-weight: bold;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  i { font-size: 20px; }
+
+  &:hover {
+    background: #2563eb;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
+  }
+
+  &:active { transform: translateY(0); }
 }
-.mdc-button {
-  max-width: 150px;
-  color: #fff!important;
-  background: #1c1b3a;
-  font:18px Nazanin, Bahnschrift, serif;
-  font-weight: bold;
-  padding-bottom: 4px;
-  margin-top: 10px;
-  margin-left: 10px;
+
+// --- دکمه‌های بازه زمانی سریع ---
+.quick-btns {
+  display: flex;
+  gap: 8px;
+
+  button {
+    background: #ffffff;
+    border: 1px solid $border-color;
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    color: $text-slate;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+      border-color: $primary-blue;
+      color: $primary-blue;
+      background: rgba(59, 130, 246, 0.05);
+    }
+
+    &.active { // اگر خواستید دکمه انتخاب شده متمایز باشد
+      background: rgba(59, 130, 246, 0.1);
+      border-color: $primary-blue;
+      color: $primary-blue;
+    }
+  }
+
+  .badge {
+    background: #eff6ff;
+    color: $primary-blue;
+    padding: 8px 15px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 13px;
+    border: 1px dashed rgba(59, 130, 246, 0.3);
+  }
 }
-.mdc-button:hover {
-  background: #373660;
+
+// --- استایل بخش فیلترهای تکمیلی (Slide Toggle & Select) ---
+.advanced-filter-row {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  .toggles {
+    display: flex;
+    gap: 25px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .selects {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    align-items: center;
+    // از آنجا که dir="ltr" دادید، تراز را در حالت فارسی اصلاح می‌کنیم
+    justify-content: flex-end;
+  }
+
+  // اصلاح عرض دکمه از حالت تمام‌صفحه به محتوای داخلی
+  .btn-outline {
+    align-self: flex-start; // دکمه را در سمت راست (شروع) نگه می‌دارد و تمام‌عرض نمی‌شود
+    min-width: 150px;
+    height: 45px;
+    background: white;
+    border: 2px solid $primary-blue;
+    color: $primary-blue;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: $primary-blue;
+      color: white;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+    }
+  }
 }
-.filter-form {
-  margin-bottom: 20px;
+
+// --- نفوذ به استایل‌های Angular Material ---
+::ng-deep {
+  // استایل فیلد انتخابی (Select)
+  .mat-mdc-form-field {
+    .mdc-text-field--outlined {
+      background: white !important;
+      border-radius: 12px !important;
+      --mdc-outlined-text-field-container-shape: 12px;
+      --mdc-outlined-text-field-outline-color: #{$border-color};
+      --mdc-outlined-text-field-focus-outline-color: #{$primary-blue};
+    }
+
+    .mat-mdc-form-field-infix {
+      padding-top: 12px !important;
+      padding-bottom: 12px !important;
+      min-height: 48px !important;
+    }
+  }
+
+  // استایل Slide Toggle
+  .mat-mdc-slide-toggle {
+    --mdc-switch-selected-track-color: #{$primary-blue};
+    --mdc-switch-selected-handle-color: #ffffff;
+    --mdc-switch-unselected-track-color: #e2e8f0;
+
+    .mdc-label {
+      font-family: 'Nazanin', sans-serif !important;
+      font-weight: bold;
+      color: $text-slate !important;
+      margin-right: 8px;
+    }
+  }
+
+  // دکمه اعمال فیلتر (Outline)
+  .btn-outline {
+    background: white;
+    border: 2px solid $primary-blue;
+    color: $primary-blue;
+    padding: 10px 25px;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+      background: $primary-blue;
+      color: white;
+    }
+  }
 }
-.filter-form mat-slide-toggle {
-  margin: 15px 0;
-  display: block;
+
+// استایل جدول و چارت‌ها (همان موارد قبلی که اوکی بودند)
+.table-container {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  border: 1px solid $border-color;
+
+  table { width: 100%; }
+  th { background: #f8fafc !important; color: #64748b !important; }
 }
-.filter-form {
-  --mat-sys-body-medium-font: Nazanin, Bahnschrift, serif;
-  --mat-sys-body-medium-size: 18px;
-  --mat-sys-body-medium-weight: bold;
+
+.chart-wrapper {
+  position: relative;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 15px;
+  padding: 10px;
+
+  .chart-h400 {
+    height: 400px;
+    width: 100%;
+  }
 }
-[dir=rtl] .mat-internal-form-field>label{
-  padding-left: 10px;
-}
+
