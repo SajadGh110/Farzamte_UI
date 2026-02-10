@@ -38,10 +38,6 @@ export class IncomingCallService {
     return this.authService.get(`${this.apiUrl}GetReasonDetail/${StartDate}_${EndDate}?reason=${Reason}`);
   }
 
-  get_Description(StartDate:string, EndDate:string, Detail:string):Observable<any>{
-    return this.authService.get(`${this.apiUrl}GetDescription/${StartDate}_${EndDate}?detail=${Detail}`);
-  }
-
   get_CountDay_F(StartDate:string, EndDate:string, Unit:string, Type:string, Branch:string):Observable<any>{
     return this.authService.get(`${this.apiUrl}GetCountDay_F/${StartDate}_${EndDate}/${Unit}/${Type}?branch=${Branch}`);
   }
@@ -58,8 +54,8 @@ export class IncomingCallService {
     return this.authService.get(`${this.apiUrl}GetReasonDetail_F/${StartDate}_${EndDate}/${Unit}/${Type}?reason=${Reason}&branch=${Branch}`);
   }
 
-  get_Description_F(StartDate:string, EndDate:string, Detail:string, Unit:string, Type:string, Branch:string):Observable<any>{
-    return this.authService.get(`${this.apiUrl}GetDescription_F/${StartDate}_${EndDate}/${Unit}/${Type}?detail=${Detail}&branch=${Branch}`);
+  get_Description(StartDate:string, EndDate:string, Detail:string, Unit:string, Type:string, Branch:string):Observable<any>{
+    return this.authService.get(`${this.apiUrl}GetDescription/${StartDate}_${EndDate}/${Unit}/${Type}?detail=${Detail}&branch=${Branch}`);
   }
 
   get_FilteredExpertsDetails(StartDate:string, EndDate:string, Unit:string, Type:string, Branch:string):Observable<any>{

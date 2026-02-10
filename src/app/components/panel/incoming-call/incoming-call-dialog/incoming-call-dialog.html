@@ -24,6 +24,8 @@
           <th>ردیف</th>
           <th>مبداء (From)</th>
           <th>شماره تماس</th>
+          <th>کارشناس</th>
+          <th>واحد</th>
           <th>توضیحات</th>
         </tr>
         </thead>
@@ -32,6 +34,8 @@
           <td>{{ i + 1 }}</td>
           <td class="from-cell">{{ item.from || '---' }}</td>
           <td class="phone-cell">{{ item.phoneNumber || '---' }}</td>
+          <td class="">{{ item.expertName || '---'}}</td>
+          <td class="">{{ item.unit || '---'}}</td>
           <td class="desc-cell">{{ item.description || 'بدون توضیحات' }}</td>
         </tr>
         <tr *ngIf="data.details.length === 0">

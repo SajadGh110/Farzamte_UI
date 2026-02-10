@@ -1332,4 +1332,6 @@ text.value-text {
 .cdk-overlay-container .cdk-overlay-connected-position-bounding-box {
   transition: opacity 200ms ease-in!important;
 }
-
+.mat-mdc-dialog-panel{
+  max-width: 100% !important;
+}

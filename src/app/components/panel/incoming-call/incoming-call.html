@@ -90,6 +90,7 @@
 
         <section class="glass-card">
           <div class="card-header"><h2>کارشناسان پاسخگو</h2></div>
+          <mat-spinner *ngIf="!flag_experts" class="center-spinner"></mat-spinner>
           <div class="table-container">
             <table dir="ltr" mat-table [dataSource]="dataSource_experts">
               <ng-container matColumnDef="readableFullName">

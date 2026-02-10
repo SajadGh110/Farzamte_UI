@@ -137,7 +137,8 @@ export class Brokerages implements OnInit {
   async do(selected_date: any[]) {
     this.resetFlags();
     selected_date.sort((a, b) => a.localeCompare(b));
-
+    this.Moshtaghe_Table_Data = [];
+    this.Online_Table_Data = [];
     try {
       let B_Radar_Max = 0, BOBT_Radar_Max = 0, FI_Radar_Max = 0, BKI_Radar_Max = 0, BEI_Radar_Max = 0;
       let B_Radar_Data: any[] = [], BOBT_Radar_Data: any[] = [], FI_Radar_Data: any[] = [], BKI_Radar_Data: any[] = [], BEI_Radar_Data: any[] = [];

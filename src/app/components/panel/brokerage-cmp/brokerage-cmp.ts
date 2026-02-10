@@ -46,6 +46,8 @@ export class BrokerageCmp implements OnInit {
   brokerage_logo: string = '';
   last6_date: string[] = [];
   last6_top: any[] = [];
+  Moshtaghe_Table_Data: any[] = [];
+  Online_Table_Data: any[] = [];
 
   label: any = { show: true, fontSize: 14, fontWeight: 'bold', fontFamily: 'Nazanin', position: 'top',
     formatter: (params: any) => {return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');}
@@ -63,8 +65,6 @@ export class BrokerageCmp implements OnInit {
   protected flag_date: boolean = false;
   protected flag_all_brokers: boolean = false;
   protected Flag_Brokerage: boolean = false;
-  protected Flag_Moshtaghe: boolean = false;
-  protected Flag_Online: boolean = false;
 
   // Brokerage
   Brokerage_Radar_Indicator: any = [{ name: 'بورس اوراق بهادار', min: 1 }, { name: 'فرابورس', min: 1 }, { name: 'تجمیع بورس اوراق بهادار و فرابورس', min: 1 }, { name: 'بورس کالا', min: 1 }, { name: 'بورس انرژی', min: 1 }, { name: 'ارزش کل معاملات (بورس و فرابورس)', min: 1 }];
@@ -106,6 +106,18 @@ export class BrokerageCmp implements OnInit {
   Series_BEI_Total_Bar: EChartsOption = {};
   activeSeries_BEI: EChartsOption = {};
   Series_BEI_Share: EChartsOption = {};
+  // Moshtaghe
+  Moshtaghe_Bar_Categories: string[] = ['مشتقه بورس-معمولی', 'مشتقه بورس-آنلاین', 'مشتقه فرابورس-ایستگاه', 'مشتقه فرابورس-عادی', 'مشتقه فرابورس-گروهی', 'مشتقه فرابورس-سایر', 'کل مشتقه'];
+  Series_Moshtaghe_Bar: EChartsOption = {};
+  Series_Moshtaghe_Total_Bar: EChartsOption = {};
+  activeSeries_Moshtaghe: EChartsOption = {};
+  Series_Moshtaghe_Share: EChartsOption = {};
+  // Online
+  Online_Bar_Categories: string[] = ['بدهی-آنلاین', 'مشتقه-آنلاین', 'حرفه‌ای-آنلاین', 'حرفه‌ای-الگوریتم', 'سهام-آنلاین', 'سهام-الگوریتم', 'صندوق-آنلاین', 'صندوق-الگوریتم', 'فرابورس-عادی', 'فرابورس-گروهی', 'فرابورس-سایر', 'کل آنلاین'];
+  Series_Online_Bar: EChartsOption = {};
+  Series_Online_Total_Bar: EChartsOption = {};
+  activeSeries_Online: EChartsOption = {};
+  Series_Online_Share: EChartsOption = {};
 
   async ngOnInit() {
     if (!this.auth.hasPermission('brokerageCMP.view')) {
@@ -183,11 +195,13 @@ export class BrokerageCmp implements OnInit {
       this.Series_BEI_Radar = {};
       this.Series_BEI_Bar = {};
       this.Series_BEI_Total_Bar = {};
+      this.Moshtaghe_Table_Data = [];
+      this.Online_Table_Data = [];
 
       const current_date = this.selected_date[0];
       const [
-        resB, resBOBT, resFI, resBKI, resBEI, resTotals,
-        cmpB, cmpBOBT, cmpFI, cmpBKI, cmpBEI, cmpTotals
+        resB, resBOBT, resFI, resBKI, resBEI, resM, resO,
+        cmpB, cmpBOBT, cmpFI, cmpBKI, cmpBEI, cmpM, cmpO
       ] = await Promise.all([
         // Primary
         this.getData.get_Chart1(current_date).toPromise(),
@@ -195,14 +209,16 @@ export class BrokerageCmp implements OnInit {
         this.getData.get_Chart3(current_date).toPromise(),
         this.getData.get_Chart4(current_date).toPromise(),
         this.getData.get_Chart5(current_date).toPromise(),
-        this.getData.get_totals(current_date).toPromise(),
+        this.getData.GetBrokerageMoshtaghe(current_date).toPromise(),
+        this.getData.GetBrokerageOnline(current_date).toPromise(),
         // Comparison
         this.fetchComparisonData(current_date, this.comparison_list, (d, id) => this.getData.get_Chart1_CMP(d, id)),
         this.fetchComparisonData(current_date, this.comparison_list, (d, id) => this.getData.get_Chart2_CMP(d, id)),
         this.fetchComparisonData(current_date, this.comparison_list, (d, id) => this.getData.get_Chart3_CMP(d, id)),
         this.fetchComparisonData(current_date, this.comparison_list, (d, id) => this.getData.get_Chart4_CMP(d, id)),
         this.fetchComparisonData(current_date, this.comparison_list, (d, id) => this.getData.get_Chart5_CMP(d, id)),
-        this.fetchComparisonData(current_date, this.comparison_list, (d, id) => this.getData.get_totals_CMP(d, id))
+        this.fetchComparisonData(current_date, this.comparison_list, (d, id) => this.getData.GetBrokerageCMPMoshtaghe(d, id)),
+        this.fetchComparisonData(current_date, this.comparison_list, (d, id) => this.getData.GetBrokerageCMPOnline(d, id))
       ]);
 
       if (this.comparison_list.length >= 1)
@@ -235,7 +251,6 @@ export class BrokerageCmp implements OnInit {
       this.Series_Brokerage_Total_Bar = GenerateBarChart('ارزش کل', [current_date], this.Brokerage_Bar_Categories, [{name: current_date, type: 'bar', data: TotalB, label: this.label}]);
       this.Series_Brokerage_Share = GenerateStackedBarChart('سهم از بازار: نگاه کلی', ['بورس','فرابورس','بورس و فرابورس','کالا','انرژی','کل'], this.brokers_list, B_SBar_Data, B_SBar_Total_Data);
       this.activeSeries_Brokerage = this.Series_Brokerage_Bar;
-      this.Flag_Brokerage = true;
       // BOBT
       let BOBT_Radar_Data = [], BOBT_Radar_Max_List = [], BOBT_Bar_Data = [], BOBT_Bar_Legend = [], BOBT_SBar_Data = [], BOBT_SBar_Total_Data = [];
       const RankBOBT = [resBOBT.bobT_Oragh_Bedehi?.rank || 0, resBOBT.bobT_Moshtaghe?.rank || 0, resBOBT.bobT_Sarmaye_Herfei?.rank || 0, resBOBT.bobT_Saham?.rank || 0, resBOBT.bobT_Total?.rank || 0];
@@ -348,6 +363,57 @@ export class BrokerageCmp implements OnInit {
       this.Series_BEI_Total_Bar = GenerateBarChart('ارزش کل بورس انرژی', [current_date], this.BEI_Bar_Categories, [{name: current_date, type: 'bar', data: TotalBEI, label: this.label}]);
       this.Series_BEI_Share = GenerateStackedBarChart('سهم از بازار: بورس انرژی', this.BEI_Bar_Categories, BEI_Bar_Legend, BEI_SBar_Data, BEI_SBar_Total_Data);
       this.activeSeries_BEI = this.Series_BEI_Bar;
+      // Moshtaghe
+      let M_Bar_Data = [],M_Bar_Total_Data = [], M_Bar_Legend = [], M_SBar_Data = [], M_SBar_Total_Data = [];
+      const Value_M = [resM.brokerage_BOBT_Moshtaghe_Normal, resM.brokerage_BOBT_Moshtaghe_Online, resM.brokerage_FI_Moshtaghe_Station, resM.brokerage_FI_Moshtaghe_Normal, resM.brokerage_FI_Moshtaghe_Group, resM.brokerage_FI_Moshtaghe_Other, resM.brokerage_TotalMoshtaghe];
+      const Total_M = [resM.bobT_Moshtaghe_Normal, resM.bobT_Moshtaghe_Online, resM.fI_Moshtaghe_Station, resM.fI_Moshtaghe_Normal, resM.fI_Moshtaghe_Group, resM.fI_Moshtaghe_Other, resM.totalMoshtaghe];
+      M_Bar_Data.push({ name: this.brokerage_name, type: 'bar', data: Value_M, label: this.label });
+      M_Bar_Total_Data.push({name: current_date, type: 'bar', data: Total_M, label: this.label});
+      M_Bar_Legend.push(this.brokerage_name);
+      M_SBar_Data.push(Value_M);
+      M_SBar_Total_Data.push(Total_M);
+      resM.name = this.brokerage_name;
+      this.Moshtaghe_Table_Data.push(resM);
+      cmpM.forEach((res, i) => {
+        const Cval = [res.brokerage_BOBT_Moshtaghe_Normal, res.brokerage_BOBT_Moshtaghe_Online, res.brokerage_FI_Moshtaghe_Station, res.brokerage_FI_Moshtaghe_Normal, res.brokerage_FI_Moshtaghe_Group, res.brokerage_FI_Moshtaghe_Other, res.brokerage_TotalMoshtaghe];
+        const CTot = [res.bobT_Moshtaghe_Normal, res.bobT_Moshtaghe_Online, res.fI_Moshtaghe_Station, res.fI_Moshtaghe_Normal, res.fI_Moshtaghe_Group, res.fI_Moshtaghe_Other, res.totalMoshtaghe];
+        M_Bar_Data.push({ name: this.comparison_list[i].name, type: 'bar', data: Cval, label: this.label });
+        M_Bar_Legend.push(this.comparison_list[i].name);
+        M_SBar_Data.push(Cval);
+        M_SBar_Total_Data.push(CTot);
+        res.name = this.comparison_list[i].name;
+        this.Moshtaghe_Table_Data.push(res);
+      });
+      this.Series_Moshtaghe_Bar = GenerateBarChart('مشتقات-کارگزاری', M_Bar_Legend, this.Moshtaghe_Bar_Categories, M_Bar_Data);
+      this.Series_Moshtaghe_Total_Bar = GenerateBarChart('مشتقات-کل', [current_date], this.Moshtaghe_Bar_Categories, M_Bar_Total_Data);
+      this.Series_Moshtaghe_Share = GenerateStackedBarChart('سهم از بازار: مشتقه', this.Moshtaghe_Bar_Categories, M_Bar_Legend, M_SBar_Data, M_SBar_Total_Data);
+      this.activeSeries_Moshtaghe = this.Series_Moshtaghe_Bar;
+      // Online
+      let O_Bar_Data = [],O_Bar_Total_Data = [], O_Bar_Legend = [], O_SBar_Data = [], O_SBar_Total_Data = [];
+      const Value_O = [resO.brokerage_BOBT_Oragh_Bedehi_Online, resO.brokerage_BOBT_Moshtaghe_Online, resO.brokerage_BOBT_Sarmaye_Herfei_Online, resO.brokerage_BOBT_Sarmaye_Herfei_Algorithm, resO.brokerage_BOBT_saham_Online, resO.brokerage_BOBT_saham_Algorithm, resO.brokerage_BOBT_Sandogh_Online, resO.brokerage_BOBT_Sandogh_Algorithm, resO.brokerage_FI_Online_Normal, resO.brokerage_FI_Online_Group, resO.brokerage_FI_Online_Other, resO.brokerage_TotalOnline];
+      const Total_O = [resO.bobT_Oragh_Bedehi_Online, resO.bobT_Moshtaghe_Online, resO.bobT_Sarmaye_Herfei_Online, resO.bobT_Sarmaye_Herfei_Algorithm, resO.bobT_saham_Online, resO.bobT_saham_Algorithm, resO.bobT_Sandogh_Online, resO.bobT_Sandogh_Algorithm, resO.fI_Online_Normal, resO.fI_Online_Group, resO.fI_Online_Other, resO.totalOnline];
+      O_Bar_Data.push({ name: this.brokerage_name, type: 'bar', data: Value_O, label: this.label });
+      O_Bar_Total_Data.push({name: current_date, type: 'bar', data: Total_O, label: this.label});
+      O_Bar_Legend.push(this.brokerage_name);
+      O_SBar_Data.push(Value_O);
+      O_SBar_Total_Data.push(Total_O);
+      resO.name = this.brokerage_name;
+      this.Online_Table_Data.push(resO);
+      cmpO.forEach((res, i) => {
+        const Cval = [res.brokerage_BOBT_Oragh_Bedehi_Online, res.brokerage_BOBT_Moshtaghe_Online, res.brokerage_BOBT_Sarmaye_Herfei_Online, res.brokerage_BOBT_Sarmaye_Herfei_Algorithm, res.brokerage_BOBT_saham_Online, res.brokerage_BOBT_saham_Algorithm, res.brokerage_BOBT_Sandogh_Online, res.brokerage_BOBT_Sandogh_Algorithm, res.brokerage_FI_Online_Normal, res.brokerage_FI_Online_Group, res.brokerage_FI_Online_Other, res.brokerage_TotalOnline];
+        const CTot = [res.bobT_Oragh_Bedehi_Online, res.bobT_Moshtaghe_Online, res.bobT_Sarmaye_Herfei_Online, res.bobT_Sarmaye_Herfei_Algorithm, res.bobT_saham_Online, res.bobT_saham_Algorithm, res.bobT_Sandogh_Online, res.bobT_Sandogh_Algorithm, res.fI_Online_Normal, res.fI_Online_Group, res.fI_Online_Other, res.totalOnline];
+        O_Bar_Data.push({ name: this.comparison_list[i].name, type: 'bar', data: Cval, label: this.label });
+        O_Bar_Legend.push(this.comparison_list[i].name);
+        O_SBar_Data.push(Cval);
+        O_SBar_Total_Data.push(CTot);
+        res.name = this.comparison_list[i].name;
+        this.Online_Table_Data.push(res);
+      })
+      this.Series_Online_Bar = GenerateBarChart('آنلاین-کارگزاری', O_Bar_Legend, this.Online_Bar_Categories, O_Bar_Data);
+      this.Series_Online_Total_Bar = GenerateBarChart('آنلاین-کل', [current_date], this.Online_Bar_Categories, O_Bar_Total_Data);
+      this.Series_Online_Share = GenerateStackedBarChart('سهم از بازار: آنلاین', this.Online_Bar_Categories, O_Bar_Legend, O_SBar_Data, O_SBar_Total_Data);
+      this.activeSeries_Online = this.Series_Online_Bar;
+      this.Flag_Brokerage = true;
     } catch (error: any) {
       this.toast.error({ detail: "ERROR", summary: error.message, duration: 5000, position: 'topRight' });
     }
@@ -365,8 +431,8 @@ export class BrokerageCmp implements OnInit {
       case 'fi': this.currentMode_FI = mode; this.activeSeries_FI = (mode === 'brokerage' ? this.Series_FI_Bar : this.Series_FI_Total_Bar); break;
       case 'bki': this.currentMode_BKI = mode; this.activeSeries_BKI = (mode === 'brokerage' ? this.Series_BKI_Bar : this.Series_BKI_Total_Bar); break;
       case 'bei': this.currentMode_BEI = mode; this.activeSeries_BEI = (mode === 'brokerage' ? this.Series_BEI_Bar : this.Series_BEI_Total_Bar); break;
-      //case 'moshtaghe': this.currentMode_Moshtaghe = mode; this.activeSeries_Moshtaghe = (mode === 'brokerage' ? this.Series_Moshtaghe_Bar : this.Series_Moshtaghe_Total_Bar); break;
-      //case 'online': this.currentMode_Online = mode; this.activeSeries_Online = (mode === 'brokerage' ? this.Series_Online_Bar : this.Series_Online_Total_Bar); break;
+      case 'moshtaghe': this.currentMode_Moshtaghe = mode; this.activeSeries_Moshtaghe = (mode === 'brokerage' ? this.Series_Moshtaghe_Bar : this.Series_Moshtaghe_Total_Bar); break;
+      case 'online': this.currentMode_Online = mode; this.activeSeries_Online = (mode === 'brokerage' ? this.Series_Online_Bar : this.Series_Online_Total_Bar); break;
     }
   }
 
@@ -445,7 +511,7 @@ export class BrokerageCmp implements OnInit {
     }
   }
 
-  @ViewChildren('top, select_date, view, bob, fi, bki, bei') sections!: QueryList<ElementRef>;
+  @ViewChildren('top, select_date, view, bob, fi, bki, bei, moshtaghe, online') sections!: QueryList<ElementRef>;
 
   ScrollTo(sectionName: string) {
     let section: any = this.sections.find(sec => sec.nativeElement.id == sectionName);

@@ -232,6 +232,86 @@
             </div>
           </div>
         </section>
+
+        <section class="glass-card" id="moshtaghe" #moshtaghe>
+          <section class="card-header"><h2>رتبه بندی معاملات مشتقه</h2></section>
+          <section class="loading-spinner" *ngIf="!Flag_Brokerage"><mat-spinner diameter="40"></mat-spinner></section>
+          <div *ngIf="Flag_Brokerage">
+            <div class="table-outer-wrapper" *ngIf="Moshtaghe_Table_Data.length > 0">
+              <div class="custom-flex-table">
+                <div class="table-head">
+                  <div class="cell">نام</div>
+                  <div class="cell">مشتقه کارگزاری</div>
+                  <div class="cell">کل معاملات</div>
+                  <div class="cell">رتبه کارگزاری</div>
+                  <div class="cell">سهم بازار</div>
+                </div>
+                <div class="table-body">
+                  <div class="table-row" *ngFor="let item of Moshtaghe_Table_Data">
+                    <div class="cell">{{item.name}}</div>
+                    <div class="cell">{{item.brokerage_TotalMoshtaghe }}</div>
+                    <div class="cell">{{item.totalMoshtaghe}}</div>
+                    <div class="cell highlight">{{item.brokerage_Rank_TotalMoshtaghe}}</div>
+                    <div class="cell highlight">{{item.percent_Moshtaghe}}%</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="charts-column-layout">
+              <div class="toggle-container">
+                <div class="toggle-group">
+                  <button [class.active]="currentMode_Moshtaghe === 'brokerage'" (click)="toggleSectionMode('moshtaghe', 'brokerage')">ارزش کارگزاری</button>
+                  <button [class.active]="currentMode_Moshtaghe === 'total'" (click)="toggleSectionMode('moshtaghe', 'total')">ارزش کل بازار</button>
+                </div>
+              </div>
+              <div class="chart-box-full"><div echarts [options]="activeSeries_Moshtaghe" class="echart"></div></div>
+            </div>
+            <div class="market-share-analysis">
+              <div class="analysis-header"><span>سهم از بازار</span></div>
+              <div echarts [options]="Series_Moshtaghe_Share" style="height: 400px;"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="glass-card" id="online" #online>
+          <section class="card-header"><h2>رتبه بندی معاملات آنلاین</h2></section>
+          <section class="loading-spinner" *ngIf="!Flag_Brokerage"><mat-spinner diameter="40"></mat-spinner></section>
+          <div *ngIf="Flag_Brokerage">
+            <div class="table-outer-wrapper" *ngIf="Online_Table_Data.length > 0">
+              <div class="custom-flex-table">
+                <div class="table-head">
+                  <div class="cell">نام</div>
+                  <div class="cell">آنلاین کارگزاری</div>
+                  <div class="cell">کل معاملات</div>
+                  <div class="cell">رتبه کارگزاری</div>
+                  <div class="cell">سهم بازار</div>
+                </div>
+                <div class="table-body">
+                  <div class="table-row" *ngFor="let item of Online_Table_Data">
+                    <div class="cell">{{item.name}}</div>
+                    <div class="cell">{{item.brokerage_TotalOnline}}</div>
+                    <div class="cell">{{item.totalOnline}}</div>
+                    <div class="cell highlight">{{item.brokerage_Rank_TotalOnline}}</div>
+                    <div class="cell highlight">{{item.percent_Online}}%</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="charts-column-layout">
+              <div class="toggle-container">
+                <div class="toggle-group">
+                  <button [class.active]="currentMode_Online === 'brokerage'" (click)="toggleSectionMode('online', 'brokerage')">ارزش کارگزاری</button>
+                  <button [class.active]="currentMode_Online === 'total'" (click)="toggleSectionMode('online', 'total')">ارزش کل بازار</button>
+                </div>
+              </div>
+              <div class="chart-box-full"><div echarts [options]="activeSeries_Online" class="echart"></div></div>
+            </div>
+            <div class="market-share-analysis">
+              <div class="analysis-header"><span>سهم از بازار</span></div>
+              <div echarts [options]="Series_Online_Share" style="height: 600px;"></div>
+            </div>
+          </div>
+        </section>
       </ng-container>
       <ng-template #deniedTemplate>
         <div class="access-denied-container shadow-sm">
@@ -258,6 +338,8 @@
       <a (click)="ScrollTo('fi')"><span class="label">فرابورس</span><span class="dot"></span></a>
       <a (click)="ScrollTo('bki')"><span class="label">کالا</span><span class="dot"></span></a>
       <a (click)="ScrollTo('bei')"><span class="label">انرژی</span><span class="dot"></span></a>
+      <a (click)="ScrollTo('moshtaghe')"><span class="label">مشتقه</span><span class="dot"></span></a>
+      <a (click)="ScrollTo('online')"><span class="label">آنلاین</span><span class="dot"></span></a>
     </div>
     <div class="fab-button">
       <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

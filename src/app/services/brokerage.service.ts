@@ -81,4 +81,12 @@ export class BrokerageService {
   GetBrokerageOnline(Date_Monthly:string):Observable<any>{
     return this.authService.get(`${this.apiUrl}Brokerage/Online/${Date_Monthly}`);
   }
+
+  GetBrokerageCMPMoshtaghe(Date_Monthly:string, id:number):Observable<any>{
+    return this.authService.get(`${this.apiUrl}BrokerageCMP/Moshtaghe/${Date_Monthly}/${id}`);
+  }
+
+  GetBrokerageCMPOnline(Date_Monthly:string, id:number):Observable<any>{
+    return this.authService.get(`${this.apiUrl}BrokerageCMP/Online/${Date_Monthly}/${id}`);
+  }
 }

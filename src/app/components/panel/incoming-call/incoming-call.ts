@@ -242,13 +242,13 @@ export class IncomingCall implements OnInit, AfterViewInit {
     const type = this.f['flag_filter_type'].value ? this.selectedType : 'همه';
     const branch = this.f['flag_filter_branch'].value ? this.selectedBranch : 'همه شعب';
 
-    const res = await this.getData.get_Description_F(this.StartDate, this.EndDate, event.name, unit, type, branch).toPromise();
+    const res = await this.getData.get_Description(this.StartDate, this.EndDate, event.name, unit, type, branch).toPromise();
     this.flag_loading = false;
 
     if (res && res.length > 0) {
       this.flag_popup = true;
       this.dialog.open(IncomingCallDialog,{
-        width: '850px',
+        width: '900px',
         data: {
           title: event.name,
           details: res
