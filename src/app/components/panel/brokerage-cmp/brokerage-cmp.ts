@@ -52,7 +52,7 @@ export class BrokerageCmp implements OnInit {
   label: any = { show: true, fontSize: 14, fontWeight: 'bold', fontFamily: 'Nazanin', position: 'top',
     formatter: (params: any) => {return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');}
   };
-
+  protected activeTabIndex: number = 0;
   currentMode_Brokerage: 'brokerage' | 'total' = 'brokerage';
   currentMode_BOBT: 'brokerage' | 'total' = 'brokerage';
   currentMode_FI: 'brokerage' | 'total' = 'brokerage';
@@ -157,6 +157,11 @@ export class BrokerageCmp implements OnInit {
 
       if (this.series_date.length == 0) {
         this.toast.error({ detail: "ERROR", summary: 'Your Selected Brokerage, Don\'t Have a Data', duration: 5000, position: 'topRight' });
+      }
+
+      const yearKeys = Object.keys(this.years);
+      if (yearKeys.length > 0) {
+        this.activeTabIndex = yearKeys.length - 1;
       }
 
       if (this.series_date.length >= 1) {

@@ -134,8 +134,8 @@ $border-color: rgba(0, 0, 0, 0.08);
     gap: 15px;
     flex-wrap: wrap;
     align-items: center;
-    // از آنجا که dir="ltr" دادید، تراز را در حالت فارسی اصلاح می‌کنیم
-    justify-content: flex-end;
+    flex-direction: row-reverse;
+    justify-content: flex-start;
   }
 
   // اصلاح عرض دکمه از حالت تمام‌صفحه به محتوای داخلی

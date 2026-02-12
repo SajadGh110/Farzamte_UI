@@ -174,6 +174,8 @@ export class IncomingCall implements OnInit, AfterViewInit {
 
       if (resReasons.length > 0) {
         await this.loadReasonDetails(resReasons[0].reason);
+      } else {
+        this.flag_Reason_Detail_Totals = false;
       }
 
       this.flag_count = this.flag_Ph_Reasons_Totals = this.flag_experts = true;
@@ -184,22 +186,37 @@ export class IncomingCall implements OnInit, AfterViewInit {
 
   async loadReasonDetails(reason: string) {
     this.flag_Reason_Detail_Totals = false;
+    (this.series_Reason_Detail_bar_Totals.series as any)[0].data = [];
+
     const unit = this.f['flag_filter_unit'].value ? this.selectedUnit : 'همه واحد ها';
     const type = this.f['flag_filter_type'].value ? this.selectedType : 'همه';
     const branch = this.f['flag_filter_branch'].value ? this.selectedBranch : 'همه شعب';
 
-    const res = await this.getData.get_ReasonDetail_F(this.StartDate, this.EndDate, reason, unit, type, branch).toPromise();
-    this.reason_selected_Totals = reason;
+    try {
+      const res = await this.getData.get_ReasonDetail_F(this.StartDate, this.EndDate, reason, unit, type, branch).toPromise();
+      this.reason_selected_Totals = reason;
 
-    const labels = res.map((item: any) => item.reasonDetail);
-    const values = res.map((item: any) => item.count);
+      const labels = res?.map((item: any) => item.reasonDetail) || [];
+      const values = res?.map((item: any) => item.count) || [];
 
-    this.series_Reason_Detail_bar_Totals = {
-      ...this.series_Reason_Detail_bar_Totals,
-      yAxis: { type: 'category', data: labels, inverse: true },
-      series: [{ ... (this.series_Reason_Detail_bar_Totals.series as any)[0], data: values }]
-    };
-    this.flag_Reason_Detail_Totals = true;
+      this.series_Reason_Detail_bar_Totals = {
+        ...this.series_Reason_Detail_bar_Totals,
+        yAxis: {
+          ...(this.series_Reason_Detail_bar_Totals.yAxis as any),
+          data: labels
+        },
+        series: [
+          {
+            ...(this.series_Reason_Detail_bar_Totals.series as any)[0],
+            data: values
+          }
+        ]
+      };
+      this.flag_Reason_Detail_Totals = true;
+    } catch (error) {
+      this.flag_Reason_Detail_Totals = false;
+      this.toast.error({ detail: "خطا", summary: "دیتایی یافت نشد" });
+    }
   }
 
   private updateCountChart(data: any[]) {

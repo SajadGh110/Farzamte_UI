@@ -19,7 +19,7 @@ export class BrokerageProfitService {
   }
 
   GetProfitById(brokerageID:number, month:string): Observable<any>{
-    return this.authService.get(`${this.apiUrl}GetProfitById/${brokerageID}/${month}`);
+    return this.authService.get(`${this.apiUrl}GetProfitById/${month}/${brokerageID}`);
   }
 
   GetBrokersOnDate(month:string): Observable<any>{

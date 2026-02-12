@@ -14,7 +14,7 @@
           </section>
           <section class="loading-spinner" *ngIf="!flag_date"><mat-spinner diameter="40"></mat-spinner></section>
           <section class="date-selector" *ngIf="flag_date">
-            <mat-tab-group animationDuration="0ms" dir="ltr">
+            <mat-tab-group [selectedIndex]="activeTabIndex" (selectedIndexChange)="activeTabIndex = $event" animationDuration="0ms" dir="ltr">
               <mat-tab *ngFor="let item of Object.keys(years)" label="{{item}}">
                 <div class="month-grid">
                   <section class="month-item" *ngFor="let item2 of years[item]">
