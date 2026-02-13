@@ -147,32 +147,24 @@ export class IncomingCall implements OnInit, AfterViewInit {
   }
 
   async executeSearch() {
-    const isFiltered = this.f['flag_filter_type'].value || this.f['flag_filter_unit'].value || this.f['flag_filter_branch'].value;
-
     this.flag_count = this.flag_Ph_Reasons_Totals = this.flag_experts = false;
 
-    try {
-      let resCount, resReasons, resExperts;
+    const unitParam = this.selectedUnit || 'همه واحد ها';
+    const typeParam = this.f['flag_filter_type'].value ? this.selectedType : 'همه';
+    const branchParam = this.f['flag_filter_branch'].value ? this.selectedBranch : 'همه شعب';
 
-      if (!isFiltered) {
-        [resCount, resReasons, resExperts] = await Promise.all([
-          this.getData.get_CountDay(this.StartDate, this.EndDate).toPromise(),
-          this.getData.get_PhonecallReasons(this.StartDate, this.EndDate).toPromise(),
-          this.getData.get_FilteredExpertsDetails(this.StartDate, this.EndDate, 'همه واحد ها', 'همه', 'همه شعب').toPromise()
+    try {
+      const [resCount, resReasons, resExperts] = await Promise.all([
+        this.getData.get_CountDay(this.StartDate, this.EndDate, unitParam, typeParam, branchParam).toPromise(),
+        this.getData.get_PhonecallReasons(this.StartDate, this.EndDate, unitParam, typeParam, branchParam).toPromise(),
+        this.getData.get_FilteredExpertsDetails(this.StartDate, this.EndDate, unitParam, typeParam, branchParam).toPromise()
         ]);
-      } else {
-        [resCount, resReasons, resExperts] = await Promise.all([
-          this.getData.get_CountDay_F(this.StartDate, this.EndDate, this.selectedUnit, this.selectedType, this.selectedBranch).toPromise(),
-          this.getData.get_PhonecallReasons_F(this.StartDate, this.EndDate, this.selectedUnit, this.selectedType, this.selectedBranch).toPromise(),
-          this.getData.get_FilteredExpertsDetails(this.StartDate, this.EndDate, this.selectedUnit, this.selectedType, this.selectedBranch).toPromise()
-        ]);
-      }
 
       this.updateCountChart(resCount);
       this.updateReasonsTreemap(resReasons);
       this.dataSource_experts.data = resExperts;
 
-      if (resReasons.length > 0) {
+      if (resReasons && resReasons.length > 0) {
         await this.loadReasonDetails(resReasons[0].reason);
       } else {
         this.flag_Reason_Detail_Totals = false;
@@ -180,37 +172,27 @@ export class IncomingCall implements OnInit, AfterViewInit {
 
       this.flag_count = this.flag_Ph_Reasons_Totals = this.flag_experts = true;
     } catch (err) {
-      this.toast.error({ detail: "خطا", summary: "خطا در دریافت اطلاعات" });
+      this.toast.error({ detail: "خطا", summary: "خطا در دریافت اطلاعات از سرور" });
     }
   }
 
   async loadReasonDetails(reason: string) {
     this.flag_Reason_Detail_Totals = false;
-    (this.series_Reason_Detail_bar_Totals.series as any)[0].data = [];
+    this.reason_selected_Totals = reason;
 
-    const unit = this.f['flag_filter_unit'].value ? this.selectedUnit : 'همه واحد ها';
-    const type = this.f['flag_filter_type'].value ? this.selectedType : 'همه';
-    const branch = this.f['flag_filter_branch'].value ? this.selectedBranch : 'همه شعب';
+    const unitParam = this.selectedUnit || 'همه واحد ها';
+    const typeParam = this.f['flag_filter_type'].value ? this.selectedType : 'همه';
+    const branchParam = this.f['flag_filter_branch'].value ? this.selectedBranch : 'همه شعب';
 
     try {
-      const res = await this.getData.get_ReasonDetail_F(this.StartDate, this.EndDate, reason, unit, type, branch).toPromise();
-      this.reason_selected_Totals = reason;
-
+      const res = await this.getData.get_ReasonDetail(this.StartDate, this.EndDate, reason, unitParam, typeParam, branchParam).toPromise();
       const labels = res?.map((item: any) => item.reasonDetail) || [];
       const values = res?.map((item: any) => item.count) || [];
 
       this.series_Reason_Detail_bar_Totals = {
         ...this.series_Reason_Detail_bar_Totals,
-        yAxis: {
-          ...(this.series_Reason_Detail_bar_Totals.yAxis as any),
-          data: labels
-        },
-        series: [
-          {
-            ...(this.series_Reason_Detail_bar_Totals.series as any)[0],
-            data: values
-          }
-        ]
+        yAxis: { ...(this.series_Reason_Detail_bar_Totals.yAxis as any), data: labels },
+        series: [{ ...(this.series_Reason_Detail_bar_Totals.series as any)[0], data: values }]
       };
       this.flag_Reason_Detail_Totals = true;
     } catch (error) {
@@ -255,24 +237,24 @@ export class IncomingCall implements OnInit, AfterViewInit {
 
   async Popup_List_Totals(event: any) {
     this.flag_loading = true;
-    const unit = this.f['flag_filter_unit'].value ? this.selectedUnit : 'همه واحد ها';
-    const type = this.f['flag_filter_type'].value ? this.selectedType : 'همه';
-    const branch = this.f['flag_filter_branch'].value ? this.selectedBranch : 'همه شعب';
+    const unitParam = this.selectedUnit || 'همه واحد ها';
+    const typeParam = this.f['flag_filter_type'].value ? this.selectedType : 'همه';
+    const branchParam = this.f['flag_filter_branch'].value ? this.selectedBranch : 'همه شعب';
+    try {
+      const res = await this.getData.get_Description(this.StartDate, this.EndDate, event.name, unitParam, typeParam, branchParam).toPromise();
+      this.flag_loading = false;
 
-    const res = await this.getData.get_Description(this.StartDate, this.EndDate, event.name, unit, type, branch).toPromise();
-    this.flag_loading = false;
-
-    if (res && res.length > 0) {
-      this.flag_popup = true;
-      this.dialog.open(IncomingCallDialog,{
-        width: '900px',
-        data: {
-          title: event.name,
-          details: res
-        }
-      });
-    } else {
-      this.toast.info({ detail: "اطلاع", summary: "توضیحاتی برای این مورد ثبت نشده است" });
+      if (res && res.length > 0) {
+        this.dialog.open(IncomingCallDialog, {
+          width: '950px',
+          data: { title: event.name, details: res }
+        });
+      } else {
+        this.toast.info({ detail: "اطلاع", summary: "توضیحاتی برای این مورد یافت نشد" });
+      }
+    } catch (e) {
+      this.flag_loading = false;
+      this.toast.error({ detail: "خطا", summary: "خطا در ارتباط با سرور" });
     }
   }
 

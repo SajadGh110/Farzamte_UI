@@ -233,4 +233,54 @@ $border-color: rgba(0, 0, 0, 0.08);
   }
 }
 
+.filter-split-container {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  padding: 10px;
 
+  .filter-column-right {
+    flex: 1;
+    border-left: 1px solid #e0e0e0;
+    padding-left: 20px;
+
+    .filter-label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #555;
+    }
+  }
+
+  .filter-column-left {
+    flex: 2;
+
+    .advanced-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      align-items: center;
+
+      .toggle-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: rgba(0,0,0,0.03);
+        padding: 5px 15px;
+        border-radius: 8px;
+      }
+
+      .small-select {
+        width: 150px;
+        margin-bottom: -1.25em;
+      }
+    }
+  }
+}
+
+@media (max-width: 992px) {
+  .filter-split-container {
+    flex-direction: column;
+    .filter-column-right { border-left: none; border-bottom: 1px solid #eee; width: 100%; padding-bottom: 20px; }
+  }
+}

@@ -36,26 +36,44 @@
 
         <section class="glass-card mb-4" *ngIf="flag_filter">
           <div class="card-header">
-            <h2>فیلترهای تکمیلی</h2>
+            <h2>فیلترهای پیشرفته</h2>
           </div>
-          <div class="advanced-filter-row">
-            <form [formGroup]="filterForm" class="toggles">
-              <mat-slide-toggle formControlName="flag_filter_type">نوع</mat-slide-toggle>
-              <mat-slide-toggle formControlName="flag_filter_unit">تیم</mat-slide-toggle>
-              <mat-slide-toggle formControlName="flag_filter_branch">شعبه</mat-slide-toggle>
-            </form>
-            <div class="selects" dir="ltr">
-              <mat-form-field appearance="outline" *ngIf="f['flag_filter_type'].value">
-                <mat-select [(ngModel)]="selectedType"><mat-option *ngFor="let t of Types" [value]="t">{{t}}</mat-option></mat-select>
-              </mat-form-field>
-              <mat-form-field appearance="outline" *ngIf="f['flag_filter_unit'].value">
-                <mat-select [(ngModel)]="selectedUnit"><mat-option *ngFor="let u of Units" [value]="u">{{u}}</mat-option></mat-select>
-              </mat-form-field>
-              <mat-form-field appearance="outline" *ngIf="f['flag_filter_branch'].value">
-                <mat-select [(ngModel)]="selectedBranch"><mat-option *ngFor="let b of Branchs" [value]="b">{{b}}</mat-option></mat-select>
+
+          <div class="filter-split-container">
+            <div class="filter-column-right">
+              <label class="filter-label">انتخاب تیم/واحد:</label>
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-select [(ngModel)]="selectedUnit" (selectionChange)="executeSearch()">
+                  <mat-option *ngFor="let u of Units" [value]="u">{{u}}</mat-option>
+                </mat-select>
               </mat-form-field>
             </div>
-            <button class="btn-outline" (click)="executeSearch()">اعمال فیلتر</button>
+
+            <div class="filter-column-left">
+              <form [formGroup]="filterForm" class="advanced-options">
+                <div class="toggle-group">
+                  <mat-slide-toggle formControlName="flag_filter_type">فیلتر نوع</mat-slide-toggle>
+                  <mat-form-field appearance="outline" *ngIf="f['flag_filter_type'].value" class="small-select">
+                    <mat-select [(ngModel)]="selectedType" [ngModelOptions]="{standalone: true}">
+                      <mat-option *ngFor="let t of Types" [value]="t">{{t}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <div class="toggle-group">
+                  <mat-slide-toggle formControlName="flag_filter_branch">فیلتر شعبه</mat-slide-toggle>
+                  <mat-form-field appearance="outline" *ngIf="f['flag_filter_branch'].value" class="small-select">
+                    <mat-select [(ngModel)]="selectedBranch" [ngModelOptions]="{standalone: true}">
+                      <mat-option *ngFor="let b of Branchs" [value]="b">{{b}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <button class="btn-primary apply-btn" (click)="executeSearch()">
+                  <i class="material-icons">search</i> اعمال فیلتر
+                </button>
+              </form>
+            </div>
           </div>
         </section>
 
