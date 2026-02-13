@@ -37,7 +37,14 @@ import { IncomingCallDialog} from "./incoming-call-dialog/incoming-call-dialog";
 export class IncomingCall implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChildren('Quick, Target_Totals') sections!: QueryList<ElementRef>;
-
+  protected INCPermissions:string[] = [
+    'incomingCall.crm.view',
+    'incomingCall.etebar.view',
+    'incomingCall.online.view',
+    'incomingCall.paziresh.view',
+    'incomingCall.qa.view',
+    'incomingCall.toseebazar.view'
+  ];
   dateform!: FormGroup;
   filterForm!: FormGroup;
 
@@ -87,7 +94,7 @@ export class IncomingCall implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit() {
-    if (!this.auth.hasPermission('incomingCall.view')) return;
+    if (!this.auth.hasAnyPermission(this.INCPermissions)) return;
     this.dateform = this.fb.group({
       StartDate: [''],
       EndDate: ['']

@@ -4,7 +4,7 @@
   <section class="dashboard-main">
     <app-dashboard-topmenu></app-dashboard-topmenu>
 
-    <ng-container *ngIf="auth.hasPermission('incomingCall.view'); else deniedTemplate">
+    <ng-container *ngIf="auth.hasAnyPermission(INCPermissions); else deniedTemplate">
       <div class="content-scrollable">
 
         <section class="glass-card mb-4" id="Quick">
@@ -42,18 +42,17 @@
           <div class="filter-split-container">
             <div class="filter-column-right">
               <label class="filter-label">انتخاب تیم/واحد:</label>
-              <mat-form-field appearance="outline" class="w-100">
+              <mat-form-field appearance="outline" class="w-100" dir="ltr">
                 <mat-select [(ngModel)]="selectedUnit" (selectionChange)="executeSearch()">
                   <mat-option *ngFor="let u of Units" [value]="u">{{u}}</mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
-
             <div class="filter-column-left">
               <form [formGroup]="filterForm" class="advanced-options">
                 <div class="toggle-group">
                   <mat-slide-toggle formControlName="flag_filter_type">فیلتر نوع</mat-slide-toggle>
-                  <mat-form-field appearance="outline" *ngIf="f['flag_filter_type'].value" class="small-select">
+                  <mat-form-field appearance="outline" *ngIf="f['flag_filter_type'].value" class="small-select" dir="ltr">
                     <mat-select [(ngModel)]="selectedType" [ngModelOptions]="{standalone: true}">
                       <mat-option *ngFor="let t of Types" [value]="t">{{t}}</mat-option>
                     </mat-select>
@@ -62,7 +61,7 @@
 
                 <div class="toggle-group">
                   <mat-slide-toggle formControlName="flag_filter_branch">فیلتر شعبه</mat-slide-toggle>
-                  <mat-form-field appearance="outline" *ngIf="f['flag_filter_branch'].value" class="small-select">
+                  <mat-form-field appearance="outline" *ngIf="f['flag_filter_branch'].value" class="small-select" dir="ltr">
                     <mat-select [(ngModel)]="selectedBranch" [ngModelOptions]="{standalone: true}">
                       <mat-option *ngFor="let b of Branchs" [value]="b">{{b}}</mat-option>
                     </mat-select>

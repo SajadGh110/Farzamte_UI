@@ -2,7 +2,7 @@
   <app-dashboard-sidebar></app-dashboard-sidebar>
   <section class="dashboard-main">
     <app-dashboard-topmenu></app-dashboard-topmenu>
-    <ng-container *ngIf="auth.hasPermission('incomingCall.view'); else deniedTemplate">
+    <ng-container *ngIf="auth.hasAnyPermission(INCPermissions); else deniedTemplate">
       <section class="row inc-stats-header" dir="rtl">
       <section class="detail">
         <h2>گزارشات صف های پاسخگویی تماس ورودی</h2>

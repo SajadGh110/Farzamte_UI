@@ -39,6 +39,14 @@ export class IncStatsComponent implements OnInit {
   protected flag_data:boolean = false;
   chartData: {type: string, date: string, answered: number}[] = [];
   allData: IncStatRow[] = [];
+  protected INCPermissions:string[] = [
+    'incomingCall.crm.view',
+    'incomingCall.etebar.view',
+    'incomingCall.online.view',
+    'incomingCall.paziresh.view',
+    'incomingCall.qa.view',
+    'incomingCall.toseebazar.view'
+  ];
 
   constructor(
     protected auth: AuthService,
@@ -56,7 +64,7 @@ export class IncStatsComponent implements OnInit {
   displayedColumns: string[] = ['type', 'date', 'answered', 'avgWait', 'avgTalk'];
 
   async ngOnInit() {
-    if (!this.auth.hasPermission('incomingCall.view')) {
+    if (!this.auth.hasAnyPermission(this.INCPermissions)) {
       console.warn('دسترسی محدود: ریکوئستی ارسال نشد.');
       return;
     }
