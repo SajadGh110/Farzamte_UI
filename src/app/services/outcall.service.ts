@@ -33,4 +33,12 @@ export class OutcallService {
   get_SubjectsCount_F(StartDate:string, EndDate:string):Observable<any>{
     return this.authService.get(`${this.apiUrl}GetSubjectsCount_T2/${StartDate}_${EndDate}`);
   }
+
+  get_Description_G(StartDate:string, EndDate:string, Subject:string):Observable<any>{
+    return this.authService.get(`${this.apiUrl}GetGetDescription_T1/${StartDate}_${EndDate}?subject=${Subject}`);
+  }
+
+  get_Description_F(StartDate:string, EndDate:string, Subject:string):Observable<any>{
+    return this.authService.get(`${this.apiUrl}GetGetDescription_T2/${StartDate}_${EndDate}?subject=${Subject}`);
+  }
 }

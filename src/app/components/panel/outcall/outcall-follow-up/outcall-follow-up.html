@@ -53,7 +53,7 @@
             </div>
 
             <div class="subjects-list">
-              <div class="subject-item" *ngFor="let item of subjectsCount">
+              <div class="subject-item" *ngFor="let item of subjectsCount" (click)="Popup(item.subject)">
                 <div class="subject-name">
                   <i class="material-icons">label</i>
                   {{ item.subject || 'بدون موضوع' }}

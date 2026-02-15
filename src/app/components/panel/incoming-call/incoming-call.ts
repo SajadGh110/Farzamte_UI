@@ -61,7 +61,6 @@ export class IncomingCall implements OnInit, AfterViewInit {
   protected flag_count = false;
   protected flag_Ph_Reasons_Totals = false;
   protected flag_Reason_Detail_Totals = false;
-  protected flag_popup = false;
   protected flag_loading = false;
   protected flag_experts = false;
 

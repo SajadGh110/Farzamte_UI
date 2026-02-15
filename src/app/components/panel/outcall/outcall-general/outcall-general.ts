@@ -12,7 +12,9 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { DashboardSidebarComponent } from "../../../Template/dashboard-sidebar/dashboard-sidebar.component";
 import { DashboardTopmenuComponent } from "../../../Template/dashboard-topmenu/dashboard-topmenu.component";
 import { HasPermissionDirective } from '../../../../directives/has-permission.directive';
-import {AuthService} from "../../../../services/auth.service";
+import { AuthService } from "../../../../services/auth.service";
+import { MatDialog } from '@angular/material/dialog';
+import { OutCallDialog } from "../out-call-dialog/out-call-dialog";
 
 @Component({
   selector: 'app-outcall-general',
@@ -32,6 +34,7 @@ import {AuthService} from "../../../../services/auth.service";
 export class OutcallGeneral implements OnInit {
   dateform!: FormGroup;
   loading: boolean = false;
+  popup: boolean = false;
   StartDate: string = "";
   EndDate: string = "";
   st_to_en: string = "";
@@ -132,7 +135,8 @@ export class OutcallGeneral implements OnInit {
     private outcallService: OutcallService,
     private timeService: TimeService,
     private toast: NgToastService,
-    protected auth: AuthService
+    protected auth: AuthService,
+    private dialog: MatDialog
   ) {
     this.dateform = this.fb.group({
       StartDate: [''],
@@ -206,5 +210,25 @@ export class OutcallGeneral implements OnInit {
     const st = this.dateform.value.StartDate;
     const en = this.dateform.value.EndDate;
     await this.fetchStats(st, en);
+  }
+
+  async Popup(item: string){
+    this.popup = false;
+    try {
+      const res = await this.outcallService.get_Description_G(this.StartDate, this.EndDate, item).toPromise();
+      this.popup = true;
+
+      if (res && res.length > 0) {
+        this.dialog.open(OutCallDialog, {
+          width: '1000px',
+          data: { title: item, details: res }
+        });
+      } else {
+        this.toast.info({ detail: "اطلاع", summary: "توضیحاتی برای این مورد یافت نشد" });
+      }
+    }
+    catch (error: any) {
+      this.toast.error({ detail: "خطا", summary: "خطا در ارتباط با سرور" });
+    }
   }
 }
