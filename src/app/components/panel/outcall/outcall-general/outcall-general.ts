@@ -14,7 +14,7 @@ import { DashboardTopmenuComponent } from "../../../Template/dashboard-topmenu/d
 import { HasPermissionDirective } from '../../../../directives/has-permission.directive';
 import { AuthService } from "../../../../services/auth.service";
 import { MatDialog } from '@angular/material/dialog';
-import { OutCallDialog } from "../out-call-dialog/out-call-dialog";
+import { OutCallDialog } from "./out-call-dialog/out-call-dialog";
 
 @Component({
   selector: 'app-outcall-general',
@@ -42,7 +42,7 @@ export class OutcallGeneral implements OnInit {
   // دیتای باکس‌های موضوعات
   subjectsCount: any[] = [];
   totalCalls: number = 0;
-
+  statusCounts: any[] = [];
   // تنظیمات نمودار خطی (تعداد تماس روزانه)
   chartOption: EChartsOption = {
     title: {
@@ -130,6 +130,8 @@ export class OutcallGeneral implements OnInit {
     }]
   };
 
+  analysisChartOption: EChartsOption = {};
+
   constructor(
     private fb: FormBuilder,
     private outcallService: OutcallService,
@@ -197,8 +199,10 @@ export class OutcallGeneral implements OnInit {
 
       this.subjectsCount = await this.outcallService.get_SubjectsCount_G(st, en).toPromise();
       this.subjectsCount.forEach(s => this.totalCalls += s.count);
-
+      this.statusCounts = await this.outcallService.get_StatusCount_G(st, en).toPromise();
       this.st_to_en = `${st} to ${en}`;
+      const analysisRes = await this.outcallService.get_TitlesAnalysis(st, en).toPromise();
+      this.updateAnalysisChart(analysisRes);
     } catch (error: any) {
       this.toast.error({ detail: "خطا", summary: "خطا در بارگذاری اطلاعات" });
     } finally {
@@ -220,7 +224,9 @@ export class OutcallGeneral implements OnInit {
 
       if (res && res.length > 0) {
         this.dialog.open(OutCallDialog, {
-          width: '1000px',
+          width: '80vw',
+          maxWidth: '95vw',
+          maxHeight: '90vh',
           data: { title: item, details: res }
         });
       } else {
@@ -229,6 +235,118 @@ export class OutcallGeneral implements OnInit {
     }
     catch (error: any) {
       this.toast.error({ detail: "خطا", summary: "خطا در ارتباط با سرور" });
+    }
+  }
+
+  updateAnalysisChart(data: any[]) {
+    const titles = data.map((x: any) => x.title || 'بدون عنوان');
+
+    const positive = data.map((x: any) => x.positivePercentage);
+    const negative = data.map((x: any) => x.negativePercentage);
+    const neutral = data.map((x: any) => x.neutralPercentage);
+
+    this.analysisChartOption = {
+      title: {
+        text: 'تحلیل بازخورد موضوعات (درصد)',
+        left: 'center',
+        textStyle: { fontFamily: 'Vazirmatn', fontSize: 14 }
+      },
+      toolbox: {
+        show: true,
+        orient: 'vertical',
+        left: 'right',
+        top: 'center',
+        feature: {
+          dataView: { show: true, readOnly: false },
+          saveAsImage: { show: true }
+        }
+      },
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: { type: 'shadow' },
+        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+        textStyle: { fontFamily: 'Vazirmatn', color: '#000' },
+        formatter: (params: any) => {
+          let res = `<div style="direction: rtl; text-align: right;"><b>${params[0].name}</b><br/>`;
+          params.forEach((item: any) => {
+            res += `${item.marker} ${item.seriesName}: <b>%${item.value}</b><br/>`;
+          });
+          return res + `</div>`;
+        }
+      },
+      legend: {
+        data: ['مثبت', 'خنثی', 'منفی'],
+        bottom: 0,
+        textStyle: { fontFamily: 'Vazirmatn' }
+      },
+      grid: {
+        left: '3%',
+        right: '10%',
+        bottom: '12%',
+        top: '10%',
+        containLabel: true
+      },
+      xAxis: {
+        type: 'value',
+        min: 0,
+        max: 100,
+        axisLabel: { formatter: '{value}%', fontFamily: 'Vazirmatn' }
+      },
+      yAxis: {
+        type: 'category',
+        data: titles,
+        axisLabel: {
+          fontFamily: 'Vazirmatn',
+          fontSize: 12,
+          width: 120,
+          overflow: 'break'
+        }
+      },
+      series: [
+        {
+          name: 'مثبت',
+          type: 'bar',
+          stack: 'total',
+          color: '#10b981',
+          label: { show: true, formatter: '{c}%', fontSize: 12 },
+          data: positive
+        },
+        {
+          name: 'خنثی',
+          type: 'bar',
+          stack: 'total',
+          color: '#f59e0b',
+          label: { show: true, formatter: '{c}%', fontSize: 12 },
+          data: neutral
+        },
+        {
+          name: 'منفی',
+          type: 'bar',
+          stack: 'total',
+          color: '#ef4444',
+          label: { show: true, formatter: '{c}%', fontSize: 12 },
+          data: negative
+        }
+      ]
+    };
+  }
+
+  getStatusDetails(status: string) {
+    const st = (status || 'null').toLowerCase().trim();
+    switch (st) {
+      case 'made':
+        return { label: 'موفق', colorClass: 'status-made' };
+      case 'unresponsive':
+        return { label: 'عدم پاسخگویی', colorClass: 'status-unresponsive' };
+      case 'open':
+        return { label: 'در جریان (باز)', colorClass: 'status-open' };
+      case 'canceled':
+        return { label: 'لغو شده', colorClass: 'status-canceled' };
+      case 'disinclination':
+        return { label: 'عدم تمایل', colorClass: 'status-disinclination' };
+      case 'null':
+      default:
+        return { label: 'نامشخص', colorClass: 'status-unknown' };
     }
   }
 }

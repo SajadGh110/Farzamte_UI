@@ -39,17 +39,37 @@
             <div echarts [options]="chartOption" class="chart-container"></div>
           </div>
         </section>
+
+        <section class="glass-card mb-4">
+          <div class="card-header">
+            <div class="header-title-wrapper">
+              <h2>وضعیت تماس‌ها</h2>
+            </div>
+          </div>
+          <div class="status-summary-wrapper">
+            <div class="status-grid" *ngIf="!loading">
+              <div class="status-card" *ngFor="let item of statusCounts"
+                   [ngClass]="getStatusDetails(item.status).colorClass">
+                <div class="status-content">
+                  <span class="status-label">{{ getStatusDetails(item.status).label }}</span>
+                  <div class="status-number-box">
+                    {{ item.count | number }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section class="glass-card mb-4">
           <div class="card-header">
             <h2>توزیع موضوعات تماس</h2>
           </div>
-
           <div class="subjects-report-wrapper">
             <div class="total-calls-banner shadow-sm">
               <span class="label">مجموع کل تماس‌های ثبت شده در این بازه:</span>
               <span class="value">{{ totalCalls | number }}</span>
             </div>
-
             <div class="subjects-list">
               <div class="subject-item" *ngFor="let item of subjectsCount" (click)="Popup(item.subject)">
                 <div class="subject-name">
@@ -62,10 +82,19 @@
               </div>
             </div>
           </div>
-
           <div *ngIf="subjectsCount.length === 0 && !loading" class="no-data">
             <i class="material-icons">sentiment_dissatisfied</i>
             <span>اطلاعاتی برای نمایش وجود ندارد.</span>
+          </div>
+        </section>
+
+        <section class="glass-card mb-4">
+          <div class="card-header">
+            <h2>تحلیل بازخورد موضوعات تماس</h2>
+          </div>
+          <div class="chart-box" style="height: 450px;">
+            <div *ngIf="loading" class="spinner-overlay"><mat-spinner diameter="50"></mat-spinner></div>
+            <div echarts [options]="analysisChartOption" class="chart-container"></div>
           </div>
         </section>
       </ng-container>

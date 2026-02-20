@@ -13,7 +13,7 @@ import { DashboardTopmenuComponent } from "../../../Template/dashboard-topmenu/d
 import {AuthService} from "../../../../services/auth.service";
 import * as echarts from "echarts";
 import { MatDialog } from '@angular/material/dialog';
-import {OutCallDialog} from "../out-call-dialog/out-call-dialog";
+import { OutCallDialog } from "./out-call-dialog/out-call-dialog";
 
 @Component({
   selector: 'app-outcall-follow-up',
@@ -40,7 +40,7 @@ export class OutcallFollowUp implements OnInit {
   // دیتای باکس‌های موضوعات
   subjectsCount: any[] = [];
   totalCalls: number = 0;
-
+  statusCounts: any[] = [];
   // تنظیمات نمودار خطی (تعداد تماس روزانه)
   chartOption: EChartsOption = {
     title: {
@@ -196,10 +196,9 @@ export class OutcallFollowUp implements OnInit {
         ]
       };
 
-      // دریافت آمار موضوعات
       this.subjectsCount = await this.outcallService.get_SubjectsCount_F(st, en).toPromise();
       this.subjectsCount.forEach(s => this.totalCalls += s.count);
-
+      this.statusCounts = await this.outcallService.get_StatusCount_F(st, en).toPromise();
       this.st_to_en = `${st} to ${en}`;
     } catch (error: any) {
       this.toast.error({ detail: "خطا", summary: "خطا در بارگذاری اطلاعات" });
@@ -222,7 +221,9 @@ export class OutcallFollowUp implements OnInit {
 
       if (res && res.length > 0) {
         this.dialog.open(OutCallDialog, {
-          width: '1000px',
+          width: '80vw',
+          maxWidth: '95vw',
+          maxHeight: '90vh',
           data: { title: item, details: res }
         });
       } else {
@@ -231,6 +232,25 @@ export class OutcallFollowUp implements OnInit {
     }
     catch (error: any) {
       this.toast.error({ detail: "خطا", summary: "خطا در ارتباط با سرور" });
+    }
+  }
+
+  getStatusDetails(status: string) {
+    const st = (status || 'null').toLowerCase().trim();
+    switch (st) {
+      case 'made':
+        return { label: 'موفق', colorClass: 'status-made' };
+      case 'unresponsive':
+        return { label: 'عدم پاسخگویی', colorClass: 'status-unresponsive' };
+      case 'open':
+        return { label: 'در جریان (باز)', colorClass: 'status-open' };
+      case 'canceled':
+        return { label: 'لغو شده', colorClass: 'status-canceled' };
+      case 'disinclination':
+        return { label: 'عدم تمایل', colorClass: 'status-disinclination' };
+      case 'null':
+      default:
+        return { label: 'نامشخص', colorClass: 'status-unknown' };
     }
   }
 }
