@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {DashboardSidebarComponent} from "../../../Template/dashboard-sidebar/dashboard-sidebar.component";
 import {MatTab, MatTabGroup} from "@angular/material/tabs";
-import {DatePipe, DecimalPipe, NgForOf, NgIf} from "@angular/common";
+import {CommonModule, DatePipe, DecimalPipe, NgForOf, NgIf} from "@angular/common";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {AuthService} from "../../../../services/auth.service";
 import {Router} from "@angular/router";
@@ -10,10 +10,12 @@ import {BrokerageService} from "../../../../services/brokerage.service";
 import {BrokerageProfitService} from "../../../../services/brokerage-profit.service";
 import {findIndex} from "rxjs";
 import {DashboardTopmenuComponent} from "../../../Template/dashboard-topmenu/dashboard-topmenu.component";
+import {MatIcon} from "@angular/material/icon";
 
 @Component({
   selector: 'app-brokerage-profit-cmp',
   imports: [
+    CommonModule,
     DashboardSidebarComponent,
     MatProgressSpinner,
     MatTab,
@@ -21,7 +23,8 @@ import {DashboardTopmenuComponent} from "../../../Template/dashboard-topmenu/das
     NgForOf,
     NgIf,
     DecimalPipe,
-    DashboardTopmenuComponent
+    DashboardTopmenuComponent,
+    MatIcon
   ],
   providers: [DatePipe],
   templateUrl: './brokerage-profit-cmp.component.html',
@@ -41,6 +44,7 @@ export class BrokerageProfitCmpComponent implements OnInit {
   all_brokers:any[] = [];
   comparison_list:any[] = [];
   list:any[]=[];
+  filtered_brokers: any[] = [];
 
   Columns_b1_part1: string[] = ['b_1_1', 'b_1_2', 'b_1_3', 'b_1_4'];
   Columns_b1_part2: string[] = ['b_1_5', 'b_1_6', 'b_1_7'];
@@ -165,23 +169,33 @@ export class BrokerageProfitCmpComponent implements OnInit {
     this.comparison_list = [];
   }
 
-  async onShowAllBrokers(selected_date:string){
+  async onShowAllBrokers(selected_date: string) {
     this.flag_all_brokers = false;
-    this.all_brokers = await this.getData.GetBrokersOnDate(selected_date).toPromise();
-    const self_broker = this.all_brokers.find(t => t.name === this.brokerage_name);
-    this.all_brokers = this.all_brokers.filter(t => t !== self_broker);
+    const res = await this.getData.GetBrokersOnDate(selected_date).toPromise();
+    this.all_brokers = res.filter((t: any) => t.name !== this.brokerage_name);
+    this.all_brokers = this.all_brokers.filter(b =>
+      !this.comparison_list.some(selected => selected.id === b.id)
+    );
+
+    this.filtered_brokers = [...this.all_brokers];
     this.flag_all_brokers = true;
   }
 
   addToComparison(broker: any) {
     if (this.comparison_list.length < 3) {
-      const index = this.all_brokers.indexOf(broker);
-      if (index !== -1) {
-        this.all_brokers.splice(index, 1);
-        this.comparison_list.push(broker);
-      }
+      // حذف از منبع اصلی
+      this.all_brokers = this.all_brokers.filter(b => b.id !== broker.id);
+      // حذف از لیست نمایشی (فیلتر شده)
+      this.filtered_brokers = this.filtered_brokers.filter(b => b.id !== broker.id);
+
+      this.comparison_list.push(broker);
     } else {
-      this.toast.warning({ detail: "هشدار", summary: 'نمیتوانید بیشتر از سه کارگزاری را در لیست مقایسه اضافه کنید!', duration: 1500, position: 'topRight' });
+      this.toast.warning({
+        detail: "هشدار",
+        summary: 'نمیتوانید بیشتر از سه کارگزاری را در لیست مقایسه اضافه کنید!',
+        duration: 1500,
+        position: 'topRight'
+      });
     }
   }
 
@@ -190,7 +204,20 @@ export class BrokerageProfitCmpComponent implements OnInit {
     if (index !== -1) {
       this.comparison_list.splice(index, 1);
       this.all_brokers.push(broker);
+      this.filtered_brokers.push(broker);
+      this.filtered_brokers.sort((a, b) => a.name.localeCompare(b.name, 'fa'));
     }
+  }
+
+  filterBrokers(event: any) {
+    const searchTerm = event.target.value.toLowerCase().trim();
+    if (!searchTerm) {
+      this.filtered_brokers = [...this.all_brokers]; // اگر کادر خالی بود، همه را نشان بده
+      return;
+    }
+    this.filtered_brokers = this.all_brokers.filter(broker =>
+      broker.name.toLowerCase().includes(searchTerm)
+    );
   }
 
   protected readonly Object = Object;

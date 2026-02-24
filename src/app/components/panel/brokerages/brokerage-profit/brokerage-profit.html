@@ -2,555 +2,219 @@
   <app-dashboard-sidebar></app-dashboard-sidebar>
   <section class="dashboard-main">
     <app-dashboard-topmenu></app-dashboard-topmenu>
-    <ng-container *ngIf="auth.hasPermission('brokerageProfit.view'); else deniedTemplate">
-      <section class="row" id="select_date">
-        <section class="detail">
-          <h2>انتخاب تاریخ گزارش</h2>
+
+    <div class="content-scrollable">
+      <ng-container *ngIf="auth.hasPermission('brokerageProfit.view'); else deniedTemplate">
+
+        <section class="glass-card" id="select_date">
+          <div class="selection-layout">
+
+            <div class="date-picker-section">
+              <div class="section-title">
+                <mat-icon>calendar_month</mat-icon>
+                <span>انتخاب تاریخ گزارش (ماهانه)</span>
+              </div>
+
+              <div class="loading-spinner" *ngIf="!flag_date">
+                <mat-spinner diameter="30"></mat-spinner>
+              </div>
+
+              <div class="tabs-container" *ngIf="flag_date">
+                <mat-tab-group [selectedIndex]="Object.keys(years).length" animationDuration="0ms">
+                  <mat-tab *ngFor="let item of Object.keys(years)" label="{{item}}">
+                    <div class="month-grid">
+                      <div class="month-item" *ngFor="let item2 of years[item]">
+                        <input id="{{item2}}" type="checkbox" [checked]="selected_date.includes(item2)"
+                               (change)="onCheckboxChange($event, item2)" [disabled]="item2 == '1402-04'">
+                        <label for="{{item2}}">{{item2}}</label>
+                      </div>
+                    </div>
+                  </mat-tab>
+                </mat-tab-group>
+              </div>
+            </div>
+
+            <div class="brokerage-badge-card">
+              <div class="badge-content">
+                <div class="brokerage-logo-mini">
+                  <img [src]="brokerage_logo" alt="logo">
+                </div>
+                <div class="brokerage-name-text">{{brokerage_name}}</div>
+              </div>
+              <button class="btn-primary" (click)="do(selected_date)">
+                <mat-icon>refresh</mat-icon>
+                <span>بروزرسانی گزارش</span>
+              </button>
+            </div>
+
+          </div>
         </section>
-        <section class="loading-spinner" *ngIf="!flag_date">
-          <mat-spinner></mat-spinner>
-        </section>
-        <section class="top-fix" *ngIf="flag_date">
-          <section class="all-date">
-            <h3>تاریخ (ماهانه)</h3>
-            <mat-tab-group selectedIndex="{{Object.keys(years).length}}">
-              <mat-tab *ngFor="let item of Object.keys(years)" label="{{item}}">
-                <section class="item" *ngFor="let item2 of years[item]">
-                  <label for="{{item2}}">{{item2}}</label>
-                  <input id="{{item2}}" type="checkbox" value="{{item2}}" [checked]="selected_date.includes(item2)" (change)="onCheckboxChange($event, item2)" [disabled]="item2 == '1402-04'">
-                </section>
-              </mat-tab>
-            </mat-tab-group>
-            <button type="button" (click)="do(selected_date)">نمایش</button>
-          </section>
-          <section class="brokerage" >
-            <p class="brokerage-name">{{brokerage_name}}</p>
-            <section class="brokerage-logo"><img src="{{brokerage_logo}}" alt="brokerage"></section>
-          </section>
-        </section>
-      </section>
-      <section class="row">
-        <section class="detail">
-          <h2>محاسبه کارمزد کارگزاری (بورس اوراق بهادار)</h2>
-        </section>
-        <section class="loading-spinner" *ngIf="!flag_data">
-          <mat-spinner></mat-spinner>
-        </section>
-        <section class="table-group" *ngIf="flag_data">
-          <!-- B1 -->
-          <h4>بازار اوراق بدهی</h4>
-          <section class="table-part">
-            <section class="table2-section">
-              <p>اوراق صکوک</p>
-              <section class="table2">
-                <section class="table2-header b">
-                  <section class="cell2-header cell2-small">تاریخ</section>
-                  <section class="cell2-header" *ngFor="let col of Columns_b1_part1">
-                    {{ columnTitles_b1_part1[col] || col }}
-                  </section>
-                </section>
-                <section class="table2-row" *ngFor="let item of series_data">
-                  <section class="cell2 cell2-small">{{ item.date_Monthly }}</section>
-                  <section class="cell2" *ngFor="let col of Columns_b1_part1">
-                    {{ item[col] | number:'1.0-0' }} ریال
-                  </section>
-                </section>
-              </section>
-            </section>
-            <section class="table2-section">
-              <p>اوراق مشارکت</p>
-              <section class="table2">
-                <section class="table2-header b">
-                  <section class="cell2-header cell2-small">تاریخ</section>
-                  <section class="cell2-header" *ngFor="let col of Columns_b1_part2">
-                    {{ columnTitles_b1_part2[col] || col }}
-                  </section>
-                </section>
-                <section class="table2-row" *ngFor="let item of series_data">
-                  <section class="cell2 cell2-small">{{ item.date_Monthly }}</section>
-                  <section class="cell2" *ngFor="let col of Columns_b1_part2">
-                    {{ item[col] | number:'1.0-0' }} ریال
-                  </section>
-                </section>
-              </section>
-            </section>
-            <section class="table2-section">
-              <p>اوراق گواهی سپرده</p>
-              <section class="table2">
-                <section class="table2-header b">
-                  <section class="cell2-header cell2-small">تاریخ</section>
-                  <section class="cell2-header" *ngFor="let col of Columns_b1_part3">
-                    {{ columnTitles_b1_part3[col] || col }}
-                  </section>
-                </section>
-                <section class="table2-row" *ngFor="let item of series_data">
-                  <section class="cell2 cell2-small">{{ item.date_Monthly }}</section>
-                  <section class="cell2" *ngFor="let col of Columns_b1_part3">
-                    {{ item[col] | number:'1.0-0' }} ریال
-                  </section>
-                </section>
-              </section>
-            </section>
-            <section class="table2-section">
-              <p>ارزش کل معاملات بازار اوراق بدهی</p>
-              <section class="table2">
-                <section class="table2-header b">
-                  <section class="cell2-header cell2-small">تاریخ</section>
-                  <section class="cell2-header" *ngFor="let col of Columns_b1_part4">
-                    {{ columnTitles_b1_part4[col] || col }}
-                  </section>
-                </section>
-                <section class="table2-row" *ngFor="let item of series_data">
-                  <section class="cell2 cell2-small">{{ item.date_Monthly }}</section>
-                  <section class="cell2" *ngFor="let col of Columns_b1_part4">
-                    {{ item[col] | number:'1.0-0' }} ریال
-                  </section>
-                </section>
-              </section>
-            </section>
-          </section>
-          <!-- B2 -->
-          <h4>بازار اوراق مشتقه</h4>
-          <section class="table-part">
-            <section class="table2-section">
-              <p>اختیار خرید</p>
-              <section class="table2">
-                <section class="table2-header b">
-                  <section class="cell2-header cell2-small">تاریخ</section>
-                  <section class="cell2-header" *ngFor="let col of Columns_b2_part1">
-                    {{ columnTitles_b2_part1[col] || col }}
-                  </section>
-                </section>
-                <section class="table2-row" *ngFor="let item of series_data">
-                  <section class="cell2 cell2-small">{{ item.date_Monthly }}</section>
-                  <section class="cell2" *ngFor="let col of Columns_b2_part1">
-                    {{ item[col] | number:'1.0-0' }} ریال
-                  </section>
-                </section>
-              </section>
-            </section>
-            <section class="table2-section">
-              <p>اختیار فروش</p>
-              <section class="table2">
-                <section class="table2-header b">
-                  <section class="cell2-header cell2-small">تاریخ</section>
-                  <section class="cell2-header" *ngFor="let col of Columns_b2_part2">
-                    {{ columnTitles_b2_part2[col] || col }}
-                  </section>
-                </section>
-                <section class="table2-row" *ngFor="let item of series_data">
-                  <section class="cell2 cell2-small">{{ item.date_Monthly }}</section>
-                  <section class="cell2" *ngFor="let col of Columns_b2_part2">
-                    {{ item[col] | number:'1.0-0' }} ریال
-                  </section>
-                </section>
-              </section>
-            </section>
-            <section class="table-both">
-              <section class="table2-section">
-                <p>اختیار فروش تبعی</p>
-                <section class="table2">
-                  <section class="table2-header b">
-                    <section class="cell2-header cell2-small">تاریخ</section>
-                    <section class="cell2-header" *ngFor="let col of Columns_b2_part3">
-                      {{ columnTitles_b2_part3[col] || col }}
-                    </section>
-                  </section>
-                  <section class="table2-row" *ngFor="let item of series_data">
-                    <section class="cell2 cell2-small">{{ item.date_Monthly }}</section>
-                    <section class="cell2" *ngFor="let col of Columns_b2_part3">
-                      {{ item[col] | number:'1.0-0' }} ریال
-                    </section>
-                  </section>
-                </section>
-              </section>
-              <section class="table2-section">
-                <p>قرارداد آتی سهام</p>
-                <section class="table2">
-                  <section class="table2-header b">
-                    <section class="cell2-header cell2-small">تاریخ</section>
-                    <section class="cell2-header" *ngFor="let col of Columns_b2_part4">
-                      {{ columnTitles_b2_part4[col] || col }}
-                    </section>
-                  </section>
-                  <section class="table2-row" *ngFor="let item of series_data">
-                    <section class="cell2 cell2-small">{{ item.date_Monthly }}</section>
-                    <section class="cell2" *ngFor="let col of Columns_b2_part4">
-                      {{ item[col] | number:'1.0-0' }} ریال
-                    </section>
-                  </section>
-                </section>
-              </section>
-            </section>
-            <section class="table2-section">
-              <p>ارزش کل معاملات بازار مشتقه</p>
-              <section class="table2">
-                <section class="table2-header b">
-                  <section class="cell2-header cell2-small">تاریخ</section>
-                  <section class="cell2-header" *ngFor="let col of Columns_b2_part5">
-                    {{ columnTitles_b2_part5[col] || col }}
-                  </section>
-                </section>
-                <section class="table2-row" *ngFor="let item of series_data">
-                  <section class="cell2 cell2-small">{{ item.date_Monthly }}</section>
-                  <section class="cell2" *ngFor="let col of Columns_b2_part5">
-                    {{ item[col] | number:'1.0-0' }} ریال
-                  </section>
-                </section>
-              </section>
-            </section>
-          </section>
-          <!-- B3 -->
-          <h4>بازار سرمایه‌گذار حرفه‌ای</h4>
-          <section class="table-part">
-            <section class="table2-section">
-              <p>سهام عادی بورس</p>
-              <section class="table2">
-                <section class="table2-header b">
-                  <section class="cell2-header cell2-small">تاریخ</section>
-                  <section class="cell2-header" *ngFor="let col of Columns_b3_part1">
-                    {{ columnTitles_b3_part1[col] || col }}
-                  </section>
-                </section>
-                <section class="table2-row" *ngFor="let item of series_data">
-                  <section class="cell2 cell2-small">{{ item.date_Monthly }}</section>
-                  <section class="cell2" *ngFor="let col of Columns_b3_part1">
-                    {{ item[col] | number:'1.0-0' }} ریال
-                  </section>
-                </section>
-              </section>
-            </section>
-            <section class="table2-section">
-              <p>ارزش کل بازار سرمایه‌گذار حرفه‌ای</p>
-              <section class="table2">
-                <section class="table2-header b">
-                  <section class="cell2-header cell2-small">تاریخ</section>
-                  <section class="cell2-header" *ngFor="let col of Columns_b3_part2">
-                    {{ columnTitles_b3_part2[col] || col }}
-                  </section>
-                </section>
-                <section class="table2-row" *ngFor="let item of series_data">
-                  <section class="cell2 cell2-small">{{ item.date_Monthly }}</section>
-                  <section class="cell2" *ngFor="let col of Columns_b3_part2">
-                    {{ item[col] | number:'1.0-0' }} ریال
-                  </section>
-                </section>
-              </section>
-            </section>
-          </section>
-          <!-- B4 -->
-          <h4>بازار سهام</h4>
-          <section class="table-part">
-            <section class="table2-section">
-              <p>حق تقدم بورس</p>
-              <section class="table2">
-                <section class="table2-header b">
-                  <section class="cell2-header cell2-small">تاریخ</section>
-                  <section class="cell2-header" *ngFor="let col of Columns_b4_part1">
-                    {{ columnTitles_b4_part1[col] || col }}
-                  </section>
-                </section>
-                <section class="table2-row" *ngFor="let item of series_data">
-                  <section class="cell2 cell2-small">{{ item.date_Monthly }}</section>
-                  <section class="cell2" *ngFor="let col of Columns_b4_part1">
-                    {{ item[col] | number:'1.0-0' }} ریال
-                  </section>
-                </section>
-              </section>
-            </section>
-            <section class="table2-section">
-              <p>سهام عادی بورس</p>
-              <section class="table2">
-                <section class="table2-header b">
-                  <section class="cell2-header cell2-small">تاریخ</section>
-                  <section class="cell2-header" *ngFor="let col of Columns_b4_part2">
-                    {{ columnTitles_b4_part2[col] || col }}
-                  </section>
-                </section>
-                <section class="table2-row" *ngFor="let item of series_data">
-                  <section class="cell2 cell2-small">{{ item.date_Monthly }}</section>
-                  <section class="cell2" *ngFor="let col of Columns_b4_part2">
-                    {{ item[col] | number:'1.0-0' }} ریال
-                  </section>
-                </section>
-              </section>
-            </section>
-            <section class="table2-section">
-              <p>ارزش کل معاملات بازار سهام</p>
-              <section class="table2">
-                <section class="table2-header b">
-                  <section class="cell2-header cell2-small">تاریخ</section>
-                  <section class="cell2-header" *ngFor="let col of Columns_b4_part3">
-                    {{ columnTitles_b4_part3[col] || col }}
-                  </section>
-                </section>
-                <section class="table2-row" *ngFor="let item of series_data">
-                  <section class="cell2 cell2-small">{{ item.date_Monthly }}</section>
-                  <section class="cell2" *ngFor="let col of Columns_b4_part3">
-                    {{ item[col] | number:'1.0-0' }} ریال
-                  </section>
-                </section>
-              </section>
-            </section>
-          </section>
-          <!-- B5 -->
-          <h4>بازار صندوق‌های سرمایه‌گذاری قابل معامله در بورس</h4>
-          <section class="table-part">
-            <section class="table2-section">
-              <p>ارزش کل معاملات</p>
-              <section class="table2">
-                <section class="table2-header b">
-                  <section class="cell2-header cell2-small">تاریخ</section>
-                  <section class="cell2-header" *ngFor="let col of Columns_b5">
-                    {{ columnTitles_b5[col] || col }}
-                  </section>
-                </section>
-                <section class="table2-row" *ngFor="let item of series_data">
-                  <section class="cell2 cell2-small">{{ item.date_Monthly }}</section>
-                  <section class="cell2" *ngFor="let col of Columns_b5">
-                    {{ item[col] | number:'1.0-0' }} ریال
-                  </section>
-                </section>
-              </section>
-            </section>
-          </section>
-          <!-- BT -->
-          <h4>ارزش کل معاملات بورس اوراق بهادار تهران</h4>
-          <section class="table-part">
-            <section class="table2-section">
-              <section class="table2">
-                <section class="table2-header b">
-                  <section class="cell2-header cell2-small">تاریخ</section>
-                  <section class="cell2-header" *ngFor="let col of Columns_bt">
-                    {{ columnTitles_bt[col] || col }}
-                  </section>
-                </section>
-                <section class="table2-row" *ngFor="let item of series_data">
-                  <section class="cell2 cell2-small">{{ item.date_Monthly }}</section>
-                  <section class="cell2" *ngFor="let col of Columns_bt">
-                    {{ item[col] | number:'1.0-0' }} ریال
-                  </section>
-                </section>
-              </section>
-            </section>
-          </section>
-        </section>
-      </section>
-      <section class="row">
-        <section class="detail">
-          <h2>محاسبه کارمزد کارگزاری (فرابورس)</h2>
-        </section>
-        <section class="loading-spinner" *ngIf="!flag_data">
-          <mat-spinner></mat-spinner>
-        </section>
-        <section class="table-group" *ngIf="flag_data">
-          <!-- F1 -->
-          <h4>معاملات ایستگاه کارگزاری</h4>
-          <section class="table2">
-            <section class="table2-header f">
-              <section class="cell2-header cell2-small">تاریخ</section>
-              <section class="cell2-header" *ngFor="let col of Columns_f1">
-                {{ columnTitles_f1[col] || col }}
-              </section>
-            </section>
-            <section class="table2-row" *ngFor="let item of series_data">
-              <section class="cell2 cell2-small">{{ item.date_Monthly }}</section>
-              <section class="cell2" *ngFor="let col of Columns_f1">
-                {{ item[col] | number:'1.0-0' }} ریال
-              </section>
-            </section>
-          </section>
-          <!-- F2 -->
-          <h4>معاملات برخط عادی</h4>
-          <section class="table2">
-            <section class="table2-header f">
-              <section class="cell2-header cell2-small">تاریخ</section>
-              <section class="cell2-header" *ngFor="let col of Columns_f2">
-                {{ columnTitles_f2[col] || col }}
-              </section>
-            </section>
-            <section class="table2-row" *ngFor="let item of series_data">
-              <section class="cell2 cell2-small">{{ item.date_Monthly }}</section>
-              <section class="cell2" *ngFor="let col of Columns_f2">
-                {{ item[col] | number:'1.0-0' }} ریال
-              </section>
-            </section>
-          </section>
-          <!-- F3 -->
-          <h4>معاملات برخط گروهی</h4>
-          <section class="table2">
-            <section class="table2-header f">
-              <section class="cell2-header cell2-small">تاریخ</section>
-              <section class="cell2-header" *ngFor="let col of Columns_f3">
-                {{ columnTitles_f3[col] || col }}
-              </section>
-            </section>
-            <section class="table2-row" *ngFor="let item of series_data">
-              <section class="cell2 cell2-small">{{ item.date_Monthly }}</section>
-              <section class="cell2" *ngFor="let col of Columns_f3">
-                {{ item[col] | number:'1.0-0' }} ریال
-              </section>
-            </section>
-          </section>
-          <!-- F4 -->
-          <h4>معاملات سایر برخط</h4>
-          <section class="table2">
-            <section class="table2-header f">
-              <section class="cell2-header cell2-small">تاریخ</section>
-              <section class="cell2-header" *ngFor="let col of Columns_f4">
-                {{ columnTitles_f4[col] || col }}
-              </section>
-            </section>
-            <section class="table2-row" *ngFor="let item of series_data">
-              <section class="cell2 cell2-small">{{ item.date_Monthly }}</section>
-              <section class="cell2" *ngFor="let col of Columns_f4">
-                {{ item[col] | number:'1.0-0' }} ریال
-              </section>
-            </section>
-          </section>
-          <!-- FT -->
-          <h4>ارزش کل معاملات فرابورس ایران</h4>
-          <section class="table2">
-            <section class="table2-header f">
-              <section class="cell2-header cell2-small">تاریخ</section>
-              <section class="cell2-header" *ngFor="let col of Columns_ft">
-                {{ columnTitles_ft[col] || col }}
-              </section>
-            </section>
-            <section class="table2-row" *ngFor="let item of series_data">
-              <section class="cell2 cell2-small">{{ item.date_Monthly }}</section>
-              <section class="cell2" *ngFor="let col of Columns_ft">
-                {{ item[col] | number:'1.0-0' }} ریال
-              </section>
-            </section>
-          </section>
-        </section>
-      </section>
-      <section class="row">
-        <section class="detail">
-          <h2>محاسبه کارمزد کارگزاری (بورس کالا)</h2>
-        </section>
-        <section class="loading-spinner" *ngIf="!flag_data">
-          <mat-spinner></mat-spinner>
-        </section>
-        <section class="table2" *ngIf="flag_data">
-          <section class="table2-header k">
-            <section class="cell2-header cell2-small">تاریخ</section>
-            <section class="cell2-header" *ngFor="let col of Columns_k">
-              {{ columnTitles_k[col] || col }}
-            </section>
-          </section>
-          <section class="table2-row" *ngFor="let item of series_data">
-            <section class="cell2 cell2-small">{{ item.date_Monthly }}</section>
-            <section class="cell2" *ngFor="let col of Columns_k">
-              {{ item[col] | number:'1.0-0' }} ریال
-            </section>
-          </section>
-        </section>
-      </section>
-      <section class="row">
-        <section class="detail">
-          <h2>محاسبه کارمزد کارگزاری (تجمیع)</h2>
-        </section>
-        <section class="loading-spinner" *ngIf="!flag_data">
-          <mat-spinner></mat-spinner>
-        </section>
-        <section class="table-group" *ngIf="flag_data">
-          <!-- BT -->
-          <h4>ارزش کل معاملات بورس اوراق بهادار تهران</h4>
-          <section class="table2">
-            <section class="table2-header b">
-              <section class="cell2-header cell2-small">تاریخ</section>
-              <section class="cell2-header" *ngFor="let col of Columns_bt">
-                {{ columnTitles_bt[col] || col }}
-              </section>
-            </section>
-            <section class="table2-row" *ngFor="let item of series_data">
-              <section class="cell2 cell2-small">{{ item.date_Monthly }}</section>
-              <section class="cell2" *ngFor="let col of Columns_bt">
-                {{ item[col] | number:'1.0-0' }} ریال
-              </section>
-            </section>
-          </section>
-          <!-- FT -->
-          <h4>ارزش کل معاملات فرابورس ایران</h4>
-          <section class="table2">
-            <section class="table2-header f">
-              <section class="cell2-header cell2-small">تاریخ</section>
-              <section class="cell2-header" *ngFor="let col of Columns_ft">
-                {{ columnTitles_ft[col] || col }}
-              </section>
-            </section>
-            <section class="table2-row" *ngFor="let item of series_data">
-              <section class="cell2 cell2-small">{{ item.date_Monthly }}</section>
-              <section class="cell2" *ngFor="let col of Columns_ft">
-                {{ item[col] | number:'1.0-0' }} ریال
-              </section>
-            </section>
-          </section>
-          <!-- BFT -->
-          <h4>ارزش کل معاملات بورس و فرابورس</h4>
-          <section class="table2">
-            <section class="table2-header bf">
-              <section class="cell2-header cell2-small">تاریخ</section>
-              <section class="cell2-header" *ngFor="let col of Columns_bft">
-                {{ columnTitles_bft[col] || col }}
-              </section>
-            </section>
-            <section class="table2-row" *ngFor="let item of series_data">
-              <section class="cell2 cell2-small">{{ item.date_Monthly }}</section>
-              <section class="cell2" *ngFor="let col of Columns_bft">
-                {{ item[col] | number:'1.0-0' }} ریال
-              </section>
-            </section>
-          </section>
-          <!-- KT -->
-          <h4>ارزش کل معاملات بورس کالا</h4>
-          <section class="table2">
-            <section class="table2-header k">
-              <section class="cell2-header cell2-small">تاریخ</section>
-              <section class="cell2-header" *ngFor="let col of Columns_kt">
-                {{ columnTitles_kt[col] || col }}
-              </section>
-            </section>
-            <section class="table2-row" *ngFor="let item of series_data">
-              <section class="cell2 cell2-small">{{ item.date_Monthly }}</section>
-              <section class="cell2" *ngFor="let col of Columns_kt">
-                {{ item[col] | number:'1.0-0' }} ریال
-              </section>
-            </section>
-          </section>
-          <!-- T -->
-          <h4>ارزش کل معاملات در بورس‌ها و فرابورس</h4>
-          <section class="table2">
-            <section class="table2-header t">
-              <section class="cell2-header cell2-small">تاریخ</section>
-              <section class="cell2-header" *ngFor="let col of Columns_t">
-                {{ columnTitles_t[col] || col }}
-              </section>
-            </section>
-            <section class="table2-row" *ngFor="let item of series_data">
-              <section class="cell2 cell2-small">{{ item.date_Monthly }}</section>
-              <section class="cell2" *ngFor="let col of Columns_t">
-                {{ item[col] | number:'1.0-0' }} ریال
-              </section>
-            </section>
-          </section>
-        </section>
-      </section>
-    </ng-container>
-    <ng-template #deniedTemplate>
-      <div class="access-denied-container shadow-sm">
-        <div class="icon-wrapper">
-          <i class="material-icons">lock_person</i>
+
+        <div class="loading-spinner-main" *ngIf="!flag_data && flag_date">
+          <mat-spinner diameter="50"></mat-spinner>
         </div>
-        <h3>عدم دسترسی</h3>
-        <p>
-          متأسفانه اکانت شما مجوز دسترسی به این قسمت را ندارد!
-          <br>
-          در صورت نیاز، لطفاً با مدیر سیستم تماس بگیرید.
-        </p>
-      </div>
-    </ng-template>
+
+        <ng-container *ngIf="flag_data">
+
+          <section class="glass-card table-container-card">
+            <div class="card-header-main color-b">
+              <mat-icon>show_chart</mat-icon>
+              <h2>بورس اوراق بهادار</h2>
+            </div>
+
+            <div class="report-block">
+              <h4 class="market-title">بازار اوراق بدهی</h4>
+              <p class="table-subtitle">اوراق صکوک</p>
+              <ng-container *ngTemplateOutlet="standardTable; context: {cols: Columns_b1_part1, titles: columnTitles_b1_part1, theme: 'b'}"></ng-container>
+
+              <p class="table-subtitle">اوراق مشارکت</p>
+              <ng-container *ngTemplateOutlet="standardTable; context: {cols: Columns_b1_part2, titles: columnTitles_b1_part2, theme: 'b'}"></ng-container>
+
+              <p class="table-subtitle">اوراق گواهی سپرده</p>
+              <ng-container *ngTemplateOutlet="standardTable; context: {cols: Columns_b1_part3, titles: columnTitles_b1_part3, theme: 'b'}"></ng-container>
+
+              <p class="table-subtitle">ارزش کل معاملات بازار اوراق بدهی</p>
+              <ng-container *ngTemplateOutlet="standardTable; context: {cols: Columns_b1_part4, titles: columnTitles_b1_part4, theme: 'b', highlight: true}"></ng-container>
+            </div>
+
+            <div class="report-block">
+              <h4 class="market-title">بازار اوراق مشتقه</h4>
+              <p class="table-subtitle">اختیار خرید</p>
+              <ng-container *ngTemplateOutlet="standardTable; context: {cols: Columns_b2_part1, titles: columnTitles_b2_part1, theme: 'b'}"></ng-container>
+
+              <p class="table-subtitle">اختیار فروش</p>
+              <ng-container *ngTemplateOutlet="standardTable; context: {cols: Columns_b2_part2, titles: columnTitles_b2_part2, theme: 'b'}"></ng-container>
+
+              <p class="table-subtitle">اختیار فروش تبعی</p>
+              <ng-container *ngTemplateOutlet="standardTable; context: {cols: Columns_b2_part3, titles: columnTitles_b2_part3, theme: 'b'}"></ng-container>
+
+              <p class="table-subtitle">قرارداد آتی سهام</p>
+              <ng-container *ngTemplateOutlet="standardTable; context: {cols: Columns_b2_part4, titles: columnTitles_b2_part4, theme: 'b'}"></ng-container>
+
+              <p class="table-subtitle">ارزش کل معاملات بازار مشتقه</p>
+              <ng-container *ngTemplateOutlet="standardTable; context: {cols: Columns_b2_part5, titles: columnTitles_b2_part5, theme: 'b', highlight: true}"></ng-container>
+            </div>
+
+            <div class="report-block">
+              <h4 class="market-title">بازار سرمایه‌گذار حرفه‌ای</h4>
+              <p class="table-subtitle">سهام عادی بورس (حرفه‌ای)</p>
+              <ng-container *ngTemplateOutlet="standardTable; context: {cols: Columns_b3_part1, titles: columnTitles_b3_part1, theme: 'b'}"></ng-container>
+
+              <p class="table-subtitle">ارزش کل بازار سرمایه‌گذار حرفه‌ای</p>
+              <ng-container *ngTemplateOutlet="standardTable; context: {cols: Columns_b3_part2, titles: columnTitles_b3_part2, theme: 'b', highlight: true}"></ng-container>
+            </div>
+
+            <div class="report-block">
+              <h4 class="market-title">بازار سهام</h4>
+              <p class="table-subtitle">حق تقدم بورس</p>
+              <ng-container *ngTemplateOutlet="standardTable; context: {cols: Columns_b4_part1, titles: columnTitles_b4_part1, theme: 'b'}"></ng-container>
+
+              <p class="table-subtitle">سهام عادی بورس</p>
+              <ng-container *ngTemplateOutlet="standardTable; context: {cols: Columns_b4_part2, titles: columnTitles_b4_part2, theme: 'b'}"></ng-container>
+
+              <p class="table-subtitle">ارزش کل معاملات بازار سهام</p>
+              <ng-container *ngTemplateOutlet="standardTable; context: {cols: Columns_b4_part3, titles: columnTitles_b4_part3, theme: 'b', highlight: true}"></ng-container>
+            </div>
+
+            <div class="report-block">
+              <h4 class="market-title">صندوق‌های ETF و جمع کل بورس</h4>
+              <p class="table-subtitle">ارزش کل معاملات صندوق‌های قابل معامله</p>
+              <ng-container *ngTemplateOutlet="standardTable; context: {cols: Columns_b5, titles: columnTitles_b5, theme: 'b'}"></ng-container>
+
+              <p class="table-subtitle">ارزش کل معاملات بورس اوراق بهادار تهران</p>
+              <ng-container *ngTemplateOutlet="standardTable; context: {cols: Columns_bt, titles: columnTitles_bt, theme: 't', highlight: true}"></ng-container>
+            </div>
+          </section>
+
+          <section class="glass-card table-container-card">
+            <div class="card-header-main color-f">
+              <mat-icon>account_balance</mat-icon>
+              <h2>فرابورس</h2>
+            </div>
+            <div class="report-block">
+              <p class="table-subtitle">معاملات ایستگاه کارگزاری</p>
+              <ng-container *ngTemplateOutlet="standardTable; context: {cols: Columns_f1, titles: columnTitles_f1, theme: 'f'}"></ng-container>
+
+              <p class="table-subtitle">معاملات برخط عادی</p>
+              <ng-container *ngTemplateOutlet="standardTable; context: {cols: Columns_f2, titles: columnTitles_f2, theme: 'f'}"></ng-container>
+
+              <p class="table-subtitle">معاملات برخط گروهی</p>
+              <ng-container *ngTemplateOutlet="standardTable; context: {cols: Columns_f3, titles: columnTitles_f3, theme: 'f'}"></ng-container>
+
+              <p class="table-subtitle">معاملات سایر برخط</p>
+              <ng-container *ngTemplateOutlet="standardTable; context: {cols: Columns_f4, titles: columnTitles_f4, theme: 'f'}"></ng-container>
+
+              <p class="table-subtitle">ارزش کل معاملات فرابورس ایران</p>
+              <ng-container *ngTemplateOutlet="standardTable; context: {cols: Columns_ft, titles: columnTitles_ft, theme: 't', highlight: true}"></ng-container>
+            </div>
+          </section>
+
+          <section class="glass-card table-container-card">
+            <div class="card-header-main color-k">
+              <mat-icon>layers</mat-icon>
+              <h2>بورس کالا</h2>
+            </div>
+            <div class="report-block">
+              <ng-container *ngTemplateOutlet="standardTable; context: {cols: Columns_k, titles: columnTitles_k, theme: 'k'}"></ng-container>
+            </div>
+          </section>
+
+          <section class="glass-card total-summary-card">
+            <div class="card-header-main color-t">
+              <mat-icon>assessment</mat-icon>
+              <h2>تجمیع کل بورس‌ها</h2>
+            </div>
+            <div class="report-block">
+              <p class="table-subtitle">ارزش کل معاملات بورس تهران</p>
+              <ng-container *ngTemplateOutlet="standardTable; context: {cols: Columns_bt, titles: columnTitles_bt, theme: 'b'}"></ng-container>
+
+              <p class="table-subtitle">ارزش کل معاملات فرابورس ایران</p>
+              <ng-container *ngTemplateOutlet="standardTable; context: {cols: Columns_ft, titles: columnTitles_ft, theme: 'f'}"></ng-container>
+
+              <p class="table-subtitle">ارزش کل معاملات بورس و فرابورس</p>
+              <ng-container *ngTemplateOutlet="standardTable; context: {cols: Columns_bft, titles: columnTitles_bft, theme: 'bf', highlight: true}"></ng-container>
+
+              <p class="table-subtitle">ارزش کل معاملات بورس کالا</p>
+              <ng-container *ngTemplateOutlet="standardTable; context: {cols: Columns_kt, titles: columnTitles_kt, theme: 'k'}"></ng-container>
+
+              <p class="table-subtitle">ارزش کل معاملات در بورس‌ها و فرابورس</p>
+              <ng-container *ngTemplateOutlet="standardTable; context: {cols: Columns_t, titles: columnTitles_t, theme: 't', highlight: true}"></ng-container>
+            </div>
+          </section>
+
+        </ng-container>
+      </ng-container>
+
+      <ng-template #standardTable let-cols="cols" let-titles="titles" let-theme="theme" let-highlight="highlight">
+        <div class="table-responsive-wrapper" [class.table-highlight]="highlight">
+          <table class="custom-table">
+            <thead>
+            <tr [ngClass]="theme">
+              <th class="col-date">تاریخ</th>
+              <th *ngFor="let col of cols">{{ titles[col] || col }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of series_data">
+              <td class="col-date">{{ item.date_Monthly }}</td>
+              <td class="col-amount" *ngFor="let col of cols">
+                <span class="num">{{ item[col] | number:'1.0-0' }}</span>
+                <span class="unit">ریال</span>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </ng-template>
+
+      <ng-template #deniedTemplate>
+        <div class="access-denied-container glass-card">
+          <mat-icon>lock</mat-icon>
+          <h3>عدم دسترسی به پنل گزارشات</h3>
+          <p>متأسفانه اکانت شما مجوز دسترسی به این قسمت را ندارد!</p>
+        </div>
+      </ng-template>
+
+    </div>
   </section>
 </section>

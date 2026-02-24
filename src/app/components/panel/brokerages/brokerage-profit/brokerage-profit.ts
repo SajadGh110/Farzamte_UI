@@ -4,15 +4,17 @@ import {AuthService} from "../../../../services/auth.service";
 import {Router} from "@angular/router";
 import {NgToastService} from "ng-angular-popup";
 import {BrokerageProfitService} from "../../../../services/brokerage-profit.service";
-import {DecimalPipe, NgForOf, NgIf} from "@angular/common";
+import {CommonModule, DecimalPipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatTab, MatTabGroup} from "@angular/material/tabs";
 import {BrokerageService} from "../../../../services/brokerage.service";
 import {DashboardTopmenuComponent} from "../../../Template/dashboard-topmenu/dashboard-topmenu.component";
+import {MatIcon} from "@angular/material/icon";
 
 @Component({
   selector: 'app-brokerage-profit',
   imports: [
+    CommonModule,
     DashboardSidebarComponent,
     MatProgressSpinner,
     NgForOf,
@@ -20,7 +22,9 @@ import {DashboardTopmenuComponent} from "../../../Template/dashboard-topmenu/das
     DecimalPipe,
     MatTab,
     MatTabGroup,
-    DashboardTopmenuComponent
+    DashboardTopmenuComponent,
+    MatIcon,
+    NgClass
   ],
   templateUrl: './brokerage-profit.html',
   styleUrl: './brokerage-profit.scss'

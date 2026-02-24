@@ -1,95 +1,242 @@
-.table-group {
-  margin: 1rem 0;
+/* ساختار کلی صفحه */
+.dashboard-main {
+  background: #f1f5f9;
+  min-height: 100vh;
+  padding: 20px;
+  direction: rtl;
+  font-family: 'Nazanin', 'Tahoma', sans-serif;
 }
 
-.table-part {
-  margin: 0.5rem 0;
+.content-scrollable {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* کارت‌های شیشه‌ای مدرن */
+.glass-card {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  margin-bottom: 25px;
+  padding: 25px;
+  border: 1px solid #e2e8f0;
+}
+
+/* بخش انتخاب تاریخ و کارگزاری (چیدمان خطی و شکیل) */
+.selection-layout {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 25px;
+  flex-wrap: wrap;
+}
+
+.date-picker-section {
+  flex: 3;
+  min-width: 300px;
+
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    color: #0b3847;
+    font-weight: bold;
+    font-size: 16px;
+    mat-icon { color: #1b9ac4; }
+  }
+}
+
+.month-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 0;
+}
+
+.month-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #f8fafc;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+  font-size: 14px;
+  font-weight: bold;
+  input { cursor: pointer; width: 16px; height: 16px; }
+}
+
+/* استایل کارگزاری منتخب */
+.brokerage-badge-card {
+  flex: 1;
+  background: #0b3847;
+  color: white;
+  padding: 20px;
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.table-group h4 {
-  width: fit-content;
-  font: 22px Nazanin;
-  font-weight: bold;
-  padding: 4px 8px;
-  background: #0b3847;
-  color: white;
-  border-radius: 5px;
-}
-
-.table-group .table-part p {
-  width: fit-content;
-  font: 18px Nazanin;
-  font-weight: bold;
-  padding: 4px 8px;
-  background: #004e75;
-  color: white;
-  border-radius: 5px;
-}
-
-.table2-section {
-  width: 100%;
-}
-
-.table-both {
-  width: 100%;
-  display: flex;
   justify-content: space-between;
+  min-width: 280px;
+
+  .badge-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+  }
+
+  .brokerage-logo-mini {
+    width: 45px;
+    height: 45px;
+    background: white;
+    border-radius: 50%;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    img { max-width: 100%; height: auto; border-radius: 50%; }
+  }
+
+  .brokerage-name-text { font-size: 17px; font-weight: bold; }
+
+  .btn-primary {
+    background: #1b9ac4;
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+    &:hover { background: #42b3a1; }
+  }
 }
 
-.table-both .table2-section {
-  width: 48%;
+/* استایل هدر و عناوین گزارش */
+.card-header-main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 25px;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 12px;
+
+  h2 { margin: 0; font-size: 20px; font-weight: bold; }
+  mat-icon { font-size: 28px; width: 28px; height: 28px; }
+
+  &.color-b { color: #1b9ac4; border-color: #1b9ac4; }
+  &.color-f { color: #42b3a1; border-color: #42b3a1; }
+  &.color-k { color: #965d63; border-color: #965d63; }
+  &.color-t { color: #004e75; border-color: #004e75; }
 }
 
-.table2 {
-  display: inline-table;
-  border-collapse: collapse;
-  table-layout: auto;
-  white-space: nowrap;
-}
-
-.table2-header,
-.table2-row {
-  display: table-row;
-}
-
-.cell2-header,
-.cell2 {
-  display: table-cell;
-  padding: 8px 12px;
-  vertical-align: middle;
-  text-align: center;
-  font-variant-numeric: tabular-nums;
-}
-
-.cell2-small {
-  text-align: center;
-  font-weight: 600;
-}
-.dashboard-main .row p.soon {
-   font-family: Nazanin;
+.market-title {
+  background: #334155;
+  color: white;
+  padding: 6px 15px;
+  border-radius: 5px;
+  font-size: 16px;
+  margin: 35px 0 15px;
+  display: inline-block;
   font-weight: bold;
-   font-size: 24px;
-   text-align: center;
- }
+}
 
-.b {
-  background: #1b9ac4;
+.table-subtitle {
+  font-weight: bold;
+  color: #0b3847;
+  margin: 20px 0 10px;
+  border-right: 4px solid #1b9ac4;
+  padding-right: 10px;
+  font-size: 15px;
 }
-.f {
-  background: #42b3a1;
+
+/* استایل جدول بهینه شده */
+.table-responsive-wrapper {
+  overflow-x: auto;
+  margin-bottom: 30px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+
+  &.table-highlight {
+    border: 2px solid #004e75;
+    background: #f8fafc;
+  }
 }
-.k {
-  background: #965d63;
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+
+  th {
+    padding: 12px 10px;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  td {
+    padding: 12px 10px;
+    border-bottom: 1px solid #f1f5f9;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  tr:hover { background: #f1f5f9; }
+
+  /* ستون تاریخ کاملا فشرده */
+  .col-date {
+    width: 80px;
+    min-width: 80px;
+    background: #f8fafc;
+    font-weight: bold;
+    color: #475569;
+    border-left: 1px solid #e2e8f0;
+  }
+
+  /* مبالغ */
+  .col-amount {
+    direction: ltr;
+    .num { font-weight: 600; color: #0f172a; font-family: 'Tahoma'; }
+    .unit { font-size: 10px; color: #94a3b8; margin-left: 3px; }
+  }
+
+  /* تم‌های رنگی هدر */
+  thead tr.b { background: #1b9ac4; }
+  thead tr.f { background: #42b3a1; }
+  thead tr.k { background: #965d63; }
+  thead tr.bf { background: #2F4F4F; }
+  thead tr.t { background: #004e75; }
 }
-.bf {
-  background: #2F4F4F;
+
+/* مدیریت لودینگ و دسترسی */
+.loading-spinner-main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 100px 0;
 }
-.t {
-  background: #004e75;
+
+.access-denied-container {
+  text-align: center;
+  padding: 50px;
+  mat-icon { font-size: 60px; width: 60px; height: 60px; color: #ef4444; margin-bottom: 20px; }
+  h3 { color: #0f172a; font-weight: bold; }
+  p { color: #64748b; }
 }
-.mat-mdc-tab-group {
-  min-width: 200px;
+
+/* ریسپانسیو */
+@media (max-width: 992px) {
+  .selection-layout { flex-direction: column; }
+  .brokerage-badge-card { width: 100%; }
 }
