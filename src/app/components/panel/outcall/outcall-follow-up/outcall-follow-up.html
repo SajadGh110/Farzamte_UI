@@ -43,6 +43,26 @@
         </section>
         <section class="glass-card mb-4">
           <div class="card-header">
+            <div class="header-title-wrapper">
+              <h2>وضعیت تماس‌ها</h2>
+            </div>
+          </div>
+          <div class="status-summary-wrapper">
+            <div class="status-grid" *ngIf="!loading">
+              <div class="status-card" *ngFor="let item of statusCounts"
+                   [ngClass]="getStatusDetails(item.status).colorClass">
+                <div class="status-content">
+                  <span class="status-label">{{ getStatusDetails(item.status).label }}</span>
+                  <div class="status-number-box">
+                    {{ item.count | number }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="glass-card mb-4">
+          <div class="card-header">
             <h2>توزیع موضوعات تماس</h2>
           </div>
 
@@ -53,7 +73,7 @@
             </div>
 
             <div class="subjects-list">
-              <div class="subject-item" *ngFor="let item of subjectsCount">
+              <div class="subject-item" *ngFor="let item of subjectsCount" (click)="Popup(item.subject)">
                 <div class="subject-name">
                   <i class="material-icons">label</i>
                   {{ item.subject || 'بدون موضوع' }}

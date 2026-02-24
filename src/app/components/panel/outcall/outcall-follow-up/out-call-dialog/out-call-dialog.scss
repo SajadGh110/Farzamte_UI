@@ -1,0 +1,156 @@
+.dialog-container {
+  font-family: 'Vazirmatn', sans-serif;
+  padding: 0;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  overflow: hidden;
+
+  .dialog-header {
+    background: linear-gradient(135deg, #1a237e 0%, #3f51b5 100%);
+    color: white;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+
+    .dialog-title {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
+
+    .close-btn {
+      color: white;
+      background: rgba(255, 255, 255, 0.1);
+      &:hover { background: rgba(255, 255, 255, 0.2); }
+    }
+  }
+
+  .dialog-content {
+    padding: 20px;
+    overflow-y: hidden; // اسکرول اصلی اینجا را می‌بندیم تا جدول خودش اسکرول بخورد
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+
+    .info-bar-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f8faff;
+      padding: 12px 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      border-right: 5px solid #3f51b5;
+      flex-shrink: 0; // ثابت ماندن نوار اطلاعات
+
+      .info-bar-main {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        .label { color: #666; font-size: 13px; font-weight: bold; }
+        .value { color: #1a237e; font-weight: bold; font-size: 14px; }
+        .separator { color: #ccc; margin: 0 5px; }
+      }
+    }
+  }
+
+  .table-wrapper {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: auto;
+    flex-grow: 1; // اشغال تمام فضای باقی‌مانده توسط جدول
+    background: #fff;
+
+    /* شخصی‌سازی اسکرول‌بار برای ظاهر مدرن‌تر */
+    &::-webkit-scrollbar { width: 8px; height: 8px; }
+    &::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+    &::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 10px; }
+    &::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
+  }
+
+  .details-table {
+    width: 100%;
+    border-collapse: separate; // برای درست عمل کردن لبه‌های گرد با sticky
+    border-spacing: 0;
+    min-width: 1000px;
+
+    thead {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+
+      th {
+        background-color: #edf2f7; // هدر رنگی درخواستی
+        color: #2d3748;
+        padding: 15px 10px;
+        font-size: 13px;
+        font-weight: bold;
+        text-align: center;
+        border-bottom: 2px solid #cbd5e0;
+        white-space: nowrap;
+      }
+    }
+
+    tbody {
+      tr:hover { background-color: #f8faff; }
+
+      td {
+        padding: 12px 10px;
+        border-bottom: 1px solid #eee;
+        font-size: 13px;
+        color: #444;
+        text-align: center;
+        vertical-align: middle;
+
+        &[dir="ltr"] {
+          font-family: 'Bahnschrift', sans-serif;
+          font-size: 12px;
+          color: #777;
+        }
+      }
+    }
+
+    /* استایل‌های اختصاصی ستون‌ها */
+    .expert-cell { font-weight: bold; color: #1a237e; white-space: nowrap; }
+    .phone-cell { font-family: 'Bahnschrift', sans-serif; direction: ltr; color: #3f51b5; font-weight: bold; }
+
+    .desc-cell {
+      text-align: justify;
+      max-width: 350px;
+      line-height: 1.6;
+      font-size: 12px;
+      color: #666;
+    }
+
+    .status-badge {
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: bold;
+      color: white;
+      white-space: nowrap;
+      display: inline-block;
+
+      &.st-made { background-color: #10b981; }
+      &.st-unresponsive { background-color: #ef4444; }
+      &.st-open { background-color: #3b82f6; }
+      &.st-canceled { background-color: #6b7280; }
+      &.st-disinclination { background-color: #f59e0b; }
+      &.st-null { background-color: #94a3b8; }
+    }
+
+    .no-data { padding: 40px; color: #999; font-style: italic; }
+  }
+
+  .dialog-actions {
+    padding: 15px 20px;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: flex-end;
+    flex-shrink: 0;
+  }
+}

@@ -1,0 +1,94 @@
+<div class="dialog-container" dir="rtl">
+  <div class="dialog-header">
+    <h2 class="dialog-title">جزئیات تماس‌های خروجی</h2>
+    <button mat-icon-button (click)="close()" class="close-btn">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <div class="dialog-content">
+    <div class="info-bar-container">
+      <div class="info-bar-main">
+        <span class="label">موضوع:</span>
+        <span class="value">{{ data.title }}</span>
+        <span class="separator">|</span>
+        <span class="label">تعداد:</span>
+        <span class="value">{{ filteredDetails.length }}</span>
+      </div>
+      <div class="sentiment-summary">
+        <div class="sentiment-item pos">
+          <mat-icon>thumb_up</mat-icon> <span>{{ calculatePercentage('مثبت') }}%</span>
+        </div>
+        <div class="sentiment-item neu">
+          <mat-icon>sentiment_neutral</mat-icon> <span>{{ calculatePercentage('خنثی') }}%</span>
+        </div>
+        <div class="sentiment-item neg">
+          <mat-icon>thumb_down</mat-icon> <span>{{ calculatePercentage('منفی') }}%</span>
+        </div>
+      </div>
+    </div>
+    <div class="table-actions">
+      <div class="search-box">
+        <mat-icon>search</mat-icon>
+        <input type="text" [(ngModel)]="searchTerm" (keyup)="filterData()" placeholder="جستجوی کارشناس، شماره یا واحد...">
+      </div>
+      <button class="btn-excel" (click)="exportExcel()">
+        <mat-icon>file_download</mat-icon> خروجی اکسل
+      </button>
+    </div>
+    <div class="table-wrapper">
+      <table class="details-table">
+        <thead>
+        <tr>
+          <th>ردیف</th>
+          <th (click)="toggleSort('expertName')" class="sortable">کارشناس
+            <mat-icon *ngIf="sortColumn === 'expertName'">{{sortDirection==='asc'?'arrow_drop_up':'arrow_drop_down'}}</mat-icon>
+          </th>
+          <th (click)="toggleSort('unit')" class="sortable">واحد
+            <mat-icon *ngIf="sortColumn === 'unit'">{{sortDirection==='asc'?'arrow_drop_up':'arrow_drop_down'}}</mat-icon>
+          </th>
+          <th>شماره مقصد</th>
+          <th (click)="toggleSort('status')" class="sortable">وضعیت
+            <mat-icon *ngIf="sortColumn === 'status'">{{sortDirection==='asc'?'arrow_drop_up':'arrow_drop_down'}}</mat-icon>
+          </th>
+          <th>توضیحات</th>
+          <th>موضوع</th>
+          <th>نتیجه</th>
+          <th (click)="toggleSort('date')" class="sortable">تاریخ
+            <mat-icon *ngIf="sortColumn === 'date'">{{sortDirection==='asc'?'arrow_drop_up':'arrow_drop_down'}}</mat-icon>
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of filteredDetails; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td class="expert-cell">{{ item.expertName || '---' }}</td>
+          <td>{{ item.unit || '---' }}</td>
+          <td class="phone-cell">{{ item.phoneNumber || item.to || '---' }}</td>
+          <td>
+            <span class="status-badge" [ngClass]="getStatusClass(item.status)">
+              {{ getStatusLabel(item.status) }}
+            </span>
+          </td>
+          <td class="desc-cell">{{ item.description || 'بدون توضیحات' }}</td>
+          <td class="title-cell">{{ item.title || '---' }}</td>
+          <td class="result-cell">
+            <ng-container [ngSwitch]="item.callResult">
+              <mat-icon *ngSwitchCase="'مثبت'" class="res-pos">thumb_up</mat-icon>
+              <mat-icon *ngSwitchCase="'منفی'" class="res-neg">thumb_down</mat-icon>
+              <mat-icon *ngSwitchCase="'خنثی'" class="res-neu">sentiment_neutral</mat-icon>
+              <span *ngSwitchDefault>---</span>
+            </ng-container>
+          </td>
+          <td dir="ltr" class="date-cell">{{ item.date }}</td>
+        </tr>
+        <tr *ngIf="filteredDetails.length === 0">
+          <td colspan="9" class="no-data">موردی یافت نشد</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="dialog-actions">
+    <button mat-flat-button color="warn" (click)="close()">بستن پنجره</button>
+  </div>
+</div>

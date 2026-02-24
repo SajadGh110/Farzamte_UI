@@ -1,0 +1,55 @@
+<div class="dialog-container" dir="rtl">
+  <div class="dialog-header">
+    <h2 class="dialog-title">جزئیات تماس‌های خروجی</h2>
+    <button mat-icon-button (click)="close()" class="close-btn">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="dialog-content">
+    <div class="info-bar-container">
+      <div class="info-bar-main">
+        <span class="label">موضوع تماس:</span>
+        <span class="value">{{ data.title }}</span>
+        <span class="separator">|</span>
+        <span class="label">تعداد کل:</span>
+        <span class="value">{{ data.details.length }}</span>
+      </div>
+    </div>
+
+    <div class="table-wrapper">
+      <table class="details-table">
+        <thead>
+        <tr>
+          <th>ردیف</th>
+          <th>کارشناس</th>
+          <th>واحد</th>
+          <th>شماره مقصد</th>
+          <th>وضعیت</th>
+          <th>توضیحات</th>
+          <th>تاریخ</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of data.details; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td class="expert-cell">{{ item.expertName || '---' }}</td>
+          <td>{{ item.unit || '---' }}</td>
+          <td class="phone-cell">{{ item.phoneNumber || item.to || '---' }}</td>
+          <td>
+              <span class="status-badge" [ngClass]="getStatusClass(item.status)">
+                {{ getStatusLabel(item.status) }}
+              </span>
+          </td>
+          <td class="desc-cell">{{ item.description || 'بدون توضیحات' }}</td>
+          <td dir="ltr" class="date-cell">{{ item.date }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="dialog-actions">
+    <button mat-flat-button color="warn" (click)="close()">بستن پنجره</button>
+  </div>
+</div>

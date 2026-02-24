@@ -41,6 +41,7 @@
       align-items: center;
       justify-content: space-between;
       transition: all 0.2s ease;
+      cursor: pointer;
 
       &:hover {
         border-color: $primary-color;
@@ -66,6 +67,85 @@
         font-weight: bold;
         font-size: 14px;
       }
+    }
+  }
+}
+.status-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 10px;
+  direction: rtl;
+
+  .status-card {
+    flex: 1;
+    min-width: 180px;
+    border-radius: 12px;
+    padding: 15px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #f0f0f0;
+    border-right: 6px solid #ccc;
+    transition: all 0.2s ease;
+    cursor: pointer;
+
+    .status-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .status-label {
+      font-size: 13px;
+      color: #666;
+      font-weight: 500;
+    }
+
+    .status-number-box {
+      background: rgba(0, 0, 0, 0.03);
+      color: #333;
+      font-size: 22px;
+      font-weight: 800;
+      padding: 8px 20px;
+      min-width: 80px;
+      text-align: center;
+      border-radius: 8px;
+      font-family: 'Bahnschrift', sans-serif;
+    }
+
+    &.status-made {
+      border-right-color: #10b981;
+      background: #f0fdf4;
+      .status-number-box { color: #10b981; background: #dcfce7; }
+    }
+    &.status-unresponsive {
+      border-right-color: #f43f5e;
+      background: #fff1f2;
+      .status-number-box { color: #f43f5e; background: #ffe4e6; }
+    }
+    &.status-open {
+      border-right-color: #3b82f6;
+      background: #eff6ff;
+      .status-number-box { color: #3b82f6; background: #dbeafe; }
+    }
+    &.status-canceled {
+      border-right-color: #6b7280;
+      background: #f3f4f6;
+      .status-number-box { color: #6b7280; background: #e5e7eb; }
+    }
+    &.status-disinclination {
+      border-right-color: #f59e0b;
+      background: #fffbeb;
+      .status-number-box { color: #f59e0b; background: #fef3c7; }
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
   }
 }
