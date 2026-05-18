@@ -2,131 +2,230 @@
   <app-dashboard-sidebar></app-dashboard-sidebar>
   <section class="dashboard-main">
     <app-dashboard-topmenu></app-dashboard-topmenu>
-    <ng-container *ngIf="auth.hasPermission('marketing.view'); else deniedTemplate">
-      <section class="row">
-        <section class="detail">
-          <h2>انتخاب تاریخ گزارش</h2>
-        </section>
-        <section class="datepicker-input">
+    <div class="content-scrollable">
+      <ng-container *ngIf="auth.hasPermission('marketing.view'); else deniedTemplate">
+        <!-- Date Filter -->
+        <section class="glass-card">
+          <div class="card-header">
+            <h2>تنظیمات بازه زمانی گزارش</h2>
+          </div>
           <section class="loading-spinner" *ngIf="!flag_time">
-            <mat-spinner></mat-spinner>
+            <mat-spinner diameter="50"></mat-spinner>
           </section>
-          <form [formGroup]="dateform" *ngIf="flag_time">
-            <label for="StartDate">از تاریخ : </label>
-            <input type="date" id="StartDate" formControlName="StartDate" value="{{StartDate}}">
-            <label for="EndDate">تا تاریخ : </label>
-            <input type="date" id="EndDate" formControlName="EndDate" value="{{EndDate}}">
-            <input type="submit" value="جست و جو" (click)="OnUpdateDate()">
+          <form *ngIf="flag_time" [formGroup]="dateform" class="toolbar-content">
+            <div class="date-inputs">
+              <div class="input-group">
+                <label>از تاریخ:</label>
+                <input type="date" formControlName="StartDate">
+              </div>
+
+              <div class="input-group">
+                <label>تا تاریخ:</label>
+                <input type="date" formControlName="EndDate">
+              </div>
+
+              <button type="submit" class="btn-refresh" (click)="OnUpdateDate()">
+                <i class="material-icons">search</i>
+                جستجو
+              </button>
+            </div>
+
+            <div class="quick-actions">
+              <button class="btn-primary" type="button" (click)="SetTime(30)">یک ماهه</button>
+              <button class="btn-primary" type="button" (click)="SetTime(90)">سه ماهه</button>
+              <button class="btn-primary" type="button" (click)="SetTime(180)">شش ماهه</button>
+            </div>
+
+            <span class="badge">
+              بازه زمانی انتخابی :
+              <span dir="ltr">{{selected_days}}</span>
+              روز
+            </span>
+
           </form>
-          <section class="time_auto" *ngIf="flag_time">
-            <button class="auto" (click)="SetTime(30)">یک ماهه</button>
-            <button class="auto" (click)="SetTime(90)">سه ماهه</button>
-            <button class="auto" (click)="SetTime(180)">شش ماهه</button>
+        </section>
+
+        <!-- Stats -->
+        <section class="glass-card">
+
+          <div class="card-header">
+            <h2>آمار کلی</h2>
+          </div>
+
+          <section class="loading-spinner" *ngIf="!flag_count">
+            <mat-spinner diameter="50"></mat-spinner>
           </section>
-          <section class="time_text" *ngIf="flag_time">
-            <p>بازه زمانی انتخابی : {{selected_days}} روز</p>
+
+          <div class="stats-grid" *ngIf="flag_count">
+
+            <div class="stat-card">
+              <span class="label">کل تماس ها</span>
+              <span class="value">{{Total_Count}}</span>
+            </div>
+
+            <div class="stat-card success">
+              <span class="label">ادامه با اسمارت</span>
+              <span class="value">{{ContinueSmart_Count}}</span>
+            </div>
+
+            <div class="stat-card danger">
+              <span class="label">بازگشت به تدبیر</span>
+              <span class="value">{{ReturnTadbir_Count}}</span>
+            </div>
+
+            <div class="stat-card info">
+              <span class="label">تماس های موفق</span>
+              <span class="value">{{Successful_Count}}</span>
+            </div>
+
+            <div class="stat-card warning">
+              <span class="label">تماس های ناموفق</span>
+              <span class="value">{{Unsuccessful_Count}}</span>
+            </div>
+
+          </div>
+
+          <div class="badge" *ngIf="flag_count">
+            {{st_to_en}}
+          </div>
+
+        </section>
+
+        <!-- Reasons -->
+        <section class="glass-card">
+
+          <div class="card-header">
+            <h2>دلایل ترابرد اسمارت</h2>
+          </div>
+
+          <section class="loading-spinner" *ngIf="!flag_reasons">
+            <mat-spinner diameter="50"></mat-spinner>
           </section>
+
+          <div class="charts-two" *ngIf="flag_reasons">
+
+            <div class="chart-box">
+              <section echarts [options]="series_TTSR_Smart_Pie" class="chart-container"></section>
+            </div>
+
+            <div class="chart-box">
+              <section echarts [options]="series_TTSR_Tadbir_Pie" class="chart-container"></section>
+            </div>
+
+          </div>
+
         </section>
-      </section>
-      <!--section class="row">
-        <section class="detail">
-          <h2>آمار تماس های ترابرد روزانه</h2>
-        </section>
-        <section class="loading-spinner" *ngIf="!flag_daily">
-          <mat-spinner></mat-spinner>
-        </section>
-        <section class="line-chart-c1" *ngIf="flag_daily">
-          <section echarts [options]="series_tts_day"></section>
-        </section>
-      </section-->
-      <section class="row">
-        <section class="detail">
-          <h2>آمار کلی</h2>
-        </section>
-        <section class="loading-spinner" *ngIf="!flag_count">
-          <mat-spinner></mat-spinner>
-        </section>
-        <section class="number-card-c2" *ngIf="flag_count">
-          <section class="card Customers_Count"><p class="key">کل تماس ها</p><p class="value">{{Total_Count}}</p></section>
-          <section class="card Active_Customers_Count"><p class="key">ادامه با اسمارت</p><p class="value">{{ContinueSmart_Count}}</p></section>
-          <section class="card Inactive_Customers_Count"><p class="key">بازگشت به تدبیر</p><p class="value">{{ReturnTadbir_Count}}</p></section>
-          <section class="card ActiveAfterCalls_Count"><p class="key">تماس های موفق</p><p class="value">{{Successful_Count}}</p></section>
-          <section class="card ActiveInOtherBrokers_Count"><p class="key">تماس های ناموفق</p><p class="value">{{Unsuccessful_Count}}</p></section>
-        </section>
-        <section class="st_to_en" *ngIf="flag_count">
-          <p>{{st_to_en}}</p>
-        </section>
-      </section>
-      <section class="row">
-        <section class="detail">
-          <h2>دلایل ترابرد اسمارت</h2>
-        </section>
-        <section class="loading-spinner" *ngIf="!flag_reasons">
-          <mat-spinner></mat-spinner>
-        </section>
-        <section class="both-chart">
-          <section class="pie-chart-c3" *ngIf="flag_reasons">
-            <section echarts [options]="series_TTSR_Smart_Pie"></section>
+
+        <!-- Satisfaction -->
+        <section class="glass-card">
+
+          <div class="card-header">
+            <h2>میزان رضایت مشتریان از تماس</h2>
+          </div>
+
+          <section class="loading-spinner" *ngIf="!flag_avg_satisfaction">
+            <mat-spinner diameter="50"></mat-spinner>
           </section>
-          <section class="pie-chart-c3" *ngIf="flag_reasons">
-            <section echarts [options]="series_TTSR_Tadbir_Pie"></section>
+
+          <div class="charts-three" *ngIf="flag_avg_satisfaction">
+
+            <div class="chart-box" *ngIf="flag_avg_satisfaction_s">
+              <section echarts [options]="Series_AVG_Satisfaction_Smart" class="chart-container"></section>
+            </div>
+
+            <div class="chart-box">
+              <section echarts [options]="Series_AVG_Satisfaction" class="chart-container"></section>
+            </div>
+
+            <div class="chart-box" *ngIf="flag_avg_satisfaction_t">
+              <section echarts [options]="Series_AVG_Satisfaction_Tadbir" class="chart-container"></section>
+            </div>
+
+          </div>
+
+        </section>
+
+        <!-- Table -->
+        <section class="glass-card">
+
+          <div class="card-header">
+            <h2>لیست تماس های ترابرد اسمارت</h2>
+          </div>
+
+          <p class="table-description">
+            با کلیک روی هر سطر از جدول توضیحات کامل تیکت نمایش داده میشود.
+          </p>
+
+          <section class="loading-spinner" *ngIf="!flag_table">
+            <mat-spinner diameter="50"></mat-spinner>
           </section>
+
+          <div class="table-toolbar" *ngIf="flag_table">
+
+            <div class="filter-table">
+
+              <button class="btn-primary"
+                      [class.active]="isSelected('total')"
+                      (click)="ft_table('total')">
+                کل تماس ها
+              </button>
+
+              <button class="btn-primary"
+                      [class.active]="isSelected('smart')"
+                      (click)="ft_table('smart')">
+                ادامه با اسمارت
+              </button>
+
+              <button class="btn-primary"
+                      [class.active]="isSelected('tadbir')"
+                      (click)="ft_table('tadbir')">
+                بازگشت به تدبیر
+              </button>
+
+              <button class="btn-primary"
+                      [class.active]="isSelected('Successful')"
+                      (click)="ft_table('Successful')">
+                موفق
+              </button>
+
+              <button class="btn-primary"
+                      [class.active]="isSelected('Unsuccessful')"
+                      (click)="ft_table('Unsuccessful')">
+                ناموفق
+              </button>
+
+            </div>
+
+            <button class="btn-refresh btn-excel" (click)="exportToExcel()">
+              دانلود اکسل
+            </button>
+
+          </div>
+
+          <app-list-table
+            *ngIf="flag_table"
+            [data]="series_All_Table">
+          </app-list-table>
+
         </section>
-      </section>
-      <section class="row">
-        <section class="detail">
-          <h2>میزان رضایت مشتریان از تماس</h2>
-        </section>
-        <section class="loading-spinner" *ngIf="!flag_avg_satisfaction">
-          <mat-spinner></mat-spinner>
-        </section>
-        <section class="both-chart" *ngIf="flag_avg_satisfaction">
-          <section class="line-chart-c1" *ngIf="flag_avg_satisfaction_s">
-            <section echarts [options]="Series_AVG_Satisfaction_Smart"></section>
-          </section>
-          <section class="line-chart-c1" *ngIf="flag_avg_satisfaction">
-            <section echarts [options]="Series_AVG_Satisfaction"></section>
-          </section>
-          <section class="line-chart-c1" *ngIf="flag_avg_satisfaction_t">
-            <section echarts [options]="Series_AVG_Satisfaction_Tadbir"></section>
-          </section>
-        </section>
-      </section>
-      <section class="row">
-        <section class="detail has-p">
-          <h2>لیست تماس های ترابرد اسمارت</h2>
-          <p>با کلیک روی هر سطر از جدول توضیحات کامل تیکت نمایش داده میشود.</p>
-        </section>
-        <section class="loading-spinner" *ngIf="!flag_table">
-          <mat-spinner></mat-spinner>
-        </section>
-        <section class="btns">
-          <section class="filter-table">
-            <button type="button" id="ft-total" [class.selected]="isSelected('total')" class="ft-btn" (click)="ft_table('total')">کل تماس ها</button>
-            <button type="button" id="ft-smart" [class.selected]="isSelected('smart')" class="ft-btn" (click)="ft_table('smart')">تماس های ادامه با اسمارت</button>
-            <button type="button" id="ft-tadbir" [class.selected]="isSelected('tadbir')" class="ft-btn" (click)="ft_table('tadbir')">تماس های بازگشت به تدبیر</button>
-            <button type="button" id="ft-Successful" [class.selected]="isSelected('Successful')" class="ft-btn" (click)="ft_table('Successful')">تماس های موفق</button>
-            <button type="button" id="ft-Unsuccessful" [class.selected]="isSelected('Unsuccessful')" class="ft-btn" (click)="ft_table('Unsuccessful')">تماس های ناموفق</button>
-          </section>
-          <section class="export">
-            <button (click)="exportToExcel()">دانلود خروجی اکسل</button>
-          </section>
-        </section>
-        <app-list-table [data]="series_All_Table" *ngIf="flag_table" style="margin: 1rem 0"></app-list-table>
-      </section>
-    </ng-container>
-    <ng-template #deniedTemplate>
-      <div class="access-denied-container shadow-sm">
-        <div class="icon-wrapper">
-          <i class="material-icons">lock_person</i>
+
+      </ng-container>
+
+      <ng-template #deniedTemplate>
+
+        <div class="access-denied-container shadow-sm">
+          <div class="icon-wrapper">
+            <i class="material-icons">lock_person</i>
+          </div>
+          <h3>عدم دسترسی</h3>
+          <p>
+            متأسفانه اکانت شما مجوز دسترسی به این قسمت را ندارد
+          </p>
         </div>
-        <h3>عدم دسترسی</h3>
-        <p>
-          متأسفانه اکانت شما مجوز دسترسی به این قسمت را ندارد!
-          <br>
-          در صورت نیاز، لطفاً با مدیر سیستم تماس بگیرید.
-        </p>
-      </div>
-    </ng-template>
+
+      </ng-template>
+
+    </div>
+
   </section>
 </section>

@@ -2,86 +2,152 @@
   <app-dashboard-sidebar></app-dashboard-sidebar>
   <section class="dashboard-main">
     <app-dashboard-topmenu></app-dashboard-topmenu>
-    <ng-container *ngIf="auth.hasPermission('ticket.view'); else deniedTemplate">
-      <section class="row">
-        <section class="detail">
-          <h2>انتخاب تاریخ گزارش</h2>
-        </section>
-        <section class="datepicker-input">
+    <div class="content-scrollable">
+      <ng-container *ngIf="auth.hasPermission('ticket.view'); else deniedTemplate">
+        <section class="glass-card">
+          <div class="card-header">
+            <h2>تنظیمات بازه زمانی گزارش</h2>
+          </div>
           <section class="loading-spinner" *ngIf="!flag_time">
+            <mat-spinner diameter="50"></mat-spinner>
+          </section>
+          <form *ngIf="flag_time" [formGroup]="dateform" class="toolbar-content">
+            <div class="date-inputs">
+              <div class="input-group">
+                <label>از تاریخ:</label>
+                <input type="date" formControlName="StartDate">
+              </div>
+
+              <div class="input-group">
+                <label>تا تاریخ:</label>
+                <input type="date" formControlName="EndDate">
+              </div>
+
+              <button type="submit" class="btn-refresh" (click)="OnUpdateDate()">
+                <i class="material-icons">search</i>
+                جستجو
+              </button>
+            </div>
+
+            <div class="quick-actions">
+              <button class="btn-primary" type="button" (click)="SetTime(30)">یک ماهه</button>
+              <button class="btn-primary" type="button" (click)="SetTime(90)">سه ماهه</button>
+              <button class="btn-primary" type="button" (click)="SetTime(180)">شش ماهه</button>
+            </div>
+
+            <span class="badge">
+              بازه زمانی انتخابی :
+              <span dir="ltr">{{selected_days}}</span>
+              روز
+            </span>
+
+          </form>
+        </section>
+        <!-- عناوین اصلی تیکت -->
+        <section class="glass-card">
+
+          <div class="card-header">
+            <h2>عناوین اصلی تیکت ها</h2>
+            <p class="card-description">
+              با کلیک روی هر قسمت از نمودار زیر، میتوانید جزئیات ثبت شده را در نمودار بعدی مشاهده فرمایید.
+            </p>
+          </div>
+
+          <section class="loading-spinner" *ngIf="!flag_TK_Reasons">
             <mat-spinner></mat-spinner>
           </section>
-          <form [formGroup]="dateform" *ngIf="flag_time">
-            <label for="StartDate">از تاریخ : </label>
-            <input type="date" id="StartDate" formControlName="StartDate" value="{{StartDate}}">
-            <label for="EndDate">تا تاریخ : </label>
-            <input type="date" id="EndDate" formControlName="EndDate" value="{{EndDate}}">
-            <input type="submit" value="جست و جو" (click)="OnUpdateDate()">
-          </form>
-          <section class="time_auto" *ngIf="flag_time">
-            <button class="auto" (click)="SetTime(30)">یک ماهه</button>
-            <button class="auto" (click)="SetTime(90)">سه ماهه</button>
-            <button class="auto" (click)="SetTime(180)">شش ماهه</button>
+
+          <div class="chart-box box_500" *ngIf="flag_TK_Reasons">
+            <section
+              style="min-height:500px"
+              echarts
+              [options]="series_TK_Reasons_tmp"
+              (chartClick)="chart_click($event);scroll()">
+            </section>
+          </div>
+
+        </section>
+
+
+        <!-- جزئیات عنوان تیکت -->
+        <section class="glass-card" #target>
+
+          <div class="card-header">
+            <h2>جزئیات عناوین تیکت های {{reason_selected}}</h2>
+            <p class="card-description">
+              با کلیک روی هر قسمت از نمودار زیر میتوانید توضیحات کامل تیکت های آن قسمت را مشاهده کنید.
+            </p>
+          </div>
+
+          <section class="loading-spinner" *ngIf="!flag_Reason_Detail">
+            <mat-spinner></mat-spinner>
           </section>
-          <section class="time_text" *ngIf="flag_time">
-            <p>بازه زمانی انتخابی : {{selected_days}} روز</p>
+
+          <div class="chart-box" *ngIf="flag_Reason_Detail">
+            <section
+              echarts
+              [options]="series_Reason_Detail_bar"
+              (chartClick)="popup_casetype_detail($event)">
+            </section>
+          </div>
+
+        </section>
+
+
+        <!-- وضعیت تیکت -->
+        <section class="glass-card">
+
+          <div class="card-header">
+            <h2>وضعیت تیکت ها</h2>
+          </div>
+
+          <section class="loading-spinner" *ngIf="!flag_TK_Status">
+            <mat-spinner></mat-spinner>
           </section>
+
+          <div class="chart-box" *ngIf="flag_TK_Status">
+            <section
+              echarts
+              [options]="series_TK_Status_Pie">
+            </section>
+          </div>
+
         </section>
-      </section>
-      <section class="row">
-        <section class="detail has-p">
-          <h2>عناوین اصلی تیکت ها</h2>
-          <p>با کلیک روی هر قسمت از نمودار زیر، میتوانید جزئیات ثبت شده را در نمودار زیر مشاهده فرمایید.</p>
-        </section>
-        <section class="loading-spinner" *ngIf="!flag_TK_Reasons">
-          <mat-spinner></mat-spinner>
-        </section>
-        <section style="min-height: 500px" class="tree-map-c2" id="Ph_Reasons" echarts [options]="series_TK_Reasons_tmp" (chartClick)="chart_click($event);scroll()" *ngIf="flag_TK_Reasons"></section>
-        <section class="st_to_en" *ngIf="flag_TK_Reasons">
-        </section>
-      </section>
-      <section class="row" #target>
-        <section class="detail has-p">
-          <h2>جزئیات عناوین تیکت های <p>{{reason_selected}}</p></h2>
-          <p>با کلیک روی هر قسمت از نمودار زیر، میتوانید توضیحات کامل تیکت های آن قسمت را مشاهده کنید.</p>
-        </section>
-        <section class="loading-spinner" *ngIf="!flag_Reason_Detail">
-          <mat-spinner></mat-spinner>
-        </section>
-        <section class="bar-chart-c2" echarts [options]="series_Reason_Detail_bar" (chartClick)="popup_casetype_detail($event)" *ngIf="flag_Reason_Detail"></section>
-      </section>
-      <section class="row">
-        <section class="detail">
-          <h2>وضعیت تیکت ها</h2>
-        </section>
-        <section class="loading-spinner" *ngIf="!flag_TK_Status">
-          <mat-spinner></mat-spinner>
-        </section>
-        <section class="pie-chart-c2" echarts [options]="series_TK_Status_Pie" *ngIf="flag_TK_Status"></section>
-      </section>
-      <section class="row">
-        <section class="detail has-p">
-          <h2>لیست تیکت ها</h2>
-          <p>با کلیک روی هر سطر از جدول توضیحات کامل تیکت نمایش داده میشود.</p>
-        </section>
-        <section class="loading-spinner" *ngIf="!flag_table">
-          <mat-spinner></mat-spinner>
-        </section>
-        <section class="btns">
-          <section class="filter-table">
-            <button type="button" id="ft-total" [class.selected]="isSelected('total')" class="ft-btn" (click)="ft_table('total')">کل تیکت ها</button>
-            <button type="button" id="ft-Solved" [class.selected]="isSelected('Solved')" class="ft-btn" (click)="ft_table('Solved')">مشکل حل شده</button>
-            <button type="button" id="ft-InProgress" [class.selected]="isSelected('InProgress')" class="ft-btn" (click)="ft_table('InProgress')">در حال پیش رفت</button>
-            <button type="button" id="ft-Cancelled" [class.selected]="isSelected('Cancelled')" class="ft-btn" (click)="ft_table('Cancelled')">لغو شده</button>
-            <button type="button" id="ft-InfoProvided" [class.selected]="isSelected('InfoProvided')" class="ft-btn" (click)="ft_table('InfoProvided')">اطلاعات ارائه شده</button>
+
+
+        <!-- لیست تیکت -->
+        <section class="glass-card">
+          <div class="card-header">
+            <h2>لیست تیکت ها</h2>
+            <p class="card-description">
+              با کلیک روی هر سطر از جدول توضیحات کامل تیکت نمایش داده میشود.
+            </p>
+          </div>
+          <section class="loading-spinner" *ngIf="!flag_table">
+            <mat-spinner></mat-spinner>
           </section>
-          <section class="export">
-            <button (click)="exportToExcel()">دانلود خروجی اکسل</button>
-          </section>
+          <div class="table-toolbar">
+            <section class="filter-table">
+              <button [class.selected]="isSelected('total')" (click)="ft_table('total')">کل تیکت ها</button>
+              <button [class.selected]="isSelected('Solved')" (click)="ft_table('Solved')">مشکل حل شده</button>
+              <button [class.selected]="isSelected('InProgress')" (click)="ft_table('InProgress')">در حال پیش رفت</button>
+              <button [class.selected]="isSelected('Cancelled')" (click)="ft_table('Cancelled')">لغو شده</button>
+              <button [class.selected]="isSelected('InfoProvided')" (click)="ft_table('InfoProvided')">اطلاعات ارائه شده</button>
+            </section>
+            <div>
+              <button class="btn-refresh btn-excel" (click)="exportToExcel()">دانلود خروجی اکسل</button>
+            </div>
+          </div>
+          <app-all-tickets-table
+            [data]="series_All_Table"
+            *ngIf="flag_table">
+          </app-all-tickets-table>
+
         </section>
-        <app-all-tickets-table [data]="series_All_Table" *ngIf="flag_table" style="margin: 1rem 0"></app-all-tickets-table>
-      </section>
-    </ng-container>
+
+      </ng-container>
+    </div>
+
     <ng-template #deniedTemplate>
       <div class="access-denied-container shadow-sm">
         <div class="icon-wrapper">
@@ -95,23 +161,28 @@
         </p>
       </div>
     </ng-template>
+
+    <!-- popup -->
     <section class="overlay" *ngIf="flag_CaseType_Popup">
-      <section class="popup">
-        <h2>لیست تیکت های {{casetype_selected}}</h2>
-        <a class="close" (click)="flag_CaseType_Popup = false;flag_CaseType_Detail = false">&times;</a>
+      <section class="popup glass-popup">
+        <div class="popup-header">
+          <h2>لیست تیکت های {{casetype_selected}}</h2>
+          <button class="close-btn"
+                  (click)="flag_CaseType_Popup=false;flag_CaseType_Detail=false">×</button>
+        </div>
         <section class="table" *ngIf="flag_CaseType_Detail">
           <section class="table-header">
             <section class="cell-header">ایجاد کننده تیکت</section>
             <section class="cell-header">تاریخ ایجاد</section>
-            <section class="cell-header">تاریخ بررسی تیکت</section>
-            <section class="cell-header">شخص بررسی کننده تیکت</section>
+            <section class="cell-header">تاریخ بررسی</section>
+            <section class="cell-header">بررسی کننده</section>
             <section class="cell-header">وضعیت</section>
             <section class="cell-header">نام مشتری</section>
           </section>
           <section *ngFor="let item of series_CT_Detail" class="table-row">
             <section class="cell">{{item.owner}}</section>
-            <section class="cell">{{item.createdon | date: 'yyyy-MM-dd | HH:mm'}}</section>
-            <section class="cell">{{item.caseResolutionCreatedOn | date: 'yyyy-MM-dd | HH:mm'}}</section>
+            <section class="cell">{{item.createdon | date:'yyyy-MM-dd | HH:mm'}}</section>
+            <section class="cell">{{item.caseResolutionCreatedOn | date:'yyyy-MM-dd | HH:mm'}}</section>
             <section class="cell">{{item.caseResolutionsolver}}</section>
             <section class="cell">{{item.status}}</section>
             <section class="cell">{{item.customerName}}</section>

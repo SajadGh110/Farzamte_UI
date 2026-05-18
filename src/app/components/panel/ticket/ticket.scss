@@ -1,5 +1,176 @@
-.row .detail h2 p {
-  display: inline-block;
-  color: #f4d03f;
-  font-weight: bold;
+@use '../../../../variables' as *;
+
+
+.toolbar-content{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:20px;
+}
+
+.quick-actions{
+  display:flex;
+  gap:10px;
+}
+
+.glass-card {
+  .card-header{
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+/* متن توضیح بازه زمانی */
+
+.table-description {
+  font-size: 13px;
+  color: $text-secondary;
+  background: rgba($primary-color,0.05);
+  padding: 6px 12px;
+  border-radius: 8px;
+  width: fit-content;
+}
+
+/* toolbar بالای جدول */
+
+.table-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+/* فیلترهای جدول */
+
+.filter-table {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+
+  button {
+    background: white;
+    border: 1px solid rgba($primary-color,0.25);
+    color: $text-secondary;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-family: $Font-Family-Fa;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all .2s ease;
+
+    &:hover {
+      border-color: $primary-color;
+      color: $primary-color;
+    }
+
+    &.selected {
+      background: $primary-color;
+      color: white;
+      border-color: $primary-color;
+    }
+  }
+}
+
+/* popup */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* پنجره popup */
+
+.glass-popup {
+  @include glass-style;
+  width: 95%;
+  max-width: 900px;
+  padding: 20px;
+  background: white;
+}
+
+/* هدر popup */
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+
+  h2 {
+    font-size: 16px;
+    margin: 0;
+    color: $text-main;
+  }
+}
+
+/* دکمه بستن */
+
+.close-btn {
+  border: none;
+  background: rgba($primary-color,0.1);
+  color: $primary-color;
+  font-size: 20px;
+  width: 35px;
+  height: 35px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all .2s;
+
+  &:hover {
+    background: $primary-color;
+    color: white;
+  }
+}
+
+/* جدول داخل popup */
+
+.table {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.table-header {
+  display: flex;
+  background: $primary-color;
+  color: white;
+  border-radius: 8px;
+}
+
+.cell-header {
+  flex: 1;
+  padding: 10px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.table-row {
+  display: flex;
+  background: white;
+  border: 1px solid rgba($primary-color,0.1);
+  border-radius: 8px;
+  transition: background .2s;
+
+  &:hover {
+    background: rgba($primary-color,0.05);
+  }
+}
+
+.cell {
+  flex: 1;
+  padding: 10px;
+  text-align: center;
+  font-size: 13px;
+  color: $text-main;
+}
+.box_500{
+  height: 500px;
 }

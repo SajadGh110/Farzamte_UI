@@ -1,9 +1,7 @@
 <section class="dashboard-wrapper">
   <app-dashboard-sidebar></app-dashboard-sidebar>
-
   <section class="dashboard-main">
     <app-dashboard-topmenu></app-dashboard-topmenu>
-
     <div class="content-scrollable">
       <ng-container *ngIf="auth.hasPermission('outCallT1.view'); else deniedTemplate">
         <section class="glass-card mb-4">
@@ -39,7 +37,6 @@
             <div echarts [options]="chartOption" class="chart-container"></div>
           </div>
         </section>
-
         <section class="glass-card mb-4">
           <div class="card-header">
             <h2>توزیع موضوعات تماس</h2>
@@ -66,7 +63,6 @@
             <span>اطلاعاتی برای نمایش وجود ندارد.</span>
           </div>
         </section>
-
         <section class="glass-card mb-4">
           <div class="card-header">
             <h2>تحلیل بازخورد موضوعات تماس</h2>
