@@ -342,3 +342,88 @@ $green-indicator: #10b981;
     margin-left: 4px;
   }
 }
+.qa-guide-container {
+  margin-top: 30px;
+  padding: 20px;
+  border-top: 3px solid #0b3847; // یک خط رنگی در بالا برای تفکیک
+
+  .guide-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+    color: #0b3847;
+    font-weight: bold;
+    font-size: 16px;
+
+    mat-icon { color: #1b9ac4; }
+  }
+}
+
+.guide-grid {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.guide-item {
+  display: flex;
+  min-width: 240px;
+  align-items: stretch;
+  background: #f8fafc;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  }
+
+  .index-badge {
+    width: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .index-text {
+    display: flex; // اضافه شده برای تراز بهتر
+    align-items: center; // متن داخل باکس همیشه عمود وسط باشد
+    padding: 10px 15px; // پدینگ عمودی اضافه شد تا متن به لبه‌ها نچسبد
+    font-size: 13.5px;
+    color: #334155;
+    font-weight: 500;
+    line-height: 1.5;
+    flex-grow: 1; // فضای باقی‌مانده را پر کند
+  }
+
+  /* استایل شاخص‌های بحرانی (قرمز/صورتی طبق تصویر) */
+  &.critical {
+    .index-badge {
+      background: linear-gradient(135deg, #d81b60, #ad1457);
+    }
+    &:hover { border-color: #d81b60; }
+  }
+
+  /* استایل شاخص‌های مثبت (سبز طبق تصویر) */
+  &.positive {
+    .index-badge {
+      background: linear-gradient(135deg, #00897b, #00695c);
+    }
+    &:hover { border-color: #00897b; }
+  }
+}
+
+/* برای موبایل */
+@media (max-width: 1200px) {
+  .guide-item {
+    width: 100%;
+  }
+}

@@ -166,6 +166,23 @@
           </table>
         </div>
       </section>
+
+      <section class="qa-guide-container glass-card" *ngIf="show_report">
+        <div class="guide-header">
+          <mat-icon>info_outline</mat-icon>
+          <span>راهنمای شاخص‌های ارزیابی</span>
+        </div>
+        <div class="guide-grid">
+          <div class="guide-item critical" *ngFor="let i of [1,2,3,4,5,6]">
+            <div class="index-badge">i{{i}}</div>
+            <div class="index-text">{{ getIndicatorTitle(i) }}</div>
+          </div>
+          <div class="guide-item positive" *ngFor="let i of [7,8]">
+            <div class="index-badge">i{{i}}</div>
+            <div class="index-text">{{ getIndicatorTitle(i) }}</div>
+          </div>
+        </div>
+      </section>
     </div>
 
     <ng-template #deniedTemplate>

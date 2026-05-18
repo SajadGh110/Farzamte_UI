@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {DashboardSidebarComponent} from "../../../Template/dashboard-sidebar/dashboard-sidebar.component";
 import {MatTab, MatTabGroup} from "@angular/material/tabs";
 import {CommonModule, DatePipe, DecimalPipe, NgForOf, NgIf} from "@angular/common";
@@ -11,6 +11,7 @@ import {BrokerageProfitService} from "../../../../services/brokerage-profit.serv
 import {findIndex} from "rxjs";
 import {DashboardTopmenuComponent} from "../../../Template/dashboard-topmenu/dashboard-topmenu.component";
 import {MatIcon} from "@angular/material/icon";
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-brokerage-profit-cmp',
@@ -24,7 +25,8 @@ import {MatIcon} from "@angular/material/icon";
     NgIf,
     DecimalPipe,
     DashboardTopmenuComponent,
-    MatIcon
+    MatIcon,
+    FormsModule
   ],
   providers: [DatePipe],
   templateUrl: './brokerage-profit-cmp.component.html',
@@ -37,6 +39,8 @@ export class BrokerageProfitCmpComponent implements OnInit {
   series_data:any = [];
   brokerage_name:any = '';
   brokerage_logo:any = '';
+  searchTerm: string = '';
+  protected activeTabIndex: number = 0;
   protected flag_date:boolean=false;
   protected flag_data:boolean=false;
   protected flag_all_brokers:boolean=false;
@@ -88,16 +92,15 @@ export class BrokerageProfitCmpComponent implements OnInit {
   columnTitles_b4_part3: { [key: string]: string } = {b_4_T_1: "آنلاین", b_4_T_2: "آنلاین گروهی", b_4_T_3: "بازارگردان الگوریتمی", b_4_T_4: "معمولی"};
   columnTitles_b5: { [key: string]: string } = {b_5_1: "آنلاین", b_5_2: "آنلاین گروهی", b_5_3: "بازارگردان الگوریتمی", b_5_4: "معمولی"};
   columnTitles_bt: { [key: string]: string } = {bt: "کل معاملات بورس اوراق بهادار"};
-  columnTitles_f1: { [key: string]: string } = {f_1_1: "سهام", f_1_2: "اوراق مالی اسلامی", f_1_3: "صندوق سرمایه‌گذاری", f_1_4: "گواهی تسهیلات مسکن", f_1_5: "ابزارهای مشتقه", f_1_T: "جمع کل"}
-  columnTitles_f2: { [key: string]: string } = {f_2_1: "سهام", f_2_2: "اوراق مالی اسلامی", f_2_3: "صندوق سرمایه‌گذاری", f_2_4: "گواهی تسهیلات مسکن", f_2_5: "ابزارهای مشتقه", f_2_T: "جمع کل"}
-  columnTitles_f3: { [key: string]: string } = {f_3_1: "سهام", f_3_2: "اوراق مالی اسلامی", f_3_3: "صندوق سرمایه‌گذاری", f_3_4: "گواهی تسهیلات مسکن", f_3_5: "ابزارهای مشتقه", f_3_T: "جمع کل"}
-  columnTitles_f4: { [key: string]: string } = {f_4_1: "سهام", f_4_2: "اوراق مالی اسلامی", f_4_3: "صندوق سرمایه‌گذاری", f_4_4: "گواهی تسهیلات مسکن", f_4_5: "ابزارهای مشتقه", f_4_T: "جمع کل"}
+  columnTitles_f1: { [key: string]: string } = {f_1_1: "سهام", f_1_2: "اوراق مالی اسلامی", f_1_3: "صندوق سرمایه‌گذاری", f_1_4: "گواهی تسهیلات مسکن", f_1_5: "ابزارهای مشتقه", f_1_T: "جمع کل"};
+  columnTitles_f2: { [key: string]: string } = {f_2_1: "سهام", f_2_2: "اوراق مالی اسلامی", f_2_3: "صندوق سرمایه‌گذاری", f_2_4: "گواهی تسهیلات مسکن", f_2_5: "ابزارهای مشتقه", f_2_T: "جمع کل"};
+  columnTitles_f3: { [key: string]: string } = {f_3_1: "سهام", f_3_2: "اوراق مالی اسلامی", f_3_3: "صندوق سرمایه‌گذاری", f_3_4: "گواهی تسهیلات مسکن", f_3_5: "ابزارهای مشتقه", f_3_T: "جمع کل"};
+  columnTitles_f4: { [key: string]: string } = {f_4_1: "سهام", f_4_2: "اوراق مالی اسلامی", f_4_3: "صندوق سرمایه‌گذاری", f_4_4: "گواهی تسهیلات مسکن", f_4_5: "ابزارهای مشتقه", f_4_T: "جمع کل"};
   columnTitles_ft: { [key: string]: string } = {ft: "کل معاملات فرابورس"};
   columnTitles_bft: { [key: string]: string } = {bft: "کل معاملات بورس و فرابورس"};
-  columnTitles_k: { [key: string]: string } = {k_1: "معاملات فیزیکی", k_2: "معاملات سلف موازی", k_3: "معاملات آتی", k_4: "معاملات اختیار معامله", kt: "جمع کل"}
-  columnTitles_kt: { [key: string]: string } = {kt: "کل معاملات بورس کالا"}
-  columnTitles_t: { [key: string]: string } = {t: "کل معاملات در بورس‌ها و فرابورس"}
-
+  columnTitles_k: { [key: string]: string } = {k_1: "معاملات فیزیکی", k_2: "معاملات سلف موازی", k_3: "معاملات آتی", k_4: "معاملات اختیار معامله", kt: "جمع کل"};
+  columnTitles_kt: { [key: string]: string } = {kt: "کل معاملات بورس کالا"};
+  columnTitles_t: { [key: string]: string } = {t: "کل معاملات در بورس‌ها و فرابورس"};
 
   async ngOnInit(){
     if (!this.auth.hasPermission('brokerageProfit.view')) {
@@ -125,6 +128,12 @@ export class BrokerageProfitCmpComponent implements OnInit {
       acc[year].push(date);
       return acc;
     }, {});
+
+    const yearKeys = Object.keys(this.years);
+    if (yearKeys.length > 0) {
+      this.activeTabIndex = yearKeys.length - 1;
+    }
+
     if (this.series_date.length == 0){
       this.toast.error({ detail: "ERROR", summary: 'Your Selected Brokerage, Don\'t Have a Data', duration: 5000, position: 'topRight' });
     }
@@ -209,15 +218,29 @@ export class BrokerageProfitCmpComponent implements OnInit {
     }
   }
 
-  filterBrokers(event: any) {
-    const searchTerm = event.target.value.toLowerCase().trim();
-    if (!searchTerm) {
-      this.filtered_brokers = [...this.all_brokers]; // اگر کادر خالی بود، همه را نشان بده
+  filterBrokers() {
+    if (!this.searchTerm) {
+      this.filtered_brokers = [...this.all_brokers];
       return;
     }
-    this.filtered_brokers = this.all_brokers.filter(broker =>
-      broker.name.toLowerCase().includes(searchTerm)
+    const term = this.searchTerm.toLowerCase().trim();
+    this.filtered_brokers = this.all_brokers.filter((broker: any) =>
+      broker.name.toLowerCase().includes(term)
     );
+  }
+
+  clearSearch() {
+    this.searchTerm = '';
+    this.filtered_brokers = [...this.all_brokers];
+  }
+
+  @ViewChildren('select_date, bob, fi, bki, total') sections!: QueryList<ElementRef>;
+
+  ScrollTo(sectionName: string) {
+    let section: any = this.sections.find(sec => sec.nativeElement.id == sectionName);
+    if (section) {
+      section.nativeElement.scrollIntoView({ behavior: 'smooth' });
+    }
   }
 
   protected readonly Object = Object;

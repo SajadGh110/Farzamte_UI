@@ -6,64 +6,80 @@
     <div class="content-scrollable">
       <ng-container *ngIf="auth.hasPermission('brokerageProfit.view'); else deniedTemplate">
 
-        <section class="glass-card" id="select_date">
-          <div class="card-header">
+        <section class="glass-card" id="select_date" #select_date>
+          <section class="card-header">
             <h2>انتخاب تاریخ و کارگزاری‌ها</h2>
-          </div>
-
-          <div class="loading-spinner" *ngIf="!flag_date || !flag_all_brokers">
+          </section>
+          <section class="loading-spinner" *ngIf="!flag_date">
             <mat-spinner diameter="40"></mat-spinner>
-          </div>
-
+          </section>
           <div class="selection-grid" *ngIf="flag_date && flag_all_brokers">
+            <!-- انتخاب تاریخ -->
             <div class="selection-box">
-              <h3><mat-icon>calendar_month</mat-icon> تاریخ (ماهانه)</h3>
-              <mat-tab-group [selectedIndex]="Object.keys(years).length" animationDuration="0ms">
+              <h3>تاریخ (ماهانه)</h3>
+              <mat-tab-group [selectedIndex]="activeTabIndex" (selectedIndexChange)="activeTabIndex = $event" animationDuration="0ms" dir="ltr">
                 <mat-tab *ngFor="let item of Object.keys(years)" label="{{item}}">
                   <div class="month-grid">
                     <section class="month-item" *ngFor="let item2 of years[item]">
-                      <input id="{{item2}}" type="checkbox" [checked]="selected_date.includes(item2)"
-                             (change)="onCheckboxChange($event, item2)" [disabled]="item2 == '1402-04'">
-                      <label for="{{item2}}">{{item2}}</label>
+                      <input id="cmp_{{item2}}" type="checkbox" value="{{item2}}"
+                             [checked]="selected_date.includes(item2)"
+                             (change)="onCheckboxChange($event, item2)">
+                      <label for="cmp_{{item2}}">{{item2}}</label>
                     </section>
                   </div>
                 </mat-tab>
               </mat-tab-group>
             </div>
-
+            <!-- لیست کارگزاری‌ها -->
             <div class="selection-box">
-              <h3><mat-icon>list</mat-icon> لیست کارگزاری‌ها</h3>
-
-              <div class="search-wrapper">
-                <mat-icon>search</mat-icon>
-                <input type="text" placeholder="جستجوی نام کارگزاری..." (keyup)="filterBrokers($event)">
+              <h3>لیست کارگزاری‌ها</h3>
+              <div class="search-box">
+                <input
+                  type="text"
+                  [(ngModel)]="searchTerm"
+                  (ngModelChange)="filterBrokers()"
+                  placeholder="جستجوی کارگزاری..."
+                  class="search-input"/>
+                <button
+                  *ngIf="searchTerm"
+                  (click)="clearSearch()"
+                  class="clear-btn"
+                  type="button">×
+                </button>
+                <i class="material-icons search-icon">search</i>
               </div>
-              <div class="list-container">
-                <div class="list-item clickable" *ngFor="let broker of filtered_brokers" (click)="addToComparison(broker)">
-                  <mat-icon>add_circle_outline</mat-icon>
-                  <span>{{ broker.name }}</span>
-                </div>
-                <div class="no-result" *ngIf="filtered_brokers?.length === 0">
-                  موردی یافت نشد!
+              <div class="brokers-list-container">
+                <ul>
+                  <li *ngFor="let broker of filtered_brokers"
+                      (click)="addToComparison(broker)"
+                      class="broker-item">
+                    {{ broker.name }}
+                  </li>
+                </ul>
+                <div *ngIf="filtered_brokers.length === 0" class="no-results">
+                  <p>کارگزاری یافت نشد</p>
                 </div>
               </div>
             </div>
-
-            <div class="selection-box comparison-box">
-              <h3><mat-icon>compare_arrows</mat-icon> لیست مقایسه</h3>
-              <div class="list-container">
-                <div class="list-item selected">
-                  <mat-icon>home</mat-icon>
+            <!-- لیست مقایسه -->
+            <div class="selection-box comparison-list">
+              <h3>لیست مقایسه</h3>
+              <div class="selected-brokers">
+                <div class="selected-item primary">
                   <span>{{brokerage_name}}</span>
+                  <span class="badge">اصلی</span>
                 </div>
-                <div class="list-item clickable" *ngFor="let broker of comparison_list" (click)="removeFromComparison(broker)">
-                  <mat-icon>remove_circle_outline</mat-icon>
+                <div *ngFor="let broker of comparison_list"
+                     class="selected-item"
+                     (click)="removeFromComparison(broker)">
                   <span>{{ broker.name }}</span>
+                  <span class="remove-btn">×</span>
                 </div>
               </div>
-              <button class="btn-action" (click)="do(selected_date)">
-                <mat-icon>visibility</mat-icon> <span>نمایش گزارش</span>
-              </button>
+              <div class="actions">
+                <span class="count">تعداد: {{comparison_list.length + 1}}</span>
+                <button type="button" class="btn-submit" (click)="do(selected_date)" [disabled]="comparison_list.length === 0">نمایش مقایسه</button>
+              </div>
             </div>
           </div>
         </section>
@@ -74,11 +90,10 @@
 
         <ng-container *ngIf="flag_data">
 
-          <section class="glass-card">
+          <section class="glass-card" id="bob" #bob>
             <div class="card-header color-b">
               <h2>بورس اوراق بهادار</h2>
             </div>
-
             <div class="table-group-container">
               <div class="sub-table-section">
                 <h4 class="sub-title">بازار اوراق بدهی</h4>
@@ -176,7 +191,7 @@
             </div>
           </section>
 
-          <section class="glass-card">
+          <section class="glass-card" id="fi" #fi>
             <div class="card-header color-f">
               <h2>فرابورس</h2>
             </div>
@@ -194,7 +209,7 @@
             </div>
           </section>
 
-          <section class="glass-card">
+          <section class="glass-card" id="bki" #bki>
             <div class="card-header color-k">
               <h2>بورس کالا</h2>
             </div>
@@ -203,7 +218,7 @@
             </div>
           </section>
 
-          <section class="glass-card total-card">
+          <section class="glass-card total-card" id="total" #total>
             <div class="card-header color-t">
               <h2>تجمیع کل بورس‌ها</h2>
             </div>
@@ -250,4 +265,20 @@
 
     </div>
   </section>
+  <div class="quick-access-fab">
+    <div class="fab-menu">
+      <a (click)="ScrollTo('select_date')"><span class="label">انتخاب</span><span class="dot"></span></a>
+      <a (click)="ScrollTo('bob')"><span class="label">بورس</span><span class="dot"></span></a>
+      <a (click)="ScrollTo('fi')"><span class="label">فرابورس</span><span class="dot"></span></a>
+      <a (click)="ScrollTo('bki')"><span class="label">کالا</span><span class="dot"></span></a>
+      <a (click)="ScrollTo('total')"><span class="label">تجمیع</span><span class="dot"></span></a>
+    </div>
+    <div class="fab-button">
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"></circle>
+        <polyline points="16 12 12 8 8 12"></polyline>
+        <line x1="12" y1="16" x2="12" y2="8"></line>
+      </svg>
+    </div>
+  </div>
 </section>

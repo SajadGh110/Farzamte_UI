@@ -29,7 +29,7 @@
     <div class="table-actions">
       <div class="search-box">
         <mat-icon>search</mat-icon>
-        <input type="text" [(ngModel)]="searchTerm" (keyup)="filterData()" placeholder="جستجوی کارشناس، شماره یا واحد...">
+        <input type="text" [(ngModel)]="searchTerm" (keyup)="filterData()" placeholder="جستجوی کارشناس، شماره، واحد یا موضوع ...">
       </div>
       <button class="btn-excel" (click)="exportExcel()">
         <mat-icon>file_download</mat-icon> خروجی اکسل
@@ -51,8 +51,12 @@
             <mat-icon *ngIf="sortColumn === 'status'">{{sortDirection==='asc'?'arrow_drop_up':'arrow_drop_down'}}</mat-icon>
           </th>
           <th>توضیحات</th>
-          <th>موضوع</th>
-          <th>نتیجه</th>
+          <th (click)="toggleSort('title')" class="sortable">موضوع
+            <mat-icon *ngIf="sortColumn === 'title'">{{sortDirection==='asc'?'arrow_drop_up':'arrow_drop_down'}}</mat-icon>
+          </th>
+          <th (click)="toggleSort('callResult')" class="sortable">نتیجه
+            <mat-icon *ngIf="sortColumn === 'callResult'">{{sortDirection==='asc'?'arrow_drop_up':'arrow_drop_down'}}</mat-icon>
+          </th>
           <th (click)="toggleSort('date')" class="sortable">تاریخ
             <mat-icon *ngIf="sortColumn === 'date'">{{sortDirection==='asc'?'arrow_drop_up':'arrow_drop_down'}}</mat-icon>
           </th>

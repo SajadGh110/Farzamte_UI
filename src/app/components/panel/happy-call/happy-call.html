@@ -2,66 +2,208 @@
   <app-dashboard-sidebar></app-dashboard-sidebar>
   <section class="dashboard-main">
     <app-dashboard-topmenu></app-dashboard-topmenu>
-    <ng-container *ngIf="auth.hasPermission('happyCall.view'); else deniedTemplate">
-      <section class="row">
-        <section class="detail">
-          <h2>انتخاب تاریخ گزارش</h2>
+    <div class="content-scrollable">
+      <ng-container *ngIf="auth.hasPermission('happyCall.view'); else deniedTemplate">
+        <section class="glass-card mb-4">
+          <div class="card-header">
+            <h2>انتخاب تاریخ گزارش</h2>
+          </div>
+          <div class="toolbar-content datepicker-input">
+            <section class="loading-spinner" *ngIf="!flag_time">
+              <mat-spinner></mat-spinner>
+            </section>
+            <form [formGroup]="dateform" *ngIf="flag_time" class="date-form" (ngSubmit)="OnUpdateDate()">
+              <div class="date-inputs">
+                <div class="input-group">
+                  <label for="StartDate">از تاریخ :</label>
+                  <input type="date" id="StartDate" formControlName="StartDate">
+                </div>
+                <div class="input-group">
+                  <label for="EndDate">تا تاریخ :</label>
+                  <input type="date" id="EndDate" formControlName="EndDate">
+                </div>
+                <button type="submit" class="btn-refresh">
+                  <i class="material-icons">search</i> جست‌وجو
+                </button>
+              </div>
+              <div class="quick-info">
+                <span class="badge shadow-sm">بازه زمانی انتخابی : <span dir="ltr">{{selected_days}}</span>روز</span>
+              </div>
+            </form>
+            <section class="time_auto" *ngIf="flag_time">
+              <button class="auto" (click)="SetTime(30)">یک ماهه</button>
+              <button class="auto" (click)="SetTime(90)">سه ماهه</button>
+              <button class="auto" (click)="SetTime(180)">شش ماهه</button>
+            </section>
+          </div>
         </section>
-        <section class="datepicker-input">
-          <section class="loading-spinner" *ngIf="!flag_time">
+        <section class="glass-card mb-4">
+          <div class="card-header">
+            <h2>آمار تماس‌ها</h2>
+          </div>
+          <div class="chart-box">
+            <section class="loading-spinner" *ngIf="!flag_count">
+              <mat-spinner></mat-spinner>
+            </section>
+            <section *ngIf="flag_count" echarts [options]="series_calls_count_day" class="chart-container"></section>
+          </div>
+        </section>
+        <section class="glass-card mb-4">
+          <div class="card-header">
+            <h2>آمار مشتریان</h2>
+          </div>
+
+          <div class="subjects-report-wrapper">
+            <div class="total-calls-banner shadow-sm">
+              <span class="label">کل تماس‌های مشتریان</span>
+              <span class="value">{{ AllCalls_Count }}</span>
+            </div>
+
+            <div class="subjects-list">
+              <div class="subject-item" (click)="Popup_List('Customers')">
+                <div class="subject-name">
+                  <i class="material-icons">people</i>
+                  تعداد مشتریان
+                </div>
+                <div class="subject-count">
+                  {{ Customers_Count }}
+                </div>
+              </div>
+
+              <div class="subject-item" (click)="Popup_List('Active_Customers')">
+                <div class="subject-name">
+                  <i class="material-icons">check_circle</i>
+                  مشتریان فعال
+                </div>
+                <div class="subject-count">
+                  {{ Active_Customers_Count }}
+                </div>
+              </div>
+
+              <div class="subject-item" (click)="Popup_List('Inactive_Customers')">
+                <div class="subject-name">
+                  <i class="material-icons">cancel</i>
+                  مشتریان غیرفعال
+                </div>
+                <div class="subject-count">
+                  {{ Inactive_Customers_Count }}
+                </div>
+              </div>
+
+              <div class="subject-item" (click)="Popup_List('SuccessfulCalls')">
+                <div class="subject-name">
+                  <i class="material-icons">call_made</i>
+                  تماس موفق
+                </div>
+                <div class="subject-count">
+                  {{ SuccessfulCalls_Count }}
+                </div>
+              </div>
+
+              <div class="subject-item" (click)="Popup_List('ActiveAfterCalls')">
+                <div class="subject-name">
+                  <i class="material-icons">trending_up</i>
+                  فعال شدن پس از هپی کال
+                </div>
+                <div class="subject-count">
+                  {{ ActiveAfterCalls_Count }}
+                </div>
+              </div>
+
+              <div class="subject-item" (click)="Popup_List('ActiveInOtherBrokers')">
+                <div class="subject-name">
+                  <i class="material-icons">business</i>
+                  فعال در سایر کارگزاری‌ها
+                </div>
+                <div class="subject-count">
+                  {{ ActiveInOtherBrokers_Count }}
+                </div>
+              </div>
+
+              <div class="subject-item" (click)="Popup_List('ExplanationClub')">
+                <div class="subject-name">
+                  <i class="material-icons">info</i>
+                  ارائه توضیحات درمورد باشگاه مشتریان
+                </div>
+                <div class="subject-count">
+                  {{ ExplanationClub_Count }}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <section class="quick-info" *ngIf="flag_g1" dir="ltr">
+            <span class="badge shadow-sm">{{ st_to_en }}</span>
+          </section>
+        </section>
+
+        <section class="glass-card mb-4">
+          <div class="card-header">
+            <h2>مسیر آشنایی با کارگزاری</h2>
+          </div>
+          <div class="chart-box">
+            <section class="loading-spinner" *ngIf="!flag_Introduction">
+              <mat-spinner></mat-spinner>
+            </section>
+            <section *ngIf="flag_Introduction" echarts [options]="series_Introduction" class="chart-container"></section>
+          </div>
+        </section>
+        <section class="glass-card mb-4">
+          <div class="card-header">
+            <h2>دلیل انتخاب کارگزاری</h2>
+          </div>
+          <section class="both-view" *ngIf="flag_ChoosingBrokerage">
+            <section class="tree-map-c1" echarts [options]="series_ChoosingBrokerage_Active_tmp"></section>
+            <section class="tree-map-c1" echarts [options]="series_ChoosingBrokerage_Inactive_tmp"></section>
+          </section>
+          <section class="quick-info" *ngIf="flag_ChoosingBrokerage" dir="ltr">
+            <span class="badge shadow-sm">{{st_to_en}}</span>
+          </section>
+        </section>
+        <section class="glass-card mb-4">
+          <div class="card-header">
+            <h2>گزارش ارتباطات</h2>
+          </div>
+          <section class="loading-spinner" *ngIf="!flag_g1">
             <mat-spinner></mat-spinner>
           </section>
-          <form [formGroup]="dateform" *ngIf="flag_time">
-            <label for="StartDate">از تاریخ : </label>
-            <input type="date" id="StartDate" formControlName="StartDate" value="{{StartDate}}">
-            <label for="EndDate">تا تاریخ : </label>
-            <input type="date" id="EndDate" formControlName="EndDate" value="{{EndDate}}">
-            <input type="submit" value="جست و جو" (click)="OnUpdateDate()">
-          </form>
-          <section class="time_auto" *ngIf="flag_time">
-            <button class="auto" (click)="SetTime(30)">یک ماهه</button>
-            <button class="auto" (click)="SetTime(90)">سه ماهه</button>
-            <button class="auto" (click)="SetTime(180)">شش ماهه</button>
+          <section class="table-outer-wrapper">
+            <div class="custom-flex-table">
+              <div class="table-head">
+                <div class="cell">تعداد کل ارتباطات</div>
+                <div class="cell">{{ AllCalls_Count }}</div>
+              </div>
+              <div class="table-body">
+                <div class="table-row">
+                  <div class="cell">جمع کل تماس موفق</div>
+                  <div class="cell">{{ SuccessfulCalls_Count }}</div>
+                </div>
+                <div class="table-row">
+                  <div class="cell">تماس موفق مشتریان فعال</div>
+                  <div class="cell">{{ ActiveSuccessfulCalls_Count }}</div>
+                </div>
+                <div class="table-row">
+                  <div class="cell">تماس موفق مشتریان غیرفعال</div>
+                  <div class="cell">{{ InactiveSuccessfulCalls_Count }}</div>
+                </div>
+                <div class="table-row">
+                  <div class="cell">تماس ناموفق</div>
+                  <div class="cell">{{ UnsuccessfulCalls_Count }}</div>
+                </div>
+                <div class="table-row">
+                  <div class="cell">تماس مجدد</div>
+                  <div class="cell">{{ ReCalls_Count }}</div>
+                </div>
+              </div>
+            </div>
           </section>
-          <section class="time_text" *ngIf="flag_time">
-            <p>بازه زمانی انتخابی : {{selected_days}} روز</p>
-          </section>
-        </section>
-      </section>
-      <section class="row">
-        <section class="detail">
-          <h2>آمار تماس ها</h2>
-        </section>
-        <section class="loading-spinner" *ngIf="!flag_count">
-          <mat-spinner></mat-spinner>
-        </section>
-        <section class="line-chart-c1" *ngIf="flag_count">
-          <section echarts [options]="series_calls_count_day"></section>
-        </section>
-      </section>
-      <section class="row">
-        <section class="detail">
-          <h2>آمار مشتریان</h2>
-        </section>
-        <section class="loading-spinner" *ngIf="!flag_g1">
-          <mat-spinner></mat-spinner>
-        </section>
-        <section class="number-card-c2" *ngIf="flag_g1">
-          <section class="card Customers_Count" (click)="Popup_List('Customers')"><p class="key">تعداد مشتریان</p><p class="value">{{Customers_Count}}</p></section>
-          <section class="card Active_Customers_Count" (click)="Popup_List('Active_Customers')"><p class="key">مشتریان فعال</p><p class="value">{{Active_Customers_Count}}</p></section>
-          <section class="card Inactive_Customers_Count" (click)="Popup_List('Inactive_Customers')"><p class="key">مشتریان غیرفعال</p><p class="value">{{Inactive_Customers_Count}}</p></section>
-          <section class="card SuccessfulCalls_Count" (click)="Popup_List('SuccessfulCalls')"><p class="key">تماس موفق</p><p class="value">{{SuccessfulCalls_Count}}</p></section>
-          <section class="card ActiveAfterCalls_Count" (click)="Popup_List('ActiveAfterCalls')"><p class="key">فعال شدن پس از هپی کال</p><p class="value">{{ActiveAfterCalls_Count}}</p></section>
-          <section class="card ActiveInOtherBrokers_Count" (click)="Popup_List('ActiveInOtherBrockers')"><p class="key">فعال در سایر کارگزاری ها</p><p class="value">{{ActiveInOtherBrokers_Count}}</p></section>
-          <section class="card ExplanationClub_Count" (click)="Popup_List('ExplanationClub')"><p class="key">ارائه توضیحات درمورد باشگاه مشتریان</p><p class="value">{{ExplanationClub_Count}}</p></section>
-        </section>
-        <section class="st_to_en" *ngIf="flag_g1">
-          <p>{{st_to_en}}</p>
         </section>
         <section class="overlay" *ngIf="flag_popup">
           <section class="popup">
-            <h2>List</h2>
-            <a class="close" (click)="flag_popup = false;flag_popup_data = false">&times;</a>
+            <section class="popup-header">
+              <h2>لیست</h2>
+              <a class="close" (click)="flag_popup = false; flag_popup_data = false">&times;</a>
+            </section>
             <section class="loading-spinner" *ngIf="!flag_popup_data">
               <mat-spinner></mat-spinner>
             </section>
@@ -79,82 +221,20 @@
             </section>
           </section>
         </section>
-      </section>
-      <section class="row">
-        <section class="detail">
-          <h2>مسیر آشنایی با کارگزاری</h2>
-        </section>
-        <section class="loading-spinner" *ngIf="!flag_Introduction">
-          <mat-spinner></mat-spinner>
-        </section>
-        <section class="pie-chart-c2" *ngIf="flag_Introduction">
-          <section echarts [options]="series_Introduction"></section>
-        </section>
-      </section>
-      <section class="row">
-        <section class="detail">
-          <h2>دلیل انتخاب کارگزاری</h2>
-        </section>
-        <section class="loading-spinner" *ngIf="!flag_ChoosingBrokerage">
-          <mat-spinner></mat-spinner>
-        </section>
-        <section class="both-view" *ngIf="flag_ChoosingBrokerage">
-          <section style="min-height: 600px" class="tree-map-c1" echarts [options]="series_ChoosingBrokerage_Active_tmp"></section>
-          <section style="min-height: 600px" class="tree-map-c1" echarts [options]="series_ChoosingBrokerage_Inactive_tmp"></section>
-        </section>
-        <section class="st_to_en" *ngIf="flag_ChoosingBrokerage">
-          <p>{{st_to_en}}</p>
-        </section>
-      </section>
-      <section class="row">
-        <section class="detail">
-          <h2>گزارش ارتباطات</h2>
-        </section>
-        <section class="loading-spinner" *ngIf="!flag_g1">
-          <mat-spinner></mat-spinner>
-        </section>
-        <section class="data-g4" *ngIf="flag_g1">
-          <section class="table-g4">
-            <section class="table-header-g4">
-              <section class="table-header-none-g4"></section>
-              <section class="cell-header-key-g4">تعداد کل ارتباطات</section>
-              <section class="cell-header-value-g4">{{AllCalls_Count}}</section>
-            </section>
-            <section class="table-body-g4">
-              <section class="table-column-lbl-g4">
-                <section class="cell-lbl-g4">وضعیت تماس ها</section>
-              </section>
-              <section class="table-column-key-g4">
-                <section class="cell-key-g4">جمع کل تماس موفق</section>
-                <section class="cell-key-g4">تماس موفق مشتریان فعال</section>
-                <section class="cell-key-g4">تماس موفق مشتریان غیرفعال</section>
-                <section class="cell-key-g4">تماس ناموفق</section>
-                <section class="cell-key-g4">تماس مجدد</section>
-              </section>
-              <section class="table-column-value-g4">
-                <section class="cell-value-g4">{{SuccessfulCalls_Count}}</section>
-                <section class="cell-value-g4">{{ActiveSuccessfulCalls_Count}}</section>
-                <section class="cell-value-g4">{{InactiveSuccessfulCalls_Count}}</section>
-                <section class="cell-value-g4">{{UnsuccessfulCalls_Count}}</section>
-                <section class="cell-value-g4">{{ReCalls_Count}}</section>
-              </section>
-            </section>
-          </section>
-        </section>
-      </section>
-    </ng-container>
-    <ng-template #deniedTemplate>
-      <div class="access-denied-container shadow-sm">
-        <div class="icon-wrapper">
-          <i class="material-icons">lock_person</i>
+      </ng-container>
+      <ng-template #deniedTemplate>
+        <div class="access-denied-container shadow-sm">
+          <div class="icon-wrapper">
+            <i class="material-icons">lock_person</i>
+          </div>
+          <h3>عدم دسترسی</h3>
+          <p>
+            متأسفانه اکانت شما مجوز دسترسی به این قسمت را ندارد!
+            <br>
+            در صورت نیاز، لطفاً با مدیر سیستم تماس بگیرید.
+          </p>
         </div>
-        <h3>عدم دسترسی</h3>
-        <p>
-          متأسفانه اکانت شما مجوز دسترسی به این قسمت را ندارد!
-          <br>
-          در صورت نیاز، لطفاً با مدیر سیستم تماس بگیرید.
-        </p>
-      </div>
-    </ng-template>
+      </ng-template>
+    </div>
   </section>
 </section>

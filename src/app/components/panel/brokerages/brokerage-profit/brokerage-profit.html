@@ -6,7 +6,7 @@
     <div class="content-scrollable">
       <ng-container *ngIf="auth.hasPermission('brokerageProfit.view'); else deniedTemplate">
 
-        <section class="glass-card" id="select_date">
+        <section class="glass-card" id="select_date" #select_date>
           <div class="selection-layout">
 
             <div class="date-picker-section">
@@ -53,30 +53,23 @@
         <div class="loading-spinner-main" *ngIf="!flag_data && flag_date">
           <mat-spinner diameter="50"></mat-spinner>
         </div>
-
         <ng-container *ngIf="flag_data">
-
-          <section class="glass-card table-container-card">
+          <section class="glass-card table-container-card" id="bob" #bob>
             <div class="card-header-main color-b">
               <mat-icon>show_chart</mat-icon>
               <h2>بورس اوراق بهادار</h2>
             </div>
-
             <div class="report-block">
               <h4 class="market-title">بازار اوراق بدهی</h4>
               <p class="table-subtitle">اوراق صکوک</p>
               <ng-container *ngTemplateOutlet="standardTable; context: {cols: Columns_b1_part1, titles: columnTitles_b1_part1, theme: 'b'}"></ng-container>
-
               <p class="table-subtitle">اوراق مشارکت</p>
               <ng-container *ngTemplateOutlet="standardTable; context: {cols: Columns_b1_part2, titles: columnTitles_b1_part2, theme: 'b'}"></ng-container>
-
               <p class="table-subtitle">اوراق گواهی سپرده</p>
               <ng-container *ngTemplateOutlet="standardTable; context: {cols: Columns_b1_part3, titles: columnTitles_b1_part3, theme: 'b'}"></ng-container>
-
               <p class="table-subtitle">ارزش کل معاملات بازار اوراق بدهی</p>
               <ng-container *ngTemplateOutlet="standardTable; context: {cols: Columns_b1_part4, titles: columnTitles_b1_part4, theme: 'b', highlight: true}"></ng-container>
             </div>
-
             <div class="report-block">
               <h4 class="market-title">بازار اوراق مشتقه</h4>
               <p class="table-subtitle">اختیار خرید</p>
@@ -126,7 +119,7 @@
             </div>
           </section>
 
-          <section class="glass-card table-container-card">
+          <section class="glass-card table-container-card" id="fi" #fi>
             <div class="card-header-main color-f">
               <mat-icon>account_balance</mat-icon>
               <h2>فرابورس</h2>
@@ -149,7 +142,7 @@
             </div>
           </section>
 
-          <section class="glass-card table-container-card">
+          <section class="glass-card table-container-card" id="bki" #bki>
             <div class="card-header-main color-k">
               <mat-icon>layers</mat-icon>
               <h2>بورس کالا</h2>
@@ -159,7 +152,7 @@
             </div>
           </section>
 
-          <section class="glass-card total-summary-card">
+          <section class="glass-card total-summary-card" id="total" #total>
             <div class="card-header-main color-t">
               <mat-icon>assessment</mat-icon>
               <h2>تجمیع کل بورس‌ها</h2>
@@ -217,4 +210,20 @@
 
     </div>
   </section>
+  <div class="quick-access-fab">
+    <div class="fab-menu">
+      <a (click)="ScrollTo('select_date')"><span class="label">انتخاب</span><span class="dot"></span></a>
+      <a (click)="ScrollTo('bob')"><span class="label">بورس</span><span class="dot"></span></a>
+      <a (click)="ScrollTo('fi')"><span class="label">فرابورس</span><span class="dot"></span></a>
+      <a (click)="ScrollTo('bki')"><span class="label">کالا</span><span class="dot"></span></a>
+      <a (click)="ScrollTo('total')"><span class="label">تجمیع</span><span class="dot"></span></a>
+    </div>
+    <div class="fab-button">
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"></circle>
+        <polyline points="16 12 12 8 8 12"></polyline>
+        <line x1="12" y1="16" x2="12" y2="8"></line>
+      </svg>
+    </div>
+  </div>
 </section>

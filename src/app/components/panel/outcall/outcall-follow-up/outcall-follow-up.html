@@ -41,6 +41,34 @@
             <div echarts [options]="chartOption" class="chart-container"></div>
           </div>
         </section>
+
+        <section class="glass-card mb-4">
+          <div class="card-header">
+            <h2>توزیع موضوعات تماس</h2>
+          </div>
+          <div class="subjects-report-wrapper">
+            <div class="total-calls-banner shadow-sm">
+              <span class="label">مجموع کل تماس‌های ثبت شده در این بازه:</span>
+              <span class="value">{{ totalCalls | number }}</span>
+            </div>
+            <div class="subjects-list">
+              <div class="subject-item" *ngFor="let item of subjectsCount" (click)="Popup(item.subject)">
+                <div class="subject-name">
+                  <i class="material-icons">label</i>
+                  {{ item.subject || 'بدون موضوع' }}
+                </div>
+                <div class="subject-count">
+                  {{ item.count | number }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="subjectsCount.length === 0 && !loading" class="no-data">
+            <i class="material-icons">sentiment_dissatisfied</i>
+            <span>اطلاعاتی برای نمایش وجود ندارد.</span>
+          </div>
+        </section>
+
         <section class="glass-card mb-4">
           <div class="card-header">
             <div class="header-title-wrapper">
@@ -59,35 +87,6 @@
                 </div>
               </div>
             </div>
-          </div>
-        </section>
-        <section class="glass-card mb-4">
-          <div class="card-header">
-            <h2>توزیع موضوعات تماس</h2>
-          </div>
-
-          <div class="subjects-report-wrapper">
-            <div class="total-calls-banner shadow-sm">
-              <span class="label">مجموع کل تماس‌های ثبت شده در این بازه:</span>
-              <span class="value">{{ totalCalls | number }}</span>
-            </div>
-
-            <div class="subjects-list">
-              <div class="subject-item" *ngFor="let item of subjectsCount" (click)="Popup(item.subject)">
-                <div class="subject-name">
-                  <i class="material-icons">label</i>
-                  {{ item.subject || 'بدون موضوع' }}
-                </div>
-                <div class="subject-count">
-                  {{ item.count | number }}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div *ngIf="subjectsCount.length === 0 && !loading" class="no-data">
-            <i class="material-icons">sentiment_dissatisfied</i>
-            <span>اطلاعاتی برای نمایش وجود ندارد.</span>
           </div>
         </section>
       </ng-container>

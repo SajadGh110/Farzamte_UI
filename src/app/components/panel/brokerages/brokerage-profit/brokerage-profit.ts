@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {DashboardSidebarComponent} from "../../../Template/dashboard-sidebar/dashboard-sidebar.component";
 import {AuthService} from "../../../../services/auth.service";
 import {Router} from "@angular/router";
@@ -169,5 +169,13 @@ export class BrokerageProfit implements OnInit {
     }
   }
 
+  @ViewChildren('select_date, bob, fi, bki, total') sections!: QueryList<ElementRef>;
+
+  ScrollTo(sectionName: string) {
+    let section: any = this.sections.find(sec => sec.nativeElement.id == sectionName);
+    if (section) {
+      section.nativeElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
   protected readonly Object = Object;
 }

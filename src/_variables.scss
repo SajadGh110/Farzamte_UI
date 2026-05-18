@@ -1,17 +1,13 @@
-// ==========================================
-// 1. New Design Variables
-// ==========================================
-$primary-color: #3b82f6; 
+$primary-color: #3b82f6;
 $primary-hover: #2563eb;
-$glass-bg: rgba(255, 255, 255, 0.85); // کمی مات‌تر برای دیده شدن روی زمینه روشن
+$glass-bg: rgba(255, 255, 255, 0.85);
 $glass-border: 1px solid rgba(255, 255, 255, 0.6);
 $text-main: #1e293b;
 $text-secondary: #64748b;
-$shadow-soft: 0 4px 20px 0 rgba(0, 0, 0, 0.05); // سایه نرم‌تر و کمتر
+$shadow-soft: 0 4px 20px 0 rgba(0, 0, 0, 0.05);
 $error-color: #ef4444;
 
-// متغیر شعاع گوشه‌ها (برای تغییر راحت در آینده)
-$radius-main: 12px; // کاهش از 20 به 12
+$radius-main: 12px;
 
 @mixin glass-style {
   background: $glass-bg;
@@ -22,10 +18,7 @@ $radius-main: 12px; // کاهش از 20 به 12
   box-shadow: $shadow-soft;
 }
 
-// ==========================================
-// 2. Legacy Variables
-// ==========================================
-$Background : #f8fafc; // رنگ پس‌زمینه جدید (سفید مایل به خاکستری خیلی روشن)
+$Background : #f8fafc;
 $Foreground : #544f53;
 $Font-Size : 14px;
 $Font-Family-En : 'Vazirmatn', sans-serif;

@@ -1,8 +1,9 @@
+@use '../../../../../variables' as *;
 /* کانتینر اصلی */
 .content-scrollable {
   padding: 20px;
   direction: rtl;
-  font-family: 'Nazanin', Tahoma, sans-serif;
+  font-family: "Vazirmatn", sans-serif;
 }
 
 /* استایل کارت‌های شیشه‌ای */
@@ -36,34 +37,6 @@
 .color-f { border-bottom-color: #42b3a1; h2 { color: #42b3a1; } }
 .color-k { border-bottom-color: #965d63; h2 { color: #965d63; } }
 .color-t { border-bottom-color: #004e75; h2 { color: #004e75; } }
-
-/* اصلاح تراز آیکون‌ها در لیست */
-.list-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 15px;
-  margin-bottom: 6px;
-  border-radius: 8px;
-  background: #f8fafc;
-  transition: 0.3s;
-  cursor: pointer;
-  font-size: 16px; /* بزرگتر شد */
-
-  mat-icon {
-    font-size: 22px; /* بزرگتر شد */
-    width: 22px;
-    height: 22px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  &.selected {
-    background: #004e75;
-    color: white;
-  }
-}
 
 /* استایل زیرعنوان‌های بازار */
 .sub-title {
@@ -130,12 +103,7 @@
   margin-bottom: 20px;
 }
 
-@media (max-width: 1024px) {
-  .selection-grid { grid-template-columns: 1fr 1fr; }
-}
-
 @media (max-width: 768px) {
-  .selection-grid { grid-template-columns: 1fr; }
   .sub-title { font-size: 18px; width: 100%; }
 }
 
@@ -241,70 +209,6 @@
   font-size: 16px; /* بزرگتر شد */
 }
 
-/* بهبود استایل تب‌ها و فیلترها */
-.selection-grid {
-  display: grid;
-  grid-template-columns: 1.5fr 1fr 1fr;
-  gap: 1.5rem;
-  margin-top: 1rem;
-}
-
-.selection-box {
-  background: #ffffff;
-  padding: 15px;
-  border-radius: 12px;
-  border: 1px solid #e2e8f0;
-
-  h3 {
-    font-size: 18px; /* بزرگتر شد */
-    margin-bottom: 10px;
-    color: #0b3847;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-weight: bold;
-  }
-}
-
-.month-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  padding: 10px 0;
-}
-
-.month-item {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: #f8fafc;
-  padding: 6px 12px;
-  border-radius: 6px;
-  border: 1px solid #e2e8f0;
-  font-size: 14px;
-  font-weight: bold;
-  input { cursor: pointer; width: 16px; height: 16px; }
-}
-
-.list-container {
-  max-height: 200px;
-  overflow-y: auto;
-  padding: 5px;
-}
-
-.list-item {
-  padding: 10px 15px;
-  margin-bottom: 4px;
-  border-radius: 6px;
-  font-size: 15px; /* بزرگتر شد */
-  cursor: pointer;
-  transition: 0.2s;
-  background: #f1f5f9;
-
-  &:hover { background: #e2e8f0; }
-  &.selected { background: #004e75; color: white; }
-}
-
 .btn-action {
   width: 100%;
   margin-top: 10px;
@@ -358,9 +262,231 @@
   }
 }
 
-.no-result {
-  text-align: center;
+.selection-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+  margin-top: 20px;
+}
+
+.selection-box {
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 15px;
   padding: 20px;
-  color: #94a3b8;
-  font-size: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+
+  h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1rem;
+    color: $primary-color;
+    font-weight: 600;
+    border-bottom: 2px solid rgba($primary-color, 0.2);
+    padding-bottom: 8px;
+  }
+}
+
+// لیست کارگزاری‌ها
+.brokers-list-container {
+  max-height: 250px;
+  overflow-y: auto;
+  border: 1px solid rgba($text-secondary, 0.1);
+  border-radius: 10px;
+  margin-top: 10px;
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .broker-item {
+    padding: 10px 15px;
+    border-bottom: 1px solid rgba($text-secondary, 0.05);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+
+    &:hover {
+      background: rgba($primary-color, 0.08);
+      padding-right: 20px;
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}
+
+// لیست انتخاب شده
+.comparison-list {
+  .selected-brokers {
+    max-height: 180px;
+    overflow-y: auto;
+    margin-bottom: 15px;
+  }
+
+  .selected-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background: rgba($primary-color, 0.05);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    border: 1px solid rgba($primary-color, 0.1);
+
+    &.primary {
+      background: rgba(#4CAF50, 0.1);
+      border-color: rgba(#4CAF50, 0.2);
+
+      .badge {
+        background: #4CAF50;
+        color: white;
+        font-size: 0.7rem;
+        padding: 2px 8px;
+        border-radius: 10px;
+      }
+    }
+
+    .remove-btn {
+      color: #ff4444;
+      cursor: pointer;
+      font-size: 1.2rem;
+      padding: 0 5px;
+
+      &:hover {
+        color: #cc0000;
+      }
+    }
+  }
+
+  .actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+
+    .count {
+      font-size: 0.85rem;
+      color: $text-secondary;
+    }
+  }
+}
+.no-results {
+  text-align: center;
+  padding: 30px 20px;
+  color: rgba($text-secondary, 0.6);
+  font-style: italic;
+}
+
+// انتخاب ماه‌ها
+.month-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 15px 0;
+}
+
+.month-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba($text-secondary, 0.1);
+  padding: 6px 12px;
+  border-radius: 8px;
+  transition: all 0.2s;
+
+  label {
+    margin: 0;
+    font-size: 0.85rem;
+    cursor: pointer;
+    color: $text-secondary;
+  }
+
+  &:hover {
+    background: rgba($primary-color, 0.05);
+    border-color: rgba($primary-color, 0.3);
+  }
+}
+
+// جستجو
+.search-box {
+  position: relative;
+  margin-bottom: 15px;
+
+  .search-input {
+    width: 100%;
+    padding: 10px 40px 10px 35px;
+    border: 1px solid rgba($text-secondary, 0.2);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-family: Vazirmatn, sans-serif;
+    direction: rtl;
+    background: rgba(255, 255, 255, 0.7);
+    transition: all 0.2s;
+
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+      box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+    }
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #3b82f6;
+  }
+
+  .clear-btn {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba($text-secondary, 0.3);
+    border: none;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    color: white;
+    transition: all 0.2s;
+
+    &:hover {
+      background: rgba($text-secondary, 0.5);
+    }
+  }
+}
+// دکمه‌ها
+.btn-submit {
+  background: $primary-color;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'Vazirmatn', sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  box-shadow: 0 3px 8px rgba($primary-color, 0.2);
+  transition: all 0.2s;
+
+  &:hover:not(:disabled) {
+    background: $primary-hover;
+    transform: translateY(-2px);
+  }
+
+  &:disabled {
+    background: rgba($text-secondary, 0.3);
+    cursor: not-allowed;
+    transform: none;
+  }
 }

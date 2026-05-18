@@ -40,7 +40,8 @@ export class OutCallDialog implements OnInit{
         (item.expertName?.toLowerCase().includes(term)) ||
         (item.unit?.toLowerCase().includes(term)) ||
         (item.phoneNumber?.includes(term)) ||
-        (item.description?.toLowerCase().includes(term))
+        (item.description?.toLowerCase().includes(term)) ||
+        (item.title?.toLowerCase().includes(term))
       );
     }
   }
@@ -69,6 +70,7 @@ export class OutCallDialog implements OnInit{
       'واحد': item.unit,
       'شماره مقصد': item.phoneNumber,
       'وضعیت': this.getStatusLabel(item.status),
+      'موضوع': item.title,
       'نتیجه': item.callResult,
       'تاریخ': item.date,
       'توضیحات': item.description
@@ -81,9 +83,9 @@ export class OutCallDialog implements OnInit{
   }
 
   calculatePercentage(type: string): number {
-    if (!this.data.details || this.data.details.length === 0) return 0;
-    const count = this.data.details.filter((item: any) => item.callResult === type).length;
-    return Math.round((count / this.data.details.length) * 100);
+    if (!this.filteredDetails || this.filteredDetails.length === 0) return 0;
+    const count = this.filteredDetails.filter((item: any) => item.callResult === type).length;
+    return Math.round((count / this.filteredDetails.length) * 100);
   }
 
   getStatusLabel(status: string): string {

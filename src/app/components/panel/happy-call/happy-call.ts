@@ -2,11 +2,12 @@ import {Component, OnInit} from '@angular/core';
 import {DashboardSidebarComponent} from "../../Template/dashboard-sidebar/dashboard-sidebar.component";
 import {FormBuilder, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {NgToastService} from "ng-angular-popup";
-import { DatePipe } from '@angular/common';
+import {DatePipe, DecimalPipe} from '@angular/common';
 import {NgForOf, NgIf} from "@angular/common";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {HappycallService} from "../../../services/happycall.service";
 import {TimeService} from "../../../services/time.service";
+import * as echarts from 'echarts';
 import {EChartsOption} from "echarts";
 import {NgxEchartsDirective} from "ngx-echarts";
 import { DashboardTopmenuComponent } from '../../Template/dashboard-topmenu/dashboard-topmenu.component';
@@ -16,15 +17,15 @@ import {format, subDays} from "date-fns";
 
 @Component({
     selector: 'app-happy-call',
-    imports: [
-        DashboardSidebarComponent,
-        ReactiveFormsModule,
-        MatProgressSpinner,
-        NgIf,
-        NgForOf,
-        NgxEchartsDirective,
-        DashboardTopmenuComponent
-    ],
+  imports: [
+    DashboardSidebarComponent,
+    ReactiveFormsModule,
+    MatProgressSpinner,
+    NgIf,
+    NgForOf,
+    NgxEchartsDirective,
+    DashboardTopmenuComponent
+  ],
     providers: [DatePipe],
     templateUrl: './happy-call.html',
     styleUrl: './happy-call.scss'
@@ -73,21 +74,163 @@ export class HappyCall implements OnInit {
   }
   label: any = {show:true,fontSize:14,fontWeight:'bold',fontFamily:'Nazanin',position:'top',formatter: (params:any) => {return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');}};
 
-  series_calls_count_day:EChartsOption = {
-    title: {text: 'آمار کل تماس های هپی کال - بر حسب روز', textStyle:this.TitleTextStyle,subtext:this.st_to_en, subtextStyle:{fontFamily:'Bahnschrift'}, right:0, textAlign:'center'},
-    tooltip: {trigger: 'axis', axisPointer: {type: 'cross', label: {backgroundColor: '#6a7985'}},textStyle:this.tooltipTextStyle},
-    legend: {data: ['کل تماس ها', 'تماس های موفق', 'تماس های ناموفق'],textStyle:this.legendTextStyle,left:'10%'},
-    xAxis: {type: 'category', data: [], axisLabel: { interval: 0, rotate: 45 }},
-    yAxis: {type: 'value'},
-    toolbox: {show: true, orient: 'vertical', left: 'right', top: 'center', feature: {
-        mark: { show: true },
+  series_calls_count_day: EChartsOption = {
+    title: {
+      text: 'آمار کل تماس‌های هپی‌کال - بر حسب روز',
+      right: 0,
+      textStyle: {
+        fontFamily: 'Vazirmatn',
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#333'
+      }
+    },
+    grid: {
+      left: '3%',
+      right: '6%',
+      bottom: '15%',
+      top: '15%',
+      containLabel: true
+    },
+    toolbox: {
+      show: true,
+      orient: 'vertical',
+      left: 'right',
+      top: 'center',
+      feature: {
         dataView: { show: true, readOnly: false },
         magicType: { show: true, type: ['line', 'bar'] },
         restore: { show: true },
         saveAsImage: { show: true }
-      }},
-    series: [{name: 'کل تماس ها',data: [], type: 'line', color: '#3498DB', symbolSize: 10},{name: 'تماس های موفق',data: [], type: 'line', color: '#1ABC9C', symbolSize: 10},{name: 'تماس های ناموفق',data: [], type: 'line', color: '#E74C3C', symbolSize: 10},]
+      }
+    },
+    tooltip: {
+      trigger: 'axis',
+      backgroundColor: 'rgba(255, 255, 255, 0.95)',
+      borderWidth: 1,
+      borderColor: '#3b82f6',
+      textStyle: {
+        fontFamily: 'Vazirmatn',
+        color: '#000'
+      },
+      formatter: (params: any) => {
+        const date = params[0].name;
+        let tooltipHTML = `<div style="direction: rtl; text-align: right;">
+                        <span style="color: #666;">تاریخ:</span> <b>${date}</b><br/>`;
+
+        params.forEach((item: any) => {
+          const color = item.color;
+          const seriesName = item.seriesName;
+          const value = item.value;
+
+          tooltipHTML += `<span style="color: ${color};">●</span> ${seriesName}: <b>${value}</b><br/>`;
+        });
+
+        tooltipHTML += '</div>';
+        return tooltipHTML;
+      }
+    },
+    legend: {
+      data: ['کل تماس‌ها', 'تماس‌های موفق', 'تماس‌های ناموفق'],
+      textStyle: {
+        fontFamily: 'Vazirmatn',
+        fontSize: 12
+      },
+      top: '5%',
+      left: 'center'
+    },
+    xAxis: {
+      type: 'category',
+      data: [],
+      boundaryGap: true,
+      axisLabel: {
+        rotate: 45,
+        fontFamily: 'Vazirmatn',
+        fontSize: 11,
+        interval: 0
+      },
+      axisLine: {
+        lineStyle: {
+          color: '#ccc'
+        }
+      }
+    },
+    yAxis: {
+      type: 'value',
+      splitLine: {
+        lineStyle: {
+          type: 'dashed',
+          opacity: 0.4
+        }
+      }
+    },
+    series: [
+      {
+        name: 'کل تماس‌ها',
+        data: [],
+        type: 'line',
+        smooth: true,
+        color: '#3498DB',
+        areaStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            { offset: 0, color: 'rgba(52, 152, 219, 0.4)' },
+            { offset: 1, color: 'rgba(52, 152, 219, 0)' }
+          ])
+        },
+        symbol: 'circle',
+        symbolSize: 10,
+        itemStyle: {
+          borderWidth: 3,
+          borderColor: '#fff',
+          shadowColor: 'rgba(0, 0, 0, 0.2)',
+          shadowBlur: 5
+        }
+      },
+      {
+        name: 'تماس‌های موفق',
+        data: [],
+        type: 'line',
+        smooth: true,
+        color: '#1ABC9C',
+        areaStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            { offset: 0, color: 'rgba(26, 188, 156, 0.4)' },
+            { offset: 1, color: 'rgba(26, 188, 156, 0)' }
+          ])
+        },
+        symbol: 'circle',
+        symbolSize: 10,
+        itemStyle: {
+          borderWidth: 3,
+          borderColor: '#fff',
+          shadowColor: 'rgba(0, 0, 0, 0.2)',
+          shadowBlur: 5
+        }
+      },
+      {
+        name: 'تماس‌های ناموفق',
+        data: [],
+        type: 'line',
+        smooth: true,
+        color: '#E74C3C',
+        areaStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            { offset: 0, color: 'rgba(231, 76, 60, 0.4)' },
+            { offset: 1, color: 'rgba(231, 76, 60, 0)' }
+          ])
+        },
+        symbol: 'circle',
+        symbolSize: 10,
+        itemStyle: {
+          borderWidth: 3,
+          borderColor: '#fff',
+          shadowColor: 'rgba(0, 0, 0, 0.2)',
+          shadowBlur: 5
+        }
+      }
+    ]
   };
+
   series_ActiveIntroduction: any[] = [];
   series_InactiveIntroduction: any[] = [];
   series_Introduction:EChartsOption = {
@@ -95,8 +238,7 @@ export class HappyCall implements OnInit {
     legend: {top: '10%', left: 'center',textStyle:this.legendTextStyle},
     title: [{text: 'مسیر آشنایی با کارگزاری', left: 'center',textStyle:this.TitleTextStyle},
       {subtext: 'مشتریان فعال', bottom:'15%', left:'75%', textAlign: 'center',subtextStyle:{fontFamily:'Nazanin',fontSize:'16px',fontWeight:'bold',color:'#000000'}},
-      {subtext: 'مشتریان غیرفعال', bottom:'15%', left:'25%', textAlign: 'center',subtextStyle:{fontFamily:'Nazanin',fontSize:'16px',fontWeight:'bold',color:'#000000'}},
-      {subtext: this.st_to_en, bottom:'5%', left:'50%', textAlign: 'center',subtextStyle:{fontFamily:'Bahnschrift',fontSize:'14px',color:'#000000'}}],
+      {subtext: 'مشتریان غیرفعال', bottom:'15%', left:'25%', textAlign: 'center',subtextStyle:{fontFamily:'Nazanin',fontSize:'16px',fontWeight:'bold',color:'#000000'}}],
     toolbox: {show: true, orient: 'vertical', left: 'right', top: 'center', feature: {
         mark: { show: true },
         dataView: { show: true, readOnly: false },
@@ -151,6 +293,9 @@ export class HappyCall implements OnInit {
         name:'مشتریان فعال',
         roam: false,
         nodeClick: false,
+        breadcrumb: { show: false },
+        itemStyle: { borderRadius: 10, borderColor: '#fff', borderWidth: 2, gapWidth: 2 },
+        color: ['#3b82f6', '#60a5fa', '#93c5fd', '#bfdbfe', '#2563eb'],
         label: {
           show: true,
           fontFamily:'Nazanin',fontWeight:'bold',fontSize:'14px',position:'insideTopLeft', padding:15,
@@ -185,6 +330,9 @@ export class HappyCall implements OnInit {
         name:'مشتریان غیرفعال',
         roam: false,
         nodeClick: false,
+        breadcrumb: { show: false },
+        itemStyle: { borderRadius: 10, borderColor: '#fff', borderWidth: 2, gapWidth: 2 },
+        color: ['#3b82f6', '#60a5fa', '#93c5fd', '#bfdbfe', '#2563eb'],
         label: {
           show: true,
           fontFamily:'Nazanin',fontWeight:'bold',fontSize:'14px',position:'insideTopLeft', padding:15,
@@ -235,7 +383,6 @@ export class HappyCall implements OnInit {
       let end = this.datePipe.transform(total_calls_date[total_calls_date.length-1],'yyyy-MM-dd') || '';
       this.st_to_en = std + ' to ' + end;
       this.TimeService.transfer_days(this.available_days);
-      (this.series_calls_count_day.title as any).subtext = this.st_to_en;
       (this.series_calls_count_day.xAxis as any).data = total_calls_date;
       (this.series_calls_count_day.series as any)[0].data = total_calls_count;
       // Successful Calls Day ------------------------------------
@@ -272,7 +419,6 @@ export class HappyCall implements OnInit {
       let res_InactiveIntroduction = await this.getData.get_InactiveIntroduction(stDate,enDate).toPromise();
       for (let i = 0; i < res_InactiveIntroduction.length; i++)
         this.series_InactiveIntroduction.push({ name: res_InactiveIntroduction[i].title, value: res_InactiveIntroduction[i].count });
-      (this.series_Introduction.title as any)[3].subtext = this.st_to_en;
       (this.series_Introduction.series as any)[0].data = this.series_ActiveIntroduction;
       (this.series_Introduction.series as any)[1].data = this.series_InactiveIntroduction;
       this.flag_Introduction = true;

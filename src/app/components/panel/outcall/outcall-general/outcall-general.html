@@ -42,27 +42,6 @@
 
         <section class="glass-card mb-4">
           <div class="card-header">
-            <div class="header-title-wrapper">
-              <h2>وضعیت تماس‌ها</h2>
-            </div>
-          </div>
-          <div class="status-summary-wrapper">
-            <div class="status-grid" *ngIf="!loading">
-              <div class="status-card" *ngFor="let item of statusCounts"
-                   [ngClass]="getStatusDetails(item.status).colorClass">
-                <div class="status-content">
-                  <span class="status-label">{{ getStatusDetails(item.status).label }}</span>
-                  <div class="status-number-box">
-                    {{ item.count | number }}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section class="glass-card mb-4">
-          <div class="card-header">
             <h2>توزیع موضوعات تماس</h2>
           </div>
           <div class="subjects-report-wrapper">
@@ -95,6 +74,27 @@
           <div class="chart-box" style="height: 450px;">
             <div *ngIf="loading" class="spinner-overlay"><mat-spinner diameter="50"></mat-spinner></div>
             <div echarts [options]="analysisChartOption" class="chart-container"></div>
+          </div>
+        </section>
+
+        <section class="glass-card mb-4">
+          <div class="card-header">
+            <div class="header-title-wrapper">
+              <h2>وضعیت تماس‌ها</h2>
+            </div>
+          </div>
+          <div class="status-summary-wrapper">
+            <div class="status-grid" *ngIf="!loading">
+              <div class="status-card" *ngFor="let item of statusCounts"
+                   [ngClass]="getStatusDetails(item.status).colorClass">
+                <div class="status-content">
+                  <span class="status-label">{{ getStatusDetails(item.status).label }}</span>
+                  <div class="status-number-box">
+                    {{ item.count | number }}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
       </ng-container>
