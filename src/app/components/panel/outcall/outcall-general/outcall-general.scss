@@ -1,5 +1,6 @@
 @use '../../../../../variables' as *;
 
+// نوار ابزار (تاریخ + دکمه‌های سریع + نشان)
 .toolbar-content {
   display: flex;
   justify-content: space-between;
@@ -8,6 +9,23 @@
   gap: 20px;
 }
 
+.quick-actions {
+  display: flex;
+  gap: 10px;
+}
+
+// توضیحات داخل هدر کارت
+.card-description {
+  font-size: 13px;
+  color: $text-secondary;
+  background: rgba($primary-color, 0.05);
+  padding: 6px 12px;
+  border-radius: 8px;
+  width: fit-content;
+  margin-top: 8px;
+}
+
+// بخش توزیع موضوعات
 .subjects-report-wrapper {
   display: flex;
   flex-direction: column;
@@ -22,19 +40,26 @@
     justify-content: space-between;
     align-items: center;
 
-    .label { font-family: $Font-Family-Fa; font-size: 16px; opacity: 0.9; }
-    .value { font-family: $Font-Family-En; font-size: 28px; font-weight: 800; }
+    .label {
+      font-family: $Font-Family-Fa;
+      font-size: 16px;
+      opacity: 0.9;
+    }
+    .value {
+      font-family: $Font-Family-En;
+      font-size: 28px;
+      font-weight: 800;
+    }
   }
 
   .subjects-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 15px;
-    width: 100%; // جلوگیری از بیرون زدن
 
     .subject-item {
       background: white;
-      border: 1px solid rgba(0,0,0,0.05);
+      border: 1px solid rgba(0, 0, 0, 0.05);
       border-radius: 10px;
       padding: 15px;
       display: flex;
@@ -46,6 +71,7 @@
       &:hover {
         border-color: $primary-color;
         transform: scale(1.02);
+        box-shadow: 0 4px 12px rgba($primary-color, 0.1);
       }
 
       .subject-name {
@@ -55,7 +81,10 @@
         display: flex;
         align-items: center;
         gap: 8px;
-        i { color: $text-secondary; font-size: 18px; }
+        i {
+          color: $text-secondary;
+          font-size: 18px;
+        }
       }
 
       .subject-count {
@@ -70,12 +99,13 @@
     }
   }
 }
+
+// وضعیت تماس‌ها (شبکه کارت‌ها)
 .status-grid {
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
-  padding: 10px;
-  direction: rtl;
+  padding: 10px 0;
 
   .status-card {
     flex: 1;
@@ -117,12 +147,13 @@
       font-family: 'Bahnschrift', sans-serif;
     }
 
+    // رنگ‌های وضعیت (همان‌هایی که در کامپوننت وجود دارد)
     &.status-made {
       border-right-color: #10b981;
       background: #f0fdf4;
       .status-number-box { color: #10b981; background: #dcfce7; }
     }
-    &.status-unresponsive {
+    &.status-unsuccessful {
       border-right-color: #f43f5e;
       background: #fff1f2;
       .status-number-box { color: #f43f5e; background: #ffe4e6; }
@@ -132,7 +163,7 @@
       background: #eff6ff;
       .status-number-box { color: #3b82f6; background: #dbeafe; }
     }
-    &.status-canceled {
+    &.status-recall {
       border-right-color: #6b7280;
       background: #f3f4f6;
       .status-number-box { color: #6b7280; background: #e5e7eb; }
@@ -145,7 +176,136 @@
 
     &:hover {
       transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
+  }
+}
+
+// پاپ‌آپ (مشابه صفحه تیکت)
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.glass-popup {
+  @include glass-style;
+  width: 95%;
+  max-width: 1000px;
+  padding: 20px;
+  background: white;
+  border-radius: $radius-main;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba($primary-color, 0.2);
+
+  h2 {
+    font-size: 18px;
+    margin: 0;
+    color: $text-main;
+    font-family: $Font-Family-Fa;
+  }
+
+  .close-btn {
+    border: none;
+    background: rgba($primary-color, 0.1);
+    color: $primary-color;
+    font-size: 24px;
+    width: 35px;
+    height: 35px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      background: $primary-color;
+      color: white;
+    }
+  }
+}
+
+// جدول داخل پاپ‌آپ (مشابه جدول سفارشی)
+.custom-table {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba($primary-color, 0.1);
+
+  .table-head {
+    display: flex;
+    background: linear-gradient(135deg, $primary-color, $primary-hover);
+    .cell {
+      flex: 1;
+      padding: 12px;
+      color: white;
+      font-weight: 600;
+      text-align: center;
+      font-size: 14px;
+      font-family: $Font-Family-Fa;
+    }
+  }
+
+  .table-body {
+    .table-row {
+      display: flex;
+      border-bottom: 1px solid rgba($primary-color, 0.1);
+      transition: background 0.2s;
+      &:nth-child(even) {
+        background: rgba($primary-color, 0.02);
+      }
+      &:hover {
+        background: rgba($primary-color, 0.05);
+      }
+      .cell {
+        flex: 1;
+        padding: 10px;
+        text-align: center;
+        font-size: 13px;
+        color: $text-main;
+        font-family: $Font-Family-En;
+      }
+    }
+  }
+}
+
+// ریسپانسیو
+@media (max-width: 768px) {
+  .toolbar-content {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .quick-actions {
+    justify-content: center;
+  }
+  .subjects-list {
+    grid-template-columns: 1fr;
+  }
+  .status-card {
+    min-width: 140px;
+  }
+  .glass-popup {
+    width: 95%;
+    padding: 15px;
+  }
+  .custom-table {
+    font-size: 12px;
+    overflow-x: auto;
   }
 }

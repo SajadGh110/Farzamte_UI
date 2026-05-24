@@ -12,6 +12,7 @@ import {TimeService} from "../../../../services/time.service";
 import {AuthService} from "../../../../services/auth.service";
 import {Router} from "@angular/router";
 import {DashboardTopmenuComponent} from "../../../Template/dashboard-topmenu/dashboard-topmenu.component";
+import {Dir} from "@angular/cdk/bidi";
 
 @Component({
     selector: 'app-notice-call',
@@ -22,7 +23,8 @@ import {DashboardTopmenuComponent} from "../../../Template/dashboard-topmenu/das
     NgxEchartsDirective,
     ReactiveFormsModule,
     NgForOf,
-    DashboardTopmenuComponent
+    DashboardTopmenuComponent,
+    Dir
   ],
     providers: [DatePipe],
     templateUrl: './notice-call.html',
@@ -162,7 +164,7 @@ export class NoticeCall implements OnInit {
       StartDate: [''],
       EndDate: ['']
     });
-    this.SetTime(30);
+    this.SetTime(90);
   }
 
   async do(stDate:string,enDate:string){

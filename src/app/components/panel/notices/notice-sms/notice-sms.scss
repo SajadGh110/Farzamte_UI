@@ -1,0 +1,105 @@
+@use '../../../../../variables' as *;
+
+// نوار ابزار (تاریخ + دکمه‌های سریع + نشان)
+.toolbar-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.quick-actions {
+  display: flex;
+  gap: 10px;
+}
+
+// عنوان فرعی بخش‌ها (انواع اطلاع رسانی و ...)
+.section-subtitle {
+  font-family: $Font-Family-Fa;
+  font-size: 16px;
+  font-weight: 600;
+  color: $text-main;
+  margin: 0 0 15px 0;
+  padding-right: 10px;
+  border-right: 3px solid $primary-color;
+}
+
+// گرید آمار کلی (همان استایل marketing)
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 15px;
+  margin-bottom: 15px;
+
+  .stat-card {
+    background: white;
+    border-radius: 10px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition: all 0.2s;
+    cursor: pointer;
+
+    .stat-label {
+      font-size: 13px;
+      color: $text-secondary;
+      font-family: $Font-Family-Fa;
+    }
+
+    .stat-value {
+      font-size: 22px;
+      font-weight: 800;
+      font-family: $Font-Family-En;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+  }
+}
+
+// دو نمودار کنار هم (برای نمودارهای دایره‌ای)
+.charts-two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+// کانتینر TreeMap
+.treemap-container {
+  width: 100%;
+  min-height: 550px;
+
+  .treemap-chart {
+    width: 100%;
+    height: 550px;
+  }
+}
+
+// ریسپانسیو
+@media (max-width: 768px) {
+  .toolbar-content {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .quick-actions {
+    justify-content: center;
+  }
+  .charts-two {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  .stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+  .treemap-container {
+    min-height: 400px;
+    .treemap-chart {
+      height: 400px;
+    }
+  }
+}

@@ -6,7 +6,8 @@
 
     <div class="content-scrollable">
       <ng-container *ngIf="auth.hasPermission('outCallT2.view'); else deniedTemplate">
-        <section class="glass-card mb-4">
+        <!-- کارت تنظیم بازه زمانی -->
+        <section class="glass-card">
           <div class="card-header">
             <h2>تنظیمات بازه زمانی گزارش</h2>
           </div>
@@ -21,62 +22,84 @@
                 <input type="date" formControlName="EndDate">
               </div>
               <button type="submit" class="btn-refresh" [disabled]="loading">
-                <i class="material-icons">sync</i>
-                بروزرسانی داده‌ها
+                <i class="material-icons">search</i>
+                جستجو
               </button>
             </div>
-            <div class="quick-info">
-              <span class="badge shadow-sm">دوره گزارش: <span dir="ltr">{{ st_to_en }}</span></span>
+
+            <div class="quick-actions">
+              <button type="button" class="btn-primary" (click)="SetTime(30)">یک ماهه</button>
+              <button type="button" class="btn-primary" (click)="SetTime(90)">سه ماهه</button>
+              <button type="button" class="btn-primary" (click)="SetTime(180)">شش ماهه</button>
             </div>
+
+            <span class="badge">
+              بازه زمانی انتخابی :
+              <span dir="ltr">{{selected_days}}</span>
+              روز
+            </span>
           </form>
         </section>
-        <section class="glass-card mb-4">
+
+        <!-- روند تماس‌های خروجی روزانه -->
+        <section class="glass-card">
           <div class="card-header">
             <h2>روند تماس‌های خروجی روزانه</h2>
           </div>
-          <div class="chart-box">
-            <div *ngIf="loading" class="spinner-overlay">
-              <mat-spinner diameter="50"></mat-spinner>
-            </div>
+          <div class="loading-spinner" *ngIf="loading">
+            <mat-spinner diameter="50"></mat-spinner>
+          </div>
+          <div class="chart-box" *ngIf="!loading">
             <div echarts [options]="chartOption" class="chart-container"></div>
           </div>
         </section>
 
-        <section class="glass-card mb-4">
+        <!-- توزیع موضوعات تماس -->
+        <section class="glass-card">
           <div class="card-header">
             <h2>توزیع موضوعات تماس</h2>
+            <p class="card-description">
+              با کلیک روی هر موضوع، جزئیات تماس‌های آن موضوع نمایش داده می‌شود.
+            </p>
           </div>
-          <div class="subjects-report-wrapper">
-            <div class="total-calls-banner shadow-sm">
-              <span class="label">مجموع کل تماس‌های ثبت شده در این بازه:</span>
-              <span class="value">{{ totalCalls | number }}</span>
-            </div>
-            <div class="subjects-list">
-              <div class="subject-item" *ngFor="let item of subjectsCount" (click)="Popup(item.subject)">
-                <div class="subject-name">
-                  <i class="material-icons">label</i>
-                  {{ item.subject || 'بدون موضوع' }}
-                </div>
-                <div class="subject-count">
-                  {{ item.count | number }}
+          <div class="loading-spinner" *ngIf="loading">
+            <mat-spinner diameter="50"></mat-spinner>
+          </div>
+          <div *ngIf="!loading">
+            <div class="subjects-report-wrapper">
+              <div class="total-calls-banner">
+                <span class="label">مجموع کل تماس‌های ثبت شده در این بازه:</span>
+                <span class="value">{{ totalCalls | number }}</span>
+              </div>
+              <div class="subjects-list">
+                <div class="subject-item" *ngFor="let item of subjectsCount" (click)="Popup(item.subject)">
+                  <div class="subject-name">
+                    <i class="material-icons">label</i>
+                    {{ item.subject || 'بدون موضوع' }}
+                  </div>
+                  <div class="subject-count">
+                    {{ item.count | number }}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div *ngIf="subjectsCount.length === 0 && !loading" class="no-data">
-            <i class="material-icons">sentiment_dissatisfied</i>
-            <span>اطلاعاتی برای نمایش وجود ندارد.</span>
+            <div *ngIf="subjectsCount.length === 0" class="no-data-display">
+              <i class="material-icons">sentiment_dissatisfied</i>
+              <span>اطلاعاتی برای نمایش وجود ندارد.</span>
+            </div>
           </div>
         </section>
 
-        <section class="glass-card mb-4">
+        <!-- وضعیت تماس‌ها -->
+        <section class="glass-card">
           <div class="card-header">
-            <div class="header-title-wrapper">
-              <h2>وضعیت تماس‌ها</h2>
-            </div>
+            <h2>وضعیت تماس‌ها</h2>
           </div>
-          <div class="status-summary-wrapper">
-            <div class="status-grid" *ngIf="!loading">
+          <div class="loading-spinner" *ngIf="loading">
+            <mat-spinner diameter="50"></mat-spinner>
+          </div>
+          <div class="status-summary-wrapper" *ngIf="!loading">
+            <div class="status-grid">
               <div class="status-card" *ngFor="let item of statusCounts"
                    [ngClass]="getStatusDetails(item.status).colorClass">
                 <div class="status-content">
@@ -90,19 +113,17 @@
           </div>
         </section>
       </ng-container>
+
       <ng-template #deniedTemplate>
         <div class="access-denied-container shadow-sm">
           <div class="icon-wrapper">
             <i class="material-icons">lock_person</i>
           </div>
           <h3>عدم دسترسی</h3>
-          <p>
-            متأسفانه اکانت شما مجوز دسترسی به این قسمت را ندارد!
-            <br>
-            در صورت نیاز، لطفاً با مدیر سیستم تماس بگیرید.
-          </p>
+          <p>متأسفانه اکانت شما مجوز دسترسی به این قسمت را ندارد!<br> در صورت نیاز، لطفاً با مدیر سیستم تماس بگیرید.</p>
         </div>
       </ng-template>
     </div>
+
   </section>
 </section>

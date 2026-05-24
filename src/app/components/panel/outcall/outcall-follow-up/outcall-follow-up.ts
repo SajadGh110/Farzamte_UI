@@ -31,11 +31,13 @@ import { OutCallDialog } from "./out-call-dialog/out-call-dialog";
 })
 export class OutcallFollowUp implements OnInit {
   dateform!: FormGroup;
-  loading: boolean = false;
-  popup: boolean = false;
+  protected loading: boolean = false;
+  protected popup: boolean = false;
+  protected flag_time:boolean = false;
   StartDate: string = "";
   EndDate: string = "";
   st_to_en: string = "";
+  selected_days:number = 0;
 
   // دیتای باکس‌های موضوعات
   subjectsCount: any[] = [];
@@ -147,6 +149,7 @@ export class OutcallFollowUp implements OnInit {
       console.warn('دسترسی محدود: ریکوئستی ارسال نشد.');
       return;
     }
+    this.SetTime(30);
     await this.initData();
   }
 
@@ -208,9 +211,10 @@ export class OutcallFollowUp implements OnInit {
   }
 
   async onUpdateDate() {
-    const st = this.dateform.value.StartDate;
-    const en = this.dateform.value.EndDate;
-    await this.fetchStats(st, en);
+    this.StartDate = this.dateform.value.StartDate;
+    this.EndDate = this.dateform.value.EndDate;
+    this.selected_days = this.timeService.calc_Diff_Date(this.StartDate, this.EndDate);
+    await this.fetchStats(this.StartDate, this.EndDate);
   }
 
   async Popup(item: string){
@@ -240,17 +244,28 @@ export class OutcallFollowUp implements OnInit {
     switch (st) {
       case 'made':
         return { label: 'موفق', colorClass: 'status-made' };
-      case 'unresponsive':
-        return { label: 'عدم پاسخگویی', colorClass: 'status-unresponsive' };
+      case 'unsuccessful':
+        return { label: 'ناموفق', colorClass: 'status-unsuccessful' };
       case 'open':
         return { label: 'در جریان (باز)', colorClass: 'status-open' };
-      case 'canceled':
-        return { label: 'لغو شده', colorClass: 'status-canceled' };
       case 'disinclination':
         return { label: 'عدم تمایل', colorClass: 'status-disinclination' };
+      case 'recall':
+        return { label: 'تماس مجدد', colorClass: 'status-recall' };
       case 'null':
       default:
         return { label: 'نامشخص', colorClass: 'status-unknown' };
     }
+  }
+
+  async SetTime(days:number){
+    let res_date = await this.outcallService.get_LastDate_F().toPromise();
+    this.EndDate = res_date.lastDate;
+    this.StartDate = format(subDays(this.EndDate, days), 'yyyy-MM-dd');
+    this.selected_days = this.timeService.calc_Diff_Date(this.StartDate, this.EndDate);
+    this.dateform.controls['StartDate'].setValue(this.StartDate);
+    this.dateform.controls['EndDate'].setValue(this.EndDate);
+    this.flag_time = true;
+    await this.fetchStats(this.StartDate,this.EndDate);
   }
 }

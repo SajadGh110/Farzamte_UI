@@ -2,116 +2,136 @@
   <app-dashboard-sidebar></app-dashboard-sidebar>
   <section class="dashboard-main">
     <app-dashboard-topmenu></app-dashboard-topmenu>
-    <ng-container *ngIf="auth.hasPermission('notices.call.view'); else deniedTemplate">
-      <section class="row">
-        <section class="detail">
-          <h2>انتخاب تاریخ گزارش</h2>
-        </section>
-        <section class="datepicker-input">
-          <section class="loading-spinner" *ngIf="!flag_time">
-            <mat-spinner></mat-spinner>
+      <div class="content-scrollable">
+        <ng-container *ngIf="auth.hasPermission('notices.call.view'); else deniedTemplate">
+          <!-- کارت تنظیم بازه زمانی -->
+          <section class="glass-card">
+            <div class="card-header">
+              <h2>تنظیمات بازه زمانی گزارش</h2>
+            </div>
+            <section class="loading-spinner" *ngIf="!flag_time">
+              <mat-spinner diameter="50"></mat-spinner>
+            </section>
+            <form *ngIf="flag_time" [formGroup]="dateform" class="toolbar-content">
+              <div class="date-inputs">
+                <div class="input-group">
+                  <label>از تاریخ :</label>
+                  <input type="date" formControlName="StartDate">
+                </div>
+                <div class="input-group">
+                  <label>تا تاریخ :</label>
+                  <input type="date" formControlName="EndDate">
+                </div>
+                <button type="submit" class="btn-refresh" (click)="OnUpdateDate()">
+                  <i class="material-icons">search</i>
+                  جستجو
+                </button>
+              </div>
+
+              <div class="quick-actions">
+                <button type="button" class="btn-primary" (click)="SetTime(30)">یک ماهه</button>
+                <button type="button" class="btn-primary" (click)="SetTime(90)">سه ماهه</button>
+                <button type="button" class="btn-primary" (click)="SetTime(180)">شش ماهه</button>
+              </div>
+
+              <span class="badge">
+          بازه زمانی انتخابی :
+          <span dir="ltr">{{ selected_days }}</span>
+          روز
+        </span>
+            </form>
           </section>
-          <form [formGroup]="dateform" *ngIf="flag_time">
-            <label for="StartDate">از تاریخ : </label>
-            <input type="date" id="StartDate" formControlName="StartDate" value="{{StartDate}}">
-            <label for="EndDate">تا تاریخ : </label>
-            <input type="date" id="EndDate" formControlName="EndDate" value="{{EndDate}}">
-            <input type="submit" value="جست و جو" (click)="OnUpdateDate()">
-          </form>
-          <section class="time_auto" *ngIf="flag_time">
-            <button class="auto" (click)="SetTime(30)">یک ماهه</button>
-            <button class="auto" (click)="SetTime(90)">سه ماهه</button>
-            <button class="auto" (click)="SetTime(180)">شش ماهه</button>
+
+          <!-- آمار تماس‌ها (نمودار خطی) -->
+          <section class="glass-card">
+            <div class="card-header">
+              <h2>آمار تماس ها</h2>
+            </div>
+            <div class="loading-spinner" *ngIf="!flag_count_day">
+              <mat-spinner diameter="50"></mat-spinner>
+            </div>
+            <div class="chart-box" *ngIf="flag_count_day">
+              <section echarts [options]="series_count_day" class="chart-container"></section>
+            </div>
           </section>
-          <section class="time_text" *ngIf="flag_time">
-            <p>بازه زمانی انتخابی : {{selected_days}} روز</p>
+
+          <!-- آمار کلی (انواع اطلاع رسانی و افزایش سرمایه) -->
+          <section class="glass-card">
+            <div class="card-header">
+              <h2>آمار کلی</h2>
+            </div>
+
+            <!-- انواع اطلاع رسانی -->
+            <h3 class="section-subtitle">انواع اطلاع رسانی</h3>
+            <div class="loading-spinner" *ngIf="!flag_noticetype">
+              <mat-spinner diameter="50"></mat-spinner>
+            </div>
+            <div class="stats-grid" *ngIf="flag_noticetype">
+              <div class="stat-card" *ngFor="let item of series_data_Noticetype; let i = index"
+                   [style.color]="series_color[i]">
+                <span class="stat-label">{{ item.name }}</span>
+                <span class="stat-value">{{ item.value }}</span>
+              </div>
+            </div>
+
+            <!-- انواع افزایش سرمایه -->
+            <h3 class="section-subtitle" style="margin-top: 25px;">انواع افزایش سرمایه</h3>
+            <div class="loading-spinner" *ngIf="!flag_capitalincrease">
+              <mat-spinner diameter="50"></mat-spinner>
+            </div>
+            <div class="stats-grid" *ngIf="flag_capitalincrease">
+              <div class="stat-card" *ngFor="let item of series_data_capitalincrease; let i = index"
+                   [style.color]="series_color[i]">
+                <span class="stat-label">{{ item.name }}</span>
+                <span class="stat-value">{{ item.value }}</span>
+              </div>
+            </div>
           </section>
-        </section>
-      </section>
-      <section class="row">
-        <section class="detail">
-          <h2>آمار تماس ها</h2>
-        </section>
-        <section class="loading-spinner" *ngIf="!flag_count_day">
-          <mat-spinner></mat-spinner>
-        </section>
-        <section class="line-chart-c1" *ngIf="flag_count_day">
-          <section echarts [options]="series_count_day"></section>
-        </section>
-      </section>
-      <section class="row">
-        <section class="detail">
-          <h2>آمار کلی</h2>
-        </section>
-        <h3 class="row-middle-h3">انواع اطلاع رسانی</h3>
-        <section class="loading-spinner" *ngIf="!flag_noticetype">
-          <mat-spinner></mat-spinner>
-        </section>
-        <section class="number-card-c2" *ngIf="flag_noticetype">
-          <section *ngFor="let item of series_data_Noticetype; let i = index">
-            <section class="card" [style.background-color]="series_color[i]"><p class="key">{{item.name}}</p><p class="value">{{item.value}}</p></section>
+
+          <!-- انواع تماس‌ها (دو نمودار دایره‌ای) -->
+          <section class="glass-card">
+            <div class="card-header">
+              <h2>انواع تماس ها</h2>
+            </div>
+            <div class="charts-two">
+              <div class="chart-box">
+                <div class="loading-spinner" *ngIf="!flag_noticetype">
+                  <mat-spinner diameter="50"></mat-spinner>
+                </div>
+                <section echarts *ngIf="flag_noticetype" [options]="series_Noticetype_Pie" class="chart-container"></section>
+              </div>
+              <div class="chart-box">
+                <div class="loading-spinner" *ngIf="!flag_capitalincrease">
+                  <mat-spinner diameter="50"></mat-spinner>
+                </div>
+                <section echarts *ngIf="flag_capitalincrease" [options]="series_capitalincrease_Pie" class="chart-container"></section>
+              </div>
+            </div>
           </section>
-        </section>
-        <h3 class="row-middle-h3">انواع افزایش سرمایه</h3>
-        <section class="loading-spinner" *ngIf="!flag_capitalincrease">
-          <mat-spinner></mat-spinner>
-        </section>
-        <section class="number-card-c2" *ngIf="flag_capitalincrease">
-          <section *ngFor="let item of series_data_capitalincrease; let i = index">
-            <section class="card" [style.background-color]="series_color[i]"><p class="key">{{item.name}}</p><p class="value">{{item.value}}</p></section>
+
+          <!-- تماس بر حسب نماد (TreeMap) -->
+          <section class="glass-card">
+            <div class="card-header">
+              <h2>تماس بر حسب نماد</h2>
+            </div>
+            <div class="loading-spinner" *ngIf="!flag_symbol">
+              <mat-spinner diameter="50"></mat-spinner>
+            </div>
+            <div class="treemap-container" *ngIf="flag_symbol">
+              <section echarts [options]="series_Symbol_tmp" class="treemap-chart"></section>
+            </div>
           </section>
-        </section>
-        <section class="st_to_en" *ngIf="flag_noticetype">
-          <p>{{st_to_en}}</p>
-        </section>
-      </section>
-      <section class="row">
-        <section class="detail">
-          <h2>انواع تماس ها</h2>
-        </section>
-        <section class="both-chart">
-          <section class="loading-spinner" *ngIf="!flag_noticetype">
-            <mat-spinner></mat-spinner>
-          </section>
-          <section class="pie-chart-c3" *ngIf="flag_noticetype">
-            <section echarts [options]="series_Noticetype_Pie"></section>
-          </section>
-          <section class="loading-spinner" *ngIf="!flag_capitalincrease">
-            <mat-spinner></mat-spinner>
-          </section>
-          <section class="pie-chart-c3" *ngIf="flag_capitalincrease">
-            <section echarts [options]="series_capitalincrease_Pie"></section>
-          </section>
-        </section>
-        <section class="st_to_en" *ngIf="flag_capitalincrease">
-          <p>{{st_to_en}}</p>
-        </section>
-      </section>
-      <section class="row">
-        <section class="detail">
-          <h2>تماس بر حسب نماد</h2>
-        </section>
-        <section class="loading-spinner" *ngIf="!flag_symbol">
-          <mat-spinner></mat-spinner>
-        </section>
-        <section style="min-height: 500px" class="tree-map-c2" id="Ph_Reasons" echarts [options]="series_Symbol_tmp" *ngIf="flag_symbol"></section>
-        <section class="st_to_en" *ngIf="flag_symbol">
-          <p>{{st_to_en}}</p>
-        </section>
-      </section>
-    </ng-container>
-    <ng-template #deniedTemplate>
-      <div class="access-denied-container shadow-sm">
-        <div class="icon-wrapper">
-          <i class="material-icons">lock_person</i>
-        </div>
-        <h3>عدم دسترسی</h3>
-        <p>
-          متأسفانه اکانت شما مجوز دسترسی به این قسمت را ندارد!
-          <br>
-          در صورت نیاز، لطفاً با مدیر سیستم تماس بگیرید.
-        </p>
+        </ng-container>
+
+        <ng-template #deniedTemplate>
+          <div class="access-denied-container shadow-sm">
+            <div class="icon-wrapper">
+              <i class="material-icons">lock_person</i>
+            </div>
+            <h3>عدم دسترسی</h3>
+            <p>متأسفانه اکانت شما مجوز دسترسی به این قسمت را ندارد!<br> در صورت نیاز، لطفاً با مدیر سیستم تماس بگیرید.</p>
+          </div>
+        </ng-template>
       </div>
-    </ng-template>
   </section>
 </section>

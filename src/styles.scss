@@ -212,6 +212,9 @@ body {
   width: 100%;
   position: relative;
 }
+.chart-container-bh {
+  height: 600px;
+}
 // Access Denied
 .access-denied-container {
   display: flex;
@@ -1010,11 +1013,11 @@ text.value-text {
   font-weight: bold;
   color: #fff;
   text-align: left;
-  position: absolute; /* چسباندن به گوشه */
-  padding-left: 10px; /* مقداری فاصله از لبه */
-  padding-right: 10px; /* فاصله از لبه برای خوانایی */
-  border-radius: 4px; /* گوشه‌های کمی گرد */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* سایه‌ای سبک برای برجسته شدن */
+  position: absolute;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 .number-card-c3 p.value {
   width: 100%;

@@ -12,6 +12,7 @@ import {NoticeService} from "../../../../services/notice.service";
 import {EChartsOption} from "echarts";
 import {format, subDays} from "date-fns";
 import {DashboardTopmenuComponent} from "../../../Template/dashboard-topmenu/dashboard-topmenu.component";
+import {Dir} from "@angular/cdk/bidi";
 
 @Component({
     selector: 'app-notice-sms',
@@ -22,7 +23,8 @@ import {DashboardTopmenuComponent} from "../../../Template/dashboard-topmenu/das
     NgxEchartsDirective,
     NgForOf,
     ReactiveFormsModule,
-    DashboardTopmenuComponent
+    DashboardTopmenuComponent,
+    Dir
   ],
     providers: [DatePipe],
     templateUrl: './notice-sms.html',
@@ -173,7 +175,7 @@ export class NoticeSms implements OnInit {
       StartDate: [''],
       EndDate: ['']
     });
-    this.SetTime(30);
+    this.SetTime(90);
   }
 
   async do(stDate:string,enDate:string){
