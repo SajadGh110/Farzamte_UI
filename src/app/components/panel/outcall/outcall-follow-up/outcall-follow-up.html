@@ -90,6 +90,78 @@
           </div>
         </section>
 
+        <!-- تفکیک کارشناسان تماس -->
+        <section class="glass-card">
+          <div class="card-header">
+            <h2>تفکیک کارشناسان تماس</h2>
+            <p class="card-description">
+              با کلیک روی هر موضوع، جزئیات تماس‌های آن موضوع نمایش داده می‌شود.
+            </p>
+          </div>
+          <div class="loading-spinner" *ngIf="loading">
+            <mat-spinner diameter="50"></mat-spinner>
+          </div>
+          <div *ngIf="!loading">
+            <div class="subjects-report-wrapper">
+              <div class="total-calls-banner">
+                <span class="label">مجموع کل تماس‌های ثبت شده در این بازه:</span>
+                <span class="value">{{ totalCalls | number }}</span>
+              </div>
+              <div class="subjects-list">
+                <div class="subject-item" *ngFor="let item of expertsCount" (click)="Popup_exp(item.expert)">
+                  <div class="subject-name">
+                    <i class="material-icons">label</i>
+                    {{ item.expert || 'بدون موضوع' }}
+                  </div>
+                  <div class="subject-count">
+                    {{ item.count | number }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="subjectsCount.length === 0" class="no-data-display">
+              <i class="material-icons">sentiment_dissatisfied</i>
+              <span>اطلاعاتی برای نمایش وجود ندارد.</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- تفکیک واحد تماس -->
+        <section class="glass-card">
+          <div class="card-header">
+            <h2>تفکیک واحد تماس</h2>
+            <p class="card-description">
+              با کلیک روی هر موضوع، جزئیات تماس‌های آن موضوع نمایش داده می‌شود.
+            </p>
+          </div>
+          <div class="loading-spinner" *ngIf="loading">
+            <mat-spinner diameter="50"></mat-spinner>
+          </div>
+          <div *ngIf="!loading">
+            <div class="subjects-report-wrapper">
+              <div class="total-calls-banner">
+                <span class="label">مجموع کل تماس‌های ثبت شده در این بازه:</span>
+                <span class="value">{{ totalCalls | number }}</span>
+              </div>
+              <div class="subjects-list">
+                <div class="subject-item" *ngFor="let item of unitsCount" (click)="Popup_unit(item.unit)">
+                  <div class="subject-name">
+                    <i class="material-icons">label</i>
+                    {{ item.unit || 'بدون موضوع' }}
+                  </div>
+                  <div class="subject-count">
+                    {{ item.count | number }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="subjectsCount.length === 0" class="no-data-display">
+              <i class="material-icons">sentiment_dissatisfied</i>
+              <span>اطلاعاتی برای نمایش وجود ندارد.</span>
+            </div>
+          </div>
+        </section>
+
         <!-- وضعیت تماس‌ها -->
         <section class="glass-card">
           <div class="card-header">

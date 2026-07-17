@@ -108,24 +108,58 @@
         <section class="glass-card">
           <div class="card-header"><h2>کارشناسان پاسخگو</h2></div>
           <mat-spinner *ngIf="!flag_experts" class="center-spinner"></mat-spinner>
-          <div class="table-container">
-            <table dir="ltr" mat-table [dataSource]="dataSource_experts">
-              <ng-container matColumnDef="readableFullName">
-                <th mat-header-cell *matHeaderCellDef>نام و نام خانوادگی</th>
-                <td mat-cell *matCellDef="let e">{{e.readableFullName}}</td>
-              </ng-container>
-              <ng-container matColumnDef="unit">
-                <th mat-header-cell *matHeaderCellDef>واحد/تیم</th>
-                <td mat-cell *matCellDef="let e">{{e.unit}}</td>
-              </ng-container>
-              <ng-container matColumnDef="branch">
-                <th mat-header-cell *matHeaderCellDef>شعبه</th>
-                <td mat-cell *matCellDef="let e">{{e.branch}}</td>
-              </ng-container>
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          <div class="table-actions" style="margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;">
+            <button (click)="exportToExcel()" class="btn-excel">
+              <mat-icon>file_download</mat-icon> خروجی اکسل
+            </button>
+            <div class="search-box">
+              <mat-icon>search</mat-icon>
+              <input type="text" [(ngModel)]="searchTerm" placeholder="جستجوی کارشناس یا واحد...">
+            </div>
+          </div>
+          <div class="table-outer-wrapper" *ngIf="flag_experts">
+            <table class="styled-table" dir="ltr">
+              <thead>
+                <tr>
+                  <th>No.</th>
+                  <th (click)="toggleSort('fullName')" class="sortable-header">
+                    Agent
+                    <mat-icon *ngIf="sortColumn === 'fullName'">
+                      {{ sortDirection === 'asc' ? 'arrow_drop_up' : 'arrow_drop_down' }}
+                    </mat-icon>
+                  </th>
+                  <th (click)="toggleSort('totalCalls')" class="sortable-header">
+                    Calls
+                    <mat-icon *ngIf="sortColumn === 'totalCalls'">
+                      {{ sortDirection === 'asc' ? 'arrow_drop_up' : 'arrow_drop_down' }}
+                    </mat-icon>
+                  </th>
+                  <th (click)="toggleSort('unit')" class="sortable-header">
+                    Unit
+                    <mat-icon *ngIf="sortColumn === 'unit'">
+                      {{ sortDirection === 'asc' ? 'arrow_drop_up' : 'arrow_drop_down' }}
+                    </mat-icon>
+                  </th>
+                  <th (click)="toggleSort('branch')" class="sortable-header">
+                    Branch
+                    <mat-icon *ngIf="sortColumn === 'branch'">
+                      {{ sortDirection === 'asc' ? 'arrow_drop_up' : 'arrow_drop_down' }}
+                    </mat-icon>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let item of filteredGroups; let i = index">
+                  <tr>
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ item.fullName }}</td>
+                    <td>{{ item.totalCalls }}</td>
+                    <td>{{ item.unit }}</td>
+                    <td>{{ item.branch }}</td>
+                  </tr>
+                </ng-container>
+              </tbody>
             </table>
-            <mat-paginator dir="ltr" [pageSize]="5" [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
           </div>
         </section>
       </div>

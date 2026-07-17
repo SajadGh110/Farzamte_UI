@@ -4,6 +4,11 @@
 $primary-blue: #3b82f6;
 $text-slate: #475569;
 $border-color: rgba(0, 0, 0, 0.08);
+$font-fa: 'Vazirmatn', sans-serif;
+$font-en: 'Inter', 'Roboto', 'Segoe UI', sans-serif;
+$blue-primary: #3b82f6;
+$red-indicator: #F54927;
+$green-indicator: #10b981;
 
 // --- اصلاح تراز "از" و "تا" و ورودی‌ها ---
 .filter-container-simple {
@@ -210,28 +215,6 @@ $border-color: rgba(0, 0, 0, 0.08);
   }
 }
 
-// استایل جدول و چارت‌ها (همان موارد قبلی که اوکی بودند)
-.table-container {
-  background: white;
-  border-radius: 15px;
-  overflow: hidden;
-  border: 1px solid $border-color;
-
-  table { width: 100%; }
-  th { background: #f8fafc !important; color: #64748b !important; }
-}
-
-.chart-wrapper {
-  position: relative;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 15px;
-  padding: 10px;
-
-  .chart-h400 {
-    height: 400px;
-    width: 100%;
-  }
-}
 
 .filter-split-container {
   display: flex;
@@ -276,5 +259,116 @@ $border-color: rgba(0, 0, 0, 0.08);
         margin-bottom: -1.25em;
       }
     }
+  }
+}
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+
+  th {
+    padding: 14px 8px;
+    color: white;
+    font-family: $font-fa;
+    font-weight: 600;
+    font-size: 13px;
+    text-align: center;
+    border: none;
+    background-color: $blue-primary;
+    &.col-red-header {
+      background-color: $red-indicator;
+    }
+    &.col-green-header {
+      background-color: $green-indicator;
+    }
+  }
+
+  td {
+    text-align: center;
+    border-bottom: 1px solid #f1f5f9;
+    font-family: $font-en;
+    padding: 12px 8px;
+    font-weight: 600;
+    font-size: 13px;
+    border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+    background-color: rgba($blue-primary, 0.04);
+    color: #334155;
+    &.col-red-cell {
+      background-color: rgba($red-indicator, 0.06);
+    }
+    &.col-green-cell {
+      background-color: rgba($green-indicator, 0.06);
+      color: #065f46;
+    }
+    &.text-danger-bold {
+      color: #d32f2f;
+      font-weight: 800;
+    }
+  }
+
+  .agent-name {
+    font-family: $font-fa;
+    color: #1e40af;
+  }
+
+  .total-row {
+    background-color: #f1f5f9;
+    border-top: 2px solid #3b82f6;
+
+    td {
+      color: #0f172a;
+      font-size: 13px;
+      padding: 12px 8px;
+    }
+  }
+}
+.btn-excel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #166534; // سبز تیره اکسلی
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'Vazirmatn';
+  transition: all 0.3s;
+
+  &:hover {
+    background-color: #15803d;
+    box-shadow: 0 4px 12px rgba(22, 101, 52, 0.2);
+  }
+}
+.search-box {
+  display: flex;
+  align-items: center;
+  background: #f1f5f9;
+  padding: 5px 15px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+
+  input {
+    border: none;
+    background: transparent;
+    outline: none;
+    padding: 8px;
+    font-family: $font-fa;
+    width: 250px;
+  }
+  mat-icon { color: #64748b; }
+}
+.sortable-header {
+  cursor: pointer;
+  position: relative;
+  transition: background 0.2s;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.5) !important;
+  }
+
+  mat-icon {
+    vertical-align: bottom;
+    margin-left: 4px;
   }
 }

@@ -1,0 +1,79 @@
+<div class="glass-table">
+  <table mat-table [dataSource]="dataSource">
+    <!-- ستون نوع -->
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef> نوع </th>
+      <td mat-cell *matCellDef="let element"> {{ element.type }} </td>
+    </ng-container>
+
+    <!-- ستون تاریخ -->
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef> تاریخ </th>
+      <td mat-cell *matCellDef="let element"> {{ element.date }} </td>
+    </ng-container>
+
+    <!-- ستون پاسخ داده‌شده -->
+    <ng-container matColumnDef="answered">
+      <th mat-header-cell *matHeaderCellDef> پاسخ داده‌شده </th>
+      <td mat-cell *matCellDef="let element"> {{ element.answered }} </td>
+    </ng-container>
+
+    <!-- ستون میانگین زمان انتظار -->
+    <ng-container matColumnDef="avgWait">
+      <th mat-header-cell *matHeaderCellDef> میانگین زمان انتظار </th>
+      <td mat-cell *matCellDef="let element"> {{ element.avgWait }} </td>
+    </ng-container>
+
+    <!-- ستون میانگین زمان مکالمه -->
+    <ng-container matColumnDef="avgTalk">
+      <th mat-header-cell *matHeaderCellDef> میانگین زمان مکالمه </th>
+      <td mat-cell *matCellDef="let element"> {{ element.avgTalk }} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row class="table-row" *matRowDef="let row; columns: displayedColumns;" (click)="onRowClick(row)"></tr>
+  </table>
+
+  <mat-paginator
+    [pageSize]="10"
+    [pageSizeOptions]="[5, 10, 15, 25]"
+    showFirstLastButtons>
+  </mat-paginator>
+</div>
+
+<!-- پاپ‌آپ نمایش جزئیات سطر -->
+<section class="overlay" *ngIf="flag_popup">
+  <section class="popup glass-modal">
+    <div class="popup-header">
+      <h2>جزئیات رکورد</h2>
+      <button class="close-btn" (click)="closePopup()">×</button>
+    </div>
+
+    <section class="loading-spinner" *ngIf="!flag_popup_data">
+      <mat-spinner diameter="40"></mat-spinner>
+    </section>
+
+    <section class="detail-grid" *ngIf="flag_popup_data && selectedRow">
+      <div class="detail-item">
+        <span class="label">نوع صف :</span>
+        <span class="value">{{ selectedRow.type }}</span>
+      </div>
+      <div class="detail-item">
+        <span class="label">تاریخ :</span>
+        <span class="value">{{ selectedRow.date }}</span>
+      </div>
+      <div class="detail-item">
+        <span class="label">پاسخ داده‌شده :</span>
+        <span class="value">{{ selectedRow.answered }}</span>
+      </div>
+      <div class="detail-item">
+        <span class="label">میانگین زمان انتظار :</span>
+        <span class="value">{{ selectedRow.avgWait }}</span>
+      </div>
+      <div class="detail-item">
+        <span class="label">میانگین زمان مکالمه :</span>
+        <span class="value">{{ selectedRow.avgTalk }}</span>
+      </div>
+    </section>
+  </section>
+</section>

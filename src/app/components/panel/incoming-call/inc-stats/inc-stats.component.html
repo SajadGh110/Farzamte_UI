@@ -2,62 +2,70 @@
   <app-dashboard-sidebar></app-dashboard-sidebar>
   <section class="dashboard-main">
     <app-dashboard-topmenu></app-dashboard-topmenu>
-    <ng-container *ngIf="auth.hasAnyPermission(INCPermissions); else deniedTemplate">
-      <section class="row inc-stats-header" dir="rtl">
-      <section class="detail">
-        <h2>گزارشات صف های پاسخگویی تماس ورودی</h2>
-      </section>
-      <section class="loading-spinner" *ngIf="!flag_data">
-        <mat-spinner></mat-spinner>
-      </section>
-      <app-inc-stats-chart class="mt-2" [data]="chartData" dir="ltr" *ngIf="flag_data"></app-inc-stats-chart>
-      <mat-form-field appearance="outline" class="input-type" *ngIf="flag_data">
-        <mat-label>نوع صف پاسخگویی</mat-label>
-        <mat-select [(ngModel)]="selectedType" (selectionChange)="onTypeChange()">
-          <mat-option *ngFor="let t of types" [value]="t">{{ convertTypeToFarsi(t) }}</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <section class="table3" style="direction: rtl" *ngIf="flag_data">
-        <table mat-table [dataSource]="dataSource">
-          <ng-container matColumnDef="type">
-            <th *matHeaderCellDef> نوع </th>
-            <td *matCellDef="let element">{{ element.type }}</td>
-          </ng-container>
-          <ng-container matColumnDef="date">
-            <th *matHeaderCellDef> تاریخ </th>
-            <td *matCellDef="let element">{{ element.date }}</td>
-          </ng-container>
-          <ng-container matColumnDef="answered">
-            <th *matHeaderCellDef> پاسخ داده‌شده </th>
-            <td *matCellDef="let element">{{ element.answered }}</td>
-          </ng-container>
-          <ng-container matColumnDef="avgWait">
-            <th *matHeaderCellDef> میانگین زمان انتظار </th>
-            <td *matCellDef="let element">{{ element.avgWait }}</td>
-          </ng-container>
-          <ng-container matColumnDef="avgTalk">
-            <th *matHeaderCellDef> میانگین زمان مکالمه </th>
-            <td *matCellDef="let element">{{ element.avgTalk }}</td>
-          </ng-container>
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
-        <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 15, 25]" showFirstLastButtons></mat-paginator>
-      </section>
-    </section>
-    </ng-container>
-    <ng-template #deniedTemplate>
-      <div class="access-denied-container shadow-sm">
-        <div class="icon-wrapper">
-          <i class="material-icons">lock_person</i>
+
+    <div class="content-scrollable">
+      <ng-container *ngIf="auth.hasAnyPermission(INCPermissions); else deniedTemplate">
+        <!-- کارت نمودار و جدول -->
+        <section class="glass-card">
+          <div class="card-header">
+            <h2>گزارشات صف‌های پاسخگویی تماس ورودی</h2>
+            <p class="card-description" *ngIf="flag_data">
+              نوع صف را انتخاب کنید تا داده‌های جدول به‌روز شوند.
+            </p>
+          </div>
+
+          <!-- اسپینر بارگذاری -->
+          <section class="loading-spinner" *ngIf="flag_loading">
+            <mat-spinner diameter="50"></mat-spinner>
+          </section>
+
+          <!-- محتوای اصلی (نمودار و جدول) -->
+          <div *ngIf="flag_data && !flag_loading">
+            <!-- نمودار -->
+            <div class="chart-box">
+              <app-inc-stats-chart [data]="chartData" dir="ltr"></app-inc-stats-chart>
+            </div>
+
+            <!-- فیلتر نوع صف -->
+            <div class="filter-row">
+              <div class="custom-select-wrapper">
+                <select
+                  class="custom-select"
+                  [(ngModel)]="selectedType"
+                  (change)="onTypeChange()"
+                  dir="rtl"
+                >
+                  <option *ngFor="let t of types" [value]="t">
+                    {{ convertTypeToFarsi(t) }}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <app-inc-stats-table
+              [data]="dataSource.data"
+              [displayedColumns]="displayedColumns">
+            </app-inc-stats-table>
+          </div>
+
+          <!-- پیام عدم وجود داده -->
+          <div *ngIf="!flag_loading && flag_data && allData.length === 0" class="no-data-display">
+            <i class="material-icons">info_outline</i>
+            <span>هیچ داده‌ای برای نمایش وجود ندارد.</span>
+          </div>
+        </section>
+      </ng-container>
+
+      <!-- قالب عدم دسترسی -->
+      <ng-template #deniedTemplate>
+        <div class="access-denied-container shadow-sm">
+          <div class="icon-wrapper">
+            <i class="material-icons">lock_person</i>
+          </div>
+          <h3>عدم دسترسی</h3>
+          <p>متأسفانه اکانت شما مجوز دسترسی به این قسمت را ندارد!<br> در صورت نیاز، لطفاً با مدیر سیستم تماس بگیرید.</p>
         </div>
-        <h3>عدم دسترسی</h3>
-        <p>
-          متأسفانه اکانت شما مجوز دسترسی به این قسمت را ندارد!
-          <br>
-          در صورت نیاز، لطفاً با مدیر سیستم تماس بگیرید.
-        </p>
-      </div>
-    </ng-template>
+      </ng-template>
+    </div>
   </section>
 </section>

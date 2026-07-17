@@ -41,6 +41,8 @@ export class OutcallFollowUp implements OnInit {
 
   // دیتای باکس‌های موضوعات
   subjectsCount: any[] = [];
+  expertsCount: any[] = [];
+  unitsCount: any[] = [];
   totalCalls: number = 0;
   statusCounts: any[] = [];
   // تنظیمات نمودار خطی (تعداد تماس روزانه)
@@ -149,7 +151,6 @@ export class OutcallFollowUp implements OnInit {
       console.warn('دسترسی محدود: ریکوئستی ارسال نشد.');
       return;
     }
-    this.SetTime(30);
     await this.initData();
   }
 
@@ -162,6 +163,7 @@ export class OutcallFollowUp implements OnInit {
 
       // ۲. تنظیم ۳۰ روز قبل به عنوان شروع
       this.StartDate = format(subDays(new Date(this.EndDate), 30), 'yyyy-MM-dd');
+      this.selected_days = this.timeService.calc_Diff_Date(this.StartDate, this.EndDate);
 
       this.dateform.patchValue({
         StartDate: this.StartDate,
@@ -201,6 +203,8 @@ export class OutcallFollowUp implements OnInit {
 
       this.subjectsCount = await this.outcallService.get_SubjectsCount_F(st, en).toPromise();
       this.subjectsCount.forEach(s => this.totalCalls += s.count);
+      this.expertsCount = await this.outcallService.get_ExpertsCount_F(st, en).toPromise();
+      this.unitsCount = await this.outcallService.get_UnitsCount_F(st, en).toPromise();
       this.statusCounts = await this.outcallService.get_StatusCount_F(st, en).toPromise();
       this.st_to_en = `${st} to ${en}`;
     } catch (error: any) {
@@ -221,6 +225,50 @@ export class OutcallFollowUp implements OnInit {
     this.popup = false;
     try {
       const res = await this.outcallService.get_Description_F(this.StartDate, this.EndDate, item).toPromise();
+      this.popup = true;
+
+      if (res && res.length > 0) {
+        this.dialog.open(OutCallDialog, {
+          width: '80vw',
+          maxWidth: '95vw',
+          maxHeight: '90vh',
+          data: { title: item, details: res }
+        });
+      } else {
+        this.toast.info({ detail: "اطلاع", summary: "توضیحاتی برای این مورد یافت نشد" });
+      }
+    }
+    catch (error: any) {
+      this.toast.error({ detail: "خطا", summary: "خطا در ارتباط با سرور" });
+    }
+  }
+
+  async Popup_exp(item: string){
+    this.popup = false;
+    try {
+      const res = await this.outcallService.get_DescriptionByExpert_F(this.StartDate, this.EndDate, item).toPromise();
+      this.popup = true;
+
+      if (res && res.length > 0) {
+        this.dialog.open(OutCallDialog, {
+          width: '80vw',
+          maxWidth: '95vw',
+          maxHeight: '90vh',
+          data: { title: item, details: res }
+        });
+      } else {
+        this.toast.info({ detail: "اطلاع", summary: "توضیحاتی برای این مورد یافت نشد" });
+      }
+    }
+    catch (error: any) {
+      this.toast.error({ detail: "خطا", summary: "خطا در ارتباط با سرور" });
+    }
+  }
+
+  async Popup_unit(item: string){
+    this.popup = false;
+    try {
+      const res = await this.outcallService.get_DescriptionByUnit_F(this.StartDate, this.EndDate, item).toPromise();
       this.popup = true;
 
       if (res && res.length > 0) {

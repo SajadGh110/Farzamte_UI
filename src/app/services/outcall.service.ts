@@ -34,12 +34,44 @@ export class OutcallService {
     return this.authService.get(`${this.apiUrl}GetSubjectsCount_T2/${StartDate}_${EndDate}`);
   }
 
+  get_ExpertsCount_G(StartDate:string, EndDate:string):Observable<any>{
+    return this.authService.get(`${this.apiUrl}GetExpertsCount_T1/${StartDate}_${EndDate}`);
+  }
+
+  get_ExpertsCount_F(StartDate:string, EndDate:string):Observable<any>{
+    return this.authService.get(`${this.apiUrl}GetExpertsCount_T2/${StartDate}_${EndDate}`);
+  }
+
+  get_UnitsCount_G(StartDate:string, EndDate:string):Observable<any>{
+    return this.authService.get(`${this.apiUrl}GetUnitsCount_T1/${StartDate}_${EndDate}`);
+  }
+
+  get_UnitsCount_F(StartDate:string, EndDate:string):Observable<any>{
+    return this.authService.get(`${this.apiUrl}GetUnitsCount_T2/${StartDate}_${EndDate}`);
+  }
+
   get_Description_G(StartDate:string, EndDate:string, Subject:string):Observable<any>{
-    return this.authService.get(`${this.apiUrl}GetGetDescription_T1/${StartDate}_${EndDate}?subject=${Subject}`);
+    return this.authService.get(`${this.apiUrl}GetDescription_T1/${StartDate}_${EndDate}?subject=${Subject}`);
   }
 
   get_Description_F(StartDate:string, EndDate:string, Subject:string):Observable<any>{
-    return this.authService.get(`${this.apiUrl}GetGetDescription_T2/${StartDate}_${EndDate}?subject=${Subject}`);
+    return this.authService.get(`${this.apiUrl}GetDescription_T2/${StartDate}_${EndDate}?subject=${Subject}`);
+  }
+
+  get_DescriptionByExpert_G(StartDate:string, EndDate:string, expertName:string):Observable<any>{
+    return this.authService.get(`${this.apiUrl}GetDescriptionByExpert_T1/${StartDate}_${EndDate}?expertName=${expertName}`);
+  }
+
+  get_DescriptionByExpert_F(StartDate:string, EndDate:string, expertName:string):Observable<any>{
+    return this.authService.get(`${this.apiUrl}GetDescriptionByExpert_T2/${StartDate}_${EndDate}?expertName=${expertName}`);
+  }
+
+  get_DescriptionByUnit_G(StartDate:string, EndDate:string, unit:string):Observable<any>{
+    return this.authService.get(`${this.apiUrl}GetDescriptionByUnit_T1/${StartDate}_${EndDate}?unit=${unit}`);
+  }
+
+  get_DescriptionByUnit_F(StartDate:string, EndDate:string, unit:string):Observable<any>{
+    return this.authService.get(`${this.apiUrl}GetDescriptionByUnit_T2/${StartDate}_${EndDate}?unit=${unit}`);
   }
 
   get_TitlesAnalysis(StartDate:string, EndDate:string):Observable<any>{

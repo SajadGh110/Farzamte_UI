@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DashboardSidebarComponent } from "../../Template/dashboard-sidebar/dashboard-sidebar.component";
 import { DashboardTopmenuComponent } from "../../Template/dashboard-topmenu/dashboard-topmenu.component";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
@@ -15,11 +15,10 @@ import { format, subDays } from "date-fns";
 import { MatSelectModule } from "@angular/material/select";
 import { MatButtonModule } from "@angular/material/button";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { IncExpertModel } from "../../../models/inc-expert.model";
 import { MatDialog } from '@angular/material/dialog';
 import { IncomingCallDialog} from "./incoming-call-dialog/incoming-call-dialog";
+import {MatIcon} from "@angular/material/icon";
+import * as XLSX from "xlsx";
 
 @Component({
   selector: 'app-incoming-call',
@@ -28,15 +27,13 @@ import { IncomingCallDialog} from "./incoming-call-dialog/incoming-call-dialog";
     CommonModule, DashboardSidebarComponent, DashboardTopmenuComponent,
     FormsModule, ReactiveFormsModule, MatProgressSpinnerModule,
     NgxEchartsDirective, MatSelectModule, MatButtonModule,
-    MatSlideToggleModule, MatTableModule, MatPaginatorModule
+    MatSlideToggleModule, MatIcon
   ],
   providers: [DatePipe],
   templateUrl: './incoming-call.html',
   styleUrl: './incoming-call.scss'
 })
-export class IncomingCall implements OnInit, AfterViewInit {
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChildren('Quick, Target_Totals') sections!: QueryList<ElementRef>;
+export class IncomingCall implements OnInit {
   protected INCPermissions:string[] = [
     'incomingCall.crm.view',
     'incomingCall.etebar.view',
@@ -64,8 +61,11 @@ export class IncomingCall implements OnInit, AfterViewInit {
   protected flag_loading = false;
   protected flag_experts = false;
 
-  dataSource_experts = new MatTableDataSource<IncExpertModel>();
-  displayedColumns: string[] = ['readableFullName', 'unit', 'branch'];
+  protected searchTerm: string = '';
+  protected sortColumn: string = '';
+  protected sortDirection: 'asc' | 'desc' = 'asc';
+
+  dataSource_experts:any[] = [];
   StartDate = "";
   EndDate = "";
   selected_days = 0;
@@ -105,10 +105,6 @@ export class IncomingCall implements OnInit, AfterViewInit {
     });
     this.initCharts();
     this.SetTime(30);
-  }
-
-  ngAfterViewInit() {
-    this.dataSource_experts.paginator = this.paginator;
   }
 
   get f() { return this.filterForm.controls; }
@@ -168,7 +164,7 @@ export class IncomingCall implements OnInit, AfterViewInit {
 
       this.updateCountChart(resCount);
       this.updateReasonsTreemap(resReasons);
-      this.dataSource_experts.data = resExperts;
+      this.dataSource_experts = resExperts;
 
       if (resReasons && resReasons.length > 0) {
         await this.loadReasonDetails(resReasons[0].reason);
@@ -406,5 +402,76 @@ export class IncomingCall implements OnInit, AfterViewInit {
         data: []
       }]
     };
+  }
+
+  get filteredGroups() {
+    if (!this.searchTerm.trim()) return this.dataSource_experts;
+
+    const term = this.searchTerm.toLowerCase().trim();
+    return this.dataSource_experts.filter(item =>
+      (item.fullName && item.fullName.toLowerCase().includes(term)) ||
+      (item.unit && item.unit.toLowerCase().includes(term)) ||
+      (item.branch && item.branch.toLowerCase().includes(term))
+    );
+  }
+
+  exportToExcel() {
+    const dataToExport:any[] = [];
+
+    const currentData = this.filteredGroups;
+
+    if (currentData.length === 0) {
+      this.toast.warning({ detail: "هشدار", summary: "داده‌ای برای خروجی گرفتن وجود ندارد" });
+      return;
+    }
+
+    currentData.forEach((group, index) => {
+      dataToExport.push({
+        'ردیف': index + 1,
+        'نام کارشناس': group.fullName,
+        'تعداد تماس': group.totalCalls,
+        'واحد': group.unit,
+        'شعبه': group.branch
+      });
+    });
+    // ۳. ساخت و دانلود فایل
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataToExport);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'گزارش تماس ورودی');
+
+    XLSX.writeFile(wb, `InComingCall_Report_${this.StartDate}-${this.EndDate}.xlsx`);
+  }
+
+  toggleSort(column: string) {
+    if (this.sortColumn === column) {
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortColumn = column;
+      this.sortDirection = 'asc';
+    }
+
+    this.dataSource_experts.sort((a, b) => {
+      let valA: any, valB: any;
+
+      if (column === 'fullName') {
+        valA = a.fullName?.toLowerCase() || '';
+        valB = b.fullName?.toLowerCase() || '';
+      } else if (column === 'unit') {
+        valA = a.unit?.toLowerCase() || '';
+        valB = b.unit?.toLowerCase() || '';
+      } else if (column === 'branch') {
+        valA = a.branch?.toLowerCase() || '';
+        valB = b.branch?.toLowerCase() || '';
+      } else if (column === 'totalCalls') {
+        valA = a.totalCalls || 0;
+        valB = b.totalCalls || 0;
+      } else {
+        return 0;
+      }
+
+      if (valA < valB) return this.sortDirection === 'asc' ? -1 : 1;
+      if (valA > valB) return this.sortDirection === 'asc' ? 1 : -1;
+      return 0;
+    });
   }
 }

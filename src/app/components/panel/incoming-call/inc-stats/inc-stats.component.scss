@@ -1,3 +1,79 @@
-.input-type {
-  margin-top: 2rem;
+@use '../../../../../variables' as *;
+// ============================
+//  استایل سلکت سفارشی (جایگزین mat-select)
+// ============================
+.filter-row {
+  display: flex;
+  justify-content: flex-start;
+  margin: 20px 0 15px 0;
+}
+
+.custom-select-wrapper {
+  position: relative;
+  width: 100%;
+
+  // فلش سفارشی
+  &::after {
+    content: "▾";
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: $primary-color;
+    font-size: 20px;
+    pointer-events: none;
+    transition: transform 0.2s ease;
+  }
+
+  // چرخش فلش هنگام باز بودن
+  &:focus-within::after {
+    transform: translateY(-50%) rotate(180deg);
+  }
+}
+
+.custom-select {
+  width: 100%;
+  padding: 12px 44px 12px 16px;
+  font-family: $Font-Family-Fa;
+  font-size: 14px;
+  color: $text-main;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba($primary-color, 0.2);
+  border-radius: 12px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  outline: none;
+
+  &:hover {
+    border-color: rgba($primary-color, 0.5);
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 2px 8px rgba($primary-color, 0.08);
+  }
+
+  &:focus {
+    border-color: $primary-color;
+    box-shadow: 0 0 0 3px rgba($primary-color, 0.15);
+    background: rgba(255, 255, 255, 0.98);
+  }
+
+  option {
+    font-family: $Font-Family-Fa;
+    padding: 8px 12px;
+  }
+}
+
+// ریسپانسیو
+@media (max-width: 768px) {
+  .filter-row {
+    justify-content: center;
+  }
+  .custom-select-wrapper {
+    width: 100%;
+    max-width: 320px;
+  }
 }

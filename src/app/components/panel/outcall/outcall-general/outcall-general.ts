@@ -41,6 +41,8 @@ export class OutcallGeneral implements OnInit {
 
   // دیتای باکس‌های موضوعات
   subjectsCount: any[] = [];
+  expertsCount: any[] = [];
+  unitsCount: any[] = [];
   totalCalls: number = 0;
   statusCounts: any[] = [];
   // تنظیمات نمودار خطی (تعداد تماس روزانه)
@@ -151,7 +153,6 @@ export class OutcallGeneral implements OnInit {
       console.warn('دسترسی محدود: ریکوئستی ارسال نشد.');
       return;
     }
-    this.SetTime(30);
     await this.initData();
   }
 
@@ -161,7 +162,8 @@ export class OutcallGeneral implements OnInit {
       const resDate = await this.outcallService.get_LastDate_G().toPromise();
       this.EndDate = resDate.lastDate;
 
-      this.StartDate = format(subDays(new Date(this.EndDate), 30), 'yyyy-MM-dd');
+      this.StartDate = format(subDays(new Date(this.EndDate), 30), 'yyyy-MM-dd')
+      this.selected_days = this.timeService.calc_Diff_Date(this.StartDate, this.EndDate);
 
       this.dateform.patchValue({
         StartDate: this.StartDate,
@@ -200,6 +202,8 @@ export class OutcallGeneral implements OnInit {
 
       this.subjectsCount = await this.outcallService.get_SubjectsCount_G(st, en).toPromise();
       this.subjectsCount.forEach(s => this.totalCalls += s.count);
+      this.expertsCount = await this.outcallService.get_ExpertsCount_G(st, en).toPromise();
+      this.unitsCount = await this.outcallService.get_UnitsCount_G(st, en).toPromise();
       this.statusCounts = await this.outcallService.get_StatusCount_G(st, en).toPromise();
       this.st_to_en = `${st} to ${en}`;
       const analysisRes = await this.outcallService.get_TitlesAnalysis(st, en).toPromise();
@@ -222,6 +226,50 @@ export class OutcallGeneral implements OnInit {
     this.popup = false;
     try {
       const res = await this.outcallService.get_Description_G(this.StartDate, this.EndDate, item).toPromise();
+      this.popup = true;
+
+      if (res && res.length > 0) {
+        this.dialog.open(OutCallDialog, {
+          width: '80vw',
+          maxWidth: '95vw',
+          maxHeight: '90vh',
+          data: { title: item, details: res }
+        });
+      } else {
+        this.toast.info({ detail: "اطلاع", summary: "توضیحاتی برای این مورد یافت نشد" });
+      }
+    }
+    catch (error: any) {
+      this.toast.error({ detail: "خطا", summary: "خطا در ارتباط با سرور" });
+    }
+  }
+
+  async Popup_exp(item: string){
+    this.popup = false;
+    try {
+      const res = await this.outcallService.get_DescriptionByExpert_G(this.StartDate, this.EndDate, item).toPromise();
+      this.popup = true;
+
+      if (res && res.length > 0) {
+        this.dialog.open(OutCallDialog, {
+          width: '80vw',
+          maxWidth: '95vw',
+          maxHeight: '90vh',
+          data: { title: item, details: res }
+        });
+      } else {
+        this.toast.info({ detail: "اطلاع", summary: "توضیحاتی برای این مورد یافت نشد" });
+      }
+    }
+    catch (error: any) {
+      this.toast.error({ detail: "خطا", summary: "خطا در ارتباط با سرور" });
+    }
+  }
+
+  async Popup_unit(item: string){
+    this.popup = false;
+    try {
+      const res = await this.outcallService.get_DescriptionByUnit_G(this.StartDate, this.EndDate, item).toPromise();
       this.popup = true;
 
       if (res && res.length > 0) {
