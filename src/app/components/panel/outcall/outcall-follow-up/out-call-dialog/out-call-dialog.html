@@ -17,21 +17,38 @@
       </div>
     </div>
 
+    <div class="table-actions">
+      <div class="search-box">
+        <mat-icon>search</mat-icon>
+        <input type="text" [(ngModel)]="searchTerm" (keyup)="filterData()" placeholder="جستجوی کارشناس، شماره، واحد یا موضوع ...">
+      </div>
+      <button class="btn-excel" (click)="exportExcel()">
+        <mat-icon>file_download</mat-icon> خروجی اکسل
+      </button>
+    </div>
+
     <div class="table-wrapper">
       <table class="details-table">
         <thead>
         <tr>
           <th>ردیف</th>
-          <th>کارشناس</th>
-          <th>واحد</th>
+          <th (click)="toggleSort('expertName')" class="sortable">کارشناس
+            <mat-icon *ngIf="sortColumn === 'expertName'">{{sortDirection==='asc'?'arrow_drop_up':'arrow_drop_down'}}</mat-icon></th>
+          <th (click)="toggleSort('unit')" class="sortable">واحد
+            <mat-icon *ngIf="sortColumn === 'unit'">{{sortDirection==='asc'?'arrow_drop_up':'arrow_drop_down'}}</mat-icon>
+          </th>
           <th>شماره مقصد</th>
-          <th>وضعیت</th>
+          <th (click)="toggleSort('status')" class="sortable">وضعیت
+            <mat-icon *ngIf="sortColumn === 'status'">{{sortDirection==='asc'?'arrow_drop_up':'arrow_drop_down'}}</mat-icon>
+          </th>
           <th>توضیحات</th>
-          <th>تاریخ</th>
+          <th (click)="toggleSort('date')" class="sortable">تاریخ
+            <mat-icon *ngIf="sortColumn === 'date'">{{sortDirection==='asc'?'arrow_drop_up':'arrow_drop_down'}}</mat-icon>
+          </th>
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let item of data.details; let i = index">
+        <tr *ngFor="let item of filteredDetails; let i = index">
           <td>{{ i + 1 }}</td>
           <td class="expert-cell">{{ item.expertName || '---' }}</td>
           <td>{{ item.unit || '---' }}</td>

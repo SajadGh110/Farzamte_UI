@@ -383,6 +383,7 @@ export class OutcallGeneral implements OnInit {
 
   getStatusDetails(status: string) {
     const st = (status || 'null').toLowerCase().trim();
+    console.log(st);
     switch (st) {
       case 'made':
         return { label: 'موفق', colorClass: 'status-made' };
@@ -392,7 +393,7 @@ export class OutcallGeneral implements OnInit {
         return { label: 'در جریان (باز)', colorClass: 'status-open' };
       case 'disinclination':
         return { label: 'عدم تمایل', colorClass: 'status-disinclination' };
-      case 'recall':
+      case 'repeat call':
         return { label: 'تماس مجدد', colorClass: 'status-recall' };
       case 'null':
       default:
