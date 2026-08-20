@@ -1,78 +1,261 @@
 @use '../../../../variables' as *;
 
-.coming-soon-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 60vh;
-  text-align: center;
-  padding: 40px;
-  @include glass-style;
-  margin: 20px;
-  border: 2px dashed rgba($primary-color, 0.3); // خط‌چین آبی برای حس ساخت و ساز
+// ============================
+//  هدر صفحه
+// ============================
+.view360-header {
+  margin-bottom: 30px;
 
-  .icon-wrapper {
-    background: rgba($primary-color, 0.1);
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 25px;
-    position: relative;
-
-    i {
-      font-size: 50px;
-      color: $primary-color;
-    }
-
-    // یک افکت انیمیشن کوچک برای آیکون
-    &::after {
-      content: '';
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      border: 2px solid $primary-color;
-      animation: pulse 2s infinite;
-    }
-  }
-
-  h3 {
+  h1 {
     font-family: $Font-Family-Fa;
-    color: $text-main;
-    font-size: 24px;
-    margin-bottom: 15px;
-    font-weight: bold;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0 0 6px 0;
+    background: linear-gradient(135deg, $primary-color, $primary-hover);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 
   p {
     font-family: $Font-Family-Fa;
+    font-size: 15px;
     color: $text-secondary;
-    font-size: 16px;
-    max-width: 450px;
-    line-height: 1.8;
+    margin: 0;
+  }
+}
+
+// ============================
+//  چیدمان شطرنجی نامنظم
+// ============================
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: minmax(160px, auto);
+  gap: 20px;
+  margin-top: 10px;
+
+  .grid-item {
+    position: relative;
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+    padding: 20px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor: pointer;
+    overflow: hidden;
+    min-height: 140px;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 20px;
+      padding: 1.5px;
+      background: linear-gradient(135deg, rgba($primary-color, 0.2), transparent 50%, rgba($primary-color, 0.1));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    &:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 48px rgba($primary-color, 0.12);
+      background: rgba(255, 255, 255, 0.8);
+
+      &::before {
+        opacity: 1;
+      }
+
+      .icon-wrapper {
+        transform: scale(1.05);
+        background: rgba($primary-color, 0.15);
+      }
+
+      h3 {
+        color: $primary-color;
+      }
+    }
+
+    .card-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 8px;
+      width: 100%;
+      z-index: 1;
+    }
+
+    .icon-wrapper {
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
+      background: rgba($primary-color, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+
+      i {
+        font-size: 32px;
+        color: $primary-color;
+      }
+
+      &.small {
+        width: 52px;
+        height: 52px;
+        i {
+          font-size: 26px;
+        }
+      }
+    }
+
+    h3 {
+      font-family: $Font-Family-Fa;
+      font-size: 17px;
+      font-weight: 700;
+      color: $text-main;
+      margin: 2px 0 0 0;
+      transition: color 0.2s ease;
+    }
+
+    .badge {
+      font-family: $Font-Family-En;
+      font-size: 11px;
+      font-weight: 500;
+      color: $text-secondary;
+      background: rgba(0, 0, 0, 0.04);
+      padding: 3px 14px;
+      border-radius: 30px;
+      letter-spacing: 0.3px;
+      border: 1px solid rgba(0, 0, 0, 0.04);
+    }
   }
 
-  .progress-mini {
-    margin-top: 30px;
-    width: 200px;
-    height: 6px;
-    background: rgba(0,0,0,0.05);
-    border-radius: 10px;
-    overflow: hidden;
-    .progress-bar {
-      width: 60%; // درصد فرضی پیشرفت
-      height: 100%;
-      background: $primary-color;
-      border-radius: 10px;
+  // ============================
+  //  اندازه‌های مختلف (چیدمان نامنظم)
+  // ============================
+
+  // بزرگ (2 ستون، 2 ردیف)
+  .item-large {
+    grid-column: span 2;
+    grid-row: span 2;
+    min-height: 280px;
+
+    .icon-wrapper {
+      width: 80px;
+      height: 80px;
+      i {
+        font-size: 40px;
+      }
+    }
+    h3 {
+      font-size: 22px;
+    }
+  }
+
+  // متوسط (2 ستون، 1 ردیف)
+  .item-medium {
+    grid-column: span 2;
+    min-height: 180px;
+  }
+
+  // کوچک (1 ستون، 1 ردیف)
+  .item-small {
+    grid-column: span 1;
+    min-height: 120px;
+  }
+}
+
+// ============================
+//  ریسپانسیو
+// ============================
+@media (max-width: 1200px) {
+  .dashboard-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+}
+
+@media (max-width: 992px) {
+  .dashboard-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .item-large {
+    grid-column: span 2;
+    grid-row: span 1;
+    min-height: 200px;
+  }
+
+  .item-medium {
+    grid-column: span 2;
+    min-height: 160px;
+  }
+
+  .item-small {
+    grid-column: span 1;
+    min-height: 100px;
+  }
+
+  .item-large {
+    .icon-wrapper {
+      width: 64px;
+      height: 64px;
+      i {
+        font-size: 32px;
+      }
+    }
+    h3 {
+      font-size: 18px;
     }
   }
 }
 
-@keyframes pulse {
-  0% { transform: scale(1); opacity: 0.5; }
-  100% { transform: scale(1.4); opacity: 0; }
+@media (max-width: 576px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .grid-item {
+    min-height: 100px;
+    padding: 16px 12px;
+  }
+
+  .item-large,
+  .item-medium,
+  .item-small {
+    grid-column: span 1;
+    min-height: 100px;
+  }
+
+  .item-large {
+    min-height: 160px;
+    .icon-wrapper {
+      width: 56px;
+      height: 56px;
+      i {
+        font-size: 28px;
+      }
+    }
+    h3 {
+      font-size: 17px;
+    }
+  }
+
+  .item-medium {
+    min-height: 130px;
+  }
 }

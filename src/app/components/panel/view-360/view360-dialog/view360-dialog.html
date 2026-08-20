@@ -1,0 +1,58 @@
+<div class="dialog-container">
+  <!-- هدر -->
+  <div class="dialog-header">
+    <div class="header-left">
+      <div class="icon-wrapper">
+        <i class="material-icons">{{ sectionIcon }}</i>
+      </div>
+      <h2>{{ sectionTitle }}</h2>
+    </div>
+    <button class="close-btn" (click)="close()">×</button>
+  </div>
+
+  <!-- بارگذاری -->
+  <div class="loading-state" *ngIf="loading">
+    <mat-spinner diameter="40"></mat-spinner>
+    <span>در حال بارگذاری اطلاعات...</span>
+  </div>
+
+  <!-- خطا -->
+  <div class="error-state" *ngIf="error && !loading">
+    <i class="material-icons">error_outline</i>
+    <span>مشکلی در دریافت اطلاعات به وجود آمد. لطفاً مجدداً تلاش کنید.</span>
+  </div>
+
+  <!-- محتوا -->
+  <ng-container *ngIf="!loading && !error">
+    <p class="dialog-description">{{ description }}</p>
+
+    <!-- آمار (کارت‌های آماری) -->
+    <div class="stats-grid" *ngIf="stats && stats.length > 0">
+      <div class="stat-card" *ngFor="let item of stats">
+        <span class="stat-label">{{ item.label }}</span>
+        <span class="stat-value">{{ item.value }}</span>
+      </div>
+    </div>
+
+    <!-- نمودار (در صورت وجود) - می‌تونه یک کامپوننت مجزا باشه -->
+    <div class="chart-placeholder" *ngIf="chartData">
+      <p class="placeholder-text">نمودار مربوط به این بخش</p>
+      <!-- اینجا کامپوننت نمودار قرار می‌گیره -->
+    </div>
+
+    <!-- جدول (در صورت وجود) -->
+    <div class="table-placeholder" *ngIf="tableData && tableData.length > 0">
+      <p class="placeholder-text">جدول مربوط به این بخش</p>
+      <!-- اینجا کامپوننت جدول قرار می‌گیره -->
+    </div>
+  </ng-container>
+
+  <!-- دکمه‌ها -->
+  <div class="dialog-actions">
+    <button class="btn-primary" (click)="navigateToRoute()">
+      <i class="material-icons">arrow_forward</i>
+      مشاهده کامل
+    </button>
+    <button class="btn-outline" (click)="close()">بستن</button>
+  </div>
+</div>

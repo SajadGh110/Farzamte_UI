@@ -5,26 +5,114 @@
     <app-dashboard-topmenu></app-dashboard-topmenu>
 
     <div class="content-scrollable">
-
-      <div class="coming-soon-container shadow-sm">
-        <div class="icon-wrapper">
-          <i class="material-icons">construction</i>
-        </div>
-
-        <h3>به‌زودی این قسمت اضافه خواهد شد!</h3>
-
-        <p>
-          تیم فنی ما در حال طراحی و پیاده‌سازی گزارشات این بخش است.
-          به‌زودی می‌توانید داده‌های مربوط به این قسمت را با جزئیات کامل مشاهده کنید.
-          <br>
-          <b>از شکیبایی شما سپاسگزاریم.</b>
-        </p>
-
-        <div class="progress-mini">
-          <div class="progress-bar"></div>
-        </div>
+      <div class="view360-header">
+        <h1>نمای ۳۶۰ درجه</h1>
+        <p>خلاصه‌ای از تمام بخش‌های سیستم در یک نگاه</p>
       </div>
 
+      <!-- چیدمان شطرنجی نامنظم -->
+      <div class="dashboard-grid">
+
+        <!-- 1. تماس ورودی (بزرگ) -->
+        <div class="grid-item item-large" (click)="openDialog('تماس ورودی')">
+          <div class="card-content">
+            <div class="icon-wrapper">
+              <i class="material-icons">call_received</i>
+            </div>
+            <h3>تماس ورودی</h3>
+            <span class="badge">Incoming Calls</span>
+          </div>
+        </div>
+
+        <!-- 2. هپی کال (متوسط - 2 ستون) -->
+        <div class="grid-item item-medium" (click)="openDialog('هپی کال')">
+          <div class="card-content">
+            <div class="icon-wrapper">
+              <i class="material-icons">sentiment_satisfied</i>
+            </div>
+            <h3>هپی کال</h3>
+            <span class="badge">Happy Call</span>
+          </div>
+        </div>
+
+        <!-- 3. تماس خروجی - عمومی (کوچک - 1 ستون) -->
+        <div class="grid-item item-small" (click)="openDialog('عمومی')">
+          <div class="card-content">
+            <div class="icon-wrapper small">
+              <i class="material-icons">people</i>
+            </div>
+            <h3>عمومی</h3>
+            <span class="badge">General</span>
+          </div>
+        </div>
+
+        <!-- 4. تماس خروجی - پیگیری شعب (کوچک - 1 ستون) -->
+        <div class="grid-item item-small" (click)="openDialog('پیگیری شعب')">
+          <div class="card-content">
+            <div class="icon-wrapper small">
+              <i class="material-icons">trending_up</i>
+            </div>
+            <h3>پیگیری شعب</h3>
+            <span class="badge">Follow Up</span>
+          </div>
+        </div>
+
+        <!-- 5. گزارش ماهانه (متوسط - 2 ستون) -->
+        <div class="grid-item item-medium" (click)="openDialog('گزارش ماهانه')">
+          <div class="card-content">
+            <div class="icon-wrapper">
+              <i class="material-icons">assessment</i>
+            </div>
+            <h3>گزارش ماهانه</h3>
+            <span class="badge">Monthly Report</span>
+          </div>
+        </div>
+
+        <!-- 6. مارکتینگ (متوسط - 2 ستون) -->
+        <div class="grid-item item-medium" (click)="openDialog('مارکتینگ')">
+          <div class="card-content">
+            <div class="icon-wrapper">
+              <i class="material-icons">trending_up</i>
+            </div>
+            <h3>مارکتینگ</h3>
+            <span class="badge">Marketing</span>
+          </div>
+        </div>
+
+        <!-- 7. اطلاع رسانی - پیامک (کوچک - 1 ستون) -->
+        <div class="grid-item item-small" (click)="openDialog('پیامک')">
+          <div class="card-content">
+            <div class="icon-wrapper small">
+              <i class="material-icons">sms</i>
+            </div>
+            <h3>پیامک</h3>
+            <span class="badge">SMS</span>
+          </div>
+        </div>
+
+        <!-- 8. اطلاع رسانی - تماس (کوچک - 1 ستون) -->
+        <div class="grid-item item-small" (click)="openDialog('تماس')">
+          <div class="card-content">
+            <div class="icon-wrapper small">
+              <i class="material-icons">phone_in_talk</i>
+            </div>
+            <h3>تماس</h3>
+            <span class="badge">Call</span>
+          </div>
+        </div>
+
+        <!-- 9. تیکت (متوسط - 2 ستون) -->
+        <div class="grid-item item-medium" (click)="openDialog('تیکت')">
+          <div class="card-content">
+            <div class="icon-wrapper">
+              <i class="material-icons">confirmation_number</i>
+            </div>
+            <h3>تیکت</h3>
+            <span class="badge">Ticket</span>
+          </div>
+        </div>
+
+      </div>
     </div>
   </section>
 </section>

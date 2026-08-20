@@ -1,0 +1,289 @@
+@use '../../../../../variables' as *;
+
+::ng-deep .view360-dialog-panel {
+  .mat-mdc-dialog-container {
+    padding: 0 !important;
+    border-radius: 24px !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .mat-mdc-dialog-surface {
+    border-radius: 24px !important;
+    background: rgba(255, 255, 255, 0.75) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15) !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+}
+
+.dialog-container {
+  padding: 28px 32px 24px;
+  direction: rtl;
+  max-height: 80vh;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba($primary-color, 0.3);
+    border-radius: 10px;
+  }
+}
+
+// ============================
+//  هدر دیالوگ
+// ============================
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba($primary-color, 0.08);
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    .icon-wrapper {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background: rgba($primary-color, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      i {
+        font-size: 28px;
+        color: $primary-color;
+      }
+    }
+
+    h2 {
+      font-family: $Font-Family-Fa;
+      font-size: 20px;
+      font-weight: 700;
+      color: $text-main;
+      margin: 0;
+    }
+  }
+
+  .close-btn {
+    border: none;
+    background: rgba(0, 0, 0, 0.04);
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    font-size: 24px;
+    cursor: pointer;
+    color: $text-secondary;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      background: rgba($error-color, 0.08);
+      color: $error-color;
+      transform: rotate(90deg);
+    }
+  }
+}
+
+// ============================
+//  حالت‌های بارگذاری و خطا
+// ============================
+.loading-state,
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  gap: 16px;
+
+  span {
+    font-family: $Font-Family-Fa;
+    color: $text-secondary;
+    font-size: 14px;
+  }
+}
+
+.error-state {
+  i {
+    font-size: 48px;
+    color: $error-color;
+    opacity: 0.6;
+  }
+}
+
+// ============================
+//  توضیحات
+// ============================
+.dialog-description {
+  font-family: $Font-Family-Fa;
+  font-size: 15px;
+  color: $text-secondary;
+  line-height: 1.6;
+  margin: 0 0 20px 0;
+  padding: 12px 16px;
+  background: rgba($primary-color, 0.03);
+  border-radius: 12px;
+  border-right: 3px solid rgba($primary-color, 0.2);
+}
+
+// ============================
+//  کارت‌های آماری
+// ============================
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+
+  .stat-card {
+    background: rgba(255, 255, 255, 0.4);
+    padding: 14px 12px;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.7);
+      transform: translateY(-2px);
+    }
+
+    .stat-label {
+      display: block;
+      font-family: $Font-Family-Fa;
+      font-size: 12px;
+      color: $text-secondary;
+      margin-bottom: 4px;
+    }
+
+    .stat-value {
+      font-family: $Font-Family-En;
+      font-size: 22px;
+      font-weight: 800;
+      color: $primary-color;
+    }
+  }
+}
+
+// ============================
+//  مکان‌نماهای نمودار و جدول
+// ============================
+.chart-placeholder,
+.table-placeholder {
+  margin-bottom: 16px;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  border: 1px dashed rgba($primary-color, 0.15);
+  text-align: center;
+
+  .placeholder-text {
+    font-family: $Font-Family-Fa;
+    font-size: 14px;
+    color: $text-secondary;
+    margin: 0;
+  }
+}
+
+// ============================
+//  دکمه‌ها
+// ============================
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(0, 0, 0, 0.04);
+
+  .btn-primary {
+    background: $primary-color;
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 10px;
+    font-family: $Font-Family-Fa;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+
+    i {
+      font-size: 18px;
+    }
+
+    &:hover {
+      background: $primary-hover;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba($primary-color, 0.25);
+    }
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: $text-secondary;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-family: $Font-Family-Fa;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.04);
+    }
+  }
+}
+
+// ============================
+//  ریسپانسیو
+// ============================
+@media (max-width: 600px) {
+  .dialog-container {
+    padding: 20px 16px;
+  }
+
+  .dialog-header {
+    .header-left {
+      h2 {
+        font-size: 17px;
+      }
+      .icon-wrapper {
+        width: 44px;
+        height: 44px;
+        i {
+          font-size: 24px;
+        }
+      }
+    }
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .dialog-actions {
+    flex-direction: column-reverse;
+    .btn-primary,
+    .btn-outline {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}
