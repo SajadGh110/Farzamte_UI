@@ -12,7 +12,7 @@ import {
 import {MatPaginator, MatPaginatorModule} from "@angular/material/paginator";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {NgToastService} from "ng-angular-popup";
-import {TransportToSmartService} from "../../../../services/transport-to-smart.service";
+import {TransportToSmartService} from "../../../../../services/transport-to-smart.service";
 
 @Component({
     selector: 'app-list-table',

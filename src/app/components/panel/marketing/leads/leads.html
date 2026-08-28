@@ -1,0 +1,24 @@
+<section class="dashboard-wrapper">
+  <app-dashboard-sidebar></app-dashboard-sidebar>
+  <section class="dashboard-main">
+    <app-dashboard-topmenu></app-dashboard-topmenu>
+    <div class="content-scrollable">
+      <ng-container *ngIf="auth.hasPermission('marketing.view'); else deniedTemplate">
+      </ng-container>
+
+      <ng-template #deniedTemplate>
+
+        <div class="access-denied-container shadow-sm">
+          <div class="icon-wrapper">
+            <i class="material-icons">lock_person</i>
+          </div>
+          <h3>عدم دسترسی</h3>
+          <p>
+            متأسفانه اکانت شما مجوز دسترسی به این قسمت را ندارد
+          </p>
+        </div>
+
+      </ng-template>
+    </div>
+  </section>
+</section>

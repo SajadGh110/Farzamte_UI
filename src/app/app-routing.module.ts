@@ -8,7 +8,6 @@ import { Profile } from "./components/panel/profile/profile";
 import { HappyCall } from "./components/panel/happy-call/happy-call";
 import { IncomingCall } from "./components/panel/incoming-call/incoming-call";
 import { Ticket } from "./components/panel/ticket/ticket";
-import { Marketing } from "./components/panel/marketing/marketing";
 import { Survey } from "./components/panel/survey/survey";
 import { QA } from "./components/panel/q.a/q.a";
 import { Other } from "./components/panel/other/other";
@@ -24,6 +23,8 @@ import { UsersComponent } from './components/panel/users/users';
 import { Permissions } from "./components/panel/permissions/permissions";
 import { OutcallGeneral } from "./components/panel/outcall/outcall-general/outcall-general";
 import { OutcallFollowUp } from "./components/panel/outcall/outcall-follow-up/outcall-follow-up";
+import {TransportSmart} from "./components/panel/marketing/transport-smart/transport-smart";
+import {Leads} from "./components/panel/marketing/leads/leads";
 
 const routes: Routes = [
   { path: '', redirectTo: '/brokerages', pathMatch: 'full' },
@@ -42,7 +43,8 @@ const routes: Routes = [
   { path: 'notices/sms', component: NoticeSms, title: 'Notices | Message', canActivate: [authGuard] },
   { path: 'notices/call', component: NoticeCall, title: 'Notices | Call', canActivate: [authGuard] },
   { path: 'ticket', component: Ticket, title: 'Ticket', canActivate: [authGuard] },
-  { path: 'marketing', component: Marketing, title: 'Marketing', canActivate: [authGuard] },
+  { path: 'marketing/transportSmart', component: TransportSmart, title: 'Marketing | Transport To Smart', canActivate: [authGuard] },
+  { path: 'marketing/leads', component: Leads, title: 'Marketing | Leads', canActivate: [authGuard] },
   { path: 'survey', component: Survey, title: 'Survey', canActivate: [authGuard] },
   { path: 'q_a', component: QA, title: 'Q.A', canActivate: [authGuard] },
   { path: 'other', component: Other, title: 'Other', canActivate: [authGuard] },

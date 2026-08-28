@@ -8,6 +8,9 @@ import {FormBuilder} from "@angular/forms";
 import {DashboardTopmenuComponent} from "../../Template/dashboard-topmenu/dashboard-topmenu.component";
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import {View360Dialog} from "./view360-dialog/view360-dialog";
+import {MatProgressSpinner} from "@angular/material/progress-spinner";
+import {NgIf} from "@angular/common";
+import {NgxEchartsDirective} from "ngx-echarts";
 
 @Component({
     selector: 'app-view-360',

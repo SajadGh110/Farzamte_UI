@@ -1,23 +1,23 @@
 import {Component, OnInit} from '@angular/core';
-import {DashboardSidebarComponent} from "../../Template/dashboard-sidebar/dashboard-sidebar.component";
+import {DashboardSidebarComponent} from "../../../Template/dashboard-sidebar/dashboard-sidebar.component";
 import {NgToastService} from "ng-angular-popup";
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {DatePipe, NgIf} from '@angular/common';
-import {TimeService} from "../../../services/time.service";
+import {TimeService} from "../../../../services/time.service";
 import {EChartsOption} from "echarts";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {NgxEchartsDirective} from "ngx-echarts";
-import {TransportToSmartService} from "../../../services/transport-to-smart.service";
+import {TransportToSmartService} from "../../../../services/transport-to-smart.service";
 import {ListTable} from "./list-table/list-table";
-import {AuthService} from "../../../services/auth.service";
+import {AuthService} from "../../../../services/auth.service";
 import {Router} from "@angular/router";
 import {format, subDays} from "date-fns";
 import * as ExcelJS from 'exceljs';
 import * as FileSaver from 'file-saver';
-import {DashboardTopmenuComponent} from "../../Template/dashboard-topmenu/dashboard-topmenu.component";
+import {DashboardTopmenuComponent} from "../../../Template/dashboard-topmenu/dashboard-topmenu.component";
 
 @Component({
-    selector: 'app-marketing',
+  selector: 'app-marketing',
   imports: [
     DashboardSidebarComponent,
     MatProgressSpinner,
@@ -28,11 +28,11 @@ import {DashboardTopmenuComponent} from "../../Template/dashboard-topmenu/dashbo
     ReactiveFormsModule,
     DashboardTopmenuComponent
   ],
-    providers: [DatePipe],
-    templateUrl: './marketing.html',
-    styleUrl: './marketing.scss'
+  providers: [DatePipe],
+  templateUrl: './transport-smart.html',
+  styleUrl: './transport-smart.scss'
 })
-export class Marketing implements OnInit {
+export class TransportSmart implements OnInit {
   dateform! : FormGroup;
   protected flag_time:boolean = false;
   protected flag_daily:boolean=false;
@@ -172,15 +172,15 @@ export class Marketing implements OnInit {
   }
 
   async do(stDate:string,enDate:string){
-  this.flag_daily=false;
-  this.flag_count=false;
-  this.flag_reasons=false;
-  this.flag_avg_satisfaction=false;
-  this.flag_avg_satisfaction_s=false;
-  this.flag_avg_satisfaction_t=false;
-  this.series_TTSR_Smart = [];
-  this.series_TTSR_Tadbir = [];
-  this.series_All_Table = [];
+    this.flag_daily=false;
+    this.flag_count=false;
+    this.flag_reasons=false;
+    this.flag_avg_satisfaction=false;
+    this.flag_avg_satisfaction_s=false;
+    this.flag_avg_satisfaction_t=false;
+    this.series_TTSR_Smart = [];
+    this.series_TTSR_Tadbir = [];
+    this.series_All_Table = [];
     try {
       this.Total_Count = await this.getData.get_Total_Count(stDate,enDate).toPromise();
       this.ContinueSmart_Count = await this.getData.get_ContinueSmart_Count(stDate,enDate).toPromise();

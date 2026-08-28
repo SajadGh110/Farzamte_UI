@@ -26,25 +26,12 @@
   <ng-container *ngIf="!loading && !error">
     <p class="dialog-description">{{ description }}</p>
 
-    <!-- آمار (کارت‌های آماری) -->
-    <div class="stats-grid" *ngIf="stats && stats.length > 0">
-      <div class="stat-card" *ngFor="let item of stats">
-        <span class="stat-label">{{ item.label }}</span>
-        <span class="stat-value">{{ item.value }}</span>
-      </div>
-    </div>
-
     <!-- نمودار (در صورت وجود) - می‌تونه یک کامپوننت مجزا باشه -->
-    <div class="chart-placeholder" *ngIf="chartData">
-      <p class="placeholder-text">نمودار مربوط به این بخش</p>
-      <!-- اینجا کامپوننت نمودار قرار می‌گیره -->
+    <mat-spinner *ngIf="!flag_inc" class="center-spinner"></mat-spinner>
+    <div class="chart-box" *ngIf="flag_inc">
+      <div echarts [options]="series_calls_count_day" class="chart-container"></div>
     </div>
 
-    <!-- جدول (در صورت وجود) -->
-    <div class="table-placeholder" *ngIf="tableData && tableData.length > 0">
-      <p class="placeholder-text">جدول مربوط به این بخش</p>
-      <!-- اینجا کامپوننت جدول قرار می‌گیره -->
-    </div>
   </ng-container>
 
   <!-- دکمه‌ها -->
