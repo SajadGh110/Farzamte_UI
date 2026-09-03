@@ -1,0 +1,664 @@
+@use '../../../../../variables' as *;
+
+// ============================
+//  هدر صفحه
+// ============================
+.page-header {
+  margin-bottom: 28px;
+  padding: 20px 24px;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.7);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+  }
+
+  // ============================
+  //  ردیف بالایی (عنوان + برچسب‌ها)
+  // ============================
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 12px;
+
+    .header-title {
+      h1 {
+        font-family: $Font-Family-Fa;
+        font-size: 26px;
+        font-weight: 700;
+        margin: 0 0 2px 0;
+        background: linear-gradient(135deg, $primary-color, $primary-hover);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        line-height: 1.2;
+      }
+
+      .subtitle {
+        font-family: $Font-Family-Fa;
+        font-size: 14px;
+        color: $text-secondary;
+        margin: 0;
+        font-weight: 400;
+      }
+    }
+
+    .header-badges {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+
+      .badge-preview {
+        font-family: $Font-Family-Fa;
+        font-size: 12px;
+        font-weight: 600;
+        color: #8b5cf6;
+        background: rgba(139, 92, 246, 0.12);
+        padding: 4px 14px;
+        border-radius: 30px;
+        border: 1px solid rgba(139, 92, 246, 0.15);
+        letter-spacing: 0.3px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        white-space: nowrap;
+
+        &::before {
+          content: '✨';
+          font-size: 14px;
+        }
+      }
+    }
+  }
+
+  // ============================
+  //  ردیف پایینی (بازه زمانی)
+  // ============================
+  .header-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 12px;
+    border-top: 1px solid rgba($primary-color, 0.06);
+
+    .date-range {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: $Font-Family-Fa;
+      font-size: 14px;
+      color: $text-secondary;
+      background: rgba(255, 255, 255, 0.4);
+      padding: 6px 16px 6px 20px;
+      border-radius: 30px;
+      border: 1px solid rgba(0, 0, 0, 0.04);
+
+      i {
+        font-size: 20px;
+        color: $primary-color;
+        opacity: 0.7;
+      }
+
+      span {
+        font-family: $Font-Family-En;
+        font-weight: 500;
+        color: $text-main;
+        letter-spacing: 0.3px;
+        direction: ltr;
+      }
+    }
+  }
+}
+
+// ============================
+//  ریسپانسیو
+// ============================
+@media (max-width: 600px) {
+  .page-header {
+    padding: 16px 18px;
+    margin-bottom: 20px;
+
+    .header-top {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 10px;
+      margin-bottom: 10px;
+
+      .header-title {
+        h1 {
+          font-size: 22px;
+        }
+        .subtitle {
+          font-size: 13px;
+        }
+      }
+
+      .header-badges {
+        align-self: flex-start;
+
+        .badge-preview {
+          font-size: 11px;
+          padding: 3px 12px;
+        }
+      }
+    }
+
+    .header-bottom {
+      .date-range {
+        font-size: 13px;
+        padding: 4px 12px 4px 16px;
+        flex-wrap: wrap;
+        gap: 6px;
+
+        i {
+          font-size: 18px;
+        }
+
+        span {
+          font-size: 13px;
+        }
+      }
+    }
+  }
+}
+
+// ============================
+//  گرید کارت‌های آماری
+// ============================
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 10px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+// ============================
+//  کارت آماری (مشترک)
+// ============================
+.stat-card {
+  padding: 24px 28px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.06);
+    background: rgba(255, 255, 255, 0.85);
+  }
+
+  // هدر کارت
+  .stat-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+
+    .icon-wrapper {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      i {
+        font-size: 26px;
+      }
+    }
+
+    .stat-title {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+      h3 {
+        font-family: $Font-Family-Fa;
+        font-size: 17px;
+        font-weight: 700;
+        color: $text-main;
+        margin: 0;
+        line-height: 1.3;
+      }
+
+      .badge {
+        font-family: $Font-Family-En;
+        font-size: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding: 2px 12px;
+        border-radius: 30px;
+        background: rgba(0, 0, 0, 0.04);
+        border: 1px solid rgba(0, 0, 0, 0.04);
+        color: $text-secondary;
+      }
+    }
+  }
+
+  // بدنه کارت
+  .stat-body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .stat-number {
+      font-family: $Font-Family-En;
+      font-size: 42px;
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.5px;
+    }
+
+    .stat-percent {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 2px;
+
+      .percent-value {
+        font-family: $Font-Family-En;
+        font-size: 20px;
+        font-weight: 700;
+        color: $text-main;
+      }
+
+      .percent-label {
+        font-family: $Font-Family-Fa;
+        font-size: 13px;
+        color: $text-secondary;
+      }
+    }
+
+    // نوار پیشرفت
+    .progress-bar {
+      width: 100%;
+      height: 6px;
+      background: rgba(0, 0, 0, 0.06);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 4px;
+
+      .progress-fill {
+        height: 100%;
+        border-radius: 10px;
+        transition: width 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        width: 0%;
+      }
+    }
+  }
+}
+
+// ============================
+//  کارت Done
+// ============================
+.done-card {
+  .icon-wrapper {
+    background: rgba(16, 185, 129, 0.12);
+    i {
+      color: #10b981;
+    }
+  }
+
+  .stat-number {
+    color: #10b981;
+  }
+
+  .percent-value {
+    color: #10b981;
+  }
+
+  .progress-fill {
+    background: linear-gradient(90deg, #10b981, #34d399);
+  }
+
+  .badge {
+    background: rgba(16, 185, 129, 0.08);
+    border-color: rgba(16, 185, 129, 0.15);
+    color: #10b981 !important;
+  }
+}
+
+// ============================
+//  کارت DeActive
+// ============================
+.deactive-card {
+  .icon-wrapper {
+    background: rgba(239, 68, 68, 0.12);
+    i {
+      color: #ef4444;
+    }
+  }
+
+  .stat-number {
+    color: #ef4444;
+  }
+
+  .percent-value {
+    color: #ef4444;
+  }
+
+  .progress-fill {
+    background: linear-gradient(90deg, #ef4444, #f87171);
+  }
+
+  .badge {
+    background: rgba(239, 68, 68, 0.08);
+    border-color: rgba(239, 68, 68, 0.15);
+    color: #ef4444 !important;
+  }
+}
+// ============================
+//  بخش جدول جزئیات آماری
+// ============================
+.stats-details-section {
+  margin-top: 28px;
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+
+    h2 {
+      font-family: $Font-Family-Fa;
+      font-size: 20px;
+      font-weight: 700;
+      color: $text-main;
+      margin: 0;
+    }
+
+    .section-badge {
+      font-family: $Font-Family-Fa;
+      font-size: 12px;
+      color: $text-secondary;
+      background: rgba(0, 0, 0, 0.04);
+      padding: 4px 14px;
+      border-radius: 30px;
+      border: 1px solid rgba(0, 0, 0, 0.04);
+    }
+  }
+}
+
+// ============================
+//  جدول شیشه‌ای
+// ============================
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+  padding: 4px;
+
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba($primary-color, 0.2);
+    border-radius: 10px;
+  }
+}
+
+.stats-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 700px;
+  font-size: 14px;
+  direction: rtl;
+
+  // ============================
+  //  هدر جدول
+  // ============================
+  thead {
+    th {
+      font-family: $Font-Family-Fa;
+      font-size: 13px;
+      font-weight: 700;
+      color: $text-secondary;
+      padding: 14px 16px;
+      text-align: center;
+      background: rgba($primary-color, 0.04);
+      border-bottom: 2px solid rgba($primary-color, 0.08);
+
+      &.col-section {
+        text-align: right;
+        padding-right: 20px;
+      }
+    }
+  }
+
+  // ============================
+  //  گروه‌های Done و DeActive
+  // ============================
+  .group-header {
+    background: rgba($primary-color, 0.03);
+
+    td {
+      padding: 10px 16px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    }
+
+    .group-label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      .group-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        i {
+          font-size: 22px;
+        }
+      }
+
+      .group-name {
+        font-family: $Font-Family-Fa;
+        font-size: 16px;
+        font-weight: 700;
+        color: $text-main;
+      }
+
+      .group-badge {
+        font-family: $Font-Family-Fa;
+        font-size: 11px;
+        padding: 2px 14px;
+        border-radius: 30px;
+        background: rgba(0, 0, 0, 0.04);
+        border: 1px solid rgba(0, 0, 0, 0.04);
+        color: $text-secondary;
+      }
+    }
+
+    &.done-group {
+      background: rgba(16, 185, 129, 0.06);
+      .group-icon i { color: #10b981; }
+      .group-badge {
+        background: rgba(16, 185, 129, 0.08);
+        border-color: rgba(16, 185, 129, 0.1);
+        color: #10b981;
+      }
+    }
+
+    &.deactive-group {
+      background: rgba(239, 68, 68, 0.06);
+      .group-icon i { color: #ef4444; }
+      .group-badge {
+        background: rgba(239, 68, 68, 0.08);
+        border-color: rgba(239, 68, 68, 0.1);
+        color: #ef4444;
+      }
+    }
+  }
+
+  // ============================
+  //  ردیف‌های جزئیات
+  // ============================
+  .detail-row {
+    transition: background 0.15s ease;
+
+    &:hover {
+      background: rgba($primary-color, 0.03);
+    }
+
+    td {
+      padding: 12px 16px;
+      text-align: center;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+      font-family: $Font-Family-En;
+      font-weight: 500;
+      color: $text-main;
+    }
+
+    .col-section {
+      text-align: right;
+      padding-right: 20px;
+      font-family: $Font-Family-Fa;
+
+      .layer-badge {
+        font-family: $Font-Family-Fa;
+        font-size: 13px;
+        font-weight: 600;
+        color: $text-main;
+        background: rgba(0, 0, 0, 0.04);
+        padding: 2px 14px;
+        border-radius: 30px;
+        border: 1px solid rgba(0, 0, 0, 0.04);
+      }
+    }
+
+    .col-count {
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .col-percent {
+      .percent-badge {
+        font-family: $Font-Family-En;
+        font-size: 13px;
+        font-weight: 700;
+        padding: 3px 14px;
+        border-radius: 30px;
+
+        &.done-percent {
+          color: #10b981;
+          background: rgba(16, 185, 129, 0.08);
+        }
+
+        &.deactive-percent {
+          color: #ef4444;
+          background: rgba(239, 68, 68, 0.08);
+        }
+
+        &.zero-percent {
+          color: $text-secondary;
+          background: rgba(0, 0, 0, 0.03);
+        }
+      }
+    }
+
+    .col-profit {
+      font-family: $Font-Family-En;
+      font-weight: 600;
+      color: $primary-color;
+      direction: ltr;
+      white-space: nowrap;
+
+      .currency {
+        font-family: $Font-Family-Fa;
+        font-size: 11px;
+        font-weight: 400;
+        color: $text-secondary;
+        margin-right: 4px;
+        direction: rtl;
+      }
+    }
+
+    .col-days {
+      font-family: $Font-Family-En;
+      font-weight: 600;
+    }
+
+    &.zero-row {
+      opacity: 0.5;
+
+      td {
+        color: $text-secondary;
+      }
+
+      .col-profit {
+        color: $text-secondary;
+      }
+
+      .col-count {
+        color: $text-secondary;
+        font-weight: 400;
+      }
+    }
+  }
+}
+
+// ============================
+//  ریسپانسیو
+// ============================
+@media (max-width: 768px) {
+  .stats-details-section {
+    .section-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+  }
+
+  .stats-table {
+    min-width: 550px;
+    font-size: 13px;
+
+    thead th,
+    .detail-row td {
+      padding: 10px 12px;
+    }
+  }
+}
+
+// ============================
+//  اسپینر بارگذاری
+// ============================
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 16px;
+
+  span {
+    font-family: $Font-Family-Fa;
+    font-size: 14px;
+    color: $text-secondary;
+  }
+}

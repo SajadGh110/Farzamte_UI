@@ -6,8 +6,221 @@
       <ng-container *ngIf="auth.hasPermission('marketing.view'); else deniedTemplate">
       </ng-container>
 
-      <ng-template #deniedTemplate>
+      <div class="page-header">
+        <div class="header-top">
+          <div class="header-title">
+            <h1>گزارش لیدها</h1>
+            <p class="subtitle">خلاصه آماری احتمال ترک</p>
+          </div>
+          <div class="header-badges">
+            <span class="badge-preview">نسخه پیشنمایش</span>
+          </div>
+        </div>
+        <div class="header-bottom">
+          <div class="date-range">
+            <i class="material-icons">date_range</i>
+            <span dir="ltr">{{ StartDate }} - {{ EndDate }}</span>
+          </div>
+        </div>
+      </div>
 
+      <div class="loading-spinner" *ngIf="!flag_total">
+        <mat-spinner diameter="50"></mat-spinner>
+        <span>در حال دریافت اطلاعات...</span>
+      </div>
+      <div class="stats-grid" *ngIf="flag_total && series_total.length > 0">
+        <!-- کارت Done -->
+        <div class="stat-card glass-card done-card">
+          <div class="stat-header">
+            <div class="icon-wrapper">
+              <i class="material-icons">check_circle</i>
+            </div>
+            <div class="stat-title">
+              <h3>لیدهای Done</h3>
+              <span class="badge">Done</span>
+            </div>
+          </div>
+          <div class="stat-body">
+            <div class="stat-number">
+              {{ series_total[0].done_Count}}
+            </div>
+            <div class="stat-percent">
+              <span class="percent-value">{{ series_total[0].done_Persent }}%</span>
+              <span class="percent-label">از کل لیدها</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" [style.width.%]="series_total[0].done_Persent"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- کارت DeActive -->
+        <div class="stat-card glass-card deactive-card">
+          <div class="stat-header">
+            <div class="icon-wrapper">
+              <i class="material-icons">block</i>
+            </div>
+            <div class="stat-title">
+              <h3>لیدهای DeActive</h3>
+              <span class="badge">DeActive</span>
+            </div>
+          </div>
+          <div class="stat-body">
+            <div class="stat-number">
+              {{ series_total[0].deActive_Count}}
+            </div>
+            <div class="stat-percent">
+              <span class="percent-value">{{ series_total[0].deActive_Persent }}%</span>
+              <span class="percent-label">از کل لیدها</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" [style.width.%]="series_total[0].deActive_Persent"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================ -->
+      <!--  جدول جزئیات آماری (Stats)   -->
+      <!-- ============================ -->
+      <div class="loading-spinner" *ngIf="!flag_stats">
+        <mat-spinner diameter="50"></mat-spinner>
+        <span>در حال دریافت اطلاعات...</span>
+      </div>
+      <div class="stats-details-section" *ngIf="flag_stats && series_stats.length > 0">
+        <div class="section-header">
+          <h2>جزئیات آماری لیدها</h2>
+          <span class="section-badge">نسخه پیشنمایش</span>
+        </div>
+
+        <div class="table-wrapper glass-table">
+          <table class="stats-table">
+            <thead>
+            <tr>
+              <th class="col-section">بخش</th>
+              <th class="col-count">تعداد</th>
+              <th class="col-percent">درصد از کل</th>
+              <th class="col-profit">جمع کارمزد 3 ماهه اخیر</th>
+              <th class="col-days">روزهای معاملاتی</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- ====== بخش Done ====== -->
+            <tr class="group-header done-group">
+              <td colspan="5">
+                <div class="group-label">
+                  <span class="group-icon"><i class="material-icons">check_circle</i></span>
+                  <span class="group-name">Done</span>
+                  <span class="group-badge">حل شده</span>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Done - L1/L2 -->
+            <tr class="detail-row" (click)="openLeadsDialog('Done', 'L1L2', 'لیست لیدهای Done - L1/L2')">
+              <td class="col-section">
+                <span class="layer-badge">L1 / L2</span>
+              </td>
+              <td class="col-count">{{ series_stats[0].done_L1andL2_Count | number }}</td>
+              <td class="col-percent">
+                <span class="percent-badge done-percent">{{ series_stats[0].done_L1andL2_Persent }}%</span>
+              </td>
+              <td class="col-profit">{{ series_stats[0].done_L1andL2_Profits | number:'1.0-0' }} <span class="currency">ریال</span></td>
+              <td class="col-days">{{ series_stats[0].done_L1andL2_Tradingdays | number }}</td>
+            </tr>
+
+            <!-- Done - L3 -->
+            <tr class="detail-row" (click)="openLeadsDialog('Done', 'L3', 'لیست لیدهای Done - L3')">
+              <td class="col-section">
+                <span class="layer-badge">L3</span>
+              </td>
+              <td class="col-count">{{ series_stats[0].done_L3_Count | number }}</td>
+              <td class="col-percent">
+                <span class="percent-badge done-percent">{{ series_stats[0].done_L3_Persent }}%</span>
+              </td>
+              <td class="col-profit">{{ series_stats[0].done_L3_Profits | number:'1.0-0' }} <span class="currency">ریال</span></td>
+              <td class="col-days">{{ series_stats[0].done_L3_Tradingdays | number }}</td>
+            </tr>
+
+            <!-- Done - L4 -->
+            <tr class="detail-row" (click)="openLeadsDialog('Done', 'L4', 'لیست لیدهای Done - L4')">
+              <td class="col-section">
+                <span class="layer-badge">L4</span>
+              </td>
+              <td class="col-count">{{ series_stats[0].done_L4_Count | number }}</td>
+              <td class="col-percent">
+                <span class="percent-badge done-percent">{{ series_stats[0].done_L4_Persent }}%</span>
+              </td>
+              <td class="col-profit">{{ series_stats[0].done_L4_Profits | number:'1.0-0' }} <span class="currency">ریال</span></td>
+              <td class="col-days">{{ series_stats[0].done_L4_Tradingdays | number }}</td>
+            </tr>
+            <tr class="detail-row" *ngIf="series_stats[0].done_L4_Count !== 0">
+              <td class="col-section">
+                <span class="layer-badge">L4</span>
+              </td>
+              <td class="col-count">{{ series_stats[0].done_L4_Count | number }}</td>
+              <td class="col-percent">
+                <span class="percent-badge done-percent">{{ series_stats[0].done_L4_Persent }}%</span>
+              </td>
+              <td class="col-profit">{{ series_stats[0].done_L4_Profits | number:'1.0-0' }} <span class="currency">ریال</span></td>
+              <td class="col-days">{{ series_stats[0].done_L4_Tradingdays | number }}</td>
+            </tr>
+
+            <!-- ====== بخش DeActive ====== -->
+            <tr class="group-header deactive-group">
+              <td colspan="5">
+                <div class="group-label">
+                  <span class="group-icon"><i class="material-icons">block</i></span>
+                  <span class="group-name">DeActive</span>
+                  <span class="group-badge">غیرفعال</span>
+                </div>
+              </td>
+            </tr>
+
+            <!-- DeActive - L1/L2 -->
+            <tr class="detail-row" (click)="openLeadsDialog('DeActive', 'L1L2', 'لیست لیدهای DeActive - L1/L2')">
+              <td class="col-section">
+                <span class="layer-badge">L1 / L2</span>
+              </td>
+              <td class="col-count">{{ series_stats[0].deActive_L1andL2_Count | number }}</td>
+              <td class="col-percent">
+                <span class="percent-badge deactive-percent">{{ series_stats[0].deActive_L1andL2_Persent }}%</span>
+              </td>
+              <td class="col-profit">{{ series_stats[0].deActive_L1andL1_Profits | number:'1.0-0' }} <span class="currency">ریال</span></td>
+              <td class="col-days">{{ series_stats[0].deActive_L1andL1_Tradingdays | number }}</td>
+            </tr>
+
+            <!-- DeActive - L3 -->
+            <tr class="detail-row" (click)="openLeadsDialog('DeActive', 'L3', 'لیست لیدهای DeActive - L3')">
+              <td class="col-section">
+                <span class="layer-badge">L3</span>
+              </td>
+              <td class="col-count">{{ series_stats[0].deActive_L3_Count | number }}</td>
+              <td class="col-percent">
+                <span class="percent-badge deactive-percent">{{ series_stats[0].deActive_L3_Persent }}%</span>
+              </td>
+              <td class="col-profit">{{ series_stats[0].deActive_L3_Profits | number:'1.0-0' }} <span class="currency">ریال</span></td>
+              <td class="col-days">{{ series_stats[0].deActive_L3_Tradingdays | number }}</td>
+            </tr>
+
+            <!-- DeActive - L4 -->
+            <tr class="detail-row" (click)="openLeadsDialog('DeActive', 'L4', 'لیست لیدهای DeActive - L4')">
+              <td class="col-section">
+                <span class="layer-badge">L4</span>
+              </td>
+              <td class="col-count">{{ series_stats[0].deActive_L4_Count | number }}</td>
+              <td class="col-percent">
+                <span class="percent-badge deactive-percent">{{ series_stats[0].deActive_L4_Persent }}</span>
+              </td>
+              <td class="col-profit">{{ series_stats[0].deActive_L4_Profits | number:'1.0-0' }} <span class="currency">ریال</span></td>
+              <td class="col-days">{{ series_stats[0].deActive_L4_Tradingdays | number }}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <ng-template #deniedTemplate>
         <div class="access-denied-container shadow-sm">
           <div class="icon-wrapper">
             <i class="material-icons">lock_person</i>
@@ -17,7 +230,6 @@
             متأسفانه اکانت شما مجوز دسترسی به این قسمت را ندارد
           </p>
         </div>
-
       </ng-template>
     </div>
   </section>

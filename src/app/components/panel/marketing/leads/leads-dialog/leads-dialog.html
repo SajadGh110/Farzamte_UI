@@ -1,0 +1,105 @@
+<div class="dialog-container">
+  <!-- هدر دیالوگ -->
+  <div class="dialog-header">
+    <div class="header-left">
+      <h2>{{ data.title }}</h2>
+      <span class="subtitle">لیست لیدهای {{ data.status }} - {{ data.layer }}</span>
+    </div>
+    <button class="close-btn" (click)="close()">×</button>
+  </div>
+
+  <!-- اسپینر بارگذاری -->
+  <div class="loading-spinner" *ngIf="loading">
+    <mat-spinner diameter="40"></mat-spinner>
+    <span>در حال دریافت لیست لیدها...</span>
+  </div>
+
+  <!-- محتوای دیالوگ -->
+  <div *ngIf="!loading && filteredLeads.length > 0" class="dialog-content">
+    <!-- نوار ابزار -->
+    <div class="table-toolbar">
+      <div class="search-box">
+        <i class="material-icons">search</i>
+        <input
+          type="text"
+          [(ngModel)]="searchTerm"
+          placeholder="جستجو در نام، کد ملی یا شعبه..."
+        />
+        <span class="result-count">{{ filteredLeads.length }} مورد</span>
+      </div>
+      <div class="actions">
+        <button class="btn-excel" (click)="exportToExcel()">
+          <i class="material-icons">file_download</i>
+          خروجی اکسل
+        </button>
+      </div>
+    </div>
+
+    <!-- جدول با اسکرول -->
+    <div class="table-wrapper">
+      <table class="modern-table">
+        <thead>
+        <tr>
+          <th (click)="toggleSort('fullName')" class="sortable">
+            نام و نام خانوادگی
+            <span *ngIf="sortColumn === 'fullName'">
+          {{ sortDirection === 'asc' ? '↑' : '↓' }}
+        </span>
+          </th>
+          <th (click)="toggleSort('nationalCode')" class="sortable">
+            کد ملی
+            <span *ngIf="sortColumn === 'nationalCode'">
+          {{ sortDirection === 'asc' ? '↑' : '↓' }}
+        </span>
+          </th>
+          <th (click)="toggleSort('createdOn')" class="sortable">
+            تاریخ ایجاد
+            <span *ngIf="sortColumn === 'createdOn'">
+          {{ sortDirection === 'asc' ? '↑' : '↓' }}
+        </span>
+          </th>
+          <th (click)="toggleSort('branchName')" class="sortable">
+            شعبه
+            <span *ngIf="sortColumn === 'branchName'">
+          {{ sortDirection === 'asc' ? '↑' : '↓' }}
+        </span>
+          </th>
+          <!-- اضافه شدن سورت به روزهای معاملاتی -->
+          <th (click)="toggleSort('tradingDays')" class="sortable">
+            روزهای معاملاتی
+            <span *ngIf="sortColumn === 'tradingDays'">
+          {{ sortDirection === 'asc' ? '↑' : '↓' }}
+        </span>
+          </th>
+          <!-- اضافه شدن سورت به کارمزد -->
+          <th (click)="toggleSort('brokerCommissionInPeriod')" class="sortable">
+            کارمزد 3 ماهه اخیر
+            <span *ngIf="sortColumn === 'brokerCommissionInPeriod'">
+          {{ sortDirection === 'asc' ? '↑' : '↓' }}
+        </span>
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let lead of filteredLeads">
+          <td class="col-name">{{ lead.fullName }}</td>
+          <td class="col-national">{{ lead.nationalCode }}</td>
+          <td class="col-date">{{ lead.createdOn | date:'yyyy-MM-dd HH:mm' }}</td>
+          <td class="col-branch">{{ lead.branchName }}</td>
+          <td class="col-trading">{{ lead.tradingDays || '-' }}</td>
+          <td class="col-profit">
+            {{ lead.brokerCommissionInPeriod | number:'1.0-0' }}
+            <span class="currency">ریال</span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- پیام عدم وجود داده -->
+  <div *ngIf="!loading && filteredLeads.length === 0" class="no-data">
+    <i class="material-icons">info_outline</i>
+    <span>هیچ لیدی برای این گروه یافت نشد.</span>
+  </div>
+</div>
