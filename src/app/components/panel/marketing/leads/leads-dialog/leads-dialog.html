@@ -81,7 +81,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let lead of filteredLeads">
+        <tr *ngFor="let lead of filteredLeads" (click)="openLeadDetail(lead.id)">
           <td class="col-name">{{ lead.fullName }}</td>
           <td class="col-national">{{ lead.nationalCode }}</td>
           <td class="col-date">{{ lead.createdOn | date:'yyyy-MM-dd HH:mm' }}</td>

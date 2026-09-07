@@ -25,4 +25,8 @@ export class LeadService {
   get_LeadsList(StartDate:string, EndDate:string, status:string, layer:string):Observable<any>{
     return this.authService.get(`${this.apiUrl}LeadsList/${StartDate}_${EndDate}/${status}/${layer}`);
   }
+
+  get_Lead(id:number):Observable<any>{
+    return this.authService.get(`${this.apiUrl}GetLead/${id}`);
+  }
 }

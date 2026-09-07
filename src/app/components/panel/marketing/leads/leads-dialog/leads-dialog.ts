@@ -1,11 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
 import { NgToastService } from 'ng-angular-popup';
 import { FormsModule } from '@angular/forms';
 import {LeadService} from "../../../../../services/lead.service";
+import {LeadDetails} from "../lead-details/lead-details";
 import * as XLSX from 'xlsx';
 
 export interface LeadsDialogData {
@@ -40,7 +41,8 @@ export class LeadsDialog implements OnInit {
     public dialogRef: MatDialogRef<LeadsDialog>,
     @Inject(MAT_DIALOG_DATA) public data: LeadsDialogData,
     private leadService: LeadService,
-    private toast: NgToastService
+    private toast: NgToastService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -176,4 +178,14 @@ export class LeadsDialog implements OnInit {
     this.dialogRef.close();
   }
 
+  openLeadDetail(leadId: number) {
+    this.dialog.open(LeadDetails, {
+      width: '850px',
+      maxWidth: '95vw',
+      maxHeight: '90vh',
+      data: { leadId: leadId },
+      panelClass: 'lead-detail-panel',
+      direction: 'rtl'
+    });
+  }
 }
