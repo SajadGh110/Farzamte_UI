@@ -1,0 +1,132 @@
+<div class="dialog-container">
+  <!-- هدر دیالوگ -->
+  <div class="dialog-header">
+    <div class="header-left">
+      <h2>جزئیات کامل لید</h2>
+      <span class="subtitle" *ngIf="leadDetail">کد: {{ leadDetail.id }} - {{ leadDetail.fullName }}</span>
+    </div>
+    <button class="close-btn" (click)="close()">×</button>
+  </div>
+
+  <!-- اسپینر بارگذاری -->
+  <div class="loading-spinner" *ngIf="loading">
+    <mat-spinner diameter="40"></mat-spinner>
+    <span>در حال دریافت اطلاعات...</span>
+  </div>
+
+  <!-- محتوای دیالوگ -->
+  <div *ngIf="!loading && leadDetail" class="dialog-content">
+    <div class="detail-grid">
+      <!-- ستون راست -->
+      <div class="detail-column">
+        <div class="detail-item">
+          <span class="label">نام کامل</span>
+          <span class="value">{{ leadDetail.fullName || '-' }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">کد ملی</span>
+          <span class="value">{{ leadDetail.nationalCode || '-' }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">شعبه</span>
+          <span class="value">{{ leadDetail.branchname || '-' }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">نوع لایه</span>
+          <span class="value">
+            <span class="layer-badge">{{ leadDetail.layertype || '-' }}</span>
+          </span>
+        </div>
+        <div class="detail-item">
+          <span class="label">وضعیت</span>
+          <span class="value">{{ leadDetail.leadconditions || '-' }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">رضایت مشتری</span>
+          <span class="value">{{ leadDetail.customersatisfaction || '-' }}</span>
+        </div>
+      </div>
+
+      <!-- ستون چپ -->
+      <div class="detail-column">
+        <div class="detail-item">
+          <span class="label">مالک پرونده</span>
+          <span class="value">{{ leadDetail.ownerid || '-' }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">کارشناس اتوماسیون</span>
+          <span class="value">{{ leadDetail.marketing_automation_expert || '-' }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">ایجادکننده</span>
+          <span class="value">{{ leadDetail.createdby || '-' }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">ارجاع به</span>
+          <span class="value">{{ leadDetail.referredto || '-' }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">تاریخ ارجاع</span>
+          <span class="value">
+            <span *ngIf="leadDetail.referraldate; else dashDate">
+              {{ leadDetail.referraldate | date:'yyyy-MM-dd HH:mm' }}
+            </span>
+            <ng-template #dashDate>-</ng-template>
+          </span>
+        </div>
+        <div class="detail-item">
+          <span class="label">بازاریاب</span>
+          <span class="value">{{ leadDetail.marketersnameame || '-' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- بخش توضیحات -->
+    <div class="description-section">
+      <div class="detail-item full-width">
+        <span class="label">توضیحات</span>
+        <span class="value">{{ leadDetail.description || 'هیچ توضیحی ثبت نشده است.' }}</span>
+      </div>
+      <div class="detail-item full-width" *ngIf="leadDetail.ex_description">
+        <span class="label">توضیحات تکمیلی</span>
+        <span class="value">{{ leadDetail.ex_description }}</span>
+      </div>
+    </div>
+
+    <!-- بخش آماری -->
+    <div class="stats-section">
+      <div class="stat-item">
+        <span class="stat-label">روزهای معاملاتی</span>
+        <span class="stat-value">{{ leadDetail.tradingdays || '۰' }}</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">کل روزهای معاملاتی</span>
+        <span class="stat-value">{{ leadDetail.alltradingdays || '۰' }}</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">کارمزد دوره</span>
+        <span class="stat-value">
+          <span *ngIf="leadDetail.brokercommissioninperiod; else dashNumber">
+            {{ leadDetail.brokercommissioninperiod | number:'1.0-0' }} ریال
+          </span>
+          <ng-template #dashNumber>۰ ریال</ng-template>
+        </span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">کارمزد قبل از دوره</span>
+        <span class="stat-value">
+          <span *ngIf="leadDetail.brokercommissionbeforeperiod; else dashNumber2">
+            {{ leadDetail.brokercommissionbeforeperiod | number:'1.0-0' }} ریال
+          </span>
+          <ng-template #dashNumber2>۰ ریال</ng-template>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- پیام عدم وجود داده -->
+  <div *ngIf="!loading && !leadDetail" class="no-data">
+    <i class="material-icons">info_outline</i>
+    <span>اطلاعاتی برای این لید یافت نشد.</span>
+  </div>
+</div>

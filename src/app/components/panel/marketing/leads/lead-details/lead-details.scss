@@ -1,0 +1,301 @@
+@use '../../../../../../variables' as *;
+
+::ng-deep .lead-detail-panel {
+  .mat-mdc-dialog-container {
+    padding: 0 !important;
+    border-radius: 24px !important;
+    background: transparent !important;
+  }
+
+  .mat-mdc-dialog-surface {
+    border-radius: 24px !important;
+    background: rgba(255, 255, 255, 0.8) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.12) !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+}
+
+.dialog-container {
+  padding: 24px 28px 20px;
+  max-height: 85vh;
+  height: 85vh;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+
+  @media (max-width: 600px) {
+    padding: 16px;
+  }
+}
+
+// ============================
+//  هدر دیالوگ
+// ============================
+.dialog-header {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba($primary-color, 0.08);
+
+  .header-left {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+
+    h2 {
+      font-family: $Font-Family-Fa;
+      font-size: 20px;
+      font-weight: 700;
+      color: $text-main;
+      margin: 0;
+    }
+
+    .subtitle {
+      font-family: $Font-Family-Fa;
+      font-size: 13px;
+      color: $text-secondary;
+    }
+  }
+
+  .close-btn {
+    border: none;
+    background: rgba(0, 0, 0, 0.04);
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    font-size: 24px;
+    cursor: pointer;
+    color: $text-secondary;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    &:hover {
+      background: rgba($error-color, 0.08);
+      color: $error-color;
+      transform: rotate(90deg);
+    }
+  }
+}
+
+// ============================
+//  محتوای دیالوگ
+// ============================
+.dialog-content {
+  flex: 1;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba($primary-color, 0.25);
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.02);
+    border-radius: 10px;
+  }
+}
+
+// ============================
+//  بارگذاری
+// ============================
+.loading-spinner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 16px;
+
+  span {
+    font-family: $Font-Family-Fa;
+    font-size: 14px;
+    color: $text-secondary;
+  }
+}
+
+// ============================
+//  گرید جزئیات
+// ============================
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.detail-column {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+
+  .label {
+    font-family: $Font-Family-Fa;
+    font-size: 13px;
+    color: $text-secondary;
+    font-weight: 500;
+  }
+
+  .value {
+    font-family: $Font-Family-Fa;
+    font-size: 14px;
+    color: $text-main;
+    font-weight: 600;
+    text-align: left;
+    direction: ltr;
+  }
+
+  &.full-width {
+    grid-column: span 2;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+
+    .value {
+      text-align: right;
+      direction: rtl;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+  }
+
+  .layer-badge {
+    font-family: $Font-Family-En;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 2px 12px;
+    border-radius: 30px;
+    background: rgba($primary-color, 0.08);
+    color: $primary-color;
+    border: 1px solid rgba($primary-color, 0.1);
+  }
+}
+
+// ============================
+//  بخش توضیحات
+// ============================
+.description-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+// ============================
+//  بخش آمار
+// ============================
+.stats-section {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-top: 4px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(0, 0, 0, 0.04);
+
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 8px;
+    background: rgba($primary-color, 0.03);
+    border-radius: 12px;
+    border: 1px solid rgba($primary-color, 0.06);
+
+    .stat-label {
+      font-family: $Font-Family-Fa;
+      font-size: 12px;
+      color: $text-secondary;
+      margin-bottom: 4px;
+    }
+
+    .stat-value {
+      font-family: $Font-Family-En;
+      font-size: 18px;
+      font-weight: 700;
+      color: $primary-color;
+      direction: ltr;
+    }
+  }
+}
+
+// ============================
+//  پیام بدون داده
+// ============================
+.no-data {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 12px;
+  color: $text-secondary;
+
+  i {
+    font-size: 48px;
+    opacity: 0.3;
+  }
+
+  span {
+    font-family: $Font-Family-Fa;
+    font-size: 15px;
+  }
+}
+
+// ============================
+//  ریسپانسیو
+// ============================
+@media (max-width: 768px) {
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-item.full-width {
+    grid-column: span 1;
+  }
+
+  .stats-section {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 576px) {
+  .detail-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+
+    .value {
+      text-align: right;
+      direction: rtl;
+    }
+  }
+
+  .stats-section {
+    grid-template-columns: 1fr;
+  }
+}
