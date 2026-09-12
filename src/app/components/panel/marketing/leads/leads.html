@@ -6,23 +6,47 @@
       <ng-container *ngIf="auth.hasPermission('marketing.view'); else deniedTemplate">
       </ng-container>
 
-      <div class="page-header">
-        <div class="header-top">
-          <div class="header-title">
-            <h1>گزارش لیدها</h1>
-            <p class="subtitle">خلاصه آماری احتمال ترک</p>
-          </div>
-          <div class="header-badges">
-            <span class="badge-preview">نسخه پیشنمایش</span>
-          </div>
+      <section class="glass-card">
+        <div class="card-header">
+          <h2>تنظیمات بازه زمانی گزارش</h2>
+          <span class="badge-preview">نسخه پیش‌نمایش</span>
         </div>
-        <div class="header-bottom">
-          <div class="date-range">
-            <i class="material-icons">date_range</i>
-            <span dir="ltr">{{ StartDate }} - {{ EndDate }}</span>
+
+        <form [formGroup]="dateform" (ngSubmit)="onUpdateDate()" class="toolbar-content">
+          <div class="date-inputs">
+            <div class="input-group">
+              <label>از تاریخ:</label>
+              <input type="date" formControlName="StartDate">
+            </div>
+            <div class="input-group">
+              <label>تا تاریخ:</label>
+              <input type="date" formControlName="EndDate">
+            </div>
+            <button type="submit" class="btn-refresh" [disabled]="loading">
+              <i class="material-icons">search</i>
+              جستجو
+            </button>
           </div>
+
+          <div class="quick-actions">
+            <button type="button" class="btn-primary" (click)="SetTime(30)">یک ماهه</button>
+            <button type="button" class="btn-primary" (click)="SetTime(90)">سه ماهه</button>
+            <button type="button" class="btn-primary" (click)="SetTime(180)">شش ماهه</button>
+          </div>
+
+          <span class="badge">
+          بازه زمانی انتخابی :
+          <span dir="ltr">{{selected_days}}</span>
+          روز
+        </span>
+        </form>
+
+        <div class="date-range-display">
+          <i class="material-icons">date_range</i>
+          <span class="label">بازه گزارش:</span>
+          <span class="value" dir="ltr">{{ StartDate }} — {{ EndDate }}</span>
         </div>
-      </div>
+      </section>
 
       <div class="loading-spinner" *ngIf="!flag_total">
         <mat-spinner diameter="50"></mat-spinner>
@@ -166,6 +190,29 @@
               <td class="col-days">{{ series_stats[0].done_L4_Tradingdays | number }}</td>
             </tr>
 
+            <!-- جمع کل Done -->
+            <tr class="total-row done-total">
+              <td class="col-section">
+                <span class="total-label">
+                  <i class="material-icons">functions</i>
+                  جمع کل Done
+                </span>
+              </td>
+              <td class="col-count">
+                {{ (series_stats[0].done_L1andL2_Count + series_stats[0].done_L3_Count + series_stats[0].done_L4_Count) | number }}
+              </td>
+              <td class="col-percent">
+                <span class="percent-badge done-percent">100%</span>
+              </td>
+              <td class="col-profit">
+                {{ (series_stats[0].done_L1andL2_Profits + series_stats[0].done_L3_Profits + series_stats[0].done_L4_Profits) | number:'1.0-0' }}
+                <span class="currency">ریال</span>
+              </td>
+              <td class="col-days">
+                {{ (series_stats[0].done_L1andL2_Tradingdays + series_stats[0].done_L3_Tradingdays + series_stats[0].done_L4_Tradingdays) | number }}
+              </td>
+            </tr>
+
             <!-- ====== بخش DeActive ====== -->
             <tr class="group-header deactive-group">
               <td colspan="5">
@@ -210,10 +257,30 @@
               </td>
               <td class="col-count">{{ series_stats[0].deActive_L4_Count | number }}</td>
               <td class="col-percent">
-                <span class="percent-badge deactive-percent">{{ series_stats[0].deActive_L4_Persent }}</span>
+                <span class="percent-badge deactive-percent">{{ series_stats[0].deActive_L4_Persent }}%</span>
               </td>
               <td class="col-profit">{{ series_stats[0].deActive_L4_Profits | number:'1.0-0' }} <span class="currency">ریال</span></td>
               <td class="col-days">{{ series_stats[0].deActive_L4_Tradingdays | number }}</td>
+            </tr>
+
+            <!-- جمع کل DeActive -->
+            <tr class="total-row deactive-total">
+              <td class="col-section">
+                <span class="total-label"><i class="material-icons">functions</i>جمع کل DeActive</span>
+              </td>
+              <td class="col-count">
+                {{ (series_stats[0].deActive_L1andL2_Count + series_stats[0].deActive_L3_Count + series_stats[0].deActive_L4_Count) | number }}
+              </td>
+              <td class="col-percent">
+                <span class="percent-badge deactive-percent">100%</span>
+              </td>
+              <td class="col-profit">
+                {{ (series_stats[0].deActive_L1andL1_Profits + series_stats[0].deActive_L3_Profits + series_stats[0].deActive_L4_Profits) | number:'1.0-0' }}
+                <span class="currency">ریال</span>
+              </td>
+              <td class="col-days">
+                {{ (series_stats[0].deActive_L1andL1_Tradingdays + series_stats[0].deActive_L3_Tradingdays + series_stats[0].deActive_L4_Tradingdays) | number }}
+              </td>
             </tr>
             </tbody>
           </table>

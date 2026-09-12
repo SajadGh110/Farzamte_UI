@@ -28,14 +28,19 @@ $green-indicator: #10b981;
   }
 }
 
-// چیدمان گرید فیلترها
+// چیدمان گرید فیلترها (۴ ستون)
 .filter-grid-layout {
   display: grid;
-  grid-template-columns: 1fr 1fr 1.2fr;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 30px;
   padding: 10px;
+  margin-bottom: 20px;
 
-  @media (max-width: 992px) {
+  @media (max-width: 1200px) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (max-width: 768px) {
     grid-template-columns: 1fr;
   }
 }
@@ -44,23 +49,35 @@ $green-indicator: #10b981;
   display: flex;
   flex-direction: column;
   gap: 12px;
+  min-width: 0;
 
   .column-label {
     font-size: 14px;
     font-weight: 600;
     color: #4b5563;
     padding-right: 5px;
+    white-space: nowrap;
+  }
+
+  .selection-wrapper,
+  .radio-group-container,
+  .loading-spinner-sm,
+  .no-data-message {
+    min-height: 220px;
+    max-height: 220px;
   }
 }
 
-// اصلاح کانتینر انتخاب (حل مشکل اسکرول و کادر گرد)
+// ============================
+//  استایل انتخاب تیم (چپ چین)
+// ============================
 .selection-wrapper {
   background: #f9fafb;
   border: 1px solid #e5e7eb;
   border-radius: 12px;
   height: 220px;
   position: relative;
-  overflow: hidden; // حتما باید hidden باشد تا اسکرول بیرون نزند
+  overflow: hidden;
   transition: all 0.3s ease;
 
   &:hover {
@@ -69,7 +86,6 @@ $green-indicator: #10b981;
     box-shadow: 0 4px 12px rgba(0,0,0,0.03);
   }
 
-  // لایه داخلی که اسکرول می‌خورد
   .custom-scroll {
     height: 100%;
     overflow-y: auto;
@@ -84,9 +100,8 @@ $green-indicator: #10b981;
     }
   }
 
-  // استایل لیست تیم‌ها (چپ چین و انگلیسی)
   mat-selection-list {
-    direction: ltr; // چپ چین کردن محتوا
+    direction: ltr;
     text-align: left;
 
     mat-list-option {
@@ -102,7 +117,9 @@ $green-indicator: #10b981;
   }
 }
 
-// استایل چک‌باکس ماه‌ها (راست چین - فارسی)
+// ============================
+//  استایل چک‌باکس ماه‌ها (راست چین)
+// ============================
 .checkbox-list-container {
   direction: rtl;
   text-align: right;
@@ -120,15 +137,83 @@ $green-indicator: #10b981;
   }
 }
 
-// ستون عملیات و دکمه
-.action-column {
-  justify-content: space-between;
+// ============================
+//  استایل رادیو باتن پورت‌ها (جدید)
+// ============================
+.radio-group-container {
+  direction: rtl;
+  text-align: right;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 10px 15px;
+  min-height: 220px;
+  max-height: 220px;
+  overflow-y: auto;
+  transition: all 0.3s ease;
+
+  &:hover {
+    border-color: #3b82f6;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+  }
+
+  &::-webkit-scrollbar { width: 5px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 10px;
+    &:hover { background: #9ca3af; }
+  }
+
+  .modern-radio {
+    display: flex;
+    align-items: center;
+    font-family: $font-fa;
+    font-size: 13px;
+    color: #1f2937;
+    padding: 6px 0;
+    margin: 2px 0;
+    border-radius: 8px;
+    transition: background 0.2s;
+    width: 100%;
+
+    &:hover {
+      background: rgba(59, 130, 246, 0.05);
+    }
+
+    .mat-radio-container {
+      margin-left: 10px;
+    }
+
+    .mat-radio-label-content {
+      font-family: $font-fa;
+      font-weight: 500;
+    }
+  }
+}
+
+// ============================
+//  ستون عملیات و دکمه
+// ============================
+.filter-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 10px 20px 5px 20px;
+  border-top: 1px solid rgba(59, 130, 246, 0.08);
+  margin-top: 5px;
 
   .info-box {
     background: rgba(59, 130, 246, 0.05);
     border-right: 4px solid #3b82f6;
-    padding: 15px;
+    padding: 14px 20px;
     border-radius: 10px;
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
 
     p {
       font-size: 13px;
@@ -138,33 +223,42 @@ $green-indicator: #10b981;
       font-family: $font-fa;
     }
   }
-}
+  .btn-primary-solid {
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 14px 40px;
+    border-radius: 12px;
+    font-family: $font-fa;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    min-width: 250px;
 
-.btn-primary-solid {
-  background: #3b82f6;
-  color: white;
-  border: none;
-  padding: 15px;
-  border-radius: 12px;
-  font-family: $font-fa;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    &:hover:not(:disabled) {
+      background: #1d4ed8;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.35);
+    }
 
-  &:hover:not(:disabled) {
-    background: #1d4ed8;
-    transform: translateY(-2px);
+    &:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
   }
-
-  &:disabled { background: #9ca3af; cursor: not-allowed; }
 }
 
-// استایل نمودارها
+
+// ============================
+//  استایل نمودارها
+// ============================
 .charts-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
@@ -177,7 +271,9 @@ $green-indicator: #10b981;
   }
 }
 
-// استایل جدول
+// ============================
+//  استایل جدول
+// ============================
 .table-outer-wrapper {
   border-radius: 12px;
   overflow: hidden;
@@ -292,11 +388,12 @@ $green-indicator: #10b981;
   padding: 40px;
   span { font-family: $font-fa; margin-top: 10px; color: #64748b; }
 }
+
 .btn-excel {
   display: flex;
   align-items: center;
   gap: 8px;
-  background-color: #166534; // سبز تیره اکسلی
+  background-color: #166534;
   color: white;
   border: none;
   padding: 8px 16px;
@@ -310,6 +407,7 @@ $green-indicator: #10b981;
     box-shadow: 0 4px 12px rgba(22, 101, 52, 0.2);
   }
 }
+
 .search-box {
   display: flex;
   align-items: center;
@@ -328,6 +426,7 @@ $green-indicator: #10b981;
   }
   mat-icon { color: #64748b; }
 }
+
 .sortable-header {
   cursor: pointer;
   position: relative;
@@ -342,10 +441,14 @@ $green-indicator: #10b981;
     margin-left: 4px;
   }
 }
+
+// ============================
+//  راهنمای شاخص‌ها
+// ============================
 .qa-guide-container {
   margin-top: 30px;
   padding: 20px;
-  border-top: 3px solid #0b3847; // یک خط رنگی در بالا برای تفکیک
+  border-top: 3px solid #0b3847;
 
   .guide-header {
     display: flex;
@@ -394,17 +497,16 @@ $green-indicator: #10b981;
   }
 
   .index-text {
-    display: flex; // اضافه شده برای تراز بهتر
-    align-items: center; // متن داخل باکس همیشه عمود وسط باشد
-    padding: 10px 15px; // پدینگ عمودی اضافه شد تا متن به لبه‌ها نچسبد
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
     font-size: 13.5px;
     color: #334155;
     font-weight: 500;
     line-height: 1.5;
-    flex-grow: 1; // فضای باقی‌مانده را پر کند
+    flex-grow: 1;
   }
 
-  /* استایل شاخص‌های بحرانی (قرمز/صورتی طبق تصویر) */
   &.critical {
     .index-badge {
       background: linear-gradient(135deg, #d81b60, #ad1457);
@@ -412,7 +514,6 @@ $green-indicator: #10b981;
     &:hover { border-color: #d81b60; }
   }
 
-  /* استایل شاخص‌های مثبت (سبز طبق تصویر) */
   &.positive {
     .index-badge {
       background: linear-gradient(135deg, #00897b, #00695c);
@@ -421,7 +522,9 @@ $green-indicator: #10b981;
   }
 }
 
-/* برای موبایل */
+// ============================
+//  ریسپانسیو
+// ============================
 @media (max-width: 1200px) {
   .guide-item {
     width: 100%;

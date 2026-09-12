@@ -1,174 +1,206 @@
 @use '../../../../../variables' as *;
 
 // ============================
-//  هدر صفحه
+//  کارت شیشه‌ای اصلی
 // ============================
-.page-header {
-  margin-bottom: 28px;
-  padding: 20px 24px;
-  background: rgba(255, 255, 255, 0.5);
+.glass-card {
+  padding: 24px 28px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-  transition: all 0.2s ease;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+  margin-bottom: 24px;
 
-  &:hover {
-    background: rgba(255, 255, 255, 0.7);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
-  }
-
-  // ============================
-  //  ردیف بالایی (عنوان + برچسب‌ها)
-  // ============================
-  .header-top {
+  .card-header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba($primary-color, 0.08);
     gap: 12px;
-    margin-bottom: 12px;
 
-    .header-title {
-      h1 {
-        font-family: $Font-Family-Fa;
-        font-size: 26px;
-        font-weight: 700;
-        margin: 0 0 2px 0;
-        background: linear-gradient(135deg, $primary-color, $primary-hover);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        line-height: 1.2;
-      }
-
-      .subtitle {
-        font-family: $Font-Family-Fa;
-        font-size: 14px;
-        color: $text-secondary;
-        margin: 0;
-        font-weight: 400;
-      }
+    h2 {
+      font-family: $Font-Family-Fa;
+      font-size: 18px;
+      font-weight: 700;
+      color: $text-main;
+      margin: 0;
+      border-right: 4px solid $primary-color;
+      padding-right: 12px;
     }
 
-    .header-badges {
-      display: flex;
+    .badge-preview {
+      font-family: $Font-Family-Fa;
+      font-size: 12px;
+      font-weight: 600;
+      color: #8b5cf6;
+      background: rgba(139, 92, 246, 0.12);
+      padding: 4px 14px;
+      border-radius: 30px;
+      border: 1px solid rgba(139, 92, 246, 0.15);
+      letter-spacing: 0.3px;
+      display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
+      white-space: nowrap;
       flex-shrink: 0;
 
-      .badge-preview {
-        font-family: $Font-Family-Fa;
-        font-size: 12px;
-        font-weight: 600;
-        color: #8b5cf6;
-        background: rgba(139, 92, 246, 0.12);
-        padding: 4px 14px;
-        border-radius: 30px;
-        border: 1px solid rgba(139, 92, 246, 0.15);
-        letter-spacing: 0.3px;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        white-space: nowrap;
-
-        &::before {
-          content: '✨';
-          font-size: 14px;
-        }
-      }
-    }
-  }
-
-  // ============================
-  //  ردیف پایینی (بازه زمانی)
-  // ============================
-  .header-bottom {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    padding-top: 12px;
-    border-top: 1px solid rgba($primary-color, 0.06);
-
-    .date-range {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-family: $Font-Family-Fa;
-      font-size: 14px;
-      color: $text-secondary;
-      background: rgba(255, 255, 255, 0.4);
-      padding: 6px 16px 6px 20px;
-      border-radius: 30px;
-      border: 1px solid rgba(0, 0, 0, 0.04);
-
-      i {
-        font-size: 20px;
-        color: $primary-color;
-        opacity: 0.7;
-      }
-
-      span {
-        font-family: $Font-Family-En;
-        font-weight: 500;
-        color: $text-main;
-        letter-spacing: 0.3px;
-        direction: ltr;
+      &::before {
+        content: '✨';
+        font-size: 14px;
       }
     }
   }
 }
 
 // ============================
-//  ریسپانسیو
+//  نوار ابزار (تاریخ + دکمه‌ها + نشان)
 // ============================
-@media (max-width: 600px) {
-  .page-header {
-    padding: 16px 18px;
-    margin-bottom: 20px;
+.toolbar-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
 
-    .header-top {
-      flex-direction: column;
-      align-items: stretch;
-      gap: 10px;
-      margin-bottom: 10px;
+.date-inputs {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
 
-      .header-title {
-        h1 {
-          font-size: 22px;
-        }
-        .subtitle {
-          font-size: 13px;
-        }
-      }
+  .input-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 
-      .header-badges {
-        align-self: flex-start;
-
-        .badge-preview {
-          font-size: 11px;
-          padding: 3px 12px;
-        }
-      }
+    label {
+      font-family: $Font-Family-Fa;
+      color: $text-secondary;
+      font-size: 13px;
     }
 
-    .header-bottom {
-      .date-range {
-        font-size: 13px;
-        padding: 4px 12px 4px 16px;
-        flex-wrap: wrap;
-        gap: 6px;
+    input {
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      font-family: $Font-Family-En;
+      font-size: 13px;
+      background: white;
+      transition: all 0.2s ease;
 
-        i {
-          font-size: 18px;
-        }
-
-        span {
-          font-size: 13px;
-        }
+      &:focus {
+        border-color: $primary-color;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
       }
     }
+  }
+}
+
+.quick-actions {
+  display: flex;
+  gap: 10px;
+}
+
+// ============================
+//  دکمه‌ها
+// ============================
+.btn-refresh,
+.btn-primary {
+  background: $primary-color;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-family: $Font-Family-Fa;
+  font-weight: 500;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+
+  i {
+    font-size: 18px;
+  }
+
+  &:hover:not(:disabled) {
+    background: $primary-hover;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba($primary-color, 0.2);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+// ============================
+//  نشان (بازه زمانی انتخابی)
+// ============================
+.badge {
+  background: white;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-family: $Font-Family-Fa;
+  font-size: 12px;
+  color: $text-secondary;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+// ============================
+//  نمایش بازه گزارش (زیر فرم)
+// ============================
+.date-range-display {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+  padding: 12px 18px;
+  background: rgba($primary-color, 0.04);
+  border-radius: 12px;
+  border: 1px solid rgba($primary-color, 0.08);
+  font-family: $Font-Family-Fa;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba($primary-color, 0.06);
+    border-color: rgba($primary-color, 0.15);
+  }
+
+  i {
+    font-size: 22px;
+    color: $primary-color;
+    opacity: 0.8;
+  }
+
+  .label {
+    font-size: 14px;
+    color: $text-secondary;
+    font-weight: 500;
+  }
+
+  .value {
+    font-family: $Font-Family-En;
+    font-size: 15px;
+    font-weight: 700;
+    color: $text-main;
+    letter-spacing: 0.3px;
+    direction: ltr;
+    background: rgba(255, 255, 255, 0.6);
+    padding: 4px 14px;
+    border-radius: 30px;
+    border: 1px solid rgba(0, 0, 0, 0.04);
   }
 }
 
@@ -188,7 +220,7 @@
 }
 
 // ============================
-//  کارت آماری (مشترک)
+//  کارت آماری
 // ============================
 .stat-card {
   padding: 24px 28px;
@@ -199,6 +231,7 @@
   border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  margin-bottom: 0;
 
   &:hover {
     transform: translateY(-4px);
@@ -206,7 +239,6 @@
     background: rgba(255, 255, 255, 0.85);
   }
 
-  // هدر کارت
   .stat-header {
     display: flex;
     align-items: center;
@@ -251,11 +283,11 @@
         background: rgba(0, 0, 0, 0.04);
         border: 1px solid rgba(0, 0, 0, 0.04);
         color: $text-secondary;
+        margin-top: 4px;
       }
     }
   }
 
-  // بدنه کارت
   .stat-body {
     display: flex;
     flex-direction: column;
@@ -289,7 +321,6 @@
       }
     }
 
-    // نوار پیشرفت
     .progress-bar {
       width: 100%;
       height: 6px;
@@ -332,8 +363,8 @@
   }
 
   .badge {
-    background: rgba(16, 185, 129, 0.08);
-    border-color: rgba(16, 185, 129, 0.15);
+    background: rgba(16, 185, 129, 0.08) !important;
+    border-color: rgba(16, 185, 129, 0.15) !important;
     color: #10b981 !important;
   }
 }
@@ -362,11 +393,12 @@
   }
 
   .badge {
-    background: rgba(239, 68, 68, 0.08);
-    border-color: rgba(239, 68, 68, 0.15);
+    background: rgba(239, 68, 68, 0.08) !important;
+    border-color: rgba(239, 68, 68, 0.15) !important;
     color: #ef4444 !important;
   }
 }
+
 // ============================
 //  بخش جدول جزئیات آماری
 // ============================
@@ -429,9 +461,6 @@
   font-size: 14px;
   direction: rtl;
 
-  // ============================
-  //  هدر جدول
-  // ============================
   thead {
     th {
       font-family: $Font-Family-Fa;
@@ -450,9 +479,6 @@
     }
   }
 
-  // ============================
-  //  گروه‌های Done و DeActive
-  // ============================
   .group-header {
     background: rgba($primary-color, 0.03);
 
@@ -515,11 +541,9 @@
     }
   }
 
-  // ============================
-  //  ردیف‌های جزئیات
-  // ============================
   .detail-row {
     transition: background 0.15s ease;
+    cursor: pointer;
 
     &:hover {
       background: rgba($primary-color, 0.03);
@@ -620,27 +644,132 @@
       }
     }
   }
-}
 
-// ============================
-//  ریسپانسیو
-// ============================
-@media (max-width: 768px) {
-  .stats-details-section {
-    .section-header {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 8px;
+  // ============================
+  //  سطر جمع کل (Done و DeActive)
+  // ============================
+  .total-row {
+    background: rgba($primary-color, 0.05);
+    border-top: 2px solid rgba($primary-color, 0.15);
+    border-bottom: 2px solid rgba($primary-color, 0.15);
+
+    td {
+      padding: 14px 16px;
+      text-align: center;
+      font-family: $Font-Family-En;
+      font-weight: 700;
+      font-size: 14px;
+      color: $text-main;
+      background: transparent;
     }
-  }
 
-  .stats-table {
-    min-width: 550px;
-    font-size: 13px;
+    .col-section {
+      text-align: right;
+      padding-right: 20px;
 
-    thead th,
-    .detail-row td {
-      padding: 10px 12px;
+      .total-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-family: $Font-Family-Fa;
+        font-size: 14px;
+        font-weight: 700;
+        color: $text-main;
+
+        i {
+          font-size: 20px;
+          color: $primary-color;
+        }
+      }
+    }
+
+    .col-count {
+      font-family: $Font-Family-En;
+      font-weight: 800;
+      font-size: 15px;
+    }
+
+    .col-percent {
+      .percent-badge {
+        font-family: $Font-Family-En;
+        font-weight: 700;
+        font-size: 13px;
+        padding: 3px 14px;
+        border-radius: 30px;
+      }
+    }
+
+    .col-profit {
+      font-family: $Font-Family-En;
+      font-weight: 800;
+      font-size: 14px;
+      direction: ltr;
+      white-space: nowrap;
+
+      .currency {
+        font-family: $Font-Family-Fa;
+        font-size: 11px;
+        font-weight: 500;
+        color: $text-secondary;
+        margin-right: 4px;
+        direction: rtl;
+      }
+    }
+
+    .col-days {
+      font-family: $Font-Family-En;
+      font-weight: 800;
+      font-size: 15px;
+    }
+
+    // استایل اختصاصی Done
+    &.done-total {
+      background: rgba(16, 185, 129, 0.08);
+      border-top-color: rgba(16, 185, 129, 0.25);
+      border-bottom-color: rgba(16, 185, 129, 0.25);
+
+      .col-section .total-label i {
+        color: #10b981;
+      }
+
+      .col-count,
+      .col-days {
+        color: #065f46;
+      }
+
+      .col-profit {
+        color: #10b981;
+      }
+
+      .percent-badge.done-percent {
+        color: #10b981;
+        background: rgba(16, 185, 129, 0.12);
+      }
+    }
+
+    // استایل اختصاصی DeActive
+    &.deactive-total {
+      background: rgba(239, 68, 68, 0.08);
+      border-top-color: rgba(239, 68, 68, 0.25);
+      border-bottom-color: rgba(239, 68, 68, 0.25);
+
+      .col-section .total-label i {
+        color: #ef4444;
+      }
+
+      .col-count,
+      .col-days {
+        color: #991b1b;
+      }
+
+      .col-profit {
+        color: #ef4444;
+      }
+
+      .percent-badge.deactive-percent {
+        color: #ef4444;
+        background: rgba(239, 68, 68, 0.12);
+      }
     }
   }
 }
@@ -660,5 +789,130 @@
     font-family: $Font-Family-Fa;
     font-size: 14px;
     color: $text-secondary;
+  }
+}
+
+// ============================
+//  عدم دسترسی
+// ============================
+.access-denied-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 16px;
+  text-align: center;
+
+  .icon-wrapper {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: rgba($error-color, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    i {
+      font-size: 40px;
+      color: $error-color;
+    }
+  }
+
+  h3 {
+    font-family: $Font-Family-Fa;
+    font-size: 20px;
+    color: $text-main;
+    margin: 0;
+  }
+
+  p {
+    font-family: $Font-Family-Fa;
+    font-size: 14px;
+    color: $text-secondary;
+    margin: 0;
+  }
+}
+
+// ============================
+//  ریسپانسیو
+// ============================
+@media (max-width: 768px) {
+  .glass-card {
+    padding: 18px;
+  }
+
+  .toolbar-content {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
+
+  .date-inputs {
+    flex-direction: column;
+    align-items: stretch;
+
+    .input-group {
+      flex-direction: column;
+      align-items: stretch;
+
+      input {
+        width: 100%;
+      }
+    }
+  }
+
+  .quick-actions {
+    justify-content: center;
+  }
+
+  .date-range-display {
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 10px 14px;
+
+    i {
+      font-size: 18px;
+    }
+
+    .label {
+      font-size: 13px;
+    }
+
+    .value {
+      font-size: 13px;
+      padding: 3px 10px;
+    }
+  }
+
+  .stats-details-section {
+    .section-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+  }
+
+  .stats-table {
+    min-width: 550px;
+    font-size: 13px;
+
+    thead th,
+    .detail-row td {
+      padding: 10px 12px;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 8px !important;
+
+    .badge-preview {
+      font-size: 11px;
+      padding: 3px 12px;
+    }
   }
 }

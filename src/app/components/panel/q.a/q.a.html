@@ -10,11 +10,14 @@
           <h2>تنظیمات و فیلترهای گزارش</h2>
         </div>
 
+        <!-- ۳ ستون فیلترها -->
         <div class="filter-grid-layout">
+          <!-- ستون اول: تیم‌ها -->
           <div class="filter-column">
             <label class="column-label">تیم‌های قابل مشاهده</label>
             <div class="loading-spinner-sm" *ngIf="!flag_acu">
               <mat-spinner diameter="25"></mat-spinner>
+              <span>در حال بارگذاری تیم‌ها...</span>
             </div>
             <div class="selection-wrapper" *ngIf="flag_acu">
               <div class="custom-scroll">
@@ -27,15 +30,22 @@
             </div>
           </div>
 
+          <!-- ستون دوم: بازه زمانی -->
           <div class="filter-column">
             <label class="column-label">بازه زمانی (مقایسه ماهانه)</label>
             <div class="loading-spinner-sm" *ngIf="!flag_avm">
               <mat-spinner diameter="25"></mat-spinner>
+              <span>در حال بارگذاری ماه‌ها...</span>
             </div>
             <div class="selection-wrapper" *ngIf="flag_avm">
               <div class="custom-scroll">
                 <div class="checkbox-list-container">
-                  <mat-checkbox *ngFor="let m of month_list" [(ngModel)]="m.selected" color="primary" class="modern-checkbox">
+                  <mat-checkbox
+                    *ngFor="let m of month_list"
+                    [(ngModel)]="m.selected"
+                    (change)="onMonthSelectionChange()"
+                    color="primary"
+                    class="modern-checkbox">
                     {{ m.value }}
                   </mat-checkbox>
                 </div>
@@ -43,15 +53,41 @@
             </div>
           </div>
 
-          <div class="filter-column action-column">
-            <div class="info-box">
-              <p>پس از انتخاب تیم و ماه‌های مورد نظر، جهت مشاهده تحلیل عملکرد دکمه زیر را فشار دهید.</p>
+          <!-- ستون سوم: فیلتر پورت -->
+          <div class="filter-column">
+            <label class="column-label">نوع پورت</label>
+
+            <!-- اسپینر بارگذاری پورت‌ها -->
+            <div class="loading-spinner-sm" *ngIf="flag_port_loading">
+              <mat-spinner diameter="25"></mat-spinner>
+              <span>در حال بارگذاری پورت‌ها...</span>
             </div>
-            <button class="btn-primary-solid" (click)="search()" [disabled]="flag_loading_data || !flag_avm">
-              <span *ngIf="!flag_loading_data">مشاهده گزارش عملکرد</span>
-              <mat-spinner diameter="20" *ngIf="flag_loading_data"></mat-spinner>
-            </button>
+
+            <!-- رادیو باتن پورت‌ها -->
+            <div class="radio-group-container" *ngIf="!flag_port_loading && allPortTypes.length > 0">
+              <mat-radio-group [(ngModel)]="selectedPort" (change)="onPortChange(selectedPort)">
+                <mat-radio-button *ngFor="let port of allPortTypes" [value]="port" color="primary" class="modern-radio">
+                  {{ port }}
+                </mat-radio-button>
+              </mat-radio-group>
+            </div>
+
+            <!-- پیام عدم وجود پورت -->
+            <div class="no-data-message" *ngIf="!flag_port_loading && allPortTypes.length === 0 && flag_avm">
+              <p>هیچ پورتی برای ماه‌های انتخاب‌شده یافت نشد.</p>
+            </div>
           </div>
+        </div>
+
+        <!-- دکمه جستجو در پایین، وسط -->
+        <div class="filter-actions">
+          <div class="info-box">
+            <p>پس از انتخاب تیم، ماه‌ها و پورت مورد نظر، جهت مشاهده تحلیل عملکرد دکمه زیر را فشار دهید.</p>
+          </div>
+          <button class="btn-primary-solid" (click)="search()" [disabled]="flag_loading_data || !flag_avm || allPortTypes.length === 0">
+            <span *ngIf="!flag_loading_data">مشاهده گزارش عملکرد</span>
+            <mat-spinner diameter="20" *ngIf="flag_loading_data"></mat-spinner>
+          </button>
         </div>
       </section>
 
@@ -66,8 +102,8 @@
         </div>
 
         <div class="charts-grid" *ngIf="show_report && !flag_loading_data">
-          <div *ngFor="let portType of portTypesWithCharts" class="chart-item-box">
-            <div echarts [options]="barCharts[portType]" [style.height]="chartHeights[portType]"></div>
+          <div class="chart-item-box">
+            <div echarts [options]="barCharts[selectedPort]" [style.height]="chartHeights[selectedPort]"></div>
           </div>
         </div>
       </section>

@@ -30,7 +30,7 @@ export class QaService {
     return this.authService.get(`${this.apiUrl}GetAgentScoresDetailed/${Date_Monthly}/${unit}/${portType}`);
   }
 
-  GetCriticalCallDetails(Date_Monthly: string, unit: string, agent: string): Observable<any> {
-    return this.authService.get(`${this.apiUrl}GetCriticalCallDetails/${Date_Monthly}/${unit}/${agent}`);
+  GetCriticalCallDetails(Date_Monthly: string, unit: string, portType: string, agent: string): Observable<any> {
+    return this.authService.get(`${this.apiUrl}GetCriticalCallDetails/${Date_Monthly}/${unit}/${portType}/${agent}`);
   }
 }
