@@ -7,6 +7,7 @@ import { NgToastService } from 'ng-angular-popup';
 import { FormsModule } from '@angular/forms';
 import {LeadService} from "../../../../../services/lead.service";
 import {LeadDetails} from "../lead-details/lead-details";
+import {TwoWordsPipe} from "../../../../../models/TwoWordsPipe";
 import * as XLSX from 'xlsx';
 
 export interface LeadsDialogData {
@@ -20,11 +21,14 @@ export interface LeadsDialogData {
 @Component({
   selector: 'app-leads-dialog',
   standalone: true,
-  imports: [CommonModule,
+  imports: [
+    CommonModule,
     MatDialogModule,
     MatProgressSpinnerModule,
     MatIconModule,
-    FormsModule],
+    FormsModule,
+    TwoWordsPipe
+  ],
   templateUrl: './leads-dialog.html',
   styleUrl: './leads-dialog.scss',
 })
@@ -34,8 +38,6 @@ export class LeadsDialog implements OnInit {
   protected searchTerm: string = '';
   protected sortColumn: string = '';
   protected sortDirection: 'asc' | 'desc' = 'asc';
-
-  displayedColumns: string[] = ['fullName', 'nationalCode', 'createdOn', 'branchName', 'tradingDays', 'brokerCommission'];
 
   constructor(
     public dialogRef: MatDialogRef<LeadsDialog>,
@@ -58,7 +60,12 @@ export class LeadsDialog implements OnInit {
         .get_LeadsList(this.data.startDate, this.data.endDate, this.data.status, this.data.layer)
         .toPromise();
 
-      this.leadsList = result || [];
+      this.leadsList = (result || []).map((lead: any) => ({
+        ...lead,
+        brokerTotalCommission:
+          this.parseNumber(lead.brokerCommissionBeforePeriod) +
+          this.parseNumber(lead.brokerCommissionInPeriod)
+      }));
     } catch (error: any) {
       this.toast.error({
         detail: 'خطا',
@@ -97,7 +104,7 @@ export class LeadsDialog implements OnInit {
       if (valA == null) valA = '';
       if (valB == null) valB = '';
 
-      if (column === 'tradingDays' || column === 'brokerCommissionInPeriod') {
+      if (column === 'tradingDays' || column === 'brokerCommissionInPeriod' || column ==='brokerTotalCommission') {
         const numA = parseFloat(String(valA).replace(/,/g, '')) || 0;
         const numB = parseFloat(String(valB).replace(/,/g, '')) || 0;
 
@@ -141,8 +148,10 @@ export class LeadsDialog implements OnInit {
       'کد ملی': lead.nationalCode || '-',
       'تاریخ ایجاد': lead.createdOn ? new Date(lead.createdOn).toLocaleDateString('fa-IR') : '-',
       'شعبه': lead.branchName || '-',
+      'توضیحات': lead.description || '-',
       'روزهای معاملاتی': lead.tradingDays || '۰',
-      'کارمزد 3 ماهه اخیر(ریال)': lead.brokerCommissionInPeriod || '۰'
+      'کارمزد 3 ماهه اخیر(ریال)': lead.brokerCommissionInPeriod || '۰',
+      'کارمزد کل(ریال)': lead.brokerTotalCommission || '۰'
     }));
 
     // ساخت فایل اکسل
@@ -157,8 +166,10 @@ export class LeadsDialog implements OnInit {
       { wch: 15 },  // کد ملی
       { wch: 20 },  // تاریخ ایجاد
       { wch: 18 },  // شعبه
+      { wch: 30 },  // توضیحات
       { wch: 18 },  // روزهای معاملاتی
-      { wch: 22 }   // کارمزد
+      { wch: 22 },   // کارمزد
+      { wch: 22 }   // کارمزد کل
     ];
     ws['!cols'] = colWidths;
 
@@ -178,11 +189,17 @@ export class LeadsDialog implements OnInit {
     this.dialogRef.close();
   }
 
+  private parseNumber(value: any): number {
+    if (value === null || value === undefined || value === '') return 0;
+    const num = Number(String(value).replace(/,/g, ''));
+    return isNaN(num) ? 0 : num;
+  }
+
   openLeadDetail(leadId: number) {
     this.dialog.open(LeadDetails, {
       width: '850px',
       maxWidth: '95vw',
-      maxHeight: '90vh',
+      maxHeight: '95vh',
       data: { leadId: leadId },
       panelClass: 'lead-detail-panel',
       direction: 'rtl'

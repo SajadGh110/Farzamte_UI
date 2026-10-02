@@ -121,7 +121,7 @@ export class Leads implements OnInit {
     };
 
     this.dialog.open(LeadsDialog, {
-      width: '900px',
+      width: '1100px',
       maxWidth: '95vw',
       maxHeight: '90vh',
       data: dialogData,

@@ -279,6 +279,7 @@
   tbody {
     tr {
       transition: background 0.15s ease;
+      cursor: pointer;
 
       &:hover {
         background: rgba($primary-color, 0.03);
@@ -313,6 +314,13 @@
 
       .col-branch {
         font-family: $Font-Family-Fa;
+      }
+
+      .col-description {
+        max-width: 250px;
+        text-align: right;
+        font-family: $Font-Family-Fa;
+        font-size: 13px;
       }
 
       .col-trading {

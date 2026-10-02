@@ -121,6 +121,13 @@
           <ng-template #dashNumber2>۰ ریال</ng-template>
         </span>
       </div>
+      <!-- کارمزد کل (جمع دوره + قبل از دوره) -->
+      <div class="stat-item total-commission">
+        <span class="stat-label">کارمزد کل</span>
+        <span class="stat-value">
+          {{ totalCommission | number:'1.0-0' }} ریال
+        </span>
+      </div>
     </div>
   </div>
 

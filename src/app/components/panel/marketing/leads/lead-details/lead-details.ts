@@ -54,4 +54,16 @@ export class LeadDetails implements OnInit {
   close(): void {
     this.dialogRef.close();
   }
+
+  get totalCommission(): number {
+    const before = this.parseNumber(this.leadDetail?.brokercommissionbeforeperiod);
+    const inPeriod = this.parseNumber(this.leadDetail?.brokercommissioninperiod);
+    return before + inPeriod;
+  }
+
+  private parseNumber(value: any): number {
+    if (value === null || value === undefined || value === '') return 0;
+    const num = Number(String(value).replace(/,/g, ''));
+    return isNaN(num) ? 0 : num;
+  }
 }

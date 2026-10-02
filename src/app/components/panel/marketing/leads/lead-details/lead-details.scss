@@ -21,14 +21,16 @@
 
 .dialog-container {
   padding: 24px 28px 20px;
-  max-height: 85vh;
-  height: 85vh;
+  max-height: 95vh;
+  height: 95vh;
   min-height: 400px;
   display: flex;
   flex-direction: column;
 
   @media (max-width: 600px) {
     padding: 16px;
+    max-height: 95vh;
+    height: 95vh;
   }
 }
 
@@ -238,6 +240,27 @@
       font-weight: 700;
       color: $primary-color;
       direction: ltr;
+    }
+  }
+  .stat-item.total-commission {
+    grid-column: 1 / -1;   // ← تمام عرض
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 20px;
+    background: linear-gradient(135deg, rgba($primary-color, 0.08), rgba($primary-color, 0.04));
+    border-color: rgba($primary-color, 0.18);
+
+    .stat-label {
+      margin-bottom: 0;
+      font-size: 14px;
+      color: $primary-color;
+      font-weight: 700;
+    }
+
+    .stat-value {
+      font-size: 22px;
+      font-weight: 800;
     }
   }
 }

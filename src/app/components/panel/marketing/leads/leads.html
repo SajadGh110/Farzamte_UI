@@ -32,6 +32,7 @@
             <button type="button" class="btn-primary" (click)="SetTime(30)">یک ماهه</button>
             <button type="button" class="btn-primary" (click)="SetTime(90)">سه ماهه</button>
             <button type="button" class="btn-primary" (click)="SetTime(180)">شش ماهه</button>
+            <button type="button" class="btn-primary" (click)="SetTime(365)">یکساله</button>
           </div>
 
           <span class="badge">
@@ -191,7 +192,7 @@
             </tr>
 
             <!-- جمع کل Done -->
-            <tr class="total-row done-total">
+            <tr class="total-row done-total" (click)="openLeadsDialog('Done', 'All', 'لیست کل لیدهای Done')">
               <td class="col-section">
                 <span class="total-label">
                   <i class="material-icons">functions</i>
@@ -264,7 +265,7 @@
             </tr>
 
             <!-- جمع کل DeActive -->
-            <tr class="total-row deactive-total">
+            <tr class="total-row deactive-total" (click)="openLeadsDialog('DeActive', 'All', 'لیست کل لیدهای DeActive')">
               <td class="col-section">
                 <span class="total-label"><i class="material-icons">functions</i>جمع کل DeActive</span>
               </td>

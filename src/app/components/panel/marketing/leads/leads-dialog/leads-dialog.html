@@ -64,17 +64,22 @@
           {{ sortDirection === 'asc' ? '↑' : '↓' }}
         </span>
           </th>
-          <!-- اضافه شدن سورت به روزهای معاملاتی -->
+          <th>توضیحات</th>
           <th (click)="toggleSort('tradingDays')" class="sortable">
             روزهای معاملاتی
             <span *ngIf="sortColumn === 'tradingDays'">
           {{ sortDirection === 'asc' ? '↑' : '↓' }}
         </span>
           </th>
-          <!-- اضافه شدن سورت به کارمزد -->
           <th (click)="toggleSort('brokerCommissionInPeriod')" class="sortable">
             کارمزد 3 ماهه اخیر
             <span *ngIf="sortColumn === 'brokerCommissionInPeriod'">
+          {{ sortDirection === 'asc' ? '↑' : '↓' }}
+        </span>
+          </th>
+          <th (click)="toggleSort('brokerTotalCommission')" class="sortable">
+            کارمزد کل
+            <span *ngIf="sortColumn === 'brokerTotalCommission'">
           {{ sortDirection === 'asc' ? '↑' : '↓' }}
         </span>
           </th>
@@ -86,9 +91,14 @@
           <td class="col-national">{{ lead.nationalCode }}</td>
           <td class="col-date">{{ lead.createdOn | date:'yyyy-MM-dd HH:mm' }}</td>
           <td class="col-branch">{{ lead.branchName }}</td>
+          <td class="col-description">{{ lead.description | twoWords:2 }}</td>
           <td class="col-trading">{{ lead.tradingDays || '-' }}</td>
           <td class="col-profit">
             {{ lead.brokerCommissionInPeriod | number:'1.0-0' }}
+            <span class="currency">ریال</span>
+          </td>
+          <td class="col-profit">
+            {{ lead.brokerTotalCommission  | number:'1.0-0' }}
             <span class="currency">ریال</span>
           </td>
         </tr>
