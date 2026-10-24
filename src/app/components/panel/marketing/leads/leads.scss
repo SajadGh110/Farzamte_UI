@@ -31,28 +31,6 @@
       border-right: 4px solid $primary-color;
       padding-right: 12px;
     }
-
-    .badge-preview {
-      font-family: $Font-Family-Fa;
-      font-size: 12px;
-      font-weight: 600;
-      color: #8b5cf6;
-      background: rgba(139, 92, 246, 0.12);
-      padding: 4px 14px;
-      border-radius: 30px;
-      border: 1px solid rgba(139, 92, 246, 0.15);
-      letter-spacing: 0.3px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      white-space: nowrap;
-      flex-shrink: 0;
-
-      &::before {
-        content: '✨';
-        font-size: 14px;
-      }
-    }
   }
 }
 
@@ -417,16 +395,6 @@
       font-weight: 700;
       color: $text-main;
       margin: 0;
-    }
-
-    .section-badge {
-      font-family: $Font-Family-Fa;
-      font-size: 12px;
-      color: $text-secondary;
-      background: rgba(0, 0, 0, 0.04);
-      padding: 4px 14px;
-      border-radius: 30px;
-      border: 1px solid rgba(0, 0, 0, 0.04);
     }
   }
 }
@@ -794,6 +762,436 @@
 }
 
 // ============================
+//  بخش کارشناسان (مشترک)
+// ============================
+.experts-section {
+  margin-top: 28px;
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+
+    h2 {
+      font-family: $Font-Family-Fa;
+      font-size: 20px;
+      font-weight: 700;
+      color: $text-main;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .header-icon {
+        font-size: 22px;
+        border-radius: 8px;
+        padding: 4px;
+      }
+    }
+
+    .section-badge {
+      font-family: $Font-Family-Fa;
+      font-size: 12px;
+      padding: 4px 14px;
+      border-radius: 30px;
+      font-weight: 600;
+    }
+  }
+}
+
+// گرید کارت‌های کارشناس
+.experts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+// ============================
+//  کارت کارشناس (پایه)
+// ============================
+.expert-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+
+  .expert-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 14px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: $Font-Family-Fa;
+    font-weight: 800;
+    font-size: 16px;
+    flex-shrink: 0;
+    letter-spacing: 0.5px;
+    transition: transform 0.25s ease;
+  }
+
+  &:hover .expert-avatar {
+    transform: scale(1.08) rotate(-3deg);
+  }
+
+  .expert-info {
+    flex: 1;
+    min-width: 0;
+
+    .expert-name {
+      font-family: $Font-Family-Fa;
+      font-size: 14px;
+      font-weight: 700;
+      color: $text-main;
+      margin-bottom: 8px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .expert-stats {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+
+      .expert-count {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-family: $Font-Family-Fa;
+        font-size: 12px;
+        color: $text-secondary;
+        font-weight: 500;
+
+        i {
+          font-size: 14px;
+          opacity: 0.8;
+        }
+      }
+
+      .expert-percent {
+        font-family: $Font-Family-En;
+        font-size: 13px;
+        font-weight: 800;
+      }
+    }
+
+    .expert-progress-bar {
+      width: 100%;
+      height: 5px;
+      background: rgba(0, 0, 0, 0.06);
+      border-radius: 10px;
+      overflow: hidden;
+
+      .expert-progress-fill {
+        height: 100%;
+        border-radius: 10px;
+        transition: width 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        width: 0%;
+      }
+    }
+  }
+}
+
+// ============================
+//  تم بنفش — کارشناسان ثبت‌کننده لید
+// ============================
+.leads-experts-section {
+  .section-header {
+    .header-icon {
+      color: #8b5cf6;
+      background: rgba(139, 92, 246, 0.1);
+    }
+
+    .section-badge {
+      background: rgba(139, 92, 246, 0.08);
+      border: 1px solid rgba(139, 92, 246, 0.15);
+      color: #7c3aed;
+    }
+  }
+}
+
+.leads-expert-card {
+  &:hover {
+    border-color: rgba(139, 92, 246, 0.25);
+    box-shadow: 0 10px 28px rgba(139, 92, 246, 0.12);
+    background: rgba(255, 255, 255, 0.9);
+  }
+
+  .leads-avatar {
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+  }
+
+  .expert-count i {
+    color: #8b5cf6;
+  }
+
+  .expert-percent {
+    color: #7c3aed;
+  }
+
+  .leads-progress-fill {
+    background: linear-gradient(90deg, #8b5cf6, #7c3aed);
+  }
+}
+
+// ============================
+//  تم نارنجی — کارشناسان تماس‌گیرنده (T3)
+// ============================
+.calls-experts-section {
+  .section-header {
+    .header-icon {
+      color: #f59e0b;
+      background: rgba(245, 158, 11, 0.1);
+    }
+
+    .section-badge {
+      background: rgba(245, 158, 11, 0.08);
+      border: 1px solid rgba(245, 158, 11, 0.15);
+      color: #d97706;
+    }
+  }
+}
+
+.calls-expert-card {
+  &:hover {
+    border-color: rgba(245, 158, 11, 0.25);
+    box-shadow: 0 10px 28px rgba(245, 158, 11, 0.12);
+    background: rgba(255, 255, 255, 0.9);
+  }
+
+  .calls-avatar {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+  }
+
+  .expert-count i {
+    color: #f59e0b;
+  }
+
+  .expert-percent {
+    color: #d97706;
+  }
+
+  .calls-progress-fill {
+    background: linear-gradient(90deg, #f59e0b, #d97706);
+  }
+}
+
+// ============================
+//  پیام عدم وجود کارشناس
+// ============================
+.no-experts {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 20px;
+  gap: 12px;
+  color: $text-secondary;
+
+  i {
+    font-size: 44px;
+    opacity: 0.3;
+  }
+
+  span {
+    font-family: $Font-Family-Fa;
+    font-size: 14px;
+  }
+}
+
+// ============================
+//  KPI: میانگین تماس به ازای لید
+// ============================
+.kpi-section {
+  margin-top: 28px;
+}
+
+.kpi-card {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 24px 28px;
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.08), rgba(20, 184, 166, 0.05));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 20px;
+  border: 1px solid rgba(6, 182, 212, 0.18);
+  box-shadow: 0 8px 32px rgba(6, 182, 212, 0.08);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+
+  // افکت دکوراتیو
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -10%;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(6, 182, 212, 0.15), transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 48px rgba(6, 182, 212, 0.15);
+    border-color: rgba(6, 182, 212, 0.3);
+  }
+
+  // آیکون بزرگ
+  .kpi-icon-wrapper {
+    width: 72px;
+    height: 72px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #06b6d4, #14b8a6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 24px rgba(6, 182, 212, 0.35);
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+
+    i {
+      font-size: 36px;
+      color: white;
+    }
+  }
+
+  // محتوا
+  .kpi-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+    position: relative;
+    z-index: 1;
+
+    .kpi-label {
+      font-family: $Font-Family-Fa;
+      font-size: 14px;
+      font-weight: 600;
+      color: #0e7490;
+      letter-spacing: 0.3px;
+    }
+
+    .kpi-value {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      flex-wrap: wrap;
+
+      .kpi-number {
+        font-family: $Font-Family-En;
+        font-size: 38px;
+        font-weight: 900;
+        color: #0891b2;
+        letter-spacing: -1px;
+        line-height: 1;
+      }
+
+      .kpi-unit {
+        font-family: $Font-Family-Fa;
+        font-size: 14px;
+        font-weight: 600;
+        color: #0e7490;
+        opacity: 0.8;
+      }
+    }
+
+    .kpi-context {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 4px;
+      flex-wrap: wrap;
+
+      .context-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-family: $Font-Family-Fa;
+        font-size: 12px;
+        color: #0e7490;
+        background: rgba(255, 255, 255, 0.6);
+        padding: 4px 12px;
+        border-radius: 20px;
+        border: 1px solid rgba(6, 182, 212, 0.15);
+
+        i {
+          font-size: 14px;
+          color: #0891b2;
+          opacity: 0.8;
+        }
+      }
+
+      .context-divider {
+        font-family: $Font-Family-En;
+        font-size: 18px;
+        font-weight: 700;
+        color: #0e7490;
+        opacity: 0.5;
+      }
+    }
+  }
+}
+
+// ریسپانسیو
+@media (max-width: 600px) {
+  .kpi-card {
+    flex-direction: column;
+    text-align: center;
+    gap: 16px;
+    padding: 20px;
+
+    .kpi-icon-wrapper {
+      width: 60px;
+      height: 60px;
+      i { font-size: 30px; }
+    }
+
+    .kpi-content {
+      align-items: center;
+
+      .kpi-value {
+        justify-content: center;
+
+        .kpi-number {
+          font-size: 32px;
+        }
+      }
+
+      .kpi-context {
+        justify-content: center;
+      }
+    }
+  }
+}
+
+// ============================
 //  عدم دسترسی
 // ============================
 .access-denied-container {
@@ -910,10 +1308,5 @@
     flex-direction: column;
     align-items: flex-start !important;
     gap: 8px !important;
-
-    .badge-preview {
-      font-size: 11px;
-      padding: 3px 12px;
-    }
   }
 }

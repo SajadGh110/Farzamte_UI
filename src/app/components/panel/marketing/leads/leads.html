@@ -9,7 +9,6 @@
       <section class="glass-card">
         <div class="card-header">
           <h2>تنظیمات بازه زمانی گزارش</h2>
-          <span class="badge-preview">نسخه پیش‌نمایش</span>
         </div>
 
         <form [formGroup]="dateform" (ngSubmit)="onUpdateDate()" class="toolbar-content">
@@ -104,7 +103,6 @@
           </div>
         </div>
       </div>
-
       <!-- ============================ -->
       <!--  جدول جزئیات آماری (Stats)   -->
       <!-- ============================ -->
@@ -115,7 +113,6 @@
       <div class="stats-details-section" *ngIf="flag_stats && series_stats.length > 0">
         <div class="section-header">
           <h2>جزئیات آماری لیدها</h2>
-          <span class="section-badge">نسخه پیشنمایش</span>
         </div>
 
         <div class="table-wrapper glass-table">
@@ -285,6 +282,141 @@
             </tr>
             </tbody>
           </table>
+        </div>
+      </div>
+      <!-- ============================ -->
+      <!--  کارشناسان ثبت‌کننده لید      -->
+      <!-- ============================ -->
+      <div class="loading-spinner" *ngIf="!flag_experts">
+        <mat-spinner diameter="50"></mat-spinner>
+        <span>در حال دریافت اطلاعات کارشناسان...</span>
+      </div>
+
+      <div class="experts-section leads-experts-section" *ngIf="flag_experts && series_experts.length > 0">
+        <div class="section-header">
+          <h2>
+            <i class="material-icons header-icon">person_add</i>
+            کارشناسان ثبت‌کننده لید
+          </h2>
+          <span class="section-badge">
+      {{ series_experts.length }} کارشناس
+    </span>
+        </div>
+
+        <div class="experts-grid">
+          <div class="expert-card leads-expert-card" *ngFor="let expert of series_experts; let i = index">
+            <div class="expert-avatar leads-avatar">
+              {{ getInitials(expert.expertName) }}
+            </div>
+            <div class="expert-info">
+              <div class="expert-name" [title]="expert.expertName">
+                {{ expert.expertName }}
+              </div>
+              <div class="expert-stats">
+          <span class="expert-count">
+            <i class="material-icons">person_add</i>
+            {{ expert.leadsCount | number }} لید
+          </span>
+                <span class="expert-percent">{{ expert.percentage }}%</span>
+              </div>
+              <div class="expert-progress-bar">
+                <div class="expert-progress-fill leads-progress-fill"
+                     [style.width.%]="expert.percentage">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="no-experts" *ngIf="flag_experts && series_experts.length === 0">
+        <i class="material-icons">info_outline</i>
+        <span>هیچ کارشناسی در این بازه زمانی لید ثبت نکرده است.</span>
+      </div>
+
+      <!-- ============================ -->
+      <!--  کارشناسان تماس‌گیرنده (T3)    -->
+      <!-- ============================ -->
+      <div class="loading-spinner" *ngIf="!flag_experts_calls">
+        <mat-spinner diameter="50"></mat-spinner>
+        <span>در حال دریافت اطلاعات کارشناسان تماس...</span>
+      </div>
+
+      <div class="experts-section calls-experts-section" *ngIf="flag_experts_calls && series_experts_calls.length > 0">
+        <div class="section-header">
+          <h2>
+            <i class="material-icons header-icon">call</i>
+            کارشناسان تماس‌گیرنده
+          </h2>
+          <span class="section-badge">
+      {{ series_experts_calls.length }} کارشناس
+    </span>
+        </div>
+
+        <div class="experts-grid">
+          <div class="expert-card calls-expert-card" *ngFor="let expert of series_experts_calls; let i = index">
+            <div class="expert-avatar calls-avatar">
+              {{ getInitials(expert.expert) }}
+            </div>
+            <div class="expert-info">
+              <div class="expert-name" [title]="expert.expert">
+                {{ expert.expert }}
+              </div>
+              <div class="expert-stats">
+          <span class="expert-count">
+            <i class="material-icons">phone_in_talk</i>
+            {{ expert.count | number }} تماس
+          </span>
+                <span class="expert-percent">{{ expert.percentage }}%</span>
+              </div>
+              <div class="expert-progress-bar">
+                <div class="expert-progress-fill calls-progress-fill"
+                     [style.width.%]="expert.percentage">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- پیام عدم وجود کارشناس تماس -->
+      <div class="no-experts" *ngIf="flag_experts_calls && series_experts_calls.length === 0">
+        <i class="material-icons">info_outline</i>
+        <span>هیچ کارشناسی در این بازه زمانی تماس ثبت نکرده است.</span>
+      </div>
+
+      <!-- ============================ -->
+      <!--  KPI: میانگین تماس به ازای لید -->
+      <!-- ============================ -->
+      <div class="kpi-section"
+           *ngIf="flag_experts_calls && flag_experts && (totalLeadsCount > 0 || totalCallsCount > 0)">
+
+        <div class="kpi-card">
+          <!-- آیکون بزرگ سمت راست -->
+          <div class="kpi-icon-wrapper">
+            <i class="material-icons">trending_up</i>
+          </div>
+
+          <!-- محتوای اصلی -->
+          <div class="kpi-content">
+            <div class="kpi-label">
+              میانگین تماس به ازای هر لید
+            </div>
+            <div class="kpi-value">
+              <span class="kpi-number">{{ avgCallsPerLead | number:'1.0-2' }}</span>
+              <span class="kpi-unit">تماس / لید</span>
+            </div>
+            <div class="kpi-context">
+        <span class="context-item">
+          <i class="material-icons">phone_in_talk</i>
+          {{ totalCallsCount | number }} تماس
+        </span>
+              <span class="context-divider">÷</span>
+              <span class="context-item">
+          <i class="material-icons">person_add</i>
+                {{ totalLeadsCount | number }} لید
+        </span>
+            </div>
+          </div>
         </div>
       </div>
 

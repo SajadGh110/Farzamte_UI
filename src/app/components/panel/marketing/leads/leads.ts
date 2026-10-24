@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {DashboardSidebarComponent} from "../../../Template/dashboard-sidebar/dashboard-sidebar.component";
 import {DashboardTopmenuComponent} from "../../../Template/dashboard-topmenu/dashboard-topmenu.component";
-import {DatePipe, DecimalPipe, NgIf} from "@angular/common";
+import {DatePipe, DecimalPipe, NgForOf, NgIf, NgStyle} from "@angular/common";
 import {NgToastService} from "ng-angular-popup";
 import {AuthService} from "../../../../services/auth.service";
 import {Router} from "@angular/router";
@@ -13,6 +13,7 @@ import {LeadsDialog, LeadsDialogData} from "./leads-dialog/leads-dialog";
 import {format, subDays} from "date-fns";
 import {TimeService} from "../../../../services/time.service";
 import {Dir} from "@angular/cdk/bidi";
+import {OutcallService} from "../../../../services/outcall.service";
 
 @Component({
   selector: 'app-leads',
@@ -24,7 +25,8 @@ import {Dir} from "@angular/cdk/bidi";
     DecimalPipe,
     Dir,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgForOf
   ],
   providers: [DatePipe],
   templateUrl: './leads.html',
@@ -35,13 +37,17 @@ export class Leads implements OnInit {
   protected loading: boolean = false;
   protected flag_total:boolean=false;
   protected flag_stats:boolean=false;
+  protected flag_experts: boolean = false;
+  protected flag_experts_calls: boolean = false;
   StartDate:string = "";
   EndDate:string = "";
   st_to_en: string = "";
   selected_days:number = 0;
   series_total: any[] = [];
   series_stats: any[] = [];
-  public constructor(private toast:NgToastService, protected auth:AuthService, private router:Router, private fb:FormBuilder, private datePipe: DatePipe, private getData:LeadService,private timeService: TimeService, private dialog: MatDialog) {
+  series_experts: any[] = [];
+  series_experts_calls: any[] = [];
+  public constructor(private toast:NgToastService, protected auth:AuthService, private router:Router, private fb:FormBuilder, private datePipe: DatePipe, private getData:LeadService, private getDataCall:OutcallService,private timeService: TimeService, private dialog: MatDialog) {
     this.dateform = this.fb.group({
       StartDate: [''],
       EndDate: ['']
@@ -82,13 +88,26 @@ export class Leads implements OnInit {
   async do(stDate:string,enDate:string){
     this.flag_total = false;
     this.flag_stats = false;
+    this.flag_experts = false;
+    this.flag_experts_calls = false;
     this.series_total = [];
     this.series_stats = [];
+    this.series_experts = [];
+    this.series_experts_calls = [];
     try {
       this.series_total = await this.getData.get_TotalCount(stDate, enDate).toPromise();
       this.flag_total = true;
       this.series_stats = await this.getData.get_StatsCount(stDate, enDate).toPromise();
       this.flag_stats = true;
+      this.series_experts = await this.getData.get_LeadsCountByExpert(stDate, enDate).toPromise();
+      this.flag_experts = true;
+      const rawExperts = await this.getDataCall.get_ExpertsCount_M(stDate, enDate).toPromise();
+      const totalCalls = (rawExperts || []).reduce((sum: number, e: any) => sum + (e.count || 0), 0);
+      this.series_experts_calls = (rawExperts || []).map((e: any) => ({
+        ...e,
+        percentage: totalCalls > 0 ? Math.round((e.count / totalCalls) * 100) : 0
+      }));
+      this.flag_experts_calls = true;
     } catch (error:any){
       this.toast.error({ detail: "ERROR", summary: error.message, duration: 5000, position: 'topRight' });
     }
@@ -128,5 +147,30 @@ export class Leads implements OnInit {
       panelClass: 'leads-dialog-panel',
       direction: 'rtl'
     });
+  }
+
+  getInitials(name: string): string {
+    if (!name || !name.trim()) return '?';
+    const words = name.trim().split(/\s+/);
+    if (words.length === 1) return words[0].charAt(0);
+    return words[0].charAt(0) + words[words.length - 1].charAt(0);
+  }
+
+  // مجموع کل تماس‌ها
+  get totalCallsCount(): number {
+    return (this.series_experts_calls || [])
+      .reduce((sum: number, e: any) => sum + (e.count || 0), 0);
+  }
+
+// مجموع کل لیدها
+  get totalLeadsCount(): number {
+    return this.series_total?.[0]?.total_Count || 0;
+  }
+
+// میانگین تماس به ازای هر لید
+  get avgCallsPerLead(): number {
+    const totalLeads = this.totalLeadsCount;
+    if (totalLeads === 0) return 0;
+    return Math.round((this.totalCallsCount / totalLeads) * 100) / 100;
   }
 }

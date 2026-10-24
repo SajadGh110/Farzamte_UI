@@ -63,13 +63,20 @@
               <span>در حال بارگذاری پورت‌ها...</span>
             </div>
 
-            <!-- رادیو باتن پورت‌ها -->
-            <div class="radio-group-container" *ngIf="!flag_port_loading && allPortTypes.length > 0">
-              <mat-radio-group [(ngModel)]="selectedPort" (change)="onPortChange(selectedPort)">
-                <mat-radio-button *ngFor="let port of allPortTypes" [value]="port" color="primary" class="modern-radio">
-                  {{ port }}
-                </mat-radio-button>
-              </mat-radio-group>
+            <!-- چک‌باکس پورت‌ها (چند انتخابی) -->
+            <div class="selection-wrapper" *ngIf="!flag_port_loading && allPortTypes.length > 0">
+              <div class="custom-scroll">
+                <div class="checkbox-list-container">
+                  <mat-checkbox
+                    *ngFor="let port of allPortTypes"
+                    [checked]="selectedPorts.includes(port)"
+                    (change)="onPortToggle(port, $event.checked)"
+                    color="primary"
+                    class="modern-checkbox">
+                    {{ port }}
+                  </mat-checkbox>
+                </div>
+              </div>
             </div>
 
             <!-- پیام عدم وجود پورت -->
@@ -84,7 +91,7 @@
           <div class="info-box">
             <p>پس از انتخاب تیم، ماه‌ها و پورت مورد نظر، جهت مشاهده تحلیل عملکرد دکمه زیر را فشار دهید.</p>
           </div>
-          <button class="btn-primary-solid" (click)="search()" [disabled]="flag_loading_data || !flag_avm || allPortTypes.length === 0">
+          <button class="btn-primary-solid" (click)="search()" [disabled]="flag_loading_data || !flag_avm || selectedPorts.length === 0">
             <span *ngIf="!flag_loading_data">مشاهده گزارش عملکرد</span>
             <mat-spinner diameter="20" *ngIf="flag_loading_data"></mat-spinner>
           </button>
@@ -102,8 +109,8 @@
         </div>
 
         <div class="charts-grid" *ngIf="show_report && !flag_loading_data">
-          <div class="chart-item-box">
-            <div echarts [options]="barCharts[selectedPort]" [style.height]="chartHeights[selectedPort]"></div>
+          <div class="chart-item-box" *ngFor="let port of portTypesWithCharts">
+            <div echarts [options]="barCharts[port]" [style.height]="chartHeights[port]"></div>
           </div>
         </div>
       </section>

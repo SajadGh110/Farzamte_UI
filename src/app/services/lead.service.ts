@@ -29,4 +29,12 @@ export class LeadService {
   get_Lead(id:number):Observable<any>{
     return this.authService.get(`${this.apiUrl}GetLead/${id}`);
   }
+
+  get_LeadsCountByExpert(StartDate:string, EndDate:string):Observable<any>{
+    return this.authService.get(`${this.apiUrl}LeadsCountByExpert/${StartDate}_${EndDate}`);
+  }
+
+  get_LeadsByExpert(StartDate:string, EndDate:string, expertName:string):Observable<any>{
+    return this.authService.get(`${this.apiUrl}LeadsByExpert/${StartDate}_${EndDate}/${expertName}`);
+  }
 }

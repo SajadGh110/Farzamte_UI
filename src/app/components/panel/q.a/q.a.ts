@@ -65,7 +65,7 @@ export class QA implements OnInit {
   portType_list: any = [];
   selected_unit_list: string[] = [];
   selected_unit: string = "";
-  protected selectedPort: string = '';
+  protected selectedPorts: string[] = [];
   protected allPortTypes: string[] = [];
 
   groupedDataSource: GroupedAgentData[] = [];
@@ -129,7 +129,7 @@ export class QA implements OnInit {
     const selectedMonths = this.selectedMonths;
     if (selectedMonths.length === 0) {
       this.allPortTypes = [];
-      this.selectedPort = '';
+      this.selectedPorts = [];
       this.flag_port_loading = false;
       return;
     }
@@ -137,13 +137,16 @@ export class QA implements OnInit {
     this.flag_port_loading = true;
     try {
       await this.loadPortTypes(selectedMonths);
+
       if (this.allPortTypes.length > 0) {
-        // انتخاب پورت پیش‌فرض (اولین پورت)
-        if (!this.selectedPort || !this.allPortTypes.includes(this.selectedPort)) {
-          this.selectedPort = this.allPortTypes[0];
+        const validSelected = this.selectedPorts.filter(p => this.allPortTypes.includes(p));
+        if (validSelected.length > 0) {
+          this.selectedPorts = validSelected;
+        } else {
+          this.selectedPorts = [this.allPortTypes[0]];
         }
       } else {
-        this.selectedPort = '';
+        this.selectedPorts = [];
         this.toast.info({
           detail: 'اطلاعات',
           summary: 'هیچ پورتی برای ماه‌های انتخاب‌شده یافت نشد.',
@@ -160,17 +163,15 @@ export class QA implements OnInit {
 
   async loadPortTypesForUnit(unit: string) {
     try {
-      // اگر ماهی انتخاب نشده، از اولین ماه موجود استفاده کن
       const months = this.month_list.filter(m => m.selected).map(m => m.value);
       if (months.length === 0 && this.month_list.length > 0) {
-        // اگر هیچ ماهی انتخاب نشده، اولین ماه رو انتخاب کن
         this.month_list[0].selected = true;
         months.push(this.month_list[0].value);
       }
 
       if (months.length === 0) {
         this.allPortTypes = [];
-        this.selectedPort = '';
+        this.selectedPorts = [];
         return;
       }
 
@@ -181,17 +182,19 @@ export class QA implements OnInit {
       }
       this.allPortTypes = Array.from(allPortTypesSet);
 
-      // اگر پورت قبلی انتخاب شده بود و در لیست جدید هست، نگه دار، وگرنه اولین پورت رو انتخاب کن
-      if (this.selectedPort && this.allPortTypes.includes(this.selectedPort)) {
-        // همین پورت رو نگه دار
+      // نگه‌داشتن پورت‌های معتبر یا انتخاب اولین پورت
+      const validSelected = this.selectedPorts.filter(p => this.allPortTypes.includes(p));
+      if (validSelected.length > 0) {
+        this.selectedPorts = validSelected;
       } else if (this.allPortTypes.length > 0) {
-        this.selectedPort = this.allPortTypes[0];
+        this.selectedPorts = [this.allPortTypes[0]];
       } else {
-        this.selectedPort = '';
+        this.selectedPorts = [];
       }
     } catch (e) {
       console.error(e);
       this.allPortTypes = [];
+      this.selectedPorts = [];
     }
   }
 
@@ -202,7 +205,7 @@ export class QA implements OnInit {
       return;
     }
 
-    if (!this.selectedPort || !this.allPortTypes.includes(this.selectedPort)) {
+    if (this.selectedPorts.length === 0) {
       this.toast.warning({ detail: 'توجه', summary: 'لطفا یک پورت را انتخاب کنید', duration: 3000 });
       return;
     }
@@ -214,7 +217,7 @@ export class QA implements OnInit {
     this.groupedDataSource = [];
 
     try {
-      await this.loadDataForPort(this.selectedPort, selectedMonths);
+      await this.loadAllPortsData(selectedMonths);
       this.show_report = true;
     } catch (e) {
       console.error(e);
@@ -235,8 +238,41 @@ export class QA implements OnInit {
     this.portType_list = this.allPortTypes;
   }
 
-// بارگذاری داده‌ها برای یک پورت خاص
-  async loadDataForPort(portType: string, selectedMonths: string[]) {
+
+  /**
+   * بارگذاری داده‌های همه پورت‌های انتخاب‌شده و گروه‌بندی یکجا
+   */
+  private async loadAllPortsData(selectedMonths: string[]) {
+    let allRawTableData: any[] = [];
+
+    for (const port of this.selectedPorts) {
+      const raw = await this.loadDataForPort(port, selectedMonths);
+      allRawTableData.push(...raw);
+    }
+
+    // گروه‌بندی همه رکوردها بر اساس agent
+    const sortedData = allRawTableData.sort((a, b) => {
+      if (a.agent < b.agent) return -1;
+      if (a.agent > b.agent) return 1;
+      return a.month.localeCompare(b.month);
+    });
+
+    const groupedMap = new Map<string, any[]>();
+    sortedData.forEach(item => {
+      if (!groupedMap.has(item.agent)) {
+        groupedMap.set(item.agent, []);
+      }
+      groupedMap.get(item.agent)?.push(item);
+    });
+
+    this.groupedDataSource = Array.from(groupedMap, ([agent, records]) => ({
+      agent,
+      records: records.sort((a, b) => a.month.localeCompare(b.month))
+    }));
+  }
+
+  // بارگذاری داده‌ها برای یک پورت خاص — فقط نمودار می‌سازه و raw data برمی‌گردونه
+  async loadDataForPort(portType: string, selectedMonths: string[]): Promise<any[]> {
     let chartDataSeries: any[] = [];
     let allAgents = new Set<string>();
     let monthDataMap = new Map<string, any[]>();
@@ -277,10 +313,7 @@ export class QA implements OnInit {
         barWidth: 12,
         emphasis: {
           focus: 'series',
-          itemStyle: {
-            shadowBlur: 10,
-            shadowColor: 'rgba(0,0,0,0.2)'
-          }
+          itemStyle: { shadowBlur: 10, shadowColor: 'rgba(0,0,0,0.2)' }
         }
       });
     }
@@ -292,41 +325,22 @@ export class QA implements OnInit {
 
     this.createChart(portType, chartYAxisData, chartDataSeries);
 
-    // مرتب‌سازی و گروه‌بندی داده‌های جدول
-    const sortedData = rawTableData.sort((a, b) => {
-      if (a.agent < b.agent) return -1;
-      if (a.agent > b.agent) return 1;
-      return a.month.localeCompare(b.month);
-    });
-
-    const groupedMap = new Map<string, any[]>();
-    sortedData.forEach(item => {
-      if (!groupedMap.has(item.agent)) {
-        groupedMap.set(item.agent, []);
-      }
-      groupedMap.get(item.agent)?.push(item);
-    });
-
-    this.groupedDataSource = Array.from(groupedMap, ([agent, records]) => ({
-      agent,
-      records: records.sort((a, b) => a.month.localeCompare(b.month))
-    }));
+    return rawTableData;
   }
 
-// تغییر پورت (وقتی کاربر روی رادیو باتن کلیک می‌کند)
+  onPortToggle(port: string, checked: boolean) {
+    if (checked) {
+      if (!this.selectedPorts.includes(port)) {
+        this.selectedPorts.push(port);
+      }
+    } else {
+      this.selectedPorts = this.selectedPorts.filter(p => p !== port);
+    }
+  }
+
+  // nooo
   async onPortChange(port: string) {
-    if (this.selectedPort === port) return;
-    this.selectedPort = port;
-    const selectedMonths = this.selectedMonths;
-    if (selectedMonths.length === 0) return;
-
-    this.flag_loading_data = true;
-    this.barCharts = {};
-    this.chartHeights = {};
-    this.groupedDataSource = [];
-
     try {
-      await this.loadDataForPort(port, selectedMonths);
     } catch (e) {
       console.error(e);
       this.toast.error({ detail: "خطا", summary: "در دریافت اطلاعات برای پورت انتخاب‌شده مشکلی پیش آمد" });
@@ -414,7 +428,7 @@ export class QA implements OnInit {
   }
 
   get portTypesWithCharts(): string[] {
-    return this.selectedPort ? [this.selectedPort] : [];
+    return Object.keys(this.barCharts);
   }
 
   async openCriticalDetails(record: any) {
