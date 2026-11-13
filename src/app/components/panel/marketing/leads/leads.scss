@@ -1159,6 +1159,250 @@
   }
 }
 
+// ============================
+//  وضعیت تماس‌ها
+// ============================
+.status-section {
+  margin-top: 28px;
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+
+    h2 {
+      font-family: $Font-Family-Fa;
+      font-size: 20px;
+      font-weight: 700;
+      color: $text-main;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .header-icon {
+        font-size: 22px;
+        border-radius: 8px;
+        padding: 4px;
+        color: #3b82f6;
+        background: rgba(59, 130, 246, 0.1);
+      }
+    }
+
+    .section-badge {
+      font-family: $Font-Family-Fa;
+      font-size: 12px;
+      padding: 4px 14px;
+      border-radius: 30px;
+      font-weight: 600;
+      background: rgba(59, 130, 246, 0.08);
+      border: 1px solid rgba(59, 130, 246, 0.15);
+      color: #2563eb;
+    }
+  }
+}
+
+.status-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+.status-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+
+  // نوار رنگی سمت راست (در RTL، سمت شروع)
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 4px;
+    height: 100%;
+  }
+
+  &:hover {
+    transform: translateY(-3px);
+    background: rgba(255, 255, 255, 0.9);
+
+    .status-icon-wrapper {
+      transform: scale(1.08) rotate(-3deg);
+    }
+  }
+
+  .status-icon-wrapper {
+    width: 50px;
+    height: 50px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: transform 0.25s ease;
+
+    i {
+      font-size: 26px;
+      color: white;
+    }
+  }
+
+  .status-info {
+    flex: 1;
+    min-width: 0;
+
+    .status-name {
+      font-family: $Font-Family-Fa;
+      font-size: 15px;
+      font-weight: 700;
+      color: $text-main;
+      margin-bottom: 6px;
+    }
+
+    .status-stats {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+
+      .status-count {
+        font-family: $Font-Family-Fa;
+        font-size: 12px;
+        color: $text-secondary;
+        font-weight: 500;
+      }
+
+      .status-percent {
+        font-family: $Font-Family-En;
+        font-size: 14px;
+        font-weight: 800;
+      }
+    }
+
+    .status-progress-bar {
+      width: 100%;
+      height: 5px;
+      background: rgba(0, 0, 0, 0.06);
+      border-radius: 10px;
+      overflow: hidden;
+
+      .status-progress-fill {
+        height: 100%;
+        border-radius: 10px;
+        transition: width 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        width: 0%;
+      }
+    }
+  }
+
+  // ============================
+  //  رنگ‌بندی بر اساس وضعیت
+  // ============================
+
+  // موفق — سبز
+  &.status-success {
+    &::before { background: #10b981; }
+
+    .status-icon-wrapper {
+      background: linear-gradient(135deg, #10b981, #34d399);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+    .status-percent { color: #059669; }
+    .status-progress-fill { background: linear-gradient(90deg, #10b981, #34d399); }
+
+    &:hover {
+      border-color: rgba(16, 185, 129, 0.25);
+      box-shadow: 0 10px 28px rgba(16, 185, 129, 0.12);
+    }
+  }
+
+  // ناموفق — قرمز
+  &.status-danger {
+    &::before { background: #ef4444; }
+
+    .status-icon-wrapper {
+      background: linear-gradient(135deg, #ef4444, #f87171);
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+    }
+    .status-percent { color: #dc2626; }
+    .status-progress-fill { background: linear-gradient(90deg, #ef4444, #f87171); }
+
+    &:hover {
+      border-color: rgba(239, 68, 68, 0.25);
+      box-shadow: 0 10px 28px rgba(239, 68, 68, 0.12);
+    }
+  }
+
+  // باز — آبی
+  &.status-info {
+    &::before { background: #3b82f6; }
+
+    .status-icon-wrapper {
+      background: linear-gradient(135deg, #3b82f6, #60a5fa);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+    .status-percent { color: #2563eb; }
+    .status-progress-fill { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+
+    &:hover {
+      border-color: rgba(59, 130, 246, 0.25);
+      box-shadow: 0 10px 28px rgba(59, 130, 246, 0.12);
+    }
+  }
+
+  // تماس مجدد — نارنجی
+  &.status-warning {
+    &::before { background: #f59e0b; }
+
+    .status-icon-wrapper {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+    }
+    .status-percent { color: #d97706; }
+    .status-progress-fill { background: linear-gradient(90deg, #f59e0b, #d97706); }
+
+    &:hover {
+      border-color: rgba(245, 158, 11, 0.25);
+      box-shadow: 0 10px 28px rgba(245, 158, 11, 0.12);
+    }
+  }
+
+  // سایر — خاکستری
+  &.status-neutral {
+    &::before { background: #6b7280; }
+
+    .status-icon-wrapper {
+      background: linear-gradient(135deg, #6b7280, #9ca3af);
+      box-shadow: 0 4px 12px rgba(107, 114, 128, 0.3);
+    }
+    .status-percent { color: #4b5563; }
+    .status-progress-fill { background: linear-gradient(90deg, #6b7280, #9ca3af); }
+
+    &:hover {
+      border-color: rgba(107, 114, 128, 0.25);
+      box-shadow: 0 10px 28px rgba(107, 114, 128, 0.12);
+    }
+  }
+}
+
 // ریسپانسیو
 @media (max-width: 600px) {
   .kpi-card {

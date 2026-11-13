@@ -1,13 +1,13 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
 import { NgToastService } from 'ng-angular-popup';
 import { FormsModule } from '@angular/forms';
-import {LeadService} from "../../../../../services/lead.service";
-import {LeadDetails} from "../lead-details/lead-details";
-import {TwoWordsPipe} from "../../../../../models/TwoWordsPipe";
+import { LeadService } from "../../../../../services/lead.service";
+import { LeadDetails } from "../lead-details/lead-details";
+import { TwoWordsPipe } from "../../../../../models/TwoWordsPipe";
 import * as XLSX from 'xlsx';
 
 export interface LeadsDialogData {
@@ -16,6 +16,8 @@ export interface LeadsDialogData {
   layer: string;
   startDate: string;
   endDate: string;
+  agentName?: string;
+  showLayerColumn?: boolean;
 }
 
 @Component({
@@ -38,6 +40,7 @@ export class LeadsDialog implements OnInit {
   protected searchTerm: string = '';
   protected sortColumn: string = '';
   protected sortDirection: 'asc' | 'desc' = 'asc';
+  protected showLayer: boolean = false;
 
   constructor(
     public dialogRef: MatDialogRef<LeadsDialog>,
@@ -56,9 +59,21 @@ export class LeadsDialog implements OnInit {
     this.leadsList = [];
 
     try {
-      const result = await this.leadService
-        .get_LeadsList(this.data.startDate, this.data.endDate, this.data.status, this.data.layer)
-        .toPromise();
+      let result: any[];
+
+      if (this.data.agentName) {
+        // حالت کارشناس: ستون لایه همیشه فعال
+        this.showLayer = true;
+        result = await this.leadService
+          .get_LeadsByExpert(this.data.startDate, this.data.endDate, this.data.agentName)
+          .toPromise();
+      } else {
+        // حالت عادی Done/DeActive
+        this.showLayer = this.data.showLayerColumn === true;
+        result = await this.leadService
+          .get_LeadsList(this.data.startDate, this.data.endDate, this.data.status, this.data.layer)
+          .toPromise();
+      }
 
       this.leadsList = (result || []).map((lead: any) => ({
         ...lead,
@@ -89,6 +104,29 @@ export class LeadsDialog implements OnInit {
     );
   }
 
+  // ============================
+  //  Helper لایه
+  // ============================
+  getLayerLabel(layer: string): string {
+    if (!layer) return '-';
+    const map: { [key: string]: string } = {
+      'L1L2': 'L1 / L2',
+      'L3': 'L3',
+      'L4': 'L4'
+    };
+    return map[layer] || layer;
+  }
+
+  getLayerClass(layer: string): string {
+    if (!layer) return 'layer-unknown';
+    const map: { [key: string]: string } = {
+      'L1L2': 'layer-l1l2',
+      'L3': 'layer-l3',
+      'L4': 'layer-l4'
+    };
+    return map[layer] || 'layer-unknown';
+  }
+
   toggleSort(column: string) {
     if (this.sortColumn === column) {
       this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
@@ -104,10 +142,9 @@ export class LeadsDialog implements OnInit {
       if (valA == null) valA = '';
       if (valB == null) valB = '';
 
-      if (column === 'tradingDays' || column === 'brokerCommissionInPeriod' || column ==='brokerTotalCommission') {
+      if (column === 'tradingDays' || column === 'brokerCommissionInPeriod' || column === 'brokerTotalCommission') {
         const numA = parseFloat(String(valA).replace(/,/g, '')) || 0;
         const numB = parseFloat(String(valB).replace(/,/g, '')) || 0;
-
         if (numA < numB) return this.sortDirection === 'asc' ? -1 : 1;
         if (numA > numB) return this.sortDirection === 'asc' ? 1 : -1;
         return 0;
@@ -116,14 +153,13 @@ export class LeadsDialog implements OnInit {
       if (column === 'createdOn') {
         const dateA = new Date(valA).getTime();
         const dateB = new Date(valB).getTime();
-
         if (dateA < dateB) return this.sortDirection === 'asc' ? -1 : 1;
         if (dateA > dateB) return this.sortDirection === 'asc' ? 1 : -1;
         return 0;
       }
+
       valA = String(valA).toLowerCase();
       valB = String(valB).toLowerCase();
-
       if (valA < valB) return this.sortDirection === 'asc' ? -1 : 1;
       if (valA > valB) return this.sortDirection === 'asc' ? 1 : -1;
       return 0;
@@ -141,40 +177,41 @@ export class LeadsDialog implements OnInit {
       return;
     }
 
-    // آماده‌سازی داده برای اکسل
-    const dataToExport = this.filteredLeads.map((lead, index) => ({
-      'ردیف': index + 1,
-      'نام و نام خانوادگی': lead.fullName || '-',
-      'کد ملی': lead.nationalCode || '-',
-      'تاریخ ایجاد': lead.createdOn ? new Date(lead.createdOn).toLocaleDateString('fa-IR') : '-',
-      'شعبه': lead.branchName || '-',
-      'توضیحات': lead.description || '-',
-      'روزهای معاملاتی': lead.tradingDays || '۰',
-      'کارمزد 3 ماهه اخیر(ریال)': lead.brokerCommissionInPeriod || '۰',
-      'کارمزد کل(ریال)': lead.brokerTotalCommission || '۰'
-    }));
+    const dataToExport = this.filteredLeads.map((lead, index) => {
+      const row: any = {
+        'ردیف': index + 1,
+        'نام و نام خانوادگی': lead.fullName || '-',
+        'کد ملی': lead.nationalCode || '-',
+        'تاریخ ایجاد': lead.createdOn ? new Date(lead.createdOn).toLocaleDateString('fa-IR') : '-',
+        'شعبه': lead.branchName || '-'
+      };
 
-    // ساخت فایل اکسل
+      if (this.showLayer) {
+        row['لایه'] = this.getLayerLabel(lead.layerType);
+      }
+
+      row['توضیحات'] = lead.description || '-';
+      row['روزهای معاملاتی'] = lead.tradingDays || '۰';
+      row['کارمزد 3 ماهه اخیر(ریال)'] = lead.brokerCommissionInPeriod || '۰';
+      row['کارمزد کل(ریال)'] = lead.brokerTotalCommission || '۰';
+
+      return row;
+    });
+
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataToExport);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'لیست لیدها');
 
-    // تنظیم عرض ستون‌ها
-    const colWidths = [
-      { wch: 8 },   // ردیف
-      { wch: 20 },  // نام لید
-      { wch: 15 },  // کد ملی
-      { wch: 20 },  // تاریخ ایجاد
-      { wch: 18 },  // شعبه
-      { wch: 30 },  // توضیحات
-      { wch: 18 },  // روزهای معاملاتی
-      { wch: 22 },   // کارمزد
-      { wch: 22 }   // کارمزد کل
-    ];
+    const colWidths = this.showLayer
+      ? [{ wch: 8 }, { wch: 20 }, { wch: 15 }, { wch: 20 }, { wch: 18 }, { wch: 12 }, { wch: 30 }, { wch: 18 }, { wch: 22 }, { wch: 22 }]
+      : [{ wch: 8 }, { wch: 20 }, { wch: 15 }, { wch: 20 }, { wch: 18 }, { wch: 30 }, { wch: 18 }, { wch: 22 }, { wch: 22 }];
     ws['!cols'] = colWidths;
 
-    // دانلود فایل
-    const fileName = `لیست_لیدها_${this.data.status}_${this.data.layer}_${new Date().toLocaleDateString('fa-IR')}.xlsx`;
+    const suffix = this.data.agentName
+      ? `Agent_${this.data.agentName}`
+      : `${this.data.status}_${this.data.layer}`;
+
+    const fileName = `لیست_لیدها_${suffix}_${new Date().toLocaleDateString('fa-IR')}.xlsx`;
     XLSX.writeFile(wb, fileName);
 
     this.toast.success({

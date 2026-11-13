@@ -189,7 +189,7 @@
             </tr>
 
             <!-- جمع کل Done -->
-            <tr class="total-row done-total" (click)="openLeadsDialog('Done', 'All', 'لیست کل لیدهای Done')">
+            <tr class="total-row done-total" (click)="openLeadsDialog('Done', 'All', 'لیست کل لیدهای Done', true)">
               <td class="col-section">
                 <span class="total-label">
                   <i class="material-icons">functions</i>
@@ -262,7 +262,7 @@
             </tr>
 
             <!-- جمع کل DeActive -->
-            <tr class="total-row deactive-total" (click)="openLeadsDialog('DeActive', 'All', 'لیست کل لیدهای DeActive')">
+            <tr class="total-row deactive-total" (click)="openLeadsDialog('DeActive', 'All', 'لیست کل لیدهای DeActive', true)">
               <td class="col-section">
                 <span class="total-label"><i class="material-icons">functions</i>جمع کل DeActive</span>
               </td>
@@ -304,7 +304,7 @@
         </div>
 
         <div class="experts-grid">
-          <div class="expert-card leads-expert-card" *ngFor="let expert of series_experts; let i = index">
+          <div class="expert-card leads-expert-card" *ngFor="let expert of series_experts; let i = index" (click)="openExpertLeadsDialog(expert.expertName)">
             <div class="expert-avatar leads-avatar">
               {{ getInitials(expert.expertName) }}
             </div>
@@ -354,7 +354,7 @@
         </div>
 
         <div class="experts-grid">
-          <div class="expert-card calls-expert-card" *ngFor="let expert of series_experts_calls; let i = index">
+          <div class="expert-card calls-expert-card" *ngFor="let expert of series_experts_calls; let i = index" (click)="openExpertCallsDialog(expert.expert)">
             <div class="expert-avatar calls-avatar">
               {{ getInitials(expert.expert) }}
             </div>
@@ -418,6 +418,54 @@
             </div>
           </div>
         </div>
+      </div>
+
+      <!-- ============================ -->
+      <!--  وضعیت تماس‌ها                -->
+      <!-- ============================ -->
+      <div class="loading-spinner" *ngIf="!flag_calls_status">
+        <mat-spinner diameter="50"></mat-spinner>
+        <span>در حال دریافت وضعیت تماس‌ها...</span>
+      </div>
+
+      <div class="status-section" *ngIf="flag_calls_status && series_calls_status.length > 0">
+        <div class="section-header">
+          <h2>وضعیت تماس‌ها</h2>
+          <span class="section-badge">
+      {{ totalStatusCalls | number }} تماس
+    </span>
+        </div>
+
+        <div class="status-grid">
+          <div class="status-card"
+               *ngFor="let s of series_calls_status"
+               [ngClass]="getStatusColorClass(s.status)"
+               (click)="openStatusCallsDialog(s.status, getStatusLabel(s.status))">
+
+            <div class="status-icon-wrapper">
+              <i class="material-icons">{{ getStatusIcon(s.status) }}</i>
+            </div>
+
+            <div class="status-info">
+              <div class="status-name">{{ getStatusLabel(s.status) }}</div>
+              <div class="status-stats">
+                <span class="status-count">{{ s.count | number }} تماس</span>
+                <span class="status-percent">{{ getStatusPercentage(s.count) }}%</span>
+              </div>
+              <div class="status-progress-bar">
+                <div class="status-progress-fill"
+                     [style.width.%]="getStatusPercentage(s.count)">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- پیام عدم وجود تماس -->
+      <div class="no-experts" *ngIf="flag_calls_status && series_calls_status.length === 0">
+        <i class="material-icons">info_outline</i>
+        <span>هیچ تماسی در این بازه زمانی ثبت نشده است.</span>
       </div>
 
       <ng-template #deniedTemplate>

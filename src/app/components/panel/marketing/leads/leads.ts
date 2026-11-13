@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {DashboardSidebarComponent} from "../../../Template/dashboard-sidebar/dashboard-sidebar.component";
 import {DashboardTopmenuComponent} from "../../../Template/dashboard-topmenu/dashboard-topmenu.component";
-import {DatePipe, DecimalPipe, NgForOf, NgIf, NgStyle} from "@angular/common";
+import {DatePipe, DecimalPipe, NgClass, NgForOf, NgIf, NgStyle} from "@angular/common";
 import {NgToastService} from "ng-angular-popup";
 import {AuthService} from "../../../../services/auth.service";
 import {Router} from "@angular/router";
@@ -14,6 +14,7 @@ import {format, subDays} from "date-fns";
 import {TimeService} from "../../../../services/time.service";
 import {Dir} from "@angular/cdk/bidi";
 import {OutcallService} from "../../../../services/outcall.service";
+import { CallsDialog, CallsDialogData } from "./calls-dialog/calls-dialog";
 
 @Component({
   selector: 'app-leads',
@@ -26,7 +27,8 @@ import {OutcallService} from "../../../../services/outcall.service";
     Dir,
     FormsModule,
     ReactiveFormsModule,
-    NgForOf
+    NgForOf,
+    NgClass
   ],
   providers: [DatePipe],
   templateUrl: './leads.html',
@@ -39,6 +41,7 @@ export class Leads implements OnInit {
   protected flag_stats:boolean=false;
   protected flag_experts: boolean = false;
   protected flag_experts_calls: boolean = false;
+  protected flag_calls_status:boolean = false;
   StartDate:string = "";
   EndDate:string = "";
   st_to_en: string = "";
@@ -47,6 +50,7 @@ export class Leads implements OnInit {
   series_stats: any[] = [];
   series_experts: any[] = [];
   series_experts_calls: any[] = [];
+  series_calls_status: any[] = [];
   public constructor(private toast:NgToastService, protected auth:AuthService, private router:Router, private fb:FormBuilder, private datePipe: DatePipe, private getData:LeadService, private getDataCall:OutcallService,private timeService: TimeService, private dialog: MatDialog) {
     this.dateform = this.fb.group({
       StartDate: [''],
@@ -90,10 +94,12 @@ export class Leads implements OnInit {
     this.flag_stats = false;
     this.flag_experts = false;
     this.flag_experts_calls = false;
+    this.flag_calls_status = false;
     this.series_total = [];
     this.series_stats = [];
     this.series_experts = [];
     this.series_experts_calls = [];
+    this.series_calls_status = [];
     try {
       this.series_total = await this.getData.get_TotalCount(stDate, enDate).toPromise();
       this.flag_total = true;
@@ -108,6 +114,8 @@ export class Leads implements OnInit {
         percentage: totalCalls > 0 ? Math.round((e.count / totalCalls) * 100) : 0
       }));
       this.flag_experts_calls = true;
+      this.series_calls_status = await this.getDataCall.get_StatusCount_M(stDate, enDate).toPromise();
+      this.flag_calls_status = true;
     } catch (error:any){
       this.toast.error({ detail: "ERROR", summary: error.message, duration: 5000, position: 'topRight' });
     }
@@ -130,13 +138,14 @@ export class Leads implements OnInit {
     await this.do(this.StartDate,this.EndDate);
   }
 
-  openLeadsDialog(status: string, layer: string, title: string) {
+  openLeadsDialog(status: string, layer: string, title: string, showLayerColumn: boolean = false) {
     const dialogData: LeadsDialogData = {
       title: title,
       status: status,
       layer: layer,
       startDate: this.StartDate,
-      endDate: this.EndDate
+      endDate: this.EndDate,
+      showLayerColumn: showLayerColumn
     };
 
     this.dialog.open(LeadsDialog, {
@@ -145,6 +154,63 @@ export class Leads implements OnInit {
       maxHeight: '90vh',
       data: dialogData,
       panelClass: 'leads-dialog-panel',
+      direction: 'rtl'
+    });
+  }
+
+  openExpertLeadsDialog(expertName: string) {
+    const dialogData: LeadsDialogData = {
+      title: `لیست لیدهای ${expertName}`,
+      status: '',
+      layer: '',
+      startDate: this.StartDate,
+      endDate: this.EndDate,
+      agentName: expertName
+    };
+
+    this.dialog.open(LeadsDialog, {
+      width: '1100px',
+      maxWidth: '95vw',
+      maxHeight: '90vh',
+      data: dialogData,
+      panelClass: 'leads-dialog-panel',
+      direction: 'rtl'
+    });
+  }
+
+  openExpertCallsDialog(expertName: string) {
+    const dialogData: CallsDialogData = {
+      title: `لیست تماس‌های ${expertName}`,
+      startDate: this.StartDate,
+      endDate: this.EndDate,
+      expertName: expertName
+    };
+
+    this.dialog.open(CallsDialog, {
+      width: '1200px',
+      maxWidth: '95vw',
+      maxHeight: '90vh',
+      data: dialogData,
+      panelClass: 'calls-dialog-panel',
+      direction: 'rtl'
+    });
+  }
+
+  openStatusCallsDialog(status: string, statusLabel: string) {
+    const dialogData: CallsDialogData = {
+      title: `لیست تماس‌های ${statusLabel}`,
+      startDate: this.StartDate,
+      endDate: this.EndDate,
+      status: status,
+      statusLabel: statusLabel
+    };
+
+    this.dialog.open(CallsDialog, {
+      width: '1200px',
+      maxWidth: '95vw',
+      maxHeight: '90vh',
+      data: dialogData,
+      panelClass: 'calls-dialog-panel',
       direction: 'rtl'
     });
   }
@@ -172,5 +238,52 @@ export class Leads implements OnInit {
     const totalLeads = this.totalLeadsCount;
     if (totalLeads === 0) return 0;
     return Math.round((this.totalCallsCount / totalLeads) * 100) / 100;
+  }
+
+  get totalStatusCalls(): number {
+    return (this.series_calls_status || [])
+      .reduce((sum: number, s: any) => sum + (s.count || 0), 0);
+  }
+
+  getStatusLabel(status: string): string {
+    const key = (status || '').toLowerCase();
+    const map: { [key: string]: string } = {
+      'made': 'موفق',
+      'unsuccessful': 'ناموفق',
+      'open': 'باز',
+      'recall': 'تماس مجدد',
+      'disinclination': 'عدم تمایل'
+    };
+    return map[key] || status;
+  }
+
+  getStatusIcon(status: string): string {
+    const key = (status || '').toLowerCase();
+    const map: { [key: string]: string } = {
+      'made': 'check_circle',
+      'unsuccessful': 'cancel',
+      'open': 'radio_button_unchecked',
+      'recall': 'refresh',
+      'disinclination': 'do_not_disturb'
+    };
+    return map[key] || 'info';
+  }
+
+  getStatusColorClass(status: string): string {
+    const key = (status || '').toLowerCase();
+    const map: { [key: string]: string } = {
+      'made': 'status-success',
+      'unsuccessful': 'status-danger',
+      'open': 'status-info',
+      'recall': 'status-warning',
+      'disinclination': 'status-neutral'
+    };
+    return map[key] || 'status-neutral';
+  }
+
+  getStatusPercentage(count: number): number {
+    const total = this.totalStatusCalls;
+    if (total === 0) return 0;
+    return Math.round((count / total) * 100);
   }
 }

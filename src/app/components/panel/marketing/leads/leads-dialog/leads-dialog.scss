@@ -39,6 +39,7 @@
   overflow: hidden;
   min-height: 0;
 }
+
 // ============================
 //  هدر دیالوگ
 // ============================
@@ -67,6 +68,11 @@
       font-family: $Font-Family-Fa;
       font-size: 13px;
       color: $text-secondary;
+
+      strong {
+        color: $primary-color;
+        font-weight: 700;
+      }
     }
   }
 
@@ -169,24 +175,6 @@
   }
 
   .actions {
-    .btn-close {
-      background: transparent;
-      border: 1px solid rgba(0, 0, 0, 0.08);
-      padding: 8px 20px;
-      border-radius: 10px;
-      font-family: $Font-Family-Fa;
-      font-size: 14px;
-      color: $text-secondary;
-      cursor: pointer;
-      transition: all 0.2s ease;
-
-      &:hover {
-        background: rgba(0, 0, 0, 0.04);
-      }
-    }
-  }
-
-  .actions {
     display: flex;
     gap: 8px;
 
@@ -273,6 +261,10 @@
           margin-right: 4px;
         }
       }
+
+      &.col-layer-header {
+        min-width: 90px;
+      }
     }
   }
 
@@ -314,6 +306,54 @@
 
       .col-branch {
         font-family: $Font-Family-Fa;
+      }
+
+      // ستون لایه
+      .col-layer {
+        text-align: center;
+        min-width: 90px;
+
+        .layer-pill {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: 4px 14px;
+          border-radius: 20px;
+          font-family: $Font-Family-En;
+          font-size: 12px;
+          font-weight: 800;
+          letter-spacing: 0.3px;
+          white-space: nowrap;
+          transition: all 0.2s ease;
+
+          &:hover {
+            transform: scale(1.05);
+          }
+
+          &.layer-l1l2 {
+            color: #2563eb;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+          }
+
+          &.layer-l3 {
+            color: #d97706;
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+          }
+
+          &.layer-l4 {
+            color: #dc2626;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+          }
+
+          &.layer-unknown {
+            color: $text-secondary;
+            background: rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+          }
+        }
       }
 
       .col-description {
@@ -367,5 +407,14 @@
   span {
     font-family: $Font-Family-Fa;
     font-size: 15px;
+  }
+}
+
+// ============================
+//  ریسپانسیو
+// ============================
+@media (max-width: 900px) {
+  .modern-table {
+    min-width: 900px;
   }
 }

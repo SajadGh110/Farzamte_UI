@@ -90,6 +90,18 @@ export class OutcallService {
     return this.authService.get(`${this.apiUrl}GetDescriptionByExpert_T3/${StartDate}_${EndDate}?expertName=${expertName}`);
   }
 
+  get_DescriptionByStatus_G(StartDate:string, EndDate:string, status:string):Observable<any>{
+    return this.authService.get(`${this.apiUrl}GetDescriptionByStatus_T1/${StartDate}_${EndDate}?status=${status}`);
+  }
+
+  get_DescriptionByStatus_F(StartDate:string, EndDate:string, status:string):Observable<any>{
+    return this.authService.get(`${this.apiUrl}GetDescriptionByStatus_T2/${StartDate}_${EndDate}?status=${status}`);
+  }
+
+  get_DescriptionByStatus_M(StartDate:string, EndDate:string, status:string):Observable<any>{
+    return this.authService.get(`${this.apiUrl}GetDescriptionByStatus_T3/${StartDate}_${EndDate}?status=${status}`);
+  }
+
   get_DescriptionByUnit_G(StartDate:string, EndDate:string, unit:string):Observable<any>{
     return this.authService.get(`${this.apiUrl}GetDescriptionByUnit_T1/${StartDate}_${EndDate}?unit=${unit}`);
   }

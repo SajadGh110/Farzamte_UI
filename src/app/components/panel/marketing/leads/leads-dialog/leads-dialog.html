@@ -3,7 +3,14 @@
   <div class="dialog-header">
     <div class="header-left">
       <h2>{{ data.title }}</h2>
-      <span class="subtitle">لیست لیدهای {{ data.status }} - {{ data.layer }}</span>
+      <span class="subtitle">
+        <ng-container *ngIf="data.agentName">
+          کارشناس: <strong>{{ data.agentName }}</strong>
+        </ng-container>
+        <ng-container *ngIf="!data.agentName">
+          لیست لیدهای {{ data.status }}<ng-container *ngIf="data.layer"> - {{ data.layer }}</ng-container>
+        </ng-container>
+      </span>
     </div>
     <button class="close-btn" (click)="close()">×</button>
   </div>
@@ -43,45 +50,54 @@
           <th (click)="toggleSort('fullName')" class="sortable">
             نام و نام خانوادگی
             <span *ngIf="sortColumn === 'fullName'">
-          {{ sortDirection === 'asc' ? '↑' : '↓' }}
-        </span>
+              {{ sortDirection === 'asc' ? '↑' : '↓' }}
+            </span>
           </th>
           <th (click)="toggleSort('nationalCode')" class="sortable">
             کد ملی
             <span *ngIf="sortColumn === 'nationalCode'">
-          {{ sortDirection === 'asc' ? '↑' : '↓' }}
-        </span>
+              {{ sortDirection === 'asc' ? '↑' : '↓' }}
+            </span>
           </th>
           <th (click)="toggleSort('createdOn')" class="sortable">
             تاریخ ایجاد
             <span *ngIf="sortColumn === 'createdOn'">
-          {{ sortDirection === 'asc' ? '↑' : '↓' }}
-        </span>
+              {{ sortDirection === 'asc' ? '↑' : '↓' }}
+            </span>
           </th>
           <th (click)="toggleSort('branchName')" class="sortable">
             شعبه
             <span *ngIf="sortColumn === 'branchName'">
-          {{ sortDirection === 'asc' ? '↑' : '↓' }}
-        </span>
+              {{ sortDirection === 'asc' ? '↑' : '↓' }}
+            </span>
           </th>
+
+          <!-- ستون لایه (شرطی) -->
+          <th *ngIf="showLayer" (click)="toggleSort('layerType')" class="sortable col-layer-header">
+            لایه
+            <span *ngIf="sortColumn === 'layerType'">
+              {{ sortDirection === 'asc' ? '↑' : '↓' }}
+            </span>
+          </th>
+
           <th>توضیحات</th>
           <th (click)="toggleSort('tradingDays')" class="sortable">
             روزهای معاملاتی
             <span *ngIf="sortColumn === 'tradingDays'">
-          {{ sortDirection === 'asc' ? '↑' : '↓' }}
-        </span>
+              {{ sortDirection === 'asc' ? '↑' : '↓' }}
+            </span>
           </th>
           <th (click)="toggleSort('brokerCommissionInPeriod')" class="sortable">
             کارمزد 3 ماهه اخیر
             <span *ngIf="sortColumn === 'brokerCommissionInPeriod'">
-          {{ sortDirection === 'asc' ? '↑' : '↓' }}
-        </span>
+              {{ sortDirection === 'asc' ? '↑' : '↓' }}
+            </span>
           </th>
           <th (click)="toggleSort('brokerTotalCommission')" class="sortable">
             کارمزد کل
             <span *ngIf="sortColumn === 'brokerTotalCommission'">
-          {{ sortDirection === 'asc' ? '↑' : '↓' }}
-        </span>
+              {{ sortDirection === 'asc' ? '↑' : '↓' }}
+            </span>
           </th>
         </tr>
         </thead>
@@ -91,6 +107,14 @@
           <td class="col-national">{{ lead.nationalCode }}</td>
           <td class="col-date">{{ lead.createdOn | date:'yyyy-MM-dd HH:mm' }}</td>
           <td class="col-branch">{{ lead.branchName }}</td>
+
+          <!-- ستون لایه (شرطی) -->
+          <td *ngIf="showLayer" class="col-layer">
+            <span class="layer-pill" [ngClass]="getLayerClass(lead.layerType)">
+              {{ getLayerLabel(lead.layerType) }}
+            </span>
+          </td>
+
           <td class="col-description">{{ lead.description | twoWords:2 }}</td>
           <td class="col-trading">{{ lead.tradingDays || '-' }}</td>
           <td class="col-profit">
@@ -98,7 +122,7 @@
             <span class="currency">ریال</span>
           </td>
           <td class="col-profit">
-            {{ lead.brokerTotalCommission  | number:'1.0-0' }}
+            {{ lead.brokerTotalCommission | number:'1.0-0' }}
             <span class="currency">ریال</span>
           </td>
         </tr>
