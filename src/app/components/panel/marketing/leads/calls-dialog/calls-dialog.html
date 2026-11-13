@@ -1,0 +1,117 @@
+<div class="dialog-container">
+  <!-- هدر دیالوگ -->
+  <div class="dialog-header">
+    <div class="header-left">
+      <h2>{{ data.title }}</h2>
+      <span class="subtitle">
+        <ng-container *ngIf="data.expertName">
+          کارشناس: <strong>{{ data.expertName }}</strong>
+        </ng-container>
+        <ng-container *ngIf="data.status">
+          وضعیت: <strong>{{ data.statusLabel || getStatusLabel(data.status) }}</strong>
+        </ng-container>
+        <span class="subtitle-divider">•</span>
+        {{ filteredCalls.length }} تماس
+      </span>
+    </div>
+    <button class="close-btn" (click)="close()">×</button>
+  </div>
+
+  <!-- اسپینر بارگذاری -->
+  <div class="loading-spinner" *ngIf="loading">
+    <mat-spinner diameter="40"></mat-spinner>
+    <span>در حال دریافت لیست تماس‌ها...</span>
+  </div>
+
+  <!-- محتوای دیالوگ -->
+  <div *ngIf="!loading && filteredCalls.length > 0" class="dialog-content">
+    <!-- نوار ابزار -->
+    <div class="table-toolbar">
+      <div class="search-box">
+        <i class="material-icons">search</i>
+        <input
+          type="text"
+          [(ngModel)]="searchTerm"
+          placeholder="جستجو در کارشناس، شماره، موضوع یا توضیحات..."
+        />
+        <span class="result-count">{{ filteredCalls.length }} مورد</span>
+      </div>
+      <div class="actions">
+        <button class="btn-excel" (click)="exportToExcel()">
+          <i class="material-icons">file_download</i>
+          خروجی اکسل
+        </button>
+      </div>
+    </div>
+
+    <!-- جدول -->
+    <div class="table-wrapper">
+      <table class="modern-table">
+        <thead>
+        <tr>
+          <th (click)="toggleSort('date')" class="sortable">
+            تاریخ
+            <span *ngIf="sortColumn === 'date'">
+              {{ sortDirection === 'asc' ? '↑' : '↓' }}
+            </span>
+          </th>
+          <th (click)="toggleSort('expertName')" class="sortable">
+            کارشناس
+            <span *ngIf="sortColumn === 'expertName'">
+              {{ sortDirection === 'asc' ? '↑' : '↓' }}
+            </span>
+          </th>
+          <th (click)="toggleSort('phoneNumber')" class="sortable">
+            شماره تماس
+            <span *ngIf="sortColumn === 'phoneNumber'">
+              {{ sortDirection === 'asc' ? '↑' : '↓' }}
+            </span>
+          </th>
+          <th (click)="toggleSort('title')" class="sortable">
+            موضوع
+            <span *ngIf="sortColumn === 'title'">
+              {{ sortDirection === 'asc' ? '↑' : '↓' }}
+            </span>
+          </th>
+          <th (click)="toggleSort('status')" class="sortable">
+            وضعیت
+            <span *ngIf="sortColumn === 'status'">
+              {{ sortDirection === 'asc' ? '↑' : '↓' }}
+            </span>
+          </th>
+          <th (click)="toggleSort('callResult')" class="sortable">
+            نتیجه
+            <span *ngIf="sortColumn === 'callResult'">
+              {{ sortDirection === 'asc' ? '↑' : '↓' }}
+            </span>
+          </th>
+          <th>توضیحات</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let call of filteredCalls">
+          <td class="col-date">{{ call.date }}</td>
+          <td class="col-expert">{{ call.expertName || '-' }}</td>
+          <td class="col-phone">{{ call.phoneNumber || '-' }}</td>
+          <td class="col-title" [title]="call.title || '-'">{{ call.title || '-' }}</td>
+          <td class="col-status">
+            <span class="status-pill" [ngClass]="getStatusClass(call.status)">
+              {{ getStatusLabel(call.status) }}
+            </span>
+          </td>
+          <td class="col-result">{{ call.callResult || '-' }}</td>
+          <td class="col-description" [title]="call.description || '-'">
+            {{ call.description || '-' }}
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- پیام عدم وجود داده -->
+  <div *ngIf="!loading && filteredCalls.length === 0" class="no-data">
+    <i class="material-icons">info_outline</i>
+    <span>هیچ تماسی برای این گروه یافت نشد.</span>
+  </div>
+</div>
